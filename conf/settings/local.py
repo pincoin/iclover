@@ -1,7 +1,6 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from . import BASE_DIR
 
 SECRET_KEY = 'smo6py2-km40=05lgad#71k4=a^8hd=@$%l%0jz8c2dnal5a)5'
 DEBUG = True
