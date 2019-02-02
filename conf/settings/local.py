@@ -20,6 +20,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     'mptt',
     'core',
+    'member',
 ]
 
 MIDDLEWARE = [
