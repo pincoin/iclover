@@ -8,13 +8,11 @@ except ImportError:
 DEBUG = True
 
 # SECURITY WARNING: Keep them secret!
-
 SECRET_KEY = Secret.SECRET_KEY
 ALLOWED_HOSTS = Secret.ALLOWED_HOSTS
 DATABASES = Secret.DATABASES
 
-# Application definition
-
+# Django apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,8 +22,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# 3rd party packages
 INSTALLED_APPS += [
+    'debug_toolbar',
     'mptt',
+]
+
+# Our own apps
+INSTALLED_APPS += [
     'core',
     'member',
     'shop',
@@ -39,6 +43,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'conf.urls'
@@ -62,7 +67,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'conf.wsgi.application'
 
 # Password validation
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
@@ -71,7 +75,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-
 LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = "Asia/Seoul"
 USE_I18N = True
@@ -79,5 +82,4 @@ USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-
 STATIC_URL = '/static/'
