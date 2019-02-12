@@ -21,7 +21,7 @@ INSTALLED_APPS += [
     'mptt',
     'core',
     'member',
-    'dummy',
+    'shop',
 ]
 
 MIDDLEWARE = [
