@@ -1,10 +1,17 @@
-import os
+try:
+    from .secret import Secret
+except ImportError:
+    raise ImportError(
+        'Failed to import Secret values.'
+    )
 
-from . import BASE_DIR
-
-SECRET_KEY = 'smo6py2-km40=05lgad#71k4=a^8hd=@$%l%0jz8c2dnal5a)5'
 DEBUG = True
-ALLOWED_HOSTS = []
+
+# SECURITY WARNING: Keep them secret!
+
+SECRET_KEY = Secret.SECRET_KEY
+ALLOWED_HOSTS = Secret.ALLOWED_HOSTS
+DATABASES = Secret.DATABASES
 
 # Application definition
 
@@ -53,15 +60,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'conf.wsgi.application'
-
-# Database
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 # Password validation
 
