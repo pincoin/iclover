@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>아이클로버</title>
+    <meta name="description" content="세상을 디자인하다">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+
+    <meta property="og:title" content="세상을 디자인하다">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+
+    <!-- Price Slider Stylesheets -->
+    <link rel="stylesheet" href="{% static 'shop/vendor/nouislider/nouislider.css' %}">
+    <!-- Google fonts - Playfair Display-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+    <link rel="stylesheet" href="{% static 'shop/fonts/hkgrotesk/stylesheet.css'%}">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="{% static 'shop/vendor/owl.carousel/assets/owl.carousel.css'%}">
+    <!-- Ekko Lightbox-->
+    <link rel="stylesheet" href="{% static 'shop/vendor/ekko-lightbox/ekko-lightbox.css'%}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'shop/css/style.default.css'%}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'shop/css/custom.css'%}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'shop/img/favicon.png' %}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/regular.css" integrity="sha384-avJt9MoJH2rB4PKRsJRHZv7yiFZn8LrnXuzvmZoD3fh1aL6aM6s0BBcnCvBe6XSD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    {% load static %}
+  </head>
+  <body style="font-family: 'NanumSquare', sans-serif; ">
+    <header class="header header-absolute">
+      <!-- Top Bar-->
+      <div class="top-bar">
+        <div class="container-fluid">
+          <div class="row d-flex align-items-center">
+            <div class="col-sm-7 d-none d-sm-block">
+              <ul class="list-inline mb-0">
+                <li class="list-inline-item pr-3 mr-0">
+                  <svg class="svg-icon mr-2">
+                    <use xlink:href="#calls-1"> </use>
+                  </svg>02-824-7177
+                </li>
+                <li class="list-inline-item px-3 border-left d-none d-lg-inline-block"><b>아이클로버를 찾아주셔서 진심으로 감사드립니다.</b></li>
+              </ul>
+            </div>
+            <div class="col-sm-5 d-flex justify-content-end">
+              <!-- Language Dropdown-->a
+              <div class="dropdown border-right px-3"><a id="langsDropdown" href="#" data-toggle="dropdown" ria-haspopup="true" aria-expanded="false" class="dropdown-toggle topbar-link"><img src="{% static 'shop/img/united-kingdom.svg' %}" alt="english" class="topbar-flag">안내 사항</a>
+                <div aria-labelledby="langsDropdown" class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item text-sm"><img src="{% static 'shop/img/germany.svg'%}" alt="german" class="topbar-flag">공지사항</a><a href="#" class="dropdown-item text-sm"> <img src="{% static 'shop/img/france.svg'%}" alt="french" class="topbar-flag">자주묻는 질문</a></div>
+              </div>
+              <!-- Currency Dropdown-->
+              <div class="dropdown pl-3 ml-0"><a id="currencyDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle topbar-link">USD</a>
+                <div aria-labelledby="currencyDropdown" class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item text-sm">EUR</a><a href="#" class="dropdown-item text-sm"> GBP</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Top Bar End-->
+      <!-- Navbar-->
+      <nav class="navbar navbar-expand-lg navbar-sticky navbar-airy navbar-light bg-white bg-fixed-white">
+        <div class="container-fluid">
+          <!-- Navbar Header  -->
+          <a href="index.html" class="">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="55px" fill="none" viewBox="-261.035 -190.783 666 617" enable-background="new -261.035 -190.783 666 617" xml:space="preserve">
+              <g>
+              	<path fill="#5BB042" d="M40.856-72.614C12.261-21.168-29.989,38.219-88.628,84.599C14.1,108.025,137.365,167.012,177.817,313.413
+              		c33.084-21.982,66.001-47.994,96.51-78.665C275.469,63.483,122.867-33.084,40.856-72.614"></path>
+              	<path fill="#B9C43A" d="M397.475,35.689L90.694-186.504c0,0-14.793,50.935-49.838,113.89
+              		c82.012,39.529,234.613,136.097,233.471,307.354C326.178,182.727,371.126,117.459,397.475,35.689"></path>
+              	<path fill="#124626" d="M-88.628,84.599c-46.549,36.891-103.47,65.606-172.407,75.335l187.769,261.833
+              		c0,0,126.102-25.316,251.083-108.354C137.365,167.012,14.1,108.025-88.628,84.599"></path>
+              	<path fill="#FFFFFF" d="M62.268,122.755c0,0-114.232-87.187-69.464-148.529c60.032-82.006,125.516-6.212,125.516-6.212
+              		s88.742-53.111,121.71,6.676c32.975,59.846-102.659,146.227-148.988,153.826l19.226-117.051L62.268,122.755z"></path>
+              	<path fill="#FFFFFF" d="M63.997,162.058c0,0-45.418,138.8-124.82,141.276c-106.348,3.395-53.986-91.556-53.986-91.556
+              		s-87.807-35.74-39.419-96.502c48.394-60.716,187.832-9.213,213.148,21.465L-67.506,191.98L63.997,162.058z"></path>
+              	<path fill="#FFFFFF" d="M100.533,136.457c0,0,158.489-48.452,191.284,10.361c43.909,78.722-72.62,95.691-72.62,95.691
+              		s-2.935,87.999-83.154,87.528c-80.232-0.464-80.916-137.078-59.335-174.652l104.335,63.014L100.533,136.457z"></path>
+              	<path fill="#DEDFDF" d="M-72.39,421.767c0,0,239.8,17.618,363.181-40.51c0,0-44.089-10.588-100.478-17.67
+              		C133.907,356.51-72.39,421.767-72.39,421.767"></path>
+              </g>
+            </svg>
+          </a>
+          <button type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
+          <!-- Navbar Collapse -->
+          <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="navbar-nav mx-auto">
+              <!-- Megamenu-->
+              <li class="nav-item dropdown position-static"><a href="#" data-toggle="dropdown" class="nav-link"><strong>전체보기</strong><i class="fa fa-angle-down"></i></a>
+                <div class="dropdown-menu megamenu py-lg-0">
+                  <div class="row">
+                    <div class="col-lg-9">
+                      <div class="row p-3 pr-lg-0 pl-lg-5 pt-lg-5">
+                        <div class="col-lg-3">
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">인쇄</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">전단지/포스터<span class="badge badge-warning ml-1">인기</span></a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">문어발</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">명함</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">봉투</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">복권</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">상품권</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">스티커</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">종이자석</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">양식지 NCR지</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">카다로그/브로셔<span class="badge badge-warning ml-1">인기</span></a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">포스트잇</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">떡메모지</a></li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-3">
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">현수막</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">일반 현수막<span class="badge badge-warning ml-1">인기</span></a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">대형 현수막</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">족자</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">게시대 현수막</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">실사 출력</a></li>
+                          </ul>
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">배너</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">실내용 배너</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">실외용 배너</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">미니 배너</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">대형 배너</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">가방 배너</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">배너 부속품</a></li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-3">
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">판촉/홍보</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">명찰/사원증</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">부채</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">물티슈</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">어깨띠</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">에어탑</a></li>
+                          </ul>
+
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">비품</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">대여복<span class="badge badge-warning ml-1">인기</span></a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">수건<span class="badge badge-warning ml-1">인기</span></a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">샤워용품</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">청소용품</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">평상</a></li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-3">
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">주문</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">샘플로 주문</a></li>
+                            <li class="megamenu-list-item"><a href="1_cart.html" class="megamenu-list-link">견적 & 주문 요청하기</a></li>
+                            <li class="megamenu-list-item"><a href="1_product.html" class="megamenu-list-link">마케팅 콘텐츠</a></li>
+                          </ul>
+
+                          <!-- Megamenu list-->
+                          <h6 class="text-uppercase">Company</h6>
+                          <ul class="megamenu-list list-unstyled">
+                            <li class="megamenu-list-item"><a href="#" class="megamenu-list-link">공지사항</a></li>
+                            <li class="megamenu-list-item"><a href="#" class="megamenu-list-link">자주묻는 질문</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="row megamenu-services d-none d-lg-flex">
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#delivery-time-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">쉽고 간편한 주문</h6>
+                              <p class="mb-0 text-muted text-sm">배송은 배송사 사정에 따라 변경될 수 있습니다</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#money-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">합리적인 가격</h6>
+                              <p class="mb-0 text-muted text-sm">합리적인 가격으로 만나보세요</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#customer-support-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">02-824-7177</h6>
+                              <p class="mb-0 text-muted text-sm">Kakao : <b>아이클로버</b></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 d-flex">
+                          <div class="megamenu-services-item">
+                            <svg class="svg-icon megamenu-services-icon">
+                              <use xlink:href="#secure-payment-1"> </use>
+                            </svg>
+                            <div>
+                              <h6 class="text-uppercase">운영시간</h6>
+                              <p class="mb-0 text-muted text-sm">평일 09:00~18:00</p>
+                              <p class="mb-0 text-muted text-sm">주말/공휴일 휴무</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 d-none d-lg-block"><img src="{% static 'shop/img/megamenu.jpg' %}" alt="" class="bg-image"></div>
+                  </div>
+                </div>
+              </li>
+              <!-- /Megamenu end-->
+              <li class="nav-item"><a href="category.html" class="nav-link"><strong>디자인 샘플</strong></a>
+              </li>
+
+              <!-- Multi level dropdown    -->
+              <li class="nav-item dropdown">
+                <a id="navbarDropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><strong>디자인 견적&주문</strong><i class="fa fa-angle-down"></i></a>
+                <ul aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                  <li><a href="#" class="dropdown-item">Action</a></li>
+                  <li><a href="#" class="dropdown-item">Another action</a></li>
+                  <li class="dropdown-submenu"><a id="navbarDropdownMenuLink2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item">비품 주문<i class="fa fa-angle-down ml-2"></i></a>
+                    <ul aria-labelledby="navbarDropdownMenuLink2" class="dropdown-menu">
+                      <li><a href="#" class="dropdown-item">Action</a></li>
+                      <li class="dropdown-submenu"><a id="navbarDropdownMenuLink3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item">
+
+                          Another action<i class="fa fa-angle-down ml-2"></i></a>
+                        <ul aria-labelledby="navbarDropdownMenuLink3" class="dropdown-menu">
+                          <li><a href="#" class="dropdown-item">Action</a></li>
+                          <li><a href="#" class="dropdown-item">Action</a></li>
+                          <li><a href="#" class="dropdown-item">Action</a></li>
+                          <li><a href="#" class="dropdown-item">Action</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#" class="dropdown-item">Something else here</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <!-- Multi level dropdown end-->
+              <li class="nav-item"><a href="contact.html" class="nav-link"><strong>비품 주문</strong></a>
+              </li>
+              <li class="nav-item dropdown"><a id="docsDropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link "><strong>마케팅 컨텐츠</strong><i class="fa fa-angle-down"></i></a>
+                <div aria-labelledby="docsDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
+                  <h6 class="dropdown-header font-weight-normal">Documentation</h6><a href="docs/docs-introduction.html" class="dropdown-item">Introduction </a><a href="docs/docs-directory-structure.html" class="dropdown-item">Directory structure </a><a href="docs/docs-gulp.html" class="dropdown-item">Gulp </a><a href="docs/docs-customizing-css.html" class="dropdown-item">Customizing CSS </a><a href="docs/docs-credits.html" class="dropdown-item">Credits </a><a href="docs/docs-changelog.html" class="dropdown-item">Changelog </a>
+                  <div class="dropdown-divider"></div>
+                  <h6 class="dropdown-header font-weight-normal">Components</h6><a href="docs/components-bootstrap.html" class="dropdown-item">Bootstrap </a><a href="docs/components-sell.html" class="dropdown-item">Theme </a><a href="component-variants/header.html" class="dropdown-item">Header variants <span class="badge badge-warning ml-1">New</span> </a>
+                </div>
+              </li>
+            </ul>
+            <div class="d-flex align-items-center justify-content-between justify-content-lg-end mt-1 mb-2 my-lg-0">
+              <!-- Search Button-->
+              <div data-toggle="search" class="nav-item navbar-icon-link">
+                <svg class="svg-icon">
+                  <use xlink:href="#search-1"> </use>
+                </svg>
+              </div>
+              <!-- User Not Logged - link to login page-->
+              <div class="nav-item">
+                <a href="customer-login.html" class="navbar-icon-link">
+                  <svg class="svg-icon">
+                    <use xlink:href="#male-user-1"> </use>
+                  </svg><span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">Log in</span></a>
+              </div>
+
+              <!-- Cart Dropdown-->
+              <div class="nav-item dropdown">
+                <a href="cart.html" class="navbar-icon-link d-lg-none">
+                  <svg class="svg-icon">
+                    <use xlink:href="#cart-1"> </use>
+                  </svg>
+                <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">View cart</span>
+              </a>
+                <div class="d-none d-lg-block">
+                  <a id="cartdetails" href="cart.html" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="navbar-icon-link dropdown-toggle">
+                    <svg class="svg-icon">
+                      <use xlink:href="#cart-1"> </use>
+                    </svg>
+                    <div class="navbar-icon-link-badge">3</div>
+                  </a>
+                  <div aria-labelledby="cartdetails" class="dropdown-menu dropdown-menu-right p-4">
+                    <div class="navbar-cart-product-wrapper">
+                      <!-- cart item-->
+                      <div class="navbar-cart-product">
+                        <div class="d-flex align-items-center"><a href="detail.html"><img src="{% static 'shop/mg/product/product-square-ian-dooley-347968-unsplash.jpg'%}" alt="..." class="img-fluid navbar-cart-product-image"></a>
+                          <div class="w-100"><a href="#" class="close text-sm mr-2"><i class="fa fa-times">                                                   </i></a>
+                            <div class="pl-3"> <a href="detail.html" class="navbar-cart-product-link">Skull Tee</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00 </strong></div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- cart item-->
+                      <div class="navbar-cart-product">
+                        <div class="d-flex align-items-center"><a href="detail.html"><img src="{% static 'shop/img/product/product-square-kyle-loftus-596319-unsplash.jpg'%}" alt="..." class="img-fluid navbar-cart-product-image"></a>
+                          <div class="w-100"><a href="#" class="close text-sm mr-2"><i class="fa fa-times">                                                   </i></a>
+                            <div class="pl-3"> <a href="detail.html" class="navbar-cart-product-link">Transparent Blouse</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00 </strong></div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- cart item-->
+                      <div class="navbar-cart-product">
+                        <div class="d-flex align-items-center"><a href="detail.html"><img src="{% static 'shop/img/product/product-square-serrah-galos-494312-unsplash.jpg'%}" alt="..." class="img-fluid navbar-cart-product-image"></a>
+                          <div class="w-100"><a href="#" class="close text-sm mr-2"><i class="fa fa-times">                                                   </i></a>
+                            <div class="pl-3"> <a href="detail.html" class="navbar-cart-product-link">White Tee</a><small class="d-block text-muted">Quantity: 1 </small><strong class="d-block text-sm">$75.00 </strong></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- total price-->
+                    <div class="navbar-cart-total"><span class="text-uppercase text-muted">Total</span><strong class="text-uppercase">$75.00</strong></div>
+                    <!-- buttons-->
+                    <div class="d-flex justify-content-between"><a href="cart.html" class="btn btn-link text-dark mr-3">View Cart <i class="fa-arrow-right fa"></i></a><a href="checkout1.html" class="btn btn-outline-dark">Checkout</a></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 카카오톡 -->
+              <div class="nav-item">
+                <a href="customer-login.html" class="navbar-icon-link">
+                  <img style="-webkit-user-select: none;" src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small_ov.png" width="30px;">
+                </a>
+              </div>
+              <!-- 카카오톡 end-->
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- /Navbar -->
+
+      <!-- Fullscreen search area-->
+      <div class="search-area-wrapper">
+        <div class="search-area d-flex align-items-center justify-content-center">
+          <div class="close-btn">
+            <svg class="svg-icon svg-icon-light w-3rem h-3rem">
+              <use xlink:href="#close-1"> </use>
+            </svg>
+          </div>
+          <form action="#" class="search-area-form">
+            <div class="form-group position-relative">
+              <input type="search" name="search" id="search" placeholder="검색어를 입력해주세요" class="search-area-input">
+              <button type="submit" class="search-area-button">
+                <svg class="svg-icon">
+                  <use xlink:href="#search-1"> </use>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- /Fullscreen search area-->
+
+    </header>
+
+    {% block content%}
+
+    {% endblock %}
+    <!-- Footer-->
+    <footer class="main-footer">
+      <!-- Services block-->
+      <div class="bg-gray-100 text-dark-700 py-6">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 service-column">
+              <svg class="svg-icon service-icon">
+                <use xlink:href="#delivery-time-1"> </use>
+              </svg>
+              <div class="service-text">
+                <h6 class="text-uppercase">Free shipping &amp; return</h6>
+                <p class="text-muted font-weight-light text-sm mb-0">Free Shipping over $300</p>
+              </div>
+            </div>
+            <div class="col-lg-4 service-column">
+              <svg class="svg-icon service-icon">
+                <use xlink:href="#money-1"> </use>
+              </svg>
+              <div class="service-text">
+                <h6 class="text-uppercase">Money back guarantee</h6>
+                <p class="text-muted font-weight-light text-sm mb-0">30 Days Money Back Guarantee</p>
+              </div>
+            </div>
+            <div class="col-lg-4 service-column">
+              <svg class="svg-icon service-icon">
+                <use xlink:href="#customer-support-1"> </use>
+              </svg>
+              <div class="service-text">
+                <h6 class="text-uppercase">020-800-456-747</h6>
+                <p class="text-muted font-weight-light text-sm mb-0">24/7 Available Support</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Main block - menus, subscribe form-->
+      <div class="py-6 bg-gray-300 text-muted">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 mb-5 mb-lg-0">
+              <div class="font-weight-bold text-uppercase text-lg text-dark mb-3">Sell<span class="text-primary">.</span></div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+              <ul class="list-inline">
+                <li class="list-inline-item"><a href="#" target="_blank" title="twitter" class="text-muted text-hover-primary"><i class="fab fa-twitter"></i></a></li>
+                <li class="list-inline-item"><a href="#" target="_blank" title="facebook" class="text-muted text-hover-primary"><i class="fab fa-facebook"></i></a></li>
+                <li class="list-inline-item"><a href="#" target="_blank" title="instagram" class="text-muted text-hover-primary"><i class="fab fa-instagram"></i></a></li>
+                <li class="list-inline-item"><a href="#" target="_blank" title="pinterest" class="text-muted text-hover-primary"><i class="fab fa-pinterest"></i></a></li>
+                <li class="list-inline-item"><a href="#" target="_blank" title="vimeo" class="text-muted text-hover-primary"><i class="fab fa-vimeo"></i></a></li>
+              </ul>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
+              <h6 class="text-uppercase text-dark mb-3">Shop</h6>
+              <ul class="list-unstyled">
+                <li> <a href="#" class="text-muted">For Women</a></li>
+                <li> <a href="#" class="text-muted">For Men</a></li>
+                <li> <a href="#" class="text-muted">Stores</a></li>
+                <li> <a href="#" class="text-muted">Our Blog</a></li>
+                <li> <a href="#" class="text-muted">Shop</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
+              <h6 class="text-uppercase text-dark mb-3">Company</h6>
+              <ul class="list-unstyled">
+                <li> <a href="#" class="text-muted">Login                    </a></li>
+                <li> <a href="#" class="text-muted">Register                    </a></li>
+                <li> <a href="#" class="text-muted">Wishlist                    </a></li>
+                <li> <a href="#" class="text-muted">Our Products                    </a></li>
+                <li> <a href="#" class="text-muted">Checkouts                    </a></li>
+              </ul>
+            </div>
+            <div class="col-lg-4">
+              <h6 class="text-uppercase text-dark mb-3">Daily Offers & Discounts</h6>
+              <p class="mb-3"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque temporibus.</p>
+              <form action="#" id="newsletter-form">
+                <div class="input-group mb-3">
+                  <input type="email" placeholder="Your Email Address" aria-label="Your Email Address" class="form-control bg-transparent border-secondary border-right-0">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-outline-secondary border-left-0"> <i class="fa fa-paper-plane text-lg text-dark"></i></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Copyright section of the footer-->
+      <div class="py-4 font-weight-light bg-gray-800 text-gray-300">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-left">
+              <p class="mb-md-0">&copy; 2018 Your company.  All rights reserved.</p>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-inline mb-0 mt-2 mt-md-0 text-center text-md-right">
+                <li class="list-inline-item"><img src="{% static 'shop/img/visa.svg' %}" alt="..." class="w-2rem"></li>
+                <li class="list-inline-item"><img src="{% static 'shop/img/mastercard.svg' %}" alt="..." class="w-2rem"></li>
+                <li class="list-inline-item"><img src="{% static 'shop/img/paypal.svg' %}" alt="..." class="w-2rem"></li>
+                <li class="list-inline-item"><img src="{% static 'shop/img/western-union.svg' %}" alt="..." class="w-2rem"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- /Footer end-->
+    <div id="scrollTop"><i class="fa fa-long-arrow-alt-up"></i></div>
+    <!-- JavaScript files-->
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite -
+      //   see more here
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to Bootstrapious website as you cannot
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://demo.bootstrapious.com/sell/1-2-0/icons/orion-svg-sprite.svg');
+
+    </script>
+    <!-- jQuery-->
+    <script src="{% static 'shop/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap JavaScript Bundle (Popper.js included)-->
+    <script src="{% static 'shop/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Owl Carousel-->
+    <script src="{% static 'shop/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'shop/vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.min.js' %}"></script>
+    <!-- NoUI Slider (price slider)-->
+    <script src="{% static 'shop/vendor/nouislider/nouislider.min.js' %}"></script>
+    <!-- Smooth scrolling-->
+    <script src="{% static 'shop/vendor/smooth-scroll/smooth-scroll.polyfills.min.js' %}"></script>
+    <!-- Lightbox -->
+    <script src="{% static 'shop/vendor/ekko-lightbox/ekko-lightbox.min.js' %}"></script>
+    <!-- Object Fit Images - Fallback for browsers that don't support object-fit-->
+    <script src="{% static 'shop/vendor/object-fit-images/ofi.min.js' %}"></script>
+    <script>
+      var basePath = ''
+
+    </script>
+    <script src="{% static 'shop/js/theme.js'%}"></script>
+  </body>
+</html>
