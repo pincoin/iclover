@@ -1,0 +1,74 @@
+extends ../_jade-includes/layout
+
+block vars
+    - var active = 'docs'  
+    - var bodyAttrs = {'data-spy': "scroll", 'data-target': "#components-nav", 'data-offset':"80"}
+    - var path = '../'    
+
+block content
+
+    - var breadcrumbs = []
+    - breadcrumbs.push({name: 'Home', link: '../index.html'})
+    - breadcrumbs.push({name: 'Documentation', link: 'docs-introduction.html'})
+    - breadcrumbs.push({name: 'Credits'})
+    - var heroHeading = 'Credits'
+    - var current = 'docs/docs-credits.html'
+    
+    include ../_jade-includes/inc-hero
+
+    .container-fluid
+        .row.px-xl-5
+            .col-lg-2
+                include ../_jade-includes/inc-docs-sidebar
+
+            .col-lg-10.col-xl-8.docs-content.text-lg
+
+                ul
+                    li.mb-3
+                        strong Bootstrap
+                        | - 
+                        a(href='https://getbootstrap.com/') https://getbootstrap.com/
+                    li.mb-3
+                        strong Google Fonts - Playfair Display
+                        |  - 
+                        a(href='https://fonts.google.com/specimen/Playfair+Display') https://fonts.google.com/specimen/Playfair+Display
+                    li.mb-3
+                        strong HK Grotesk 
+                        | - 
+                        a(href='https://www.behance.net/gallery/28749913/HK-Grotesk-Open-Source-Typefaceths') https://www.behance.net/gallery/28749913/HK-Grotesk-Open-Source-Typefaceths
+                    li.mb-3
+                        strong Orion Icons 
+                        | - 
+                        a(href='https://orioniconlibrary.com') https://orioniconlibrary.com
+                    li.mb-3
+                        strong Font Awesome 
+                        | - 
+                        a(href='http://fontawesome.io/get-started/') http://fontawesome.io/get-started/
+                    li.mb-3
+                        strong Owl Carousel 
+                        | - 
+                        a(href='https://owlcarousel2.github.io/OwlCarousel2/') https://owlcarousel2.github.io/OwlCarousel2/
+                    li.mb-3
+                        strong Owl Carousel Thumbs 
+                        | - 
+                        a(href='https://github.com/gijsroge/OwlCarousel2-Thumbs') https://github.com/gijsroge/OwlCarousel2-Thumbs
+                    li.mb-3
+                        strong NoUI Slider 
+                        | - 
+                        a(href='https://refreshless.com/nouislider/') https://refreshless.com/nouislider/
+                    li.mb-3
+                        strong Parallax.js 
+                        | - 
+                        a(href='http://pixelcog.github.io/parallax.js/') http://pixelcog.github.io/parallax.js/
+                    li.mb-3
+                        strong Object-fit-images 
+                        | - 
+                        a(href='https://github.com/bfred-it/object-fit-images') https://github.com/bfred-it/object-fit-images
+                    li.mb-3
+                        strong Demo images from Unsplash. See them in a collection. 
+                        | - 
+                        a(href='https://unsplash.com/collections/2002006/fashion') https://unsplash.com/collections/2002006/fashion
+
+
+
+

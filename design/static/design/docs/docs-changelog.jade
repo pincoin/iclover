@@ -1,0 +1,94 @@
+extends ../_jade-includes/layout
+
+block vars
+    - var active = 'docs'  
+    - var bodyAttrs = {'data-spy': "scroll", 'data-target': "#components-nav", 'data-offset':"80"}
+    - var path = '../'    
+
+block content
+
+    - var breadcrumbs = []
+    - breadcrumbs.push({name: 'Home', link: '../index.html'})
+    - breadcrumbs.push({name: 'Changelog'})
+    - var heroHeading = 'Changelog'
+    - var current = 'docs/docs-changelog.html'
+    
+    include ../_jade-includes/inc-hero
+
+    .container-fluid
+        .row.px-xl-5
+            .col-lg-2
+                include ../_jade-includes/inc-docs-sidebar
+
+            .col-lg-10.col-xl-8.docs-content
+
+                 +componentDocItem('Version 1.2.3', '<p class="text-muted">January 28, 2019</p>')
+                    .card.bg-gray-100
+                        .card-body.py-4
+                            pre.card-text. 
+                                - <strong>new pages:</strong> About us (about.html), About us v.2 (about-2.html)
+                                - <strong>updated:</strong> Bootstrap updated to 4.2.1 (affects: scss folder files, all stylesheets, syntax of dropdowns in navbar)
+                                - <strong>improved:</strong> added hidden inputs to the price slider (read their values easily)
+                                - <strong>updated packages:</strong> Bootstrap (4.2.1), NoUI Slider (12.1.0), Smooth Scroll (15.0.0)
+                                - <strong>removed packages:</strong> Popper.js (using Bootstrap Bundle instead)
+
+                 +componentDocItem('Version 1.2.2', '<p class="text-muted">October 24, 2018</p>')
+                    .card.bg-gray-100
+                        .card-body.py-4
+                            pre.card-text. 
+                                - <strong>new pages:</strong> Slider + broken grid homepage (index5.html)
+                                - <strong>improved:</strong> completely reworked Parallax homepage (index4.html)
+                                - <strong>improved:</strong> added basePath variable to all paths in theme.js (js/theme.js)
+                                - <strong>improved:</strong> updated documentation
+                                - <strong>fixed:</strong> added Polyfill fallback for object-fit for  older browsers 
+                                  (IE mostly; changed: package.json, CSS files, _utils.scss, don't forget to include new script in your HTML)
+
+                 +componentDocItem('Version 1.2.1', '<p class="text-muted">September 6, 2018</p>')
+                    .card.bg-gray-100
+                        .card-body.py-4
+                            pre.card-text. 
+                                - <strong>new pages:</strong> new shopping cart variant (cart-2.html; this cart behaves differently on smaller devices)
+                                - <strong>new components:</strong> two new header layouts. (component-variants/header.html)
+                                - <strong>improved:</strong> Sticky navbar scrollbar hidden while collapse animation is in progress
+                                - <strong>improved:</strong> Cart overview dropdown's height limited, scrollbar appears when 3+ different items are in cart. 
+                                  Also added buttons to remove item from cart into the dropdown.
+                                - <strong>improved:</strong> Added SVG logo support for navbar brand element. This logo can inherit navbar items styling - 
+                                  e.g. logo can have white text on transparent background and dark text when user hovers above the navbar
+                                - <strong>improved:</strong> moved docs to a separate directory
+                                - <strong>changed:</strong> add <code class="text-danger">.navbar-airy</code> to your <code class="text-danger">.navbar</code> 
+                                  to add more spacing to <code class="text-danger">.nav-link</code> on lg+ devices (this was applied automatically before but collided with the new header variants)
+                                - <strong>fixed:</strong> SVG injected icon sprite now works when viewing pages using file:// protocol
+                                - <strong>fixed:</strong> added missing !default flag to some variables in <code class="text-danger">scss/custom/_variables.scss</code>
+                                - <strong>fixed:</strong> product display issues in IE11
+                                - <strong>updated packages:</strong> PopperJS (1.14.4)
+
+
+                 +componentDocItem('Version 1.2.0', '<p class="text-muted">July 24, 2018</p>')
+                    .card.bg-gray-100
+                        .card-body.py-4
+                            pre.card-text. 
+                                - new pages: Parallax Homepage (index4.html), F.A.Q.s (faq.html)
+                                - updated packages: Bootstrap (4.1.3), PrismJs (1.15.0), Smooth Scroll (14.2.1)
+                                - fixed: View button in the category-full.html (affected files: _products.scss, stylesheet.default.css, category-full.html)
+                                - fixed: moved browserslist config from package.json to a .browserslistrc file and unified this file 
+                                  with its Bootstrap counterpart
+                                - improved: Default gulp task reorganized to run in sequence
+
+                 +componentDocItem('Version 1.1.0', '<p class="text-muted">July 1, 2018</p>')
+                    .card.bg-gray-100
+                        .card-body.py-4
+                            pre.card-text. 
+                                - new pages: category-masonry.html, category-no-sidebar.html, coming-soon.html
+                                - added: Ekko Lightbox in detail2.html
+                                - added: .display-1, .display-2, ... headings font sizes automatically decrease on smaller viewports
+                                - fixed: carousel height recalculation when changing screen sizes (theme.js), 
+                                  adjusted navbar collapse and dropdowns behaviour on transparent navbars (theme.js), 
+                                  decreased collapsed navbar vertical padding
+                 +componentDocItem('Version 1.0.0', '<p class="text-muted">June 25, 2018</p>')
+                    .card.bg-gray-100
+                        .card-body.py-4
+                            pre.card-text. 
+                                - Initial release
+
+
+

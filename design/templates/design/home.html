@@ -1,0 +1,318 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% block content%}
+<!-- Hero Section-->
+<section class="home-full-slider-wrapper mb-10px">
+    <!-- Hero Slider-->
+    <div class="owl-carousel owl-theme owl-dots-modern home-full-slider">
+        <div style="background: #f8d5cf;" class="item home-full-item"><img
+                src="{% static 'design/img/photo/bg-masthead.jpg' %}" alt="" class="bg-image">
+            <div class="container-fluid h-100 py-5">
+                <div class="row align-items-center h-100">
+                    <div class="col-lg-8 col-xl-6 mx-auto text-white text-center">
+                        <h3 class="text-uppercase text-white font-weight-light mb-4 letter-spacing-5">아이클로버</h3>
+                        <h1 class="mb-5 display-2 font-weight-bold">디자인</h1>
+                        <p class="lead mb-4">쉽고 간편하게 디자인을 확인해보세요</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item home-full-item bg-dark dark-overlay"><img
+                src="{% static 'design/img/photo/ian-dooley-347942-unsplash.jpg'%}" alt="" class="bg-image">
+            <div class="container-fluid h-100">
+                <div class="row align-items-center h-100">
+                    <div class="col-lg-8 col-xl-6 mx-auto text-white text-center overlay-content">
+                        <h3 class="text-uppercase text-white font-weight-light mb-4 letter-spacing-5">아이클로버</h3>
+                        <h1 class="mb-5 display-2 font-weight-bold text-serif">유 통</h1>
+                        <p class="lead mb-4">간편하게 주문 하시고 운영에만 집중하세요</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item home-full-item"><img src="{% static 'design/img/photo/haley-phelps-62815-unsplash.jpg'%}" alt=""
+                                              class="bg-image">
+            <div class="container-fluid h-100">
+                <div class="row align-items-center h-100">
+                    <div class="col-lg-8 col-xl-6 mx-auto text-white text-center">
+                        <h5 class="text-uppercase font-weight-light mb-4 letter-spacing-5"> Our bestseller</h5>
+                        <h1 class="mb-5 display-1 font-weight-bold text-serif">Skinny Jeans</h1>
+                        <p><a href="category.html" class="btn btn-light">View collection</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-6 brands">
+    <div class="container">
+        <!-- Brands Slider-->
+        <div class="owl-carousel owl-theme brands-slider owl-loaded owl-drag">
+            <div class="owl-stage-outer">
+                <div class="owl-stage"
+                     style="transform: translate3d(-752px, 0px, 0px); transition: all 0.4s ease 0s; width: 1880px;">
+                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item6.svg' %}" alt="배너" class="img-fluid">
+                                    <p class="text-center text-dark">배너</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item2.svg' %}" alt="현수막" class="img-fluid">
+                                    <p class="text-center text-dark">현수막</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item3.svg' %}" alt="명함" class="img-fluid">
+                                    <p class="text-center text-dark">명함</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item4.svg' %}" alt="양식지" class="img-fluid">
+                                    <p class="text-center text-dark">양식지</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item5.svg' %}" alt="스티커" class="img-fluid">
+                                    <p class="text-center text-dark">스티커</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item7.svg' %}" alt="봉투" class="img-fluid">
+                                    <p class="text-center text-dark">봉투</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item1.svg' %}" alt="전단지" class="img-fluid">
+                                    <p class="text-center text-dark">전단지</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item8.svg' %}" alt="쿠폰" class="img-fluid">
+                                    <p class="text-center text-dark">쿠폰</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item9.svg' %}" alt="단체티" class="img-fluid">
+                                    <p class="text-center text-dark">단체티</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                            <div class="w-6rem">
+                                <a href="#">
+                                    <img src="{% static 'design/img/svg/item10.svg' %}" alt="비품" class="img-fluid">
+                                    <p class="text-center text-dark">비품</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 새로운 section-3 -->
+<section>
+    <div class="container-fluid px-5px">
+        <div class="row mx-0">
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-white"><img src="{% static 'design/img/landing/coffee.jpg' %}"
+                                                                       alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Coffee</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-white"><img
+                        src="{% static 'design/img/landing/education.jpg' %}" alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Education</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-dark"><img
+                        src="{% static 'design/img/landing/restaurant.jpg '%}" alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Restaurant</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-dark"><img src="{% static 'design/img/landing/beauty.jpg '%}"
+                                                                      alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Beauty</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col-md-6 mb-10px px-5px">
+                <div class="card border-0 text-white text-center">
+                    <img src="{% static 'design/img/landing/gym.jpg' %}" alt="Card image" class="card-img">
+                    <a href="category.html">
+                        <div class="card-img-overlay d-flex align-items-center">
+                            <div class="w-100 py-3">
+                                <h3 class="display-3 font-weight-bold mb-4 text-white">Fitness</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-10px px-5px">
+                <div class="card border-0 text-white text-center"><img src="{% static 'design/img/landing/yoga.jpg' %}"
+                                                                       alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100 py-3">
+                            <h2 class="display-3 font-weight-bold mb-4">Yoga/Pilates</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-0">
+            <div class="col-lg-4 mb-10px px-5px">
+                <div class="card border-0 text-center text-white">
+                    <img src="{% static 'design/img/landing/business.jpg' %}" alt="Card image" class="card-img">
+                    <a href="category.html">
+                        <div class="card-img-overlay d-flex align-items-center">
+                            <div class="w-100">
+                                <h2 class="display-4 mb-4 font-weight-bold text-white">Business</h2>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-10px px-5px">
+                <div class="card border-0 text-center text-white">
+                    <img src="{% static 'design/img/landing/estate.jpg' %}" alt="Card image" class="card-img">
+                    <a href="category.html">
+                        <div class="card-img-overlay d-flex align-items-center">
+                            <div class="w-100">
+                                <h2 class="display-4 mb-4 font-weight-bold text-white">Estate</h2>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-10px px-5px">
+                <div class="card border-0 text-center text-white">
+                    <img src="{% static 'design/img/landing/shopping.jpg '%}" alt="Card image" class="card-img">
+                    <a href="category.html">
+                        <div class="card-img-overlay d-flex align-items-center">
+                            <div class="w-100">
+                                <h2 class="display-4 mb-4 font-weight-bold text-white">Shopping</h2>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-0">
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-white"><img src="{% static 'design/img/landing/car.jpg' %}"
+                                                                       alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Car</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-white"><img
+                        src="{% static 'design/img/landing/education.jpg' %}" alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Education</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-dark"><img src="{% static 'design/img/landing/medical.jpg '%}"
+                                                                      alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Medical</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-10px px-5px">
+                <div class="card border-0 text-center text-dark"><img src="{% static 'design/img/landing/telecom.jpg '%}"
+                                                                      alt="Card image" class="card-img">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="w-100">
+                            <h2 class="display-4 mb-4 font-weight-bold text-white">Telecom</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
