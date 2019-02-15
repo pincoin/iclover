@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     {% load static %}
-    <title>아이클로버</title>
+    <title>{% block title %}아이클로버{% endblock%}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="세상을 디자인하다">
@@ -12,8 +12,6 @@
     <meta property="og:title" content="세상을 디자인하다">
     <meta property="og:description" content="">
     <meta property="og:image" content="">
-
-
     <!-- Price Slider Stylesheets -->
     <link rel="stylesheet" href="{% static 'shop/vendor/nouislider/nouislider.css' %}">
     <!-- Google fonts - Playfair Display-->
@@ -87,7 +85,7 @@
     <nav class="navbar navbar-expand-lg navbar-sticky navbar-airy navbar-light bg-white bg-fixed-white">
         <div class="container-fluid">
             <!-- Navbar Header  -->
-            <a href="index.html" class="">
+            <a href="/shop" class="">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                      y="0px" width="55px" fill="none" viewBox="-261.035 -190.783 666 617"
                      enable-background="new -261.035 -190.783 666 617" xml:space="preserve">
