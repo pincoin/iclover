@@ -26,7 +26,7 @@ $(document).ready(function() {
                                     </div>\
                                     {{fi-image}}\
                                 </div>\
-                                <div class="jFiler-item-assets jFiler-row">\
+                                <div class="jFiler-item-css jFiler-row">\
                                     <ul class="list-inline pull-left">\
                                         <li>{{fi-progressBar}}</li>\
                                     </ul>\
@@ -48,7 +48,7 @@ $(document).ready(function() {
                                         </div>\
                                         {{fi-image}}\
                                     </div>\
-                                    <div class="jFiler-item-assets jFiler-row">\
+                                    <div class="jFiler-item-css jFiler-row">\
                                         <ul class="list-inline pull-left">\
                                             <li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
                                         </ul>\

@@ -8,8 +8,8 @@ ALLOWED_HOSTS = Secret.ALLOWED_HOSTS
 DATABASES = Secret.DATABASES
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/assets/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets/')
+STATIC_URL = '/css/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'css/')
 STATICFILES_DIRS = [
 ]
 
