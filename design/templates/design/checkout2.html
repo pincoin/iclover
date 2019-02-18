@@ -1,0 +1,113 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% block content%}
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <ul class="custom-nav nav nav-pills mb-5">
+          <li class="nav-item w-25"><a href="{% url 'checkout' %}" class="nav-link text-sm">주소</a></li>
+          <li class="nav-item w-25"><a href="#" class="nav-link text-sm active">계산서/현금영수증</a></li>
+          <li class="nav-item w-25"><a href="#" class="nav-link text-sm disabled">안내사항</a></li>
+          <li class="nav-item w-25"><a href="#" class="nav-link text-sm disabled">최종 주문</a></li>
+        </ul>
+        <div class="mb-5">
+          <div id="accordion" role="tablist">
+            <div class="block mb-3">
+              <div id="headingOne" role="tab" class="block-header">
+                  <strong>
+                      <input type="radio" name="shippping" id="r11">
+                      <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="accordion-link">세금계산서</a></strong>
+              </div>
+              <div id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" class="collapse show">
+                <div class="block-body">
+                  <form action="#">
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label for="card-name" class="form-label">상호명</label>
+                        <input type="text" name="card-name" placeholder="상호" id="card-name" class="form-control">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="card-number" class="form-label">사업자번호</label>
+                        <input type="text" name="card-number" placeholder="사업자번호" id="card-number" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="expiry-date" class="form-label">대표자명</label>
+                        <input type="text" name="expiry-date" placeholder="대표자명" id="expiry-date" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="expiry-date2" class="form-label">업종</label>
+                        <input type="text" name="expiry-date" placeholder="업종" id="expiry-date2" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="cvv" class="form-label">업태</label>
+                        <input type="text" name="cvv" placeholder="업태" id="cvv" class="form-control">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="zip" class="form-label">이메일</label>
+                        <input type="text" name="zip" placeholder="이메일" id="zip" class="form-control">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="block mb-3">
+              <div id="headingTwo" role="tab" class="block-header">
+                  <strong>
+              <input type="radio" name="shippping" id="r12">
+                <a data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="accordion-link collapsed">현금영수증 / 사업자 지출증빙</a>
+                  </strong>
+              </div>
+              <div id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" class="collapse">
+                <div class="block-body">
+                  <form action="#">
+                    <div class="row">
+                      <div class="form-group col-md-12">
+                        <label for="card-name" class="form-label">현금영수증은 전화번호<br>지출증빙은 사업자번호를 입력해주세요</label>
+                        <input type="text" name="card-name" placeholder="숫자만입력해주세요" class="form-control">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="block mb-3">
+              <div id="headingThree" role="tab" class="block-header"><strong>
+                   <input type="radio" name="shippping" id="r13">
+                  <a data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="accordion-link collapsed">미발행</a></strong>
+             </div>
+            </div>
+          </div>
+          <div class="mb-5 d-flex justify-content-between flex-column flex-lg-row">
+            <a href="{% url 'checkout' %}" class="btn btn-link text-muted">
+              <i class="fa fa-angle-left mr-2"></i>뒤로가기 </a>
+              <a href="{% url 'checkout3' %}" class="btn btn-dark">다음으로<i class="fa fa-angle-right ml-2"></i>
+              </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="block mb-5">
+          <div class="block-header">
+            <h6 class="text-uppercase mb-0">견적</h6>
+          </div>
+          <div class="block-body bg-light pt-1">
+            <p class="text-sm">작업비용은 내용에 따라 확인 후 추가될 수 있으니 이점 꼭 인지하여 주시기 바랍니다. 주문 하시면 확정된 견적을 확인하실 수 있습니다.
+            </p>
+            <ul class="order-summary mb-0 list-unstyled">
+              <li class="order-summary-item"><span>인쇄비용</span><span>176,000</span></li>
+              <li class="order-summary-item"><span>작업비용</span><span>+ @</span></li>
+              <li class="order-summary-item"><span>부가세</span><span>17,600</span></li>
+              <li class="order-summary-item border-0"><span>Total</span><strong class="order-summary-total">193,600+@</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
