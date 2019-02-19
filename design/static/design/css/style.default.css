@@ -14481,8 +14481,8 @@ a.text-gray-900:hover, a.text-gray-900:focus {
 
 .nav-pills .nav-link:hover,
 .nav-pills .nav-link:focus {
-  color: #212529;
-  background-color: #e9ecef;
+  color: #fff;
+  background-color: #343a40;
 }
 
 a.accordion-link {

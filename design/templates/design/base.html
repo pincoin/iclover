@@ -372,7 +372,7 @@
                     <!-- User Not Logged - link to login page-->
 
                     <div class="nav-item">
-                        <a href="customer-login.html" class="navbar-icon-link">
+                        <a href="{% url 'orders'%}" class="navbar-icon-link">
                             <svg class="svg-icon">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
@@ -476,17 +476,15 @@
                                         class="text-uppercase text-muted">Total</span><strong class="text-uppercase">$75.00</strong>
                                 </div>
                                 <!-- buttons-->
-                                <div class="d-flex justify-content-between"><a href="cart.html"
-                                                                               class="btn btn-link text-dark mr-3">View
-                                    Cart <i class="fa-arrow-right fa"></i></a><a href="checkout1.html"
-                                                                                 class="btn btn-outline-dark">Checkout</a>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{% url 'cart'%}" class="btn btn-dark col">장바구니로 이동</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- 카카오 icon -->
                     <div class="nav-item">
-                        <a href="customer-login.html" class="navbar-icon-link">
+                        <a href="https://pf.kakao.com/_xkStxdV" class="navbar-icon-link">
                             <img style="-webkit-user-select: none;" src="{% static 'design/img/kakao.png' %}"
                                  width="30px;">
                         </a>
@@ -702,5 +700,26 @@
 
 </script>
 <script src="{% static 'design/js/theme.js' %}"></script>
+
+<script language="javascript">
+
+    $('#collapseOne').on('shown.bs.collapse', function () {
+        console.log('shown 1');
+
+        $("input[name=shipping]").attr('checked', false);
+        $('#r11').attr('checked',true);
+    });
+
+    $('#collapseTwo').on('shown.bs.collapse', function () {
+        console.log('shown 2');
+        $("input[name=shipping]").attr('checked', false);
+        $('#r12').attr('checked',true);
+    });
+
+    $('#collapseThree').on('shown.bs.collapse', function () {
+        $("input[name=shipping]").attr('checked', false);
+        console.log('shown 3');
+    });
+</script>
 </body>
 </html>

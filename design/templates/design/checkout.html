@@ -2,85 +2,264 @@
 {% load static %}
 {% block content%}
 
-
-
 <section>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8">
-        <ul class="custom-nav nav nav-pills mb-5">
-          <li class="nav-item w-25"><a href="1_checkout1.html" class="nav-link text-sm active">주소</a></li>
-          <li class="nav-item w-25"><a href="#" class="nav-link text-sm disabled">계산서/현금영수증</a></li>
-          <li class="nav-item w-25"><a href="#" class="nav-link text-sm disabled">안내사항</a></li>
-          <li class="nav-item w-25"><a href="#" class="nav-link text-sm disabled">최종 주문</a></li>
-        </ul>
-        <form action="#">
-          <div class="block">
-            <!-- Invoice Address-->
-            <div class="block-header">
-              <h6 class="text-uppercase mb-0">저장된 주소</h6>
-            </div>
-            <div class="block-body">
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="fullname_invoice" class="form-label">받는사람</label>
-                  <input type="text" name="fullname_invoice" placeholder="상호명을 입력해주세요" id="fullname_invoice" class="form-control">
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="emailaddress_invoice" class="form-label">전화번호</label>
-                  <input type="text" name="emailaddress_invoice" placeholder="전화번호를 입력해주세요" id="emailaddress_invoice" class="form-control">
-                </div>
-                <div class="form-group col-md-12">
-                  <label for="street_invoice" class="form-label">주소</label>
-                  <input type="text" name="street_invoice" placeholder="주소를 입력해주세요" id="street_invoice" class="form-control">
-                </div>
-                <div class="form-group col-12 mt-3">
-                  <div class="custom-control custom-checkbox">
-                    <input id="show-shipping-address" type="checkbox" name="clothes-brand" class="custom-control-input">
-                    <label for="show-shipping-address" data-toggle="collapse" data-target="#shippingAddress" aria-expanded="false" aria-controls="shippingAddress" class="custom-control-label align-middle">다른 주소로 물건 받기</label>
-                  </div>
-                </div>
-              </div>
-              <!-- /Invoice Address-->
-            </div>
-            <!-- Shippping Address-->
-            <div id="shippingAddress" aria-expanded="false" class="collapse">
-              <div class="block">
-                <div class="block-header">
-                  <h6 class="text-uppercase mb-0">다른 주소로 물건받기</h6>
-                </div>
-                <div class="block-body">
-                  <div class="row">
-                    <div class="form-group col-md-6">
-                      <label for="fullname_invoice" class="form-label">받는사람</label>
-                      <input type="text" name="fullname_invoice" placeholder="상호명을 입력해주세요" id="fullname_invoice" class="form-control">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <ul class="custom-nav nav nav-pills mb-1" role="tablist">
+                    <li class="nav-item w-25">
+                        <a class="nav-link active" data-toggle="pill" href="#home">주 소</a>
+                    </li>
+                    <li class="nav-item w-25">
+                        <a class="nav-link" data-toggle="pill" href="#menu1">계산서/영수증</a>
+                    </li>
+                    <li class="nav-item w-25">
+                        <a class="nav-link" data-toggle="pill" href="#menu2">안내사항</a>
+                    </li>
+                    <li class="nav-item w-25">
+                        <a class="nav-link" data-toggle="pill" href="#menu3">최종 주문</a>
+                    </li>
+                </ul>
+                <form action="#">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <!-- start 주소-->
+                        <div id="home" class="container tab-pane active"><br>
+                            <div class="block">
+                                <div class="block-header">
+                                    <h6 class="text-uppercase mb-0">저장된 주소</h6>
+                                </div>
+                                <div class="block-body">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label for="customer" class="form-label">받는사람</label>
+                                            <input type="text" name="fullname_invoice"
+                                                   id="customer" class="form-control" value="XX휘트니스" readonly>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="tell" class="form-label">전화번호</label>
+                                            <input type="text" name="emailaddress_invoice" value="031-008-8888"
+                                                   id="tell" class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="address" class="form-label">주소</label>
+                                            <input type="text" name="street_invoice" value="서울시 관악구 남부순환로"
+                                                   id="address" class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group col-12 mt-3">
+                                            <div class="custom-control custom-checkbox">
+                                                <input id="show-shipping-address" type="checkbox" name="clothes-brand"
+                                                       class="custom-control-input">
+                                                <label for="show-shipping-address" data-toggle="collapse"
+                                                       data-target="#shippingAddress" aria-expanded="false"
+                                                       aria-controls="shippingAddress"
+                                                       class="custom-control-label align-middle">다른 주소로 물건 받기</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 다른주소 등록 -->
+                                <div id="shippingAddress" aria-expanded="false" class="collapse">
+                                    <div class="block">
+                                        <div class="block-header">
+                                            <h6 class="text-uppercase mb-0">다른 주소로 물건받기</h6>
+                                        </div>
+                                        <div class="block-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="customer2" class="form-label">받는사람</label>
+                                                    <input type="text" name="fullname_invoice" placeholder="상호명을 입력해주세요"
+                                                           id="customer2" class="form-control">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="tell2" class="form-label">전화번호</label>
+                                                    <input type="text" name="emailaddress_invoice"
+                                                           placeholder="전화번호를 입력해주세요"
+                                                           id="tell2" class="form-control">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label for="address2" class="form-label">주소</label>
+                                                    <input type="text" name="street_invoice" placeholder="주소를 입력해주세요"
+                                                           id="address2" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end 다른주소 추가-->
+                            </div>
+                            <!-- 주소 탭 넘기기-->
+                            <div class="mb-5 d-flex justify-content-between flex-column flex-lg-row">
+                                <a href="{% url 'cart'%}" class="btn btn-link text-muted">
+                                    <i class="fa fa-angle-left mr-2"></i>뒤로가기
+                                </a>
+                                <a href="#" class="btn btn-dark">다음으로
+                                    <i class="fa fa-angle-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- end 주소-->
+                        <!-- 영수증 -->
+                        <div id="menu1" class="container tab-pane fade"><br>
+                            <div class="mb-5">
+                                <div id="accordion" role="tablist">
+                                    <div class="block mb-3">
+                                        <div id="headingOne" role="tab" class="block-header">
+                                            <strong>
+                                                <a data-toggle="collapse" href="#collapseOne" aria-expanded="true"
+                                                   aria-controls="collapseOne" class="accordion-link">세금계산서</a></strong>
+                                        </div>
+                                        <div id="collapseOne" role="tabpanel" aria-labelledby="headingOne"
+                                             data-parent="#accordion"
+                                             class="collapse show">
+                                            <div class="block-body">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="card-name" class="form-label">상호명</label>
+                                                        <input type="text" name="card-name" placeholder="상호"
+                                                               id="card-name"
+                                                               class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="card-number" class="form-label">사업자번호</label>
+                                                        <input type="text" name="card-number" placeholder="사업자번호"
+                                                               id="card-number" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="expiry-date" class="form-label">대표자명</label>
+                                                        <input type="text" name="expiry-date" placeholder="대표자명"
+                                                               id="expiry-date" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="expiry-date2" class="form-label">업종</label>
+                                                        <input type="text" name="expiry-date" placeholder="업종"
+                                                               id="expiry-date2"
+                                                               class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="cvv" class="form-label">업태</label>
+                                                        <input type="text" name="cvv" placeholder="업태" id="cvv"
+                                                               class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="zip" class="form-label">이메일</label>
+                                                        <input type="text" name="zip" placeholder="이메일" id="zip"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <p for="card-name" class="form-label">*세금계산서로 주문하기</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block mb-3">
+                                        <div id="headingTwo" role="tab" class="block-header">
+                                            <strong>
+                                                <a data-toggle="collapse" href="#collapseTwo" aria-expanded="false"
+                                                   aria-controls="collapseTwo" class="accordion-link collapsed">현금영수증 /
+                                                    사업자 지출증빙</a>
+                                            </strong>
+                                        </div>
+                                        <div id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo"
+                                             data-parent="#accordion"
+                                             class="collapse">
+                                            <div class="block-body">
+                                                <div class="row">
+                                                    <div class="form-group col-md-12">
+                                                        <input type="text" name="card-name"
+                                                               placeholder="전화번호 or 사업자번호를 입력해주세요" class="form-control">
+                                                        <br>
+                                                        <p for="card-name" class="form-label">*현금영수증/지출증빙으로 주문하기</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block mb-3">
+                                        <div id="headingThree" role="tab" class="block-header">
+                                            <strong>
+                                                <a data-toggle="collapse" href="#collapseThree" aria-expanded="false"
+                                                   aria-controls="collapseTwo" class="accordion-link collapsed">미발행</a>
+                                            </strong>
+                                        </div>
+                                        <div id="collapseThree" role="tabpanel" aria-labelledby="headingThree"
+                                             data-parent="#accordion"
+                                             class="collapse">
+                                            <div class="block-body">
+                                                <div class="row">
+                                                    <div class="form-group col-md-12">
+                                                        <label for="card-name" class="form-label">*미발행으로 주문하기.</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-5 d-flex justify-content-between flex-column flex-lg-row">
+                                    <a href="#" class="btn btn-link text-muted">
+                                        <i class="fa fa-angle-left mr-2"></i>뒤로가기 </a>
+                                    <a href="#" class="btn btn-dark">다음으로<i
+                                            class="fa fa-angle-right ml-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end 영수증 -->
+                        <!-- 안내사항 -->
+                        <div id="menu2" class="container tab-pane fade"><br>
+                            <div class="block">
+                                <!-- Invoice Address-->
+                                <div class="block-header">
+                                    <h6 class="text-uppercase mb-0">주문시 꼭 알아두셔야합니다~</h6>
+                                </div>
+                                <div class="block-body">
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <p><label for="" class="form-label">#이미지로 준비#</label></p>
+                                            <p><label for="" class="form-label">화면의 색상값과 인쇄물의 색상은 다릅니다. 특히 합판의 경우 색상차이가
+                                                발생합니다</label></p>
+                                            <p><label for="" class="form-label">결제가 완료된 후 모든 과정이 진행 됩니다.</label></p>
+                                            <p><label for="" class="form-label">입금액이 다른 경우 처리되지 못할 수 있습니다.</label></p>
+                                            <p><label for="" class="form-label">제품의 제작 및 배송기간을 보장하지 않습니다.</label></p>
+                                            <p><label for="" class="form-label">재인쇄 및 오배송으로 인한 문제가 발생할 수 있으며 해당 일이 생겼을시
+                                                기존 배송 방법대로 진행됩니다.</label></p>
+                                            <div class="custom-control custom-checkbox text-center">
+                                                <input id="show-shipping" type="checkbox" name="clothes-brand"
+                                                       class="custom-control-input">
+                                                <label for="show-shipping" data-toggle="collapse" data-target=""
+                                                       aria-expanded="false" aria-controls="shippingAddress"
+                                                       class="custom-control-label align-middle">
+                                                    <h5 style="color: gray;">확인했습니다.</h5></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Invoice Address-->
+                                </div>
+                            </div>
+                            <div class="mb-5 d-flex justify-content-between flex-column flex-lg-row">
+                                <a href="#" class="btn btn-link text-muted">
+                                    <i class="fa fa-angle-left mr-2"></i>뒤로가기 </a>
+                                <a href="#" class="btn btn-dark">다음으로
+                                    <i class="fa fa-angle-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="menu3" class="container tab-pane fade"><br>
+                            <h3>Menu 23</h3>
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam
+                                rem aperiam.</p>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                      <label for="emailaddress_invoice" class="form-label">전화번호</label>
-                      <input type="text" name="emailaddress_invoice" placeholder="전화번호를 입력해주세요" id="emailaddress_invoice" class="form-control">
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="street_invoice" class="form-label">주소</label>
-                      <input type="text" name="street_invoice" placeholder="주소를 입력해주세요" id="street_invoice" class="form-control">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /Shipping Address-->
+
+                </form>
             </div>
-          </div>
-          <div class="mb-5 d-flex justify-content-between flex-column flex-lg-row">
-            <a href="{% url 'cart'%}" class="btn btn-link text-muted"> <i class="fa fa-angle-left mr-2"></i>뒤로가기 </a>
-            <a href="{% url 'checkout2'%}" class="btn btn-dark">다음으로<i class="fa fa-angle-right ml-2"></i></a></div>
-        </form>
-      </div>
-      <div class="col-lg-4">
-        <div class="block mb-5">
+            <div class="col-lg-4">
+                <div class="block mb-5">
           <div class="block-header">
-            <h6 class="text-uppercase mb-0">견적대기</h6>
+            <div role="alert" class="alert alert-warning text-center">견적대기</div>
           </div>
           <div class="block-body bg-light pt-1">
-            <p class="text-sm">작업비용은 내용에 따라 확인 후 추가될 수 있으니 이점 꼭 인지하여 주시기 바랍니다. 주문 하시면 확정된 견적을 확인하실 수 있습니다.
+            <p class="text-sm">내용을 확인하고 디자인 비용을 산출하고 있습니다!<br>잠시만 기다려주세요
             </p>
             <ul class="order-summary mb-0 list-unstyled">
               <li class="order-summary-item"><span>인쇄비용</span><span>176,000</span></li>
@@ -88,11 +267,14 @@
               <li class="order-summary-item"><span>부가세</span><span>17,600</span></li>
               <li class="order-summary-item border-0"><span>Total</span><strong class="order-summary-total">193,600+@</strong></li>
             </ul>
+
+            <a href="{% url 'orders'%} ">
+              <div role="alert" class="alert alert-success text-center"><i class="fas fa-bars"></i> 리스트로 이동</div></a>
           </div>
         </div>
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 {% endblock %}

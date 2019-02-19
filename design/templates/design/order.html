@@ -1,0 +1,142 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% block content%}
+<!-- Hero Section-->
+<section class="hero">
+  <div class="container">
+    <!-- Hero Content-->
+    <div class="hero-content pb-3 text-center">
+      <br>
+      <h1 class="hero-heading">내역 리스트</h1>
+      <div class="row">
+        <div class="col-xl-8 offset-xl-2"><p class="lead text-muted">해당 품목은 <strong>2019.01.18</strong>일에 <strong>완료</strong>된 내역입니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-xl-9">
+        <div class="cart">
+          <div class="cart-wrapper">
+            <div class="cart-header text-center">
+              <div class="row">
+                <div class="col-6">품목명</div>
+                <div class="col-2">수량</div>
+                <div class="col-2">공급가액</div>
+                <div class="col-2">부가세</div>
+              </div>
+            </div>
+            <div class="cart-body">
+              <!-- Product-->
+              <div class="cart-item">
+                <div class="row d-flex align-items-center text-center">
+                  <div class="col-6">
+                    <div class="d-flex align-items-center"><a href="#"><img src="{% static 'design/img/product/1.2.jpg' %}" alt="..." class="cart-item-img"></a>
+                      <div class="cart-title text-left"><a href="#" class="text-uppercase text-dark"><strong>전단지/포스터</strong></a><br>
+                        <span class="text-muted text-sm">Size: A4</span><br><span class="text-muted text-sm">단면</span>
+                        <br><span class="text-muted text-sm">선불택배</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">1<br>1</div>
+                  <div class="col-2">71,000<br>3,000</div>
+                  <div class="col-2 text-center">7,100<br>300</div>
+                </div>
+              </div>
+              <!-- Product-->
+              <div class="cart-item">
+                <div class="row d-flex align-items-center text-center">
+                  <div class="col-6">
+                    <div class="d-flex align-items-center"><a href="#"><img src="{% static 'design/img/product/2.1.jpg' %}" alt="..." class="cart-item-img"></a>
+                      <div class="cart-title text-left"><a href="#" class="text-uppercase text-dark"><strong>전단지/포스터</strong></a><br><span class="text-muted text-sm">Size: B5 16절</span>
+                        <br><span class="text-muted text-sm">선불택배</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">1<br>1</div>
+                  <div class="col-2">85,000<br>3,000</div>
+                  <div class="col-2 text-center">8,500<br>300</div>
+                </div>
+              </div>
+              <!-- Product-->
+              <div class="cart-item">
+                <div class="row d-flex align-items-center text-center">
+                  <div class="col-6">
+                    <div class="d-flex align-items-center"><a href="#"><img src="{% static 'design/img/product/1.39.jpg' %}" alt="..." class="cart-item-img"></a>
+                      <div class="cart-title text-left"><a href="#" class="text-uppercase text-dark"><strong>러너 전단지</strong></a>
+                        <br><span class="text-muted text-sm">Size: Medium</span>
+                        <br><span class="text-muted text-sm">선불택배</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">1<br>1</div>
+                  <div class="col-2">85,000<br>3,000</div>
+                  <div class="col-2 text-center">8,500<br>300</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col-md-6">
+            <div class="block mb-5">
+              <div class="block-header">
+                <h6 class="text-uppercase mb-0">내역서</h6>
+              </div>
+              <div class="block-body bg-light pt-1">
+                <ul class="order-summary mb-0 list-unstyled">
+                  <li class="order-summary-item"><span>인쇄비용</span><span>170,000</span></li>
+                  <li class="order-summary-item"><span>작업비용</span><span>30,000</span></li>
+                  <li class="order-summary-item"><span>부가세</span><span>20,000</span></li>
+                  <li class="order-summary-item border-0"><span>Total</span><strong class="order-summary-total">220,000</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="block-header">
+              <h6 class="text-uppercase mb-0">받으시는분</h6>
+            </div>
+            <div class="block-body bg-light pt-1">
+              <p>클로버 휘트니스</p>
+              <p>02-888-7777</p>
+              <p>서울시 관악구 남부순환로 1682번지 4층</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Customer Sidebar-->
+      <div class="col-xl-3 col-lg-4 mb-5">
+        <div class="customer-sidebar card border-0">
+          <div class="customer-profile"><a href="#" class="d-inline-block"><img src="{% static 'design/img/photo/kyle-loftus-589739-unsplash-avatar.jpg' %}" class="img-fluid rounded-circle customer-image"></a>
+            <h5>Julie Svestkova</h5>
+            <p class="text-muted text-sm mb-0">Ostrava, Czech republic</p>
+          </div>
+          <nav class="list-group customer-nav"><a href="{%url 'orders'%}" class="list-group-item d-flex justify-content-between align-items-center"><span>
+                <svg class="svg-icon svg-icon-heavy mr-2">
+                  <use xlink:href="#paper-bag-1"> </use>
+                </svg>주문 리스트</span>
+              <div class="badge badge-pill badge-dark font-weight-normal px-3">5</div></a>
+            <a href="{%url 'profile'%}" class="active list-group-item d-flex justify-content-between align-items-center"><span>
+                <svg class="svg-icon svg-icon-heavy mr-2">
+                  <use xlink:href="#male-user-1"> </use>
+                </svg>개인설정</span></a>
+            <a href="#" class="list-group-item d-flex justify-content-between align-items-center"><span>
+
+                <svg class="svg-icon svg-icon-heavy mr-2">
+                  <use xlink:href="#exit-1"> </use>
+                </svg>로그아웃</span></a>
+          </nav>
+        </div>
+      </div>
+      <!-- /Customer Sidebar-->
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

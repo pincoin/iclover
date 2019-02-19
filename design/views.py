@@ -13,14 +13,8 @@ class Cart(TemplateView):
 class Checkout(TemplateView):
     template_name = 'design/checkout.html'
 
-class Checkout2(TemplateView):
-    template_name = 'design/checkout2.html'
+class Orders(TemplateView):
+    template_name = 'design/orders.html'
 
-class Checkout3(TemplateView):
-    template_name = 'design/checkout3.html'
-
-class Checkout4(TemplateView):
-    template_name = 'design/checkout4.html'
-
-class Checkout5(TemplateView):
-    template_name = 'design/checkout5.html'
+class Profile(TemplateView):
+    template_name = 'design/profile.html'
