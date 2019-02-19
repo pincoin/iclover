@@ -22,4 +22,5 @@ INSTALLED_APPS += [
     'core',
     'member',
     'design',
+    'managing',
 ]
