@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static%}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="아이클로버 관리자페이지">
+        <meta name="author" content="Coderthemes">
+
+        <link rel="shortcut icon" href="{% static 'managing/images/favicon.png' %}">
+
+        <!-- 나눔 스퀘어 폰트-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+
+        <title>{% block title %}{% endblock%}</title>
+
+        <!-- Sweet Alert -->
+        <link href="{% static 'managing/plugins/bootstrap-sweetalert/sweet-alert.css'%}" rel="stylesheet" type="text/css">
+
+        <!-- Custom box css -->
+        <link href="{% static 'managing/plugins/custombox/css/custombox.min.css' %}" rel="stylesheet">
+
+        <!-- Plugins css-->
+        <link href="{% static 'managing/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css'%}" rel="stylesheet" />
+        <link href="{% static 'managing/plugins/multiselect/css/multi-select.css'%}"  rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/plugins/select2/css/select2.min.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/plugins/bootstrap-select/css/bootstrap-select.min.css'%}" rel="stylesheet" />
+        <link href="{% static 'managing/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css'%}" rel="stylesheet" />
+
+        <!-- App css -->
+        <link href="{% static 'managing/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/css/core.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/css/components.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/css/icons.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/css/pages.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/css/menu.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'managing/css/responsive.css' %}" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="{% static 'managing/plugins/switchery/switchery.min.css' %}">
+
+
+        <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="{% static 'managing/js/modernizr.min.js' %}"></script>
+
+    </head>
+
+
+  <body>
+
+
+        <!-- Navigation Bar-->
+        <header id="topnav">
+            <div class="topbar-main">
+                <div class="container">
+
+                    <!-- Logo container-->
+                    <div class="logo">
+                        <!-- Text Logo -->
+                        <a href="{% url 'main'%}" class="logo">
+                            WIMIX & ICLOVER
+                        </a>
+                    </div>
+                    <!-- End Logo container-->
+
+
+                    <div class="menu-extras">
+
+                        <ul class="nav navbar-nav navbar-right pull-right">
+                            <li class="navbar-c-items">
+                                <form role="search" class="navbar-left app-search pull-left hidden-xs">
+                                     <input type="text" placeholder="거래처 검색" class="form-control">
+                                     <a href=""><i class="fa fa-search" type="submit"></i></a>
+                                </form>
+                            </li>
+
+                            <li class="dropdown navbar-c-items">
+                                 <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-won"></i>
+                                    <span class="badge up bg-danger">8</span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                                    <li class="text-center">
+                                        <h5>입금확인</h5>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="avatar">
+                                                <img src="{% static 'managing/images/sinhan.gif' %} " alt="" style="opacity: 0.5;">
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">홍길동</span>
+                                                <span class="name">198,000</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="avatar">
+                                                 <img src="{% static 'managing/images/sinhan.gif' %} " alt=""  style="opacity: 0.5;">
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">제이제이크로스핏</span>
+                                                <span class="name">98,000</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="avatar">
+                                                <img src="{% static 'managing/images/sinhan.gif' %} " alt=""  style="opacity: 0.5;">
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">홍길동</span>
+                                                <span class="name">198,000</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="all-msgs text-center">
+                                        <p class="m-0"><a href="#">모두 보기</a></p>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown navbar-c-items">
+                                 <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
+                                    <i class="mdi mdi-web"></i>
+                                    <span class="badge up bg-success">4</span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                                    <li class="text-center">
+                                        <h5>Notifications</h5>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="icon bg-info">
+                                                <i class="mdi mdi-account"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">New Signup</span>
+                                                <span class="time">5 hours ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="icon bg-danger">
+                                                <i class="mdi mdi-comment"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">New Message received</span>
+                                                <span class="time">1 day ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="user-list-item">
+                                            <div class="icon bg-warning">
+                                                <i class="mdi mdi-settings"></i>
+                                            </div>
+                                            <div class="user-desc">
+                                                <span class="name">Settings</span>
+                                                <span class="time">1 day ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="all-msgs text-center">
+                                        <p class="m-0"><a href="#">See all Notification</a></p>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown navbar-c-items">
+                                <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
+                                <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
+                                    <li class="text-center">
+                                        <h5>Hi, John</h5>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
+                                    <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
+                                    <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Lock screen</a></li>
+                                    <li><a href="javascript:void(0)"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                        <div class="menu-item">
+                            <!-- Mobile menu toggle-->
+                            <a class="navbar-toggle">
+                                <div class="lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </a>
+                            <!-- End mobile menu toggle-->
+                        </div>
+                    </div>
+                    <!-- end menu-extras -->
+
+                </div> <!-- end container -->
+            </div>
+            <!-- end topbar-main -->
+
+            <div class="navbar-custom">
+                <div class="container">
+                    <div id="navigation">
+                        <!-- Navigation Menu-->
+                        <ul class="navigation-menu">
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-view-dashboard"></i>기본 등록</a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href="{% url 'customer' %}">거래처 관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'product' %}">품목 관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="dashboard_2.html">할인그룹 관리</a>
+                                    </li>
+                                    <li>
+                                        <a href="dashboard_2.html">샘플 관리</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-view-list"></i>거래 내역</a>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-image-filter"></i>이미지 검색</a>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-currency-usd"></i>입금 확인</a>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-book-multiple"></i>요청사항</a>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-map-marker"></i>거래처 지도</a>
+                            </li>
+                             <li class="has-submenu">
+                                <a href="#"><i class="mdi mdi-comment-text"></i>Master</a>
+                                <ul class="submenu">
+                                    <li><a href="blogs-dashboard.html">광고배너 관리</a></li>
+                                    <li><a href="blogs-blog-list.html">품목배너 관리</a></li>
+                                    <li><a href="blogs-blog-column.html">매입처 매칭</a></li>
+                                    <li><a href="blogs-blog-post.html">나스 비교</a></li>
+                                    <li><a href="blogs-blog-post.html">영수증 처리</a></li>
+                                    <li><a href="blogs-blog-post.html">보류 시안</a></li>
+                                    <li><a href="blogs-blog-post.html">직원 관리</a></li>
+                                    <li><a href="blogs-blog-post.html">이카운트 API</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- End navigation menu -->
+                    </div> <!-- end #navigation -->
+                </div> <!-- end container -->
+            </div> <!-- end navbar-custom -->
+        </header>
+        <!-- End Navigation Bar-->
+
+
+        <div class="wrapper">
+            <div class="container">
+            {% block content%}
+
+            {% endblock %}
+
+                <!-- Footer -->
+                <footer class="footer text-right">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                2019 © WEMIX & ICLOVER.
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End Footer -->
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+
+        <!-- jQuery  -->
+        <script src="{% static 'managing/js/jquery.min.js' %}"></script>
+        <script src="{% static 'managing/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'managing/js/detect.js' %}"></script>
+        <script src="{% static 'managing/js/fastclick.js' %}"></script>
+        <script src="{% static 'managing/js/jquery.blockUI.js' %}"></script>
+        <script src="{% static 'managing/js/waves.js' %}"></script>
+        <script src="{% static 'managing/js/jquery.slimscroll.js' %}"></script>
+        <script src="{% static 'managing/js/jquery.scrollTo.min.js' %}"></script>
+        <script src="{% static 'managing/plugins/switchery/switchery.min.js' %}"></script>
+
+        <script src="{% static 'managing/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
+        <script src="{% static 'managing/plugins/multiselect/js/jquery.multi-select.js' %}" type="text/javascript" ></script>
+        <script src="{% static 'managing/plugins/jquery-quicksearch/jquery.quicksearch.js' %}" type="text/javascript"></script>
+        <script src="{% static 'managing/plugins/select2/js/select2.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'managing/plugins/bootstrap-select/js/bootstrap-select.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'managing/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'managing/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'managing/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js' %}" type="text/javascript"></script>
+
+        <!-- Auto complete  -->
+        <script type="text/javascript" src="{% static 'managing/plugins/autocomplete/jquery.mockjax.js' %}"></script>
+        <script type="text/javascript" src="{% static 'managing/plugins/autocomplete/jquery.autocomplete.min' %}"></script>
+        <script type="text/javascript" src="{% static 'managing/plugins/autocomplete/countries.js'%}"></script>
+        <script type="text/javascript" src="{% static 'managing/pages/jquery.autocomplete.init.js'%}"></script>
+
+        <script type="text/javascript" src="{% static 'managing/pages/jquery.form-advanced.init.js' %}"></script>
+
+        <!-- Sweet-Alert  -->
+        <script src="{% static 'managing/plugins/bootstrap-sweetalert/sweet-alert.min.js'%}"></script>
+        <script src="{% static 'managing/pages/jquery.sweet-alert.init.js' %}"></script>
+
+        <!-- Counter Up  -->
+        <script src="{% static 'managing/plugins/waypoints/jquery.waypoints.min.js'%}"></script>
+        <script src="{% static 'managing/plugins/counterup/jquery.counterup.min.js'%}"></script>
+
+        <!-- Flot chart -->
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.min.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.time.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.tooltip.min.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.resize.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.pie.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.selection.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.stack.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.orderBars.min.js'%}"></script>
+        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.crosshair.js'%}"></script>
+
+        <!-- Dashboard Init -->
+        <script src="{% static 'managing/pages/jquery.real-estate-dashboard.js' %}"></script>
+
+        <!-- Modal-Effect -->
+        <script src="{% static 'managing/plugins/custombox/js/custombox.min.js' %}"></script>
+        <script src="{% static 'managing/plugins/custombox/js/legacy.min.js' %}"></script>
+
+         <!-- App js -->
+        <script src="{% static 'managing/js/jquery.core.js' %}"></script>
+        <script src="{% static 'managing/js/jquery.app.js' %}"></script>
+
+    </body>
+</html>

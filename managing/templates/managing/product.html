@@ -1,0 +1,323 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}거래처 관리{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">품목 관리</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+
+    <div class="row">
+        <div class="col-sm-8">
+            <form role="form">
+                <div class="form-group search-box">
+                    <input type="text" id="search-input" class="form-control product-search" placeholder="검색어를 입력해주세요">
+                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-pink btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
+                    data-target="#con-close-modal">품목 등록
+            </button>
+        </div>
+    </div>
+    <!-- Responsive modal -->
+    <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">품목 등록하기</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">판매/구매</label>
+                                <select id="field-1" class="form-control">
+                                    <option>판매처</option>
+                                    <option>구매처</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">사업자번호</label>
+                                <input type="text" class="form-control" id="field-2" placeholder="숫자만">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="field-3" class="control-label">주문자</label>
+                                <input type="text" class="form-control" id="field-3" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-4" class="control-label">상호명</label>
+                                <input type="text" class="form-control" id="field-4" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-5" class="control-label">검색창내용</label>
+                                <input type="text" class="form-control" id="field-5" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-6" class="control-label">전화번호</label>
+                                <input type="text" class="form-control" id="field-6" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-8" class="control-label">업종</label>
+                                <input type="text" class="form-control" id="field-8" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-9" class="control-label">종목</label>
+                                <input type="text" class="form-control" id="field-9" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-7" class="control-label">이메일</label>
+                                <input type="text" class="form-control" id="field-7" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-10" class="control-label">판매가 그룹</label>
+                                <select id="field-10" class="form-control">
+                                    <option>일반가</option>
+                                    <option>할인 1</option>
+                                    <option>할인 2</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-11" class="control-label">결제/포함/택배</label>
+                                <input type="text" class="form-control" id="field-11" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-12" class="control-label">적요</label>
+                                <input type="text" class="form-control" id="field-12" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-13" class="control-label">시안확인</label>
+                                <input type="text" class="form-control" id="field-13" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-14" class="control-label">담당 직원</label>
+                                <select id="field-14" class="form-control">
+                                    <option>없음</option>
+                                    <option>직원1</option>
+                                    <option>직원2</option>
+                                    <option>직원3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-15" class="control-label">주소1</label>
+                                <input type="text" class="form-control" id="field-15" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-16" class="control-label">주소2</label>
+                                <input type="text" class="form-control" id="field-16" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group no-margin">
+                                <label for="field-17" class="control-label">직원 메모</label>
+                                <textarea class="form-control autogrow" id="field-17"
+                                          placeholder="내부 직원용"
+                                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-pink waves-effect waves-light">품목 등록하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal -->
+
+    <ul class="nav nav-tabs tabs-bordered">
+        <li class="active">
+            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
+                <span class="visible-xs"><i class="fa fa-home"></i></span>
+                <span class="hidden-xs">품목 관리</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="home-b1">
+            <div class="table-responsive">
+                <table class="table table-hover mails m-0 table table-actions-bar">
+                    <thead>
+                    <tr>
+                        <th>품목코드</th>
+                        <th>구매처</th>
+                        <th>품목명</th>
+                        <th>규격명</th>
+                        <th>입고단가</th>
+                        <th>출고단가</th>
+                        <th>검색창 내용</th>
+                        <th>품목 그룹</th>
+                        <th>적요</th>
+                        <th>수정</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a href="#">39311</a>
+                        </td>
+
+                        <td>
+                            ACE프린팅
+                        </td>
+
+                        <td>
+                            전단지 A4 단면
+                        </td>
+
+                        <td>
+                            600*2200
+                        </td>
+                        <td>
+                            70,000
+                        </td>
+                        <td>
+                            90,000
+                        </td>
+                        <td>
+                            아파트 주차장 스티커
+                        </td>
+                        <td>
+                            디자인
+                        </td>
+
+                        <td>
+                            매입 * 3
+                        </td>
+                        <td>
+                            <a href="#" class="table-action-btn h3"><i
+                                    class="mdi mdi-pencil-box-outline text-success"></i></a>
+                            <a href="#" class="table-action-btn h3"><i
+                                    class="mdi mdi-close-box-outline text-danger"></i></a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <a href="#">39312</a>
+                        </td>
+
+                        <td>
+                            ACE프린팅
+                        </td>
+
+                        <td>
+                            전단지 A4 단면
+                        </td>
+
+                        <td>
+                            600*2800
+                        </td>
+                        <td>
+                            70,000
+                        </td>
+                        <td>
+                            90,000
+                        </td>
+                        <td>
+                            아파트 주차장 스티커
+                        </td>
+                        <td>
+                            디자인
+                        </td>
+
+                        <td>
+                            매입 * 3
+                        </td>
+                        <td>
+                            <a href="#" class="table-action-btn h3"><i
+                                    class="mdi mdi-pencil-box-outline text-success"></i></a>
+                            <a href="#" class="table-action-btn h3"><i
+                                    class="mdi mdi-close-box-outline text-danger"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div> <!-- end table responsive -->
+            <div class="row m-t-30">
+                <div class="text-center m-t-30">
+                    <ul class="pagination pagination-split m-t-30">
+                        <li class="disabled">
+                            <a href="#"><i class="fa fa-angle-left"></i></a>
+                        </li>
+                        <li>
+                            <a href="#">1</a>
+                        </li>
+                        <li class="active">
+                            <a href="#">2</a>
+                        </li>
+                        <li>
+                            <a href="#">3</a>
+                        </li>
+                        <li>
+                            <a href="#">4</a>
+                        </li>
+                        <li>
+                            <a href="#">5</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-angle-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
