@@ -1,13 +1,13 @@
 {% extends 'managing/base.html'%}
 {% load static %}
-{% block title %}품목 관리{% endblock%}
+{% block title %}샘플 관리{% endblock%}
 
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title">품목 관리</h4>
+            <h4 class="page-title">샘플 관리</h4>
         </div>
     </div>
 </div>
@@ -24,8 +24,8 @@
             </form>
         </div>
         <div class="col-sm-4">
-            <button class="btn btn-pink btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
-                    data-target="#con-close-modal">품목 등록
+            <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
+                    data-target="#con-close-modal">샘플 등록
             </button>
         </div>
     </div>
@@ -36,65 +36,50 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">품목 등록하기</h4>
+                    <h4 class="modal-title">샘플 등록하기</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                <label for="field-2" class="control-label">품목 코드</label>
-                                <input type="text" class="form-control" id="field-2" placeholder="숫자만">
+                                <label class="control-label">이미지 선택</label>
+                                <div class="bootstrap-filestyle input-group ">
+                                <input type="file" class="filestyle" data-input="false" id="filestyle-1" style="position: absolute; clip: rect(0px, 0px, 0px, 0px);" tabindex="-1">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="field-3" class="control-label">품목명</label>
+                                <label for="field-3" class="control-label">샘플 번호</label>
                                 <input type="text" class="form-control" id="field-3" placeholder="">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="field-1" class="control-label">구입처</label>
+                                <label for="field-1" class="control-label">담당 직원</label>
                                 <select id="field-1" class="form-control">
-                                    <option>거래처1</option>
-                                    <option>거래처2</option>
-                                    <option>거래처3</option>
+                                    <option>직원1</option>
+                                    <option>직원2</option>
+                                    <option>직원3</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="field-4" class="control-label">규격명</label>
+                                <label for="field-4" class="control-label">검색 키워드</label>
                                 <input type="text" class="form-control" id="field-4" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">검색 키워드</label>
-                                <input type="text" class="form-control" id="field-5" placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="field-4" class="control-label">입고 단가</label>
-                                <input type="text" class="form-control" id="field-4" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">판매 단가</label>
-                                <input type="text" class="form-control" id="field-5" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">품목그룹</label>
-                                <select id="field-6" class="form-control">
+                                <label for="field-5" class="control-label">품목 카테고리</label>
+                                <select id="field-5" class="form-control">
                                     <option>디자인</option>
                                     <option>비품</option>
                                     <option>기타</option>
@@ -102,23 +87,16 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="field-9" class="control-label">최소 수량</label>
-                                <input type="text" class="form-control" id="field-9" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-7" class="control-label">최대 묶음배송 수량</label>
-                                <input type="text" class="form-control" id="field-7" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-10" class="control-label">묶음별 X 배송비</label>
-                                <input type="text" class="form-control" id="field-10" placeholder="">
+                                <label for="field-6" class="control-label">업종 카테고리</label>
+                                <select id="field-6" class="form-control">
+                                    <option>피트니스</option>
+                                    <option>카페</option>
+                                    <option>요가</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -135,7 +113,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-pink waves-effect waves-light">품목 등록하기</button>
+                    <button type="button" class="btn btn-teal waves-effect waves-light">샘플 등록하기</button>
                 </div>
             </div>
         </div>
@@ -146,7 +124,7 @@
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">품목 관리</span>
+                <span class="hidden-xs">샘플 관리</span>
             </a>
         </li>
     </ul>
@@ -156,15 +134,13 @@
                 <table class="table table-hover mails m-0 table table-actions-bar">
                     <thead>
                     <tr>
-                        <th>품목코드</th>
-                        <th>구매처</th>
-                        <th>품목명</th>
-                        <th>규격명</th>
-                        <th>입고단가</th>
-                        <th>판매단가</th>
-                        <th>검색창 내용</th>
-                        <th>품목 그룹</th>
-                        <th>적요</th>
+                        <th>등록일</th>
+                        <th>이미지</th>
+                        <th>샘플명</th>
+                        <th>검색 키워드</th>
+                        <th>품목 카테고리</th>
+                        <th>업종 카테고리</th>
+                        <th>담당 직원</th>
                         <th>수정</th>
                     </tr>
                     </thead>
@@ -172,35 +148,26 @@
                     <tbody>
                     <tr>
                         <td>
-                            <a href="#">39311</a>
+                           2019.01.02
+                        </td>
+                        <td>
+                            <img src="{% static 'managing/images/properties/1.1.jpg'%}" width="100px;">
+                        </td>
+                        <td>
+                            nj199
+                        </td>
+                        <td>
+                            헬스,피트니스,다이어트,핑크,가격
+                        </td>
+                        <td>
+                            디자인 > 전단지,족자
+                        </td>
+                        <td>
+                            스포츠 > 요가
                         </td>
 
                         <td>
-                            ACE프린팅
-                        </td>
-
-                        <td>
-                            전단지 A4 단면
-                        </td>
-
-                        <td>
-                            600*2200
-                        </td>
-                        <td>
-                            70,000
-                        </td>
-                        <td>
-                            90,000
-                        </td>
-                        <td>
-                            아파트 주차장 스티커
-                        </td>
-                        <td>
-                            디자인
-                        </td>
-
-                        <td>
-                            매입 * 3
+                            직원1
                         </td>
                         <td>
                             <a href="#" class="table-action-btn h3"><i
@@ -212,35 +179,26 @@
 
                     <tr>
                         <td>
-                            <a href="#">39312</a>
+                           2019.01.02
+                        </td>
+                        <td>
+                            <img src="{% static 'managing/images/properties/2.1.jpg'%}" width="100px;">
+                        </td>
+                        <td>
+                            nj214
+                        </td>
+                        <td>
+                            어두운,검정,헬스,피트니스,금박,금색,럭셔리,어두운,검정,헬스,피트니스,금박,금색,럭셔리
+                        </td>
+                        <td>
+                            디자인 > 전단지,족자
+                        </td>
+                        <td>
+                            스포츠 > 피트니스
                         </td>
 
                         <td>
-                            ACE프린팅
-                        </td>
-
-                        <td>
-                            전단지 A4 단면
-                        </td>
-
-                        <td>
-                            600*2800
-                        </td>
-                        <td>
-                            70,000
-                        </td>
-                        <td>
-                            90,000
-                        </td>
-                        <td>
-                            아파트 주차장 스티커
-                        </td>
-                        <td>
-                            디자인
-                        </td>
-
-                        <td>
-                            매입 * 3
+                            직원3
                         </td>
                         <td>
                             <a href="#" class="table-action-btn h3"><i

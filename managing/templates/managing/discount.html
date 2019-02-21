@@ -1,13 +1,13 @@
 {% extends 'managing/base.html'%}
 {% load static %}
-{% block title %}품목 관리{% endblock%}
+{% block title %}할인그룹 관리{% endblock%}
 
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title">품목 관리</h4>
+            <h4 class="page-title">할인그룹 관리</h4>
         </div>
     </div>
 </div>
@@ -25,9 +25,13 @@
         </div>
         <div class="col-sm-4">
             <button class="btn btn-pink btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
-                    data-target="#con-close-modal">품목 등록
+                    data-target="#con-close-modal">할인그룹 등록
+            </button>
+            <button class="btn btn-pink btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
+                    data-target="">할인그룹 수정
             </button>
         </div>
+
     </div>
     <!-- Responsive modal -->
     <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -36,106 +40,57 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">품목 등록하기</h4>
+                    <h4 class="modal-title">할인그룹 등록하기</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="field-2" class="control-label">품목 코드</label>
-                                <input type="text" class="form-control" id="field-2" placeholder="숫자만">
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="field-3" class="control-label">품목명</label>
-                                <input type="text" class="form-control" id="field-3" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">구입처</label>
-                                <select id="field-1" class="form-control">
-                                    <option>거래처1</option>
-                                    <option>거래처2</option>
-                                    <option>거래처3</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">규격명</label>
-                                <input type="text" class="form-control" id="field-4" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">검색 키워드</label>
-                                <input type="text" class="form-control" id="field-5" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">입고 단가</label>
-                                <input type="text" class="form-control" id="field-4" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">판매 단가</label>
-                                <input type="text" class="form-control" id="field-5" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">품목그룹</label>
-                                <select id="field-6" class="form-control">
-                                    <option>디자인</option>
-                                    <option>비품</option>
-                                    <option>기타</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-9" class="control-label">최소 수량</label>
-                                <input type="text" class="form-control" id="field-9" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-7" class="control-label">최대 묶음배송 수량</label>
-                                <input type="text" class="form-control" id="field-7" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-10" class="control-label">묶음별 X 배송비</label>
-                                <input type="text" class="form-control" id="field-10" placeholder="">
+                                <label for="field-2" class="control-label">할인그룹명</label>
+                                <input type="text" class="form-control" id="field-2" placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group no-margin">
-                                <label for="field-17" class="control-label">직원 메모</label>
-                                <textarea class="form-control autogrow" id="field-17"
-                                          placeholder="내부 직원용"
-                                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
+                            <div class="form-group">
+                                <label>할인율 적용 방법</label>
+
+                                <div class="radio">
+                                    <input type="radio" name="gender" id="genderM" value="Male" required=""
+                                           data-parsley-multiple="gender">
+                                    <label for="genderM">
+                                        개별 가격 지정
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="gender" id="genderF" value="Female"
+                                           data-parsley-multiple="gender">
+                                    <label for="genderF">
+                                        일괄 동일 할인율 적용
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">판매가에서 {}% 할인</label>
+                                <input type="text" class="form-control" id="field-2" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">원 단위 반올림<span>ex: 1,000 or 100</span></label>
+                                <input type="text" class="form-control" id="field-2" placeholder="">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-pink waves-effect waves-light">품목 등록하기</button>
+                    <button type="button" class="btn btn-pink waves-effect waves-light">할인그룹 등록하기</button>
                 </div>
             </div>
         </div>
@@ -146,7 +101,7 @@
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">품목 관리</span>
+                <span class="hidden-xs">할인그룹 관리</span>
             </a>
         </li>
     </ul>
@@ -162,9 +117,9 @@
                         <th>규격명</th>
                         <th>입고단가</th>
                         <th>판매단가</th>
-                        <th>검색창 내용</th>
-                        <th>품목 그룹</th>
-                        <th>적요</th>
+                        <th>할인 1</th>
+                        <th>5년이상 거래처</th>
+                        <th>10년이상 거래처 (30%)</th>
                         <th>수정</th>
                     </tr>
                     </thead>
@@ -193,20 +148,18 @@
                             90,000
                         </td>
                         <td>
-                            아파트 주차장 스티커
+                           <input type="text" class="form-control" value="88,000">
                         </td>
                         <td>
-                            디자인
+                            <input type="text" class="form-control" value="80,000">
                         </td>
 
                         <td>
-                            매입 * 3
+                            <input type="text" class="form-control" value="60,000" readonly>
                         </td>
                         <td>
                             <a href="#" class="table-action-btn h3"><i
                                     class="mdi mdi-pencil-box-outline text-success"></i></a>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-close-box-outline text-danger"></i></a>
                         </td>
                     </tr>
 
@@ -233,20 +186,18 @@
                             90,000
                         </td>
                         <td>
-                            아파트 주차장 스티커
+                           <input type="text" class="form-control" value="78,000">
                         </td>
                         <td>
-                            디자인
+                            <input type="text" class="form-control" value="75,000">
                         </td>
 
                         <td>
-                            매입 * 3
+                            <input type="text" class="form-control" value="63,000" readonly>
                         </td>
                         <td>
                             <a href="#" class="table-action-btn h3"><i
                                     class="mdi mdi-pencil-box-outline text-success"></i></a>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-close-box-outline text-danger"></i></a>
                         </td>
                     </tr>
                     </tbody>

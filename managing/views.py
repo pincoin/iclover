@@ -10,3 +10,12 @@ class Customer(TemplateView):
 class Product(TemplateView):
     template_name = 'managing/product.html'
 
+class Sample(TemplateView):
+    template_name = 'managing/sample.html'
+
+class Category(TemplateView):
+    template_name = 'managing/category.html'
+
+class Discount(TemplateView):
+    template_name = 'managing/discount.html'
+
