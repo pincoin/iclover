@@ -23,4 +23,5 @@ INSTALLED_APPS += [
     'member',
     'design',
     'managing',
+    'api',
 ]
