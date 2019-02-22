@@ -14,6 +14,7 @@
 
         <title>{% block title %}{% endblock%}</title>
 
+
         <!-- Sweet Alert -->
         <link href="{% static 'managing/plugins/bootstrap-sweetalert/sweet-alert.css'%}" rel="stylesheet" type="text/css">
 
@@ -135,43 +136,37 @@
 
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
                                     <li class="text-center">
-                                        <h5>Notifications</h5>
+                                        <h5>사이트 바로가기</h5>
                                     </li>
                                     <li>
-                                        <a href="#" class="user-list-item">
+                                        <a href="{% url 'design/home'%}" class="user-list-item">
                                             <div class="icon bg-info">
                                                 <i class="mdi mdi-account"></i>
                                             </div>
                                             <div class="user-desc">
-                                                <span class="name">New Signup</span>
-                                                <span class="time">5 hours ago</span>
+                                                <span class="name">고객 페이지</span>
                                             </div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="user-list-item">
-                                            <div class="icon bg-danger">
-                                                <i class="mdi mdi-comment"></i>
+                                        <a href="{% url 'design/home'%}" class="user-list-item">
+                                            <div class="icon bg-info">
+                                                <i class="mdi mdi-account"></i>
                                             </div>
                                             <div class="user-desc">
-                                                <span class="name">New Message received</span>
-                                                <span class="time">1 day ago</span>
+                                                <span class="name">에이스 프린팅</span>
                                             </div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="user-list-item">
-                                            <div class="icon bg-warning">
-                                                <i class="mdi mdi-settings"></i>
+                                        <a href="{% url 'design/home'%}" class="user-list-item">
+                                            <div class="icon bg-info">
+                                                <i class="mdi mdi-account"></i>
                                             </div>
                                             <div class="user-desc">
-                                                <span class="name">Settings</span>
-                                                <span class="time">1 day ago</span>
+                                                <span class="name">광고 천하</span>
                                             </div>
                                         </a>
-                                    </li>
-                                    <li class="all-msgs text-center">
-                                        <p class="m-0"><a href="#">See all Notification</a></p>
                                     </li>
                                 </ul>
                             </li>
@@ -236,7 +231,7 @@
                             </li>
 
                             <li class="has-submenu">
-                                <a href="#"><i class="mdi mdi-view-list"></i>거래 내역</a>
+                                <a href="{% url 'managing/deal_list' %}"><i class="mdi mdi-view-list"></i>거래 내역</a>
                             </li>
 
                             <li class="has-submenu">
@@ -346,6 +341,7 @@
         <script src="{% static 'managing/plugins/flot-chart/jquery.flot.orderBars.min.js'%}"></script>
         <script src="{% static 'managing/plugins/flot-chart/jquery.flot.crosshair.js'%}"></script>
 
+
         <!-- Dashboard Init -->
         <script src="{% static 'managing/pages/jquery.real-estate-dashboard.js' %}"></script>
 
@@ -353,9 +349,11 @@
         <script src="{% static 'managing/plugins/custombox/js/custombox.min.js' %}"></script>
         <script src="{% static 'managing/plugins/custombox/js/legacy.min.js' %}"></script>
 
+
          <!-- App js -->
         <script src="{% static 'managing/js/jquery.core.js' %}"></script>
         <script src="{% static 'managing/js/jquery.app.js' %}"></script>
+
 
     </body>
 </html>

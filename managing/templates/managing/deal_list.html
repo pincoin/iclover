@@ -1,0 +1,561 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}거래처 관리{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">거래 내역</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+
+    <div class="row">
+        <div class="col-sm-2">
+            <form role="form">
+                <div class="form-group search-box">
+                    <select class="form-control">
+                        <option>전체</option>
+                        <option>견적서</option>
+                        <option>주문서</option>
+                        <option>진행중</option>
+                        <option>보류</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <form role="form">
+                <div class="form-group search-box">
+                    <input type="text" id="search-input" class="form-control product-search" placeholder="검색어를 입력해주세요">
+                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-custom btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
+                    data-target="#con-close-modal">내역 등록
+            </button>
+        </div>
+    </div>
+    <!-- Responsive modal -->
+    <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">거래처 등록하기</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">판매/구매</label>
+                                <select id="field-1" class="form-control">
+                                    <option>판매처</option>
+                                    <option>구매처</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">사업자번호</label>
+                                <input type="text" class="form-control" id="field-2" placeholder="숫자만">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="field-3" class="control-label">주문자</label>
+                                <input type="text" class="form-control" id="field-3" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-4" class="control-label">상호명</label>
+                                <input type="text" class="form-control" id="field-4" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-5" class="control-label">검색 키워드</label>
+                                <input type="text" class="form-control" id="field-5" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="field-6" class="control-label">전화번호</label>
+                                <input type="text" class="form-control" id="field-6" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-8" class="control-label">업종</label>
+                                <input type="text" class="form-control" id="field-8" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-9" class="control-label">종목</label>
+                                <input type="text" class="form-control" id="field-9" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-7" class="control-label">이메일</label>
+                                <input type="text" class="form-control" id="field-7" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-10" class="control-label">할인 그룹</label>
+                                <select id="field-10" class="form-control">
+                                    <option>일반가</option>
+                                    <option>할인 1</option>
+                                    <option>할인 2</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-11" class="control-label">결제/포함/택배</label>
+                                <input type="text" class="form-control" id="field-11" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-12" class="control-label">적요</label>
+                                <input type="text" class="form-control" id="field-12" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-13" class="control-label">시안확인</label>
+                                <input type="text" class="form-control" id="field-13" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="field-14" class="control-label">담당 직원</label>
+                                <select id="field-14" class="form-control">
+                                    <option>없음</option>
+                                    <option>직원1</option>
+                                    <option>직원2</option>
+                                    <option>직원3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-15" class="control-label">주소1</label>
+                                <input type="text" class="form-control" id="field-15" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="field-16" class="control-label">주소2</label>
+                                <input type="text" class="form-control" id="field-16" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group no-margin">
+                                <label for="field-17" class="control-label">직원 메모</label>
+                                <textarea class="form-control autogrow" id="field-17"
+                                          placeholder="내부 직원용"
+                                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-custom waves-effect waves-light">거래처 등록하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal -->
+
+    <ul class="nav nav-tabs tabs-bordered">
+        <li class="active">
+            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
+                <span class="visible-xs"><i class="fa fa-home"></i></span>
+                <span class="hidden-xs">견적서</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#profile-b1" data-toggle="tab" aria-expanded="false">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs">주문서</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#profile-b1" data-toggle="tab" aria-expanded="false">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs">시안 확인중</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#profile-b1" data-toggle="tab" aria-expanded="false">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs">전체</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <!-- 견적서  -->
+        <div class="tab-pane active" id="home-b1">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="table-responsive">
+                        <table class="table table-hover mails m-0 table table-actions-bar">
+                            <thead>
+                            <tr>
+                                <th>사업자번호</th>
+                                <th>거래처명</th>
+                                <th>검색창내용</th>
+                                <th>매장번호 /배송지</th>
+                                <th>주문자/시안</th>
+                                <th>결제/포함/택배</th>
+                                <th>금액</th>
+                                <th>수정</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="#">391-06-010311</a>
+                                </td>
+
+                                <td>
+                                    노원 휘트니스
+                                </td>
+
+                                <td>
+                                    <a href="#">파인 휘트니스</a>
+                                </td>
+
+                                <td>
+                                    233-3332<br>서울시 관악구 남부순환로 1682
+                                </td>
+                                <td>
+                                    홍길동<br> 옐로우 : 아아아아아
+                                </td>
+                                <td>
+                                    선결/O/선불<br>
+                                </td>
+                                <td class="text-right">
+                                    120,000
+                                    <br> <input type="text" class="form-control input-sm align-right" placeholder="">
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3"><i
+                                            class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                    <a href="#" class="table-action-btn h3"><i
+                                            class="mdi mdi-close-box-outline text-danger"></i></a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <a href="#">123-568-8881</a>
+                                </td>
+
+                                <td>
+                                    비엠짐
+                                </td>
+
+                                <td>
+                                    <a href="#">나인 휘트니스</a>
+                                </td>
+
+                                <td>
+                                    987-3210<br>경북 구미 순환로 555
+                                </td>
+                                <td>
+                                    임꺽정<br>이메일
+                                </td>
+                                <td>
+                                    선결/O/선불<br>세금계산서
+                                </td>
+                                <td class="text-right">
+                                    320,000<br> <input type="text" class="form-control input-sm align-right"
+                                                       placeholder="">
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3">
+                                        <i class="mdi mdi-pencil-box-outline text-success"></i>
+                                    </a>
+                                    <a href="#" class="table-action-btn h3">
+                                        <i class="mdi mdi-close-box-outline text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- end table responsive -->
+                    <div class="row m-t-30">
+                        <div class="text-center m-t-30">
+                            <ul class="pagination pagination-split m-t-30">
+                                <li class="disabled">
+                                    <a href="#"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#">1</a>
+                                </li>
+                                <li class="active">
+                                    <a href="#">2</a>
+                                </li>
+                                <li>
+                                    <a href="#">3</a>
+                                </li>
+                                <li>
+                                    <a href="#">4</a>
+                                </li>
+                                <li>
+                                    <a href="#">5</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="panel panel-border panel-teal">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">입금 확인창</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>#1154# 홍길동 120,000</p>
+                            <p>#1155# 노노노 50,000</p>
+                            <p>#1156# 가가가 10,000</p>
+                            <p>#1157# 호호호 320,000</p>
+                            <p>#1158# 히히동 22,000</p>
+                            <p>#1159# 자이 98,000</p>
+                            <p>#1160# 콜센 75,000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 매입처 -->
+        <div class="tab-pane" id="profile-b1">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover mails m-0 table table-actions-bar">
+                            <thead>
+                            <tr>
+                                <th>사업자번호</th>
+                                <th>거래처명</th>
+                                <th>검색창내용</th>
+                                <th>매장번호 /배송지</th>
+                                <th>주문자</th>
+                                <th>시안</th>
+                                <th>결제/포함/택배</th>
+                                <th>시안 등록</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="#">365-044-00311</a>
+                                </td>
+
+                                <td>
+                                    팩토리 공장
+                                </td>
+
+                                <td>
+                                    <a href="#">파인 휘트니스</a>
+                                </td>
+
+                                <td>
+                                    233-3332<br>서울시 관악구 남부순환로 1682
+                                </td>
+                                <td>
+                                    홍길동
+                                </td>
+                                <td>
+                                    옐로우 : 아아아아아
+                                </td>
+                                <td>
+                                    선결/O/선불<br>
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3"><i
+                                            class="mdi mdi-folder-multiple-image text-success"></i></a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <a href="#">323-112-8881</a>
+                                </td>
+
+                                <td>
+                                    프린팅<br>
+                                    <span class="text-danger">-23,000</span>
+                                </td>
+
+                                <td>
+                                    <a href="#">인쇄물</a>
+                                </td>
+
+                                <td>
+                                    987-23123<br>충북 구미 자유로 555
+                                </td>
+                                <td>
+                                    임꺽정
+                                </td>
+                                <td>
+                                    이메일
+                                </td>
+                                <td>
+                                    선결/O/선불<br>세금계산서
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3">
+                                        <i class="mdi mdi-folder-multiple-image text-success"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div> <!-- end table responsive -->
+                    <div class="row m-t-30">
+                        <div class="text-center m-t-30">
+                            <ul class="pagination pagination-split m-t-30">
+                                <li class="disabled">
+                                    <a href="#"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#">1</a>
+                                </li>
+                                <li class="active">
+                                    <a href="#">2</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-border panel-purple">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">2019.01.02 팩토리 공장 시안 등록</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>#px 1. 전단지.</p>
+                            <p>#px 2. 배송비.</p>
+                            <p>#px 3. 현수막.</p>
+                            <p>#px 4. 배송비.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                                            <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="btn-group pull-right">
+                                <ol class="breadcrumb hide-phone p-0 m-0">
+                                    <li>
+                                        <a href="#">Zircos</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Forms</a>
+                                    </li>
+                                    <li class="active">
+                                        File Uploads
+                                    </li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">File Uploads</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title end breadcrumb -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="card-box">
+
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <h4 class="header-title m-t-0">Example 1</h4>
+                                    <p class="text-muted font-13 m-b-30">
+                                        In this example we designed our own file input and used our own theme -
+                                        'dragdropbox'. We also added the file preview in our browser before
+                                        uploading the file.
+                                    </p>
+
+                                    <div class="p-20">
+                                        <div class="form-group clearfix">
+                                            <div class="col-sm-12 padding-left-0 padding-right-0">
+                                                    <input type="file" name="files[]" id="filer_input1"
+                                                       multiple="multiple">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
+
+                            <div class="row m-t-50">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h4 class="header-title m-t-0">Example 2</h4>
+                                    <p class="text-muted font-13 m-b-30">
+                                        In this example we limit our users with maximal 3 number of files, all
+                                        files together must have maximal 3MB's and the file's extensions should
+                                        be matched in the array(ex: ['jpg', 'png', 'gif']). We are also changig
+                                        the file input to jQuery.filer default design. We also need to show the
+                                        file preview in our browser before uploading the file.
+                                    </p>
+
+                                    <div class="p-20">
+                                        <div class="form-group clearfix">
+                                            <div class="col-sm-12 padding-left-0 padding-right-0">
+                                                    <input type="file" name="files[]" id="filer_input2"
+                                                       multiple="multiple">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end row -->
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -37,7 +37,7 @@ File: Menu
 .mails td {
   vertical-align: middle !important;
   position: relative;
-  border: 0 !important;
+  border-bottom: 1px solid #ddd;
 }
 .mails td:last-of-type {
   width: 100px;

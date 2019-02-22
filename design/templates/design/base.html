@@ -61,7 +61,7 @@
                     <!-- Language Dropdown-->
                     <!-- if  관리자 -->
                     <div class="dropdown border-right px-3">
-                        <a href="#">
+                        <a href="{% url 'managing/main' %}">
                             <svg class="svg-icon megamenu-services-icon">
                                 <use xlink:href="#secure-payment-1"></use>
                             </svg>
@@ -347,16 +347,16 @@
                     </li>
                     <!-- /Megamenu end-->
                     <li class="nav-item">
-                        <a href="category.html" class="nav-link">디자인 샘플</a>
+                        <a href="{% url 'design/product'%}" class="nav-link">디자인 샘플</a>
                     </li>
                     <li class="nav-item">
-                        <a href="category.html" class="nav-link">디자인 견적&주문</a>
+                        <a href="{% url 'design/cart'%}" class="nav-link">디자인 견적&주문</a>
                     </li>
                     <li class="nav-item">
-                        <a href="category.html" class="nav-link">비품 주문</a>
+                        <a href="{% url 'design/product'%}" class="nav-link">비품 주문</a>
                     </li>
                     <li class="nav-item">
-                        <a href="category.html" class="nav-link">마케팅 콘텐츠</a>
+                        <a href="{% url 'design/product'%}" class="nav-link">마케팅 콘텐츠</a>
                     </li>
                 </ul>
                 <!-- end 카테고리 -->
@@ -382,7 +382,7 @@
 
                     <!-- Cart Dropdown-->
                     <div class="nav-item dropdown">
-                        <a href="cart.html" class="navbar-icon-link d-lg-none">
+                        <a href="{% url 'design/cart'%}" class="navbar-icon-link d-lg-none">
                             <svg class="svg-icon">
                                 <use xlink:href="#cart-1"></use>
                             </svg>
@@ -401,7 +401,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="detail.html">
+                                            <a href="{% url 'design/cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -409,7 +409,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="detail.html" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -419,7 +419,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="detail.html">
+                                            <a href="{% url 'design/cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -427,7 +427,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="detail.html" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -437,7 +437,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="detail.html">
+                                            <a href="{% url 'design/cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -445,7 +445,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="detail.html" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -455,7 +455,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="detail.html">
+                                            <a href="{% url 'design/cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -463,7 +463,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="detail.html" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
