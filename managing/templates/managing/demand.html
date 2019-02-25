@@ -1,0 +1,193 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}할인그룹 관리{% endblock%}
+{% block addcss %}
+        <!-- Bx slider css -->
+        <link href="{% static 'managing/plugins/bx-slider/jquery.bxslider.css'%}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content%}
+
+
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">요청받은 견적</h4>
+                        </div>
+                    </div>
+                </div>
+
+<div class="card-box">
+
+    <div class="row">
+        <div class="col-sm-8">
+            <form role="form">
+                <div class="form-group search-box">
+                    <input type="text" id="search-input" class="form-control product-search" placeholder="검색어를 입력해주세요">
+                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs tabs-bordered">
+        <li class="active">
+            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
+                <span class="visible-xs"><i class="fa fa-home"></i></span>
+                <span class="hidden-xs">견적서</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <!-- 견적서  -->
+        <div class="tab-pane active" id="home-b1">
+          <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover mails m-0 table table-actions-bar">
+                            <thead>
+                            <tr>
+                                <th>사업자번호</th>
+                                <th>거래처명</th>
+                                <th>검색창내용</th>
+                                <th>매장번호 /배송지</th>
+                                <th>주문자</th>
+                                <th>시안</th>
+                                <th>결제/포함/택배</th>
+                                <th>견적 등록</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="#">365-044-00311</a>
+                                </td>
+
+                                <td>
+                                    팩토리 공장
+                                </td>
+
+                                <td>
+                                    <a href="#">파인 휘트니스</a>
+                                </td>
+
+                                <td>
+                                    233-3332<br>서울시 관악구 남부순환로 1682
+                                </td>
+                                <td>
+                                    홍길동
+                                </td>
+                                <td>
+                                    옐로우 : 아아아아아
+                                </td>
+                                <td>
+                                    선결/O/선불<br>
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3"><i
+                                            class="mdi mdi-folder-multiple-image text-success"></i></a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <a href="#">323-112-8881</a>
+                                </td>
+
+                                <td>
+                                    프린팅<br>
+                                    <span class="text-danger">-23,000</span>
+                                </td>
+
+                                <td>
+                                    <a href="#">인쇄물</a>
+                                </td>
+
+                                <td>
+                                    987-23123<br>충북 구미 자유로 555
+                                </td>
+                                <td>
+                                    임꺽정
+                                </td>
+                                <td>
+                                    이메일
+                                </td>
+                                <td>
+                                    선결/O/선불<br>세금계산서
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3">
+                                        <i class="mdi mdi-folder-multiple-image text-success"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div> <!-- end table responsive -->
+                    <div class="row m-t-30">
+                        <div class="text-center m-t-30">
+                            <ul class="pagination pagination-split m-t-30">
+                                <li class="disabled">
+                                    <a href="#"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#">1</a>
+                                </li>
+                                <li class="active">
+                                    <a href="#">2</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include "managing/require_list.html" %}
+
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
+
+{% block addjs %}
+        <!-- Bx slider js -->
+        <script src="{% static 'managing/plugins/bx-slider/jquery.bxslider.min.js'%} "></script>
+
+		<script type="text/javascript" src="{% static 'managing/plugins/gmaps/gmaps.js' %}"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('.property-slider').bxSlider({
+                    pagerCustom: '#bx-pager'
+                });
+            });
+        </script>
+
+{% endblock %}

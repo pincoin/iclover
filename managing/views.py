@@ -21,3 +21,6 @@ class Discount(TemplateView):
 
 class Deal_list(TemplateView):
     template_name = 'managing/deal_list.html'
+
+class Demand(TemplateView):
+    template_name = 'managing/demand.html'

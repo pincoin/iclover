@@ -13,21 +13,8 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
 
         <title>{% block title %}{% endblock%}</title>
-
-
-        <!-- Sweet Alert -->
-        <link href="{% static 'managing/plugins/bootstrap-sweetalert/sweet-alert.css'%}" rel="stylesheet" type="text/css">
-
-        <!-- Custom box css -->
-        <link href="{% static 'managing/plugins/custombox/css/custombox.min.css' %}" rel="stylesheet">
-
-        <!-- Plugins css-->
-        <link href="{% static 'managing/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css'%}" rel="stylesheet" />
-        <link href="{% static 'managing/plugins/multiselect/css/multi-select.css'%}"  rel="stylesheet" type="text/css" />
-        <link href="{% static 'managing/plugins/select2/css/select2.min.css'%}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'managing/plugins/bootstrap-select/css/bootstrap-select.min.css'%}" rel="stylesheet" />
-        <link href="{% static 'managing/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css'%}" rel="stylesheet" />
-
+        {% block addcss %}
+        {% endblock %}
         <!-- App css -->
         <link href="{% static 'managing/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'managing/css/core.css' %}" rel="stylesheet" type="text/css" />
@@ -37,7 +24,6 @@
         <link href="{% static 'managing/css/menu.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'managing/css/responsive.css' %}" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="{% static 'managing/plugins/switchery/switchery.min.css' %}">
-
 
         <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -231,6 +217,10 @@
                             </li>
 
                             <li class="has-submenu">
+                                <a href="{% url 'managing/demand' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span class="badge badge-purple">1</span></a>
+                            </li>
+
+                            <li class="has-submenu">
                                 <a href="{% url 'managing/deal_list' %}"><i class="mdi mdi-view-list"></i>거래 내역</a>
                             </li>
 
@@ -304,56 +294,10 @@
         <script src="{% static 'managing/js/jquery.slimscroll.js' %}"></script>
         <script src="{% static 'managing/js/jquery.scrollTo.min.js' %}"></script>
         <script src="{% static 'managing/plugins/switchery/switchery.min.js' %}"></script>
-
-        <script src="{% static 'managing/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.min.js' %}"></script>
-        <script src="{% static 'managing/plugins/multiselect/js/jquery.multi-select.js' %}" type="text/javascript" ></script>
-        <script src="{% static 'managing/plugins/jquery-quicksearch/jquery.quicksearch.js' %}" type="text/javascript"></script>
-        <script src="{% static 'managing/plugins/select2/js/select2.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'managing/plugins/bootstrap-select/js/bootstrap-select.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'managing/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'managing/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'managing/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js' %}" type="text/javascript"></script>
-
-        <!-- Auto complete  -->
-        <script type="text/javascript" src="{% static 'managing/plugins/autocomplete/jquery.mockjax.js' %}"></script>
-        <script type="text/javascript" src="{% static 'managing/plugins/autocomplete/jquery.autocomplete.min' %}"></script>
-        <script type="text/javascript" src="{% static 'managing/plugins/autocomplete/countries.js'%}"></script>
-        <script type="text/javascript" src="{% static 'managing/pages/jquery.autocomplete.init.js'%}"></script>
-
-        <script type="text/javascript" src="{% static 'managing/pages/jquery.form-advanced.init.js' %}"></script>
-
-        <!-- Sweet-Alert  -->
-        <script src="{% static 'managing/plugins/bootstrap-sweetalert/sweet-alert.min.js'%}"></script>
-        <script src="{% static 'managing/pages/jquery.sweet-alert.init.js' %}"></script>
-
-        <!-- Counter Up  -->
-        <script src="{% static 'managing/plugins/waypoints/jquery.waypoints.min.js'%}"></script>
-        <script src="{% static 'managing/plugins/counterup/jquery.counterup.min.js'%}"></script>
-
-        <!-- Flot chart -->
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.min.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.time.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.tooltip.min.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.resize.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.pie.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.selection.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.stack.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.orderBars.min.js'%}"></script>
-        <script src="{% static 'managing/plugins/flot-chart/jquery.flot.crosshair.js'%}"></script>
-
-
-        <!-- Dashboard Init -->
-        <script src="{% static 'managing/pages/jquery.real-estate-dashboard.js' %}"></script>
-
-        <!-- Modal-Effect -->
-        <script src="{% static 'managing/plugins/custombox/js/custombox.min.js' %}"></script>
-        <script src="{% static 'managing/plugins/custombox/js/legacy.min.js' %}"></script>
-
-
+        {% block addjs %}
+        {% endblock %}
          <!-- App js -->
         <script src="{% static 'managing/js/jquery.core.js' %}"></script>
         <script src="{% static 'managing/js/jquery.app.js' %}"></script>
-
-
     </body>
 </html>
