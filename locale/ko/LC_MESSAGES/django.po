@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-25 21:26+0900\n"
+"POT-Creation-Date: 2019-02-25 21:37+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +28,10 @@ msgstr "한국어"
 #: conf/settings/base.py:89
 msgid "English"
 msgstr "영어"
+
+#: member/apps.py:7
+msgid "member"
+msgstr "회원"
 
 #: member/models.py:12
 msgid "cellphone unverified"
@@ -68,7 +71,7 @@ msgstr "프로필"
 
 #: member/models.py:55
 msgid "profiles"
-msgstr "프로"
+msgstr "프로필"
 
 #: member/models.py:70
 msgid "Full name"
