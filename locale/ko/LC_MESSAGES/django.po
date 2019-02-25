@@ -1,0 +1,171 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-25 21:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: api/apps.py:7
+msgid "REST API"
+msgstr "REST API"
+
+#: conf/settings/base.py:88
+msgid "Korean"
+msgstr "한국어"
+
+#: conf/settings/base.py:89
+msgid "English"
+msgstr "영어"
+
+#: member/models.py:12
+msgid "cellphone unverified"
+msgstr "휴대폰 미인증"
+
+#: member/models.py:13
+msgid "cellphone verified"
+msgstr "휴대폰 인증완료"
+
+#: member/models.py:14
+msgid "cellphone revoked"
+msgstr "휴대폰 인증취소"
+
+#: member/models.py:23
+msgid "phone number"
+msgstr "전화번호"
+
+#: member/models.py:30
+msgid "address"
+msgstr "주소"
+
+#: member/models.py:36
+msgid "phone verified"
+msgstr "휴대폰인증완료"
+
+#: member/models.py:41
+msgid "cellphone verified status"
+msgstr "휴대폰인증상태"
+
+#: member/models.py:48 member/models.py:177
+msgid "date of birth"
+msgstr "생년월일"
+
+#: member/models.py:54
+msgid "profile"
+msgstr "프로필"
+
+#: member/models.py:55
+msgid "profiles"
+msgstr "프로"
+
+#: member/models.py:70
+msgid "Full name"
+msgstr "성명"
+
+#: member/models.py:76
+msgid "E-mail"
+msgstr "이메일"
+
+#: member/models.py:82 member/models.py:121
+msgid "user"
+msgstr "사용자"
+
+#: member/models.py:91
+msgid "IP address"
+msgstr "IP 주소"
+
+#: member/models.py:95
+msgid "login log"
+msgstr "로그인 내역"
+
+#: member/models.py:96
+msgid "login logs"
+msgstr "로그인 내역"
+
+#: member/models.py:104
+msgid "female"
+msgstr "여자"
+
+#: member/models.py:105
+msgid "male"
+msgstr "남자"
+
+#: member/models.py:109
+msgid "foreign"
+msgstr "외국인"
+
+#: member/models.py:110 member/models.py:190
+msgid "domestic"
+msgstr "내국인"
+
+#: member/models.py:114
+msgid "token"
+msgstr "토큰"
+
+#: member/models.py:130
+msgid "code"
+msgstr "코드"
+
+#: member/models.py:136
+msgid "reason"
+msgstr "이유"
+
+#: member/models.py:142
+msgid "result code"
+msgstr "결과코드"
+
+#: member/models.py:148
+msgid "message"
+msgstr "메시지"
+
+#: member/models.py:154
+msgid "transaction id"
+msgstr "트랜잭션 아이디"
+
+#: member/models.py:160
+msgid "di"
+msgstr "DI"
+
+#: member/models.py:166
+msgid "ci"
+msgstr "CI"
+
+#: member/models.py:171
+msgid "fullname"
+msgstr "성명"
+
+#: member/models.py:183
+msgid "gender"
+msgstr "성별"
+
+#: member/models.py:197
+msgid "telecom"
+msgstr "통신사"
+
+#: member/models.py:203
+msgid "cellphone"
+msgstr "휴대전화"
+
+#: member/models.py:209
+msgid "return_message"
+msgstr "반환메시지"
+
+#: member/models.py:215
+msgid "phone verification log"
+msgstr "휴대폰인증 로그"
+
+#: member/models.py:216
+msgid "phone verification logs"
+msgstr "휴대폰인증 로그"
