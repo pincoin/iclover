@@ -19,6 +19,55 @@ class Profile(TimeStampedModel):
         on_delete=models.CASCADE
     )
 
+    code = models.IntegerField(
+        verbose_name=_('code number'),
+        unique = True,
+        max_length=11,
+        blank=True,
+        null=True,
+    )
+
+    ceo = models.CharField(
+        verbose_name=_('ceo name'),
+        max_length=255,
+        blank=True,
+    )
+    tax_bill_mail = models.CharField(
+        verbose_name=_('tax bill mail'),
+        max_length=255,
+        blank=True,
+    )
+
+    sectors = models.CharField(
+        verbose_name=_('sectors'),
+        max_length=255,
+        blank=True,
+    )
+
+    business = models.CharField(
+        verbose_name=_('business'),
+        max_length=255,
+        blank=True,
+    )
+
+    tell = models.CharField(
+        verbose_name=_('store tell number'),
+        max_length=255,
+        blank=True,
+    )
+
+    keywords = models.CharField(
+        verbose_name=_('keywords of user'),
+        max_length=255,
+        blank=True,
+    )
+
+    memo = models.CharField(
+        verbose_name=_('memo of user'),
+        max_length=255,
+        blank=True,
+    )
+
     phone = models.CharField(
         verbose_name=_('phone number'),
         max_length=16,
@@ -28,6 +77,12 @@ class Profile(TimeStampedModel):
 
     address = models.CharField(
         verbose_name=_('address'),
+        max_length=255,
+        blank=True,
+    )
+
+    address2 = models.CharField(
+        verbose_name=_('address2'),
         max_length=255,
         blank=True,
     )
@@ -46,6 +101,31 @@ class Profile(TimeStampedModel):
 
     date_of_birth = models.DateField(
         verbose_name=_('date of birth'),
+        blank=True,
+        null=True,
+    )
+
+    options = models.CharField(
+        verbose_name=_('options for sale'),
+        max_length=255,
+        blank=True,
+    )
+
+    confirm = models.CharField(
+        verbose_name=_('confirmed at '),
+        max_length=255,
+        blank=True,
+    )
+
+    discount = models.CharField(
+        verbose_name=_('select discount rate'),
+        max_length=255,
+        blank=True,
+    )
+
+    api_state = models.IntegerField(
+        verbose_name=_('api_state'),
+        max_length=3,
         blank=True,
         null=True,
     )
@@ -217,3 +297,61 @@ class PhoneVerificationLog(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.fullname, self.cellphone)
+
+class Employees(TimeStampedModel):
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    state = models.IntegerField(
+        verbose_name=_('state'),
+        max_length=3,
+        blank=True,
+        null=True,
+    )
+
+    name = models.CharField(
+        verbose_name=_('name of employees'),
+        max_length=255,
+        blank=True,
+    )
+
+    join = models.CharField(
+        verbose_name=_('Join'),
+        max_length=255,
+        blank=True,
+    )
+
+    leave = models.CharField(
+        verbose_name=_('leave'),
+        max_length=255,
+        blank=True,
+    )
+
+    cellphone = models.CharField(
+        verbose_name=_('cellphone'),
+        max_length=255,
+        blank=True,
+    )
+
+    def upload_to_employees(instance, filename):
+        return 'employees/{}/{}'.format(instance.user.username, filename)
+    join_pic = models.ImageField(
+        verbose_name=_('join picture'),
+        blank= True,
+        upload_to= upload_to_employees,
+    )
+    leave_pic = models.ImageField(
+        verbose_name=_('leave picture'),
+        blank=True,
+        upload_to=upload_to_employees,
+    )
+
+    class Meta:
+        verbose_name = _('employees')
+        verbose_name_plural = _('employees')
+
+    def __str__(self):
+        return '{} {} {}'.format(self.user, self.cellphone, self.state)

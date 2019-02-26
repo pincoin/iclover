@@ -3,7 +3,7 @@
 {% block title%}전단지{% endblock %}
 {% block content%}
 <!-- Hero Slider-->
-<section class="position-relative dark-overlay py-3 py-lg-7">
+<section class="position-relative dark-overlay py-5 py-lg-5">
     <img src="{% static 'design/img/photo/erii-gutierrez-487083-unsplash.jpg' %}" alt="" class="bg-image">
     <div class="container overlay-content hero hero-page">
         <div class="hero-content pb-5 text-center text-white">
@@ -12,7 +12,7 @@
         </div>
     </div>
 </section>
-<main class="pt-5">
+<main class="pt-4">
     <div class="container">
         <div class="row">
             <!-- Grid -->
@@ -20,7 +20,7 @@
                 <header class="product-grid-header">
                     <form>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <div class="input-group mb-3">
                                     <select class="custom-select">
                                         <option selected>피트니스</option>
@@ -34,12 +34,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-md-8">
+                            <div class="form-group col-md-6">
                                 <form action="#" id="dd">
                                     <div class="input-group mb-3">
-                                        <input type="email" placeholder="키워드" aria-label="i"
-                                               class="form-control bg-transparent border-secondary border-right-0"
-                                               readonly="">
+                                        <input type="text" placeholder="키워드" aria-label="i"
+                                               class="form-control bg-transparent border-secondary border-right-0">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-outline-secondary border-left-0">
                                                 <svg class="svg-icon text-dark text-lg ">
@@ -376,11 +375,11 @@
             <div class="sidebar col-xl-3 col-lg-4 order-lg-1">
                 <div class="sidebar-block px-3 px-lg-0 mr-lg-4">
                     <a data-toggle="collapse" href="#colourFilterMenu" aria-expanded="false"
-                       aria-controls="colourFilterMenu" class="d-lg-none block-toggler">Filter by colour</a>
+                       aria-controls="colourFilterMenu" class="d-lg-none block-toggler">색상 필터</a>
                     <!-- Size filter menu-->
                     <div id="colourFilterMenu" class="expand-lg collapse show">
                         <h6 class="sidebar-heading d-none d-lg-block">Colour </h6>
-                        <div class="mt-4 mt-lg-0">
+                        <div class="mt-2 mt-lg-0">
                             <ul class="list-inline mb-0 colours-wrapper">
                                 <li class="list-inline-item">
                                     <label for="colour_sidebar_Blue" style="background-color: #668cb9"
@@ -410,46 +409,45 @@
                         </div>
                     </div>
                 </div>
-                <div class="sidebar-block px-3 px-lg-0 mr-lg-4"><a data-toggle="collapse" href="#categoriesMenu"
-                                                                   aria-expanded="false" aria-controls="categoriesMenu"
-                                                                   class="d-lg-none block-toggler">Product
-                    Categories</a>
+                <div class="sidebar-block px-3 px-lg-0 mr-lg-4">
+                    <a data-toggle="collapse" href="#categoriesMenu" aria-expanded="false" aria-controls="categoriesMenu"
+                         class="d-lg-none block-toggler">품목 카테고리</a>
                     <div id="categoriesMenu" class="expand-lg collapse show">
-                        <div class="nav nav-pills flex-column mt-4 mt-lg-0"><a href="#"
-                                                                               class="nav-link d-flex justify-content-between mb-2 "><strong>인쇄</strong></a>
+                        <div class="nav nav-pills flex-column mt-4 mt-lg-0">
+                            <a href="#" class="nav-link d-flex justify-content-between mb-0 "><strong>인쇄</strong></a>
                             <div class="nav nav-pills flex-column ml-3">
-                                <a href="#" class="nav-link mb-2">전단지/포스터</a>
-                                <a href="#" class="nav-link mb-2">문어발</a>
-                                <a href="#" class="nav-link mb-2">명함</a>
-                                <a href="#" class="nav-link mb-2">봉투</a>
-                                <a href="#" class="nav-link mb-2">복권</a>
-                                <a href="#" class="nav-link mb-2">상품권</a>
-                                <a href="#" class="nav-link mb-2">스티커</a>
-                                <a href="#" class="nav-link mb-2">종이자석</a>
-                                <a href="#" class="nav-link mb-2">양식지 NCR지</a>
-                                <a href="#" class="nav-link mb-2">카다로그/브로셔</a>
-                                <a href="#" class="nav-link mb-2">포스트잇</a>
-                                <a href="#" class="nav-link mb-2">떡메모지</a>
+                                <a href="#" class="nav-link mb-0">전단지/포스터</a>
+                                <a href="#" class="nav-link mb-0">문어발</a>
+                                <a href="#" class="nav-link mb-0">명함</a>
+                                <a href="#" class="nav-link mb-0">봉투</a>
+                                <a href="#" class="nav-link mb-0">복권</a>
+                                <a href="#" class="nav-link mb-0">상품권</a>
+                                <a href="#" class="nav-link mb-0">스티커</a>
+                                <a href="#" class="nav-link mb-0">종이자석</a>
+                                <a href="#" class="nav-link mb-0">양식지 NCR지</a>
+                                <a href="#" class="nav-link mb-0">카다로그/브로셔</a>
+                                <a href="#" class="nav-link mb-0">포스트잇</a>
+                                <a href="#" class="nav-link mb-0">떡메모지</a>
                             </div>
                             <a href="#"
-                               class="nav-link d-flex justify-content-between mb-2 active"><span><b>현수막</b></span></a>
+                               class="nav-link d-flex justify-content-between mb-0"><span><b>현수막</b></span></a>
                             <div class="nav nav-pills flex-column ml-3">
-                                <a href="#" class="nav-link mb-2">현수막 비율</a>
-                                <a href="#" class="nav-link mb-2">족자 비율</a>
+                                <a href="#" class="nav-link mb-0">현수막 비율</a>
+                                <a href="#" class="nav-link mb-0">족자 비율</a>
                             </div>
-                            <a href="#" class="nav-link d-flex justify-content-between mb-2 "><span><b>배너</b></span></a>
+                            <a href="#" class="nav-link d-flex justify-content-between mb-0 "><span><b>배너</b></span></a>
                             <div class="nav nav-pills flex-column ml-3">
-                                <a href="#" class="nav-link mb-2">일반 배너</a>
-                                <a href="#" class="nav-link mb-2">대형 배너</a>
-                                <a href="#" class="nav-link mb-2">미니 배너</a>
+                                <a href="#" class="nav-link mb-0">일반 배너</a>
+                                <a href="#" class="nav-link mb-0">대형 배너</a>
+                                <a href="#" class="nav-link mb-0">미니 배너</a>
                             </div>
                             <a href="#"
-                               class="nav-link d-flex justify-content-between mb-2 "><span><b>비 품</b></span></a>
+                               class="nav-link d-flex justify-content-between mb-0 "><span><b>비 품</b></span></a>
                             <div class="nav nav-pills flex-column ml-3">
-                                <a href="#" class="nav-link mb-2">운동복</a>
-                                <a href="#" class="nav-link mb-2">수건</a>
-                                <a href="#" class="nav-link mb-2">샤워용품</a>
-                                <a href="#" class="nav-link mb-2">청소용품</a>
+                                <a href="#" class="nav-link mb-0">운동복</a>
+                                <a href="#" class="nav-link mb-0">수건</a>
+                                <a href="#" class="nav-link mb-0">샤워용품</a>
+                                <a href="#" class="nav-link mb-0">청소용품</a>
                             </div>
                         </div>
                     </div>
@@ -477,7 +475,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div data-slider-id="1" class="owl-carousel owl-theme owl-dots-modern detail-full">
-                            <div style="background: center center url('img/product/2.1.jpg') no-repeat; background-size: cover;"
+                            <div style="background: center center url('{% static "design/img/product/2.1.jpg" %}') no-repeat; background-size: cover;"
                                  class="detail-full-item-modal"></div>
                         </div>
                     </div>

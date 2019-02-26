@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Profile, LoginLog, PhoneVerificationLog
+    Profile, LoginLog, PhoneVerificationLog, Employees
 )
 
 
@@ -16,7 +16,10 @@ class LoginLogAdmin(admin.ModelAdmin):
 class PhoneVerificationLogAdmin(admin.ModelAdmin):
     pass
 
+class EmployeesAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(LoginLog, LoginLogAdmin)
+admin.site.register(Employees, EmployeesAdmin)
 admin.site.register(PhoneVerificationLog, PhoneVerificationLogAdmin)
