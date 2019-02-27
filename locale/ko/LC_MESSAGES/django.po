@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-25 21:37+0900\n"
+"POT-Creation-Date: 2019-02-27 19:46+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,95 @@ msgstr "한국어"
 #: conf/settings/base.py:89
 msgid "English"
 msgstr "영어"
+
+#: core/apps.py:7
+msgid "core app"
+msgstr "코어 모듈"
+
+#: core/models.py:13 core/models.py:58
+msgid "title"
+msgstr "제목"
+
+#: core/models.py:15
+msgid "The page title as you'd like it to be seen by the public"
+msgstr "공개 페이지 제목"
+
+#: core/models.py:19
+msgid "description"
+msgstr "설명"
+
+#: core/models.py:21
+msgid ""
+"A short description not longer than 155 characters. Don't use double quotes."
+msgstr ""
+"간단한 설명 큰따옴표는 사용하지 않고 155자를 넘지 않을 것"
+
+#: core/models.py:26
+msgid "keywords"
+msgstr "키워드"
+
+#: core/models.py:28
+msgid "A comma-separated list of keywords. Don't use double quotes."
+msgstr "콤마로 구분하고 큰따옴표는 사용하지 않을 것"
+
+#: core/models.py:34
+msgid "owner"
+msgstr "소유자"
+
+#: core/models.py:49
+msgid "parent"
+msgstr "부모"
+
+#: core/models.py:63
+msgid "slug"
+msgstr "슬러그"
+
+#: core/models.py:64
+msgid ""
+"A short label containing only letters, numbers, underscores or hyphens for "
+"URL"
+msgstr ""
+"URL 표시에 짧은 문자열로 문자, 숫자, 밑줄, 하이픈만 사용 가능"
+
+#: core/models.py:82
+msgid "file name"
+msgstr "파일이름"
+
+#: core/models.py:87
+msgid "public identifier"
+msgstr "공개 인식자"
+
+#: core/models.py:94
+msgid "uploaded file"
+msgstr "업로드 파일"
+
+#: core/models.py:99
+msgid "created time"
+msgstr "생성시각"
+
+#: core/models.py:105
+msgid "attachment"
+msgstr "첨부파일"
+
+#: core/models.py:106
+msgid "attachments"
+msgstr "첨부파일"
+
+#: core/models.py:114
+msgid "site id"
+msgstr "사이트 ID"
+
+#: core/models.py:118
+msgid "Google Analytics UA-ID"
+msgstr "구글애널리틱스 UA-ID"
+
+#: core/models.py:125
+msgid "Google Service"
+msgstr "구글 서비스"
+
+#: core/models.py:126
+msgid "Google Services"
+msgstr "구글 서비스"
 
 #: member/apps.py:7
 msgid "member"

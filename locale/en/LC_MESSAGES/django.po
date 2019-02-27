@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-25 21:37+0900\n"
+"POT-Creation-Date: 2019-02-27 19:46+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,96 @@ msgstr "Korean"
 #: conf/settings/base.py:89
 msgid "English"
 msgstr "English"
+
+#: core/apps.py:7
+msgid "core app"
+msgstr "core"
+
+#: core/models.py:13 core/models.py:58
+msgid "title"
+msgstr "title"
+
+#: core/models.py:15
+msgid "The page title as you'd like it to be seen by the public"
+msgstr "The page title as you'd like it to be seen by the public"
+
+#: core/models.py:19
+msgid "description"
+msgstr "description"
+
+#: core/models.py:21
+msgid ""
+"A short description not longer than 155 characters. Don't use double quotes."
+msgstr ""
+"A short description not longer than 155 characters. Don't use double quotes."
+
+#: core/models.py:26
+msgid "keywords"
+msgstr "keywords"
+
+#: core/models.py:28
+msgid "A comma-separated list of keywords. Don't use double quotes."
+msgstr "A comma-separated list of keywords. Don't use double quotes."
+
+#: core/models.py:34
+msgid "owner"
+msgstr "owner"
+
+#: core/models.py:49
+msgid "parent"
+msgstr "parent"
+
+#: core/models.py:63
+msgid "slug"
+msgstr "slug"
+
+#: core/models.py:64
+msgid ""
+"A short label containing only letters, numbers, underscores or hyphens for "
+"URL"
+msgstr ""
+"A short label containing only letters, numbers, underscores or hyphens for "
+"URL"
+
+#: core/models.py:82
+msgid "file name"
+msgstr "file name"
+
+#: core/models.py:87
+msgid "public identifier"
+msgstr "public identifier"
+
+#: core/models.py:94
+msgid "uploaded file"
+msgstr "uploaded file"
+
+#: core/models.py:99
+msgid "created time"
+msgstr "created time"
+
+#: core/models.py:105
+msgid "attachment"
+msgstr "attachment"
+
+#: core/models.py:106
+msgid "attachments"
+msgstr "attachments"
+
+#: core/models.py:114
+msgid "site id"
+msgstr "site id"
+
+#: core/models.py:118
+msgid "Google Analytics UA-ID"
+msgstr "Google Analytics UA-ID"
+
+#: core/models.py:125
+msgid "Google Service"
+msgstr "Google Service"
+
+#: core/models.py:126
+msgid "Google Services"
+msgstr "Google Services"
 
 #: member/apps.py:7
 msgid "member"
