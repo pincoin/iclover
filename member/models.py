@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 
-
 class Profile(TimeStampedModel):
     PHONE_VERIFIED_STATUS_CHOICES = Choices(
         (0, 'unverified', _('cellphone unverified')),
@@ -19,12 +18,29 @@ class Profile(TimeStampedModel):
         on_delete=models.CASCADE
     )
 
+    division = models.IntegerField(
+        verbose_name=_('division sale=1 purchase=2'),
+        default= 1 ,
+        blank=True,
+        null=True,
+    )
+
     code = models.IntegerField(
         verbose_name=_('code number'),
         unique = True,
-        max_length=11,
         blank=True,
         null=True,
+    )
+
+    company = models.CharField(
+        verbose_name=_('name of company'),
+        max_length=255,
+        blank=True,
+    )
+    company_keyword = models.CharField(
+        verbose_name=_('key words of company'),
+        max_length=255,
+        blank=True,
     )
 
     ceo = models.CharField(
@@ -32,6 +48,7 @@ class Profile(TimeStampedModel):
         max_length=255,
         blank=True,
     )
+
     tax_bill_mail = models.CharField(
         verbose_name=_('tax bill mail'),
         max_length=255,
@@ -125,9 +142,16 @@ class Profile(TimeStampedModel):
 
     api_state = models.IntegerField(
         verbose_name=_('api_state'),
-        max_length=3,
         blank=True,
         null=True,
+    )
+
+    manager = models.ForeignKey(
+    'Employees',
+    verbose_name = _('manager'),
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
     )
 
     class Meta:
@@ -135,7 +159,7 @@ class Profile(TimeStampedModel):
         verbose_name_plural = _('profiles')
 
     def __str__(self):
-        return '{} profile - user {}/{}'.format(self.id, self.user.id, self.user.username)
+        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user.username)
 
     @property
     def full_name(self):
@@ -307,7 +331,6 @@ class Employees(TimeStampedModel):
 
     state = models.IntegerField(
         verbose_name=_('state'),
-        max_length=3,
         blank=True,
         null=True,
     )
@@ -354,4 +377,52 @@ class Employees(TimeStampedModel):
         verbose_name_plural = _('employees')
 
     def __str__(self):
-        return '{} {} {}'.format(self.user, self.cellphone, self.state)
+        return '{} {} {}'.format(self.user, self.name, self.state)
+
+
+class Ask(TimeStampedModel):
+    ASK_PART_WHAT_TO_DO = Choices(
+        (0, '환불', _('환불')),
+        (1, '입금', _('입금')),
+        (2, '영수증/계산서', _('영수증/계산서')),
+    )
+
+    ask_from = models.CharField(
+        verbose_name=_('name of employees requester'),
+        max_length=255,
+        blank=True,
+    )
+
+    ask_to = models.ForeignKey(
+        'Employees',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    ask_part = models.IntegerField(
+        verbose_name=_('division of requests'),
+        choices=ASK_PART_WHAT_TO_DO,
+        blank=True,
+        db_index=True,
+    )
+
+    ask_what = models.CharField(
+        verbose_name=_('request comment'),
+        max_length=255,
+        blank=True,
+    )
+
+    ask_finish = models.BooleanField(
+        verbose_name=_('ask_finish'),
+        blank=True,
+        default=False,
+    )
+
+
+    class Meta:
+        verbose_name = _('ask')
+        verbose_name_plural = _('asks')
+
+    def __str__(self):
+        return '{} to {} state:{} {}'.format(self.ask_from, self.ask_to, self.ask_part, self.ask_what)
