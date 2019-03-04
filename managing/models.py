@@ -36,14 +36,18 @@ class Product(TimeStampedModel):
         blank=True,
     )
 
-    purchase_price = models.FloatField(
+    purchase_price = models.DecimalField(
         verbose_name=_('purchase_price'),
         blank=True,
+        decimal_places=4,
+        max_digits=10,
     )
 
-    sale_price = models.FloatField(
+    sale_price = models.DecimalField(
         verbose_name=_('sale_price'),
         blank=True,
+        decimal_places=4,
+        max_digits=10,
     )
 
     delivery_charge = models.IntegerField(
@@ -85,55 +89,67 @@ class Product(TimeStampedModel):
     def __str__(self):
         return '{} {} {}'.format(self.purchase, self.name, self.state)
 
-class Sample(TimeStampedModel):
-    employees = models.ForeignKey(
-        'member.Employees',
+class Deposit(TimeStampedModel):
+    name = models.CharField(
+        verbose_name=_('name of the deposit'),
+        max_length=255,
+        blank=True,
+    )
+
+    amount = models.IntegerField(
+        verbose_name=_('amount'),
+        blank=True,
+    )
+
+    memo = models.CharField(
+        verbose_name=_('memo and company name of deposit'),
+        max_length=255,
+        blank=True,
+    )
+
+    bill = models.CharField(
+        verbose_name=_('bill sate of deposit'),
+        max_length=255,
+        blank=True,
+    )
+    state = models.BooleanField(
+        verbose_name=_('sate of deposit'),
+        blank=True,
+        default=False,
+    )
+
+    class Meta:
+        verbose_name = _('입금내역')
+        verbose_name_plural = _('입금내역')
+
+    def __str__(self):
+        return '{} {} {}'.format(self.name, self.amount, self.memo)
+
+class Discount(TimeStampedModel):
+    product = models.ForeignKey(
+        'Product',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
-
-    plush_date = models.DateTimeField(
-        verbose_name=_('plush_date'),
-        auto_now_add=True,
-    )
-
-    finish_date = models.DateTimeField(
-        verbose_name=_('finish_date'),
-        default=datetime.now() + timedelta(days=90),
-    )
-
-    name = models.CharField(
-        verbose_name=_('name of sample'),
-        max_length=255,
+    discount1 = models.IntegerField(
+        verbose_name=_('discount1'),
         blank=True,
     )
 
-    keyword = models.CharField(
-        verbose_name=_('keyword'),
-        max_length=255,
+    discount2 = models.IntegerField(
+        verbose_name=_('discount2'),
         blank=True,
     )
 
-    group = models.CharField(
-        verbose_name=_('group of sample'),
-        max_length=255,
+    discount3 = models.IntegerField(
+        verbose_name=_('discount3'),
         blank=True,
-    )
-
-    def upload_to_sample(instance, filename):
-        now = datetime.now()
-        nowDate = now.strftime('%Y')
-        return 'sample/{}/{}/{}'.format(instance.employees,nowDate, filename)
-    sample_img = models.ImageField(
-        verbose_name=_('sample_img'),
-        blank=True,
-        upload_to=upload_to_sample,
     )
 
     class Meta:
-        verbose_name = _('sample')
-        verbose_name_plural = _('samples')
+        verbose_name = _('할인율')
+        verbose_name_plural = _('할인율')
 
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.employees, self.keyword)
+        return '{} {} {} {}'.format(self.product, self.discount1, self.discount2, self.discount3)

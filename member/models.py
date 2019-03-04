@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
+from datetime import datetime, timedelta
 
 class Profile(TimeStampedModel):
     PHONE_VERIFIED_STATUS_CHOICES = Choices(
@@ -179,7 +180,6 @@ class Profile(TimeStampedModel):
 
     email.fget.short_description = _('E-mail')
 
-
 class LoginLog(TimeStampedModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -201,7 +201,6 @@ class LoginLog(TimeStampedModel):
 
     def __str__(self):
         return '{} {} {}'.format(self.user.email, self.ip_address, self.created)
-
 
 class PhoneVerificationLog(models.Model):
     GENDER_CHOICES = Choices(
@@ -341,15 +340,13 @@ class Employees(TimeStampedModel):
         blank=True,
     )
 
-    join = models.CharField(
+    join = models.DateField(
         verbose_name=_('Join'),
-        max_length=255,
         blank=True,
     )
 
-    leave = models.CharField(
+    leave = models.DateField(
         verbose_name=_('leave'),
-        max_length=255,
         blank=True,
     )
 
@@ -360,7 +357,7 @@ class Employees(TimeStampedModel):
     )
 
     def upload_to_employees(instance, filename):
-        return 'employees/{}/{}'.format(instance.user.username, filename)
+        return 'employees/{}/{}'.format(instance.user.name, filename)
     join_pic = models.ImageField(
         verbose_name=_('join picture'),
         blank= True,
@@ -373,12 +370,11 @@ class Employees(TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _('employees')
-        verbose_name_plural = _('employees')
+        verbose_name = _('직원')
+        verbose_name_plural = _('직원')
 
     def __str__(self):
         return '{} {} {}'.format(self.user, self.name, self.state)
-
 
 class Ask(TimeStampedModel):
     ASK_PART_WHAT_TO_DO = Choices(
@@ -421,8 +417,62 @@ class Ask(TimeStampedModel):
 
 
     class Meta:
-        verbose_name = _('ask')
-        verbose_name_plural = _('asks')
+        verbose_name = _('요청사항')
+        verbose_name_plural = _('요청사항')
 
     def __str__(self):
         return '{} to {} state:{} {}'.format(self.ask_from, self.ask_to, self.ask_part, self.ask_what)
+
+class Sample(TimeStampedModel):
+    employees = models.ForeignKey(
+        'Employees',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    plush_date = models.DateTimeField(
+        verbose_name=_('plush_date'),
+        auto_now_add=True,
+    )
+
+    finish_date = models.DateTimeField(
+        verbose_name=_('finish_date'),
+        default=datetime.now() + timedelta(days=90),
+    )
+
+    name = models.CharField(
+        verbose_name=_('name of sample'),
+        max_length=255,
+        blank=True,
+    )
+
+    keyword = models.CharField(
+        verbose_name=_('keyword'),
+        max_length=255,
+        blank=True,
+    )
+
+    group = models.CharField(
+        verbose_name=_('group of sample'),
+        max_length=255,
+        blank=True,
+    )
+
+    def upload_to_sample(instance, filename):
+        now = datetime.now()
+        nowDate = now.strftime('%Y')
+        return 'sample/{}/{}/{}'.format(instance.employees.name,nowDate, filename)
+    sample_img = models.ImageField(
+        verbose_name=_('sample_img'),
+        blank=True,
+        upload_to=upload_to_sample,
+    )
+
+    class Meta:
+        verbose_name = _('샘플')
+        verbose_name_plural = _('샘플')
+
+    def __str__(self):
+        return '{} {} {}'.format(self.name, self.employees, self.keyword)
+
