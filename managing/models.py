@@ -83,8 +83,8 @@ class Product(TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _('product')
-        verbose_name_plural = _('products')
+        verbose_name = _('품목')
+        verbose_name_plural = _('품목')
 
     def __str__(self):
         return '{} {} {}'.format(self.purchase, self.name, self.state)
