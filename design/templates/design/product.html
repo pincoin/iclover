@@ -4,16 +4,9 @@
 {% block content%}
 <!-- Hero Section-->
 <section class="hero">
-    <div class="container">
-        <!-- Hero Content-->
-        <div class="hero-content pb-4 text-center">
-        </div>
-    </div>
-</section>
-<div class="">
-    <div class="row col-12">
+    <div class="row pr-0 m-0">
         <div class="col-lg-1" style="background-color: #343a40; color:white;">
-            <div style="top: 60px; " class="sticky-top mb-5 ">
+            <div style="top: 60px; " class="sticky-top mb-2">
                 <div class="sidebar-block ">
                     <nav class="nav nav-pills flex-column text-center">
                         <a href="../docs/docs-introduction.html" class="nav-link mb-2"
@@ -32,8 +25,8 @@
             </div>
         </div>
         <div class="col-lg-9 col-xl-9 docs-content position-relative">
-            <div class="row">
-                <div class="card col-sm-4 mb-4">
+            <div class="row m-0">
+                <div class="card col-lg-4 mb-4 p-0">
                     <div class="row m-1">
                         <div class="col-12 mt-3 mb-3">
                         <h4>샘플리스트</h4>
@@ -186,7 +179,8 @@
                                 <div class="product-image">
                                     <img src="{% static 'design/img/product/1.42.jpg'%}"
                                          alt="product" class="img-fluid">
-                                    <div class="product-hover-overlay"><a href="detail.html"
+                                    <div class="product-hover-overlay">
+                                        <a href="detail.html"
                                                                           class="product-hover-overlay-link"></a>
                                         <div class="product-hover-overlay-buttons"><a href="detail.html"
                                                                                       class="btn btn-dark btn-buy"><span
@@ -231,33 +225,159 @@
                           </nav>
                 </div>
 
-                <div class="col-sm-8">
+                <div class="col-lg-8">
                     <h4>전단지 & 족자</h4>
-                    <input type="text" value="4" class="form-control text-center input-items">
-                    <label data-toggle-id="12">zzzzz</label>
-                    <select data-toggle-id="12" class="form-control">
-                        <option>
-                            1
-                        </option>
-                    </select>
+                     <hr>
+                    <div class="row align-content-center">
+                        <div class="col-md-auto pr-0 mb-3 ">
+                              <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">
+
+
+                        </div>
+                        <div class="col">
+
+                            <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">종류</b></label>
+                      <select class="custom-select col-xl-8 col-lg-8 col-md-8 col-sm-8 col-9">
+                        <option selected="">전단지</option>
+                        <option value="1">족자</option>
+                      </select>
+                    </div>
+                           <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">면</b></label>
+                            <label for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-4 col-lg-4 col-md-3 col-4">
+                              단면
+                              <input type="radio" name="size" value="value_0" id="size_0" required="" class="input-invisible">
+                            </label>
+                            <label for="size_1" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-4 col-lg-4 col-md-3 col-4">
+
+                              양면
+                              <input type="radio" name="size" value="value_1" id="size_1" required="" class="input-invisible">
+                            </label>
+                    </div>
+                            <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">크기</b></label>
+                      <select class="custom-select col-xl-8 col-lg-8 col-md-8 col-sm-8 col-9">
+                        <option selected="">전단지 A4(국8절) 210*297 </option>
+                        <option value="1">전단지 B5 210*297 </option>
+                      </select>
+                    </div>
+
+                        </div>
+                    </div>
+                    <hr style="opacity: 0.7">
+                    <h5 class="text-black-50">인쇄 옵션</h5>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">용지</b></label>
+                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
+                        <option selected="">90 아트지</option>
+                        <option value="1">80 모조</option>
+                      </select>
+                        <button type="button" class="btn btn-primary btn-md ml-2"><b>!</b></button>
+                    </div>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">수량</b></label>
+                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
+                        <option selected="">1연 4000장</option>
+                        <option value="1">2연 4000장</option>
+                        <option value="2">3연 4000장</option>
+                        <option value="3">4연 4000장</option>
+                      </select>
+                        <button type="button" class="btn btn-primary btn-md ml-2"><b>!</b></button>
+                    </div>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">인쇄방식</b></label>
+                                    <label for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
+                                       합판 인쇄
+                                      <input type="radio" name="size" value="value_0" id="size_0" required="" class="input-invisible">
+                                    </label>
+                                    <label for="size_1" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
+
+                                      독판 인쇄
+                                      <input type="radio" name="size" value="value_1" id="size_1" required="" class="input-invisible">
+                                    </label>
+                    </div>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">포장선택</b></label>
+                            <label for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
+                               종이 포장
+                              <input type="radio" name="size" value="value_0" id="size_0" required="" class="input-invisible">
+                            </label>
+                            <label for="size_1" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
+
+                              박스 포장
+                              <input type="radio" name="size" value="value_1" id="size_1" required="" class="input-invisible">
+                            </label>
+                    </div>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">배송 선택</b></label>
+                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
+                        <option selected="">선불 택배</option>
+                        <option value="1">착불 택배</option>
+                        <option value="2">퀵 배송</option>
+                        <option value="3">방문 수령</option>
+                      </select>
+                    </div>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">배송 선택</b></label>
+                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
+                        <option selected="">선불 택배</option>
+                        <option value="1">착불 택배</option>
+                        <option value="2">퀵 배송</option>
+                        <option value="3">방문 수령</option>
+                      </select>
+                        <button type="button" class="btn btn-primary btn-md ml-2"><b>!</b></button>
+                    </div>
+                    <hr>
+                    <div class="card">
+                <div class="card-body bg-gray-100 p-4 text-sm">
+                    <p class="card-text">- 화면(RGB)색상과 출력물(CMYK)의 색상은 다릅니다.</p>
+                    <p class="card-text">- 배송 및 기간에 대한 확답을 드리지 않습니다.</p>
+                    <p class="card-text">- 다양한 변수를 위해 넉넉한 기간을 두고 구매하여주세요.</p>
+                    <p class="card-text">- 재인쇄의 경우 주문하셨던 배송 방법으로 발송됩니다.</p>
+                </div>
+              </div>
+                                      <hr>
+                   <div class="row">
+                       <div class="col-12"><span>작업 비용에 대한 부분은 추가되실 수 있습니다.</div>
+                       <div class="col-7">
+                           <p>공급가격: 300,000원 + 부가세(VAT) : 30,000원</p>
+                       </div>
+                       <div class="col-5">
+                           <p>합계</p>
+                       </div>
+                   </div>
+                                      <hr>
+
                 </div>
             </div>
         </div>
         <div class="col-lg-2">
-            <nav id="components-nav" style="top: 60px;"
-                 class="nav nav-pills flex-column sticky-top ml-1 p-3 mb-5 border-left text-center ">
+            <nav id="components-nav" style="top: 105px;"
+                 class="nav nav-pills flex-column ml-1 p-3 mb-5 text-center bg-gray-300">
                 <h4 class="sidebar">장바구니</h4>
                 <p></p>
                 <div class="customer-sidebar card border-0">
-                    <nav class="list-group customer-nav">
-                        <a class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-black-50" style="font-size:13px;">전단지 A4(국5절) 양면 아트지90 85,000원</span>
+                    <nav class="list-group customer-nav ">
+                        <a class="list-group-item flex-column justify-content-between align-items-center">
+                            <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>
+                            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                         </a>
-                        <a class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-black-50" style="font-size:13px;">전단지 A4 양면 아트지90</span>
+                        <a class="list-group-item flex-column justify-content-between align-items-center">
+                            <span class="text-black-50" style="font-size:12px;">전단지 A4(국5절)양면 <br>아트지90 <b>85,000원</b> </span>
+                             <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                         </a>
-                        <a class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-black-50" style="font-size:13px;">전단지 A4 양면 아트지90</span>
+                        <a class="list-group-item flex-column justify-content-between align-items-center ">
+                            <span class="text-black-50" style="font-size:12px;">양면전단지 A4(국5절)<br>아트지90 4000장 <b>85,000원</b> </span>
+                             <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </a>
+                        <a class="list-group-item flex-column justify-content-between align-items-center">
+                            <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b></span>
+                             <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </a>
+                        <a class="list-group-item flex-column justify-content-between align-items-center">
+                            <span class="text-black-50" style="font-size:12px;">전단지 A4(국5절)양면 <br>아트지90 <b>85,000원</b></span>
+                              <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                         </a>
 
                         <a href="../customer-account.html"
@@ -265,7 +385,7 @@
                             <svg class="svg-icon svg-icon-heavy mr-2">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
-                            인쇄비 : <b class="text-danger">80,000</b></b></a>
+                            인쇄비 : <b class="text-danger">180,000</b></b></a>
                         <a href="../customer-addresses.html"
                            class="list-group-item d-flex justify-content-between align-items-center"
                            style="background-color: #B9B8B8; color: #fff;"><span>
@@ -283,5 +403,5 @@
 
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
