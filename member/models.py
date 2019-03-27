@@ -424,37 +424,55 @@ class Ask(TimeStampedModel):
         return '{} to {} state:{} {}'.format(self.ask_from, self.ask_to, self.ask_part, self.ask_what)
 
 class Sample(TimeStampedModel):
+    category = models.ForeignKey(
+        'design.Category',
+        blank=True,
+        null=True,
+        verbose_name=_('카테고리'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+    sectors_category = models.ForeignKey(
+        'design.SectorsCategory',
+        blank=True,
+        null=True,
+        verbose_name=_('업종'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+
     employees = models.ForeignKey(
         'Employees',
         on_delete=models.SET_NULL,
+        verbose_name=_('직원명'),
         null=True,
         blank=True,
     )
 
     plush_date = models.DateTimeField(
-        verbose_name=_('plush_date'),
+        verbose_name=_('등록일'),
         auto_now_add=True,
     )
 
     finish_date = models.DateTimeField(
-        verbose_name=_('finish_date'),
+        verbose_name=_('등록일+90일'),
         default=datetime.now() + timedelta(days=90),
     )
 
     name = models.CharField(
-        verbose_name=_('name of sample'),
+        verbose_name=_('샘플명'),
         max_length=255,
         blank=True,
     )
 
     keyword = models.CharField(
-        verbose_name=_('keyword'),
+        verbose_name=_('키워드'),
         max_length=255,
         blank=True,
     )
 
     group = models.CharField(
-        verbose_name=_('group of sample'),
+        verbose_name=_('샘플 패키지'),
         max_length=255,
         blank=True,
     )
