@@ -9,9 +9,9 @@ from datetime import datetime, timedelta
 
 class Profile(TimeStampedModel):
     PHONE_VERIFIED_STATUS_CHOICES = Choices(
-        (0, 'unverified', _('cellphone unverified')),
-        (1, 'verified', _('cellphone verified')),
-        (2, 'revoked', _('cellphone revoked'))
+        (0, 'unverified', _('본인인증 X')),
+        (1, 'verified', _('본인인증 O')),
+        (2, 'revoked', _('본인인증 취소'))
     )
 
     user = models.OneToOneField(
@@ -20,87 +20,87 @@ class Profile(TimeStampedModel):
     )
 
     division = models.IntegerField(
-        verbose_name=_('division sale=1 purchase=2'),
+        verbose_name=_('구분 판매처=1 매입처=2'),
         default= 1 ,
         blank=True,
         null=True,
     )
 
     code = models.IntegerField(
-        verbose_name=_('code number'),
+        verbose_name=_('사업자번호'),
         unique = True,
         blank=True,
         null=True,
     )
 
     company = models.CharField(
-        verbose_name=_('name of company'),
+        verbose_name=_('업체명'),
         max_length=255,
         blank=True,
     )
     company_keyword = models.CharField(
-        verbose_name=_('key words of company'),
+        verbose_name=_('검색창 내용/ 키워드'),
         max_length=255,
         blank=True,
     )
 
     ceo = models.CharField(
-        verbose_name=_('ceo name'),
+        verbose_name=_('대표자명'),
         max_length=255,
         blank=True,
     )
 
     tax_bill_mail = models.CharField(
-        verbose_name=_('tax bill mail'),
+        verbose_name=_('이메일'),
         max_length=255,
         blank=True,
     )
 
     sectors = models.CharField(
-        verbose_name=_('sectors'),
+        verbose_name=_('업종'),
         max_length=255,
         blank=True,
     )
 
     business = models.CharField(
-        verbose_name=_('business'),
+        verbose_name=_('업태'),
         max_length=255,
         blank=True,
     )
 
     tell = models.CharField(
-        verbose_name=_('store tell number'),
+        verbose_name=_('매장번호'),
         max_length=255,
         blank=True,
     )
 
     keywords = models.CharField(
-        verbose_name=_('keywords of user'),
-        max_length=255,
+        verbose_name=_('키워드'),
+        max_length=1000,
         blank=True,
     )
 
     memo = models.CharField(
-        verbose_name=_('memo of user'),
+        verbose_name=_('메모'),
         max_length=255,
         blank=True,
     )
 
     phone = models.CharField(
         verbose_name=_('phone number'),
-        max_length=16,
+        max_length=17,
         blank=True,
         null=True,
     )
 
     address = models.CharField(
-        verbose_name=_('address'),
+        verbose_name=_('주소'),
         max_length=255,
         blank=True,
     )
 
     address2 = models.CharField(
-        verbose_name=_('address2'),
+        verbose_name=_('주소2'),
         max_length=255,
         blank=True,
     )
@@ -124,19 +124,19 @@ class Profile(TimeStampedModel):
     )
 
     options = models.CharField(
-        verbose_name=_('options for sale'),
+        verbose_name=_('결재/포함/택배'),
         max_length=255,
         blank=True,
     )
 
     confirm = models.CharField(
-        verbose_name=_('confirmed at '),
+        verbose_name=_('시안 확인'),
         max_length=255,
         blank=True,
     )
 
     discount = models.CharField(
-        verbose_name=_('select discount rate'),
+        verbose_name=_('할인율'),
         max_length=255,
         blank=True,
     )
@@ -148,11 +148,17 @@ class Profile(TimeStampedModel):
     )
 
     manager = models.ForeignKey(
-    'Employees',
-    verbose_name = _('manager'),
-    on_delete=models.SET_NULL,
-    null=True,
-    blank=True,
+        'member.Employees',
+        verbose_name = _('담당자'),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    state = models.CharField(
+        verbose_name=_('사업자 상태'),
+        max_length=100,
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -160,7 +166,7 @@ class Profile(TimeStampedModel):
         verbose_name_plural = _('profiles')
 
     def __str__(self):
-        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user.username)
+        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user.name)
 
     @property
     def full_name(self):
@@ -452,11 +458,6 @@ class Sample(TimeStampedModel):
     plush_date = models.DateTimeField(
         verbose_name=_('등록일'),
         auto_now_add=True,
-    )
-
-    finish_date = models.DateTimeField(
-        verbose_name=_('등록일+90일'),
-        default=datetime.now() + timedelta(days=90),
     )
 
     name = models.CharField(

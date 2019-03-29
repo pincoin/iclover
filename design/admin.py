@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import (
-    Goods_banner, Category, Option, OptionValue, SectorsCategory,
-    StandardOption, StandardOptionValue, PaperOption, PaperOptionValue, DosuOption, DosuOptionValue,
-    BusuOption, BusuOptionValue,
+    Goods_banner, Category, Option, SectorsCategory,
+    StandardOption, PaperOption, DosuOption, ProductPrice,
+    BusuOption,OrderImg,OrderInfo,OrderList,OrderMemo,
 
 )
 from mptt.admin import DraggableMPTTAdmin
@@ -34,8 +34,6 @@ class StandardOptionAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
-class StandardOptionValueAdmin(admin.ModelAdmin):
-    pass
 
 class PaperOptionAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'category', 'indented_title', 'slug')
@@ -44,18 +42,12 @@ class PaperOptionAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
-class PaperOptionValueAdmin(admin.ModelAdmin):
-    pass
-
 class DosuOptionAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'category', 'indented_title', 'slug')
     list_filter = ('category__title', 'created')
     prepopulated_fields = {'slug': ('title',)}
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
-
-class DosuOptionValueAdmin(admin.ModelAdmin):
-    pass
 
 class BusuOptionAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'category', 'indented_title', 'slug')
@@ -64,11 +56,6 @@ class BusuOptionAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
-class BusuOptionValueAdmin(admin.ModelAdmin):
-    pass
-
-
-
 class OptionAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'category', 'indented_title', 'slug')
     list_filter = ('category__title', 'created')
@@ -76,22 +63,31 @@ class OptionAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
+class ProductPriceAdmin(admin.ModelAdmin):
+    list_filter = ('purchase', 'created')
 
-class OptionValueAdmin(admin.ModelAdmin):
+class OrderInfoAdmin(admin.ModelAdmin):
     pass
 
+class OrderListAdmin(admin.ModelAdmin):
+    pass
 
+class OrderImgAdmin(admin.ModelAdmin):
+    pass
+
+class OrderMemoAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(Goods_banner, Goods_bannerAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(Option, OptionAdmin)
-admin.site.register(OptionValue, OptionValueAdmin)
 admin.site.register(StandardOption, StandardOptionAdmin)
-admin.site.register(StandardOptionValue, StandardOptionValueAdmin)
 admin.site.register(PaperOption, PaperOptionAdmin)
-admin.site.register(PaperOptionValue, PaperOptionValueAdmin)
 admin.site.register(DosuOption, DosuOptionAdmin)
-admin.site.register(DosuOptionValue, DosuOptionValueAdmin)
 admin.site.register(BusuOption, BusuOptionAdmin)
-admin.site.register(BusuOptionValue, BusuOptionValueAdmin)
+admin.site.register(ProductPrice, ProductPriceAdmin)
+admin.site.register(OrderInfo, OrderInfoAdmin)
+admin.site.register(OrderList, OrderListAdmin)
+admin.site.register(OrderImg, OrderImgAdmin)
+admin.site.register(OrderMemo, OrderMemoAdmin)

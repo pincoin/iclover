@@ -40,14 +40,14 @@ class Product(TimeStampedModel):
         verbose_name=_('purchase_price'),
         blank=True,
         decimal_places=4,
-        max_digits=10,
+        max_digits=100,
     )
 
     sale_price = models.DecimalField(
         verbose_name=_('sale_price'),
         blank=True,
         decimal_places=4,
-        max_digits=10,
+        max_digits=100,
     )
 
     delivery_charge = models.IntegerField(
