@@ -738,9 +738,9 @@ class OrderImg(TimeStampedModel):
     def upload_to_order(instance, filename):
         now = datetime.now()
         nowDate = now.strftime('%Y%m')
-        return 'order/{}{}/{}'.format(nowDate ,instance.order_list.order_info.profile.user, filename)
+        return 'order/{}/{}/{}'.format(instance.order_list.order_info.profile.user,nowDate, filename)
 
-    sample_img = models.ImageField(
+    order_img = models.ImageField(
         verbose_name=_('order_img'),
         blank=True,
         upload_to=upload_to_order,
@@ -751,9 +751,10 @@ class OrderImg(TimeStampedModel):
         verbose_name_plural = _('주문 3_시안')
 
     def __str__(self):
-        return '{} {} {}'.format(self.order_list.order_info.profile.company,self.sample, self.state)
+        return '{} {}'.format(self.sample, self.state)
 
 class OrderMemo(TimeStampedModel):
+
     order_img = models.ForeignKey(
         'design.OrderImg',
         verbose_name=_('주문 이미지'),

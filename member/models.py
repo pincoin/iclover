@@ -143,6 +143,7 @@ class Profile(TimeStampedModel):
 
     api_state = models.IntegerField(
         verbose_name=_('api_state'),
+        default=0,
         blank=True,
         null=True,
     )
@@ -160,13 +161,24 @@ class Profile(TimeStampedModel):
         null=True,
         blank=True,
     )
+    STATE_SELECT = Choices(
+        (0, '정상', _('정상')),
+        (1, '폐업', _('폐업')),
+    )
+    state_select = models.IntegerField(
+        verbose_name=_('사업자 상태'),
+        choices= STATE_SELECT,
+        default=0,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = _('profile')
         verbose_name_plural = _('profiles')
 
     def __str__(self):
-        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user.name)
+        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user.username)
 
     @property
     def full_name(self):
