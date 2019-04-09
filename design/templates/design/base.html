@@ -53,13 +53,19 @@
                         </li>
                         <li class="list-inline-item px-3 border-left d-none d-lg-inline-block">
                             <b>아이클로버를 찾아주셔서 진심으로 감사드립니다.</b>
-                            {{data}}
-                            {{user}} 님 반갑습니다
+
+                            {% if company %}
+                            {{company}}님 반갑습니다
+                            {% else %}
+                            방문자님 반갑습니다
+                            {% endif %}
+
                         </li>
                     </ul>
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end">
                     <!-- Language Dropdown-->
+                    {% if staff %}
                     <!-- if  관리자 -->
                     <div class="dropdown border-right px-3">
                         <a href="{% url 'managing/main' %}">
@@ -70,16 +76,19 @@
                         </a>
                     </div>
                     <!-- endif  관리자 -->
+                    {% endif%}
                     <div class="dropdown border-right px-3">
                         <a id="langsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                            class="dropdown-toggle topbar-link">
                             안내사항
                         </a>
+                        <form method="POST" name="dic_data">
                         <div aria-labelledby="langsDropdown" class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item text-sm">공지사항</a>
+                            <a href="#" class="dropdown-item text-sm" >공지사항</a>
                             <a href="#" class="dropdown-item text-sm">자주묻는 질문</a>
                             <a href="#" class="dropdown-item text-sm">제품 한눈에 보기</a>
                         </div>
+                        </form>
                     </div>
                     <div class="dropdown pl-3 ml-0">
                         <a href="" class="text-dark">
@@ -138,43 +147,43 @@
                                             <h6 class="text-uppercase">인쇄</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">전단지/포스터
+                                                    <a href="{% url 'design:product' menu_slug='flyer' sector_slug='all' %}" class="megamenu-list-link">전단지/포스터
                                                         <span class="badge badge-warning ml-1">인기</span>
                                                     </a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">명함</a>
+                                                    <a href="{% url 'design:product' menu_slug='business_card' sector_slug='all' %}" class="megamenu-list-link">명함</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">봉투</a>
+                                                    <a href="{% url 'design:product' menu_slug='bt' sector_slug='all' %}" class="megamenu-list-link">봉투</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">복권</a>
+                                                    <a href="{% url 'design:product'  menu_slug='lotto' sector_slug='all' %}" class="megamenu-list-link">복권</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">상품권</a>
+                                                    <a href="{% url 'design:product' menu_slug='voucher' sector_slug='all' %}" class="megamenu-list-link">상품권</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">스티커</a>
+                                                    <a href="{% url 'design:product' menu_slug='sticker' sector_slug='all' %}" class="megamenu-list-link">스티커</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">문어발</a>
+                                                    <a href="{% url 'design:product' menu_slug='octopus' sector_slug='all' %}" class="megamenu-list-link">문어발</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">종이자석</a>
+                                                    <a href="{% url 'design:product' menu_slug='paper_magnet' sector_slug='all' %}" class="megamenu-list-link">종이자석</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">양식지
+                                                    <a href="{% url 'design:product' menu_slug='ncr' sector_slug='all' %}" class="megamenu-list-link">양식지
                                                         NCR지</a></li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">카다로그/브로셔
+                                                    <a href="{% url 'design:product' menu_slug='catalog' sector_slug='all' %}" class="megamenu-list-link">카다로그/브로셔
                                                         <span class="badge badge-warning ml-1">인기</span></a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">포스트잇</a>
+                                                    <a href="{% url 'design:product' menu_slug='post_it' sector_slug='all' %}" class="megamenu-list-link">포스트잇</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">떡메모지</a>
+                                                    <a href="{% url 'design:product' menu_slug='memo' sector_slug='all' %}" class="megamenu-list-link">떡메모지</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -182,41 +191,41 @@
                                             <h6 class="text-uppercase">현수막</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">일반 현수막
+                                                    <a href="{% url 'design:product' menu_slug='haning_banner' sector_slug='all' %}" class="megamenu-list-link">일반 현수막
                                                         <span class="badge badge-warning ml-1">인기</span></a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">대형 현수막</a>
+                                                    <a href="{% url 'design:product' menu_slug='big_hanging_banner' sector_slug='all' %}" class="megamenu-list-link">대형 현수막</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">족자</a>
+                                                    <a href="{% url 'design:product' menu_slug='flyer_scroll' sector_slug='all' %}" class="megamenu-list-link">족자</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">게시대 현수막</a>
+                                                    <a href="{% url 'design:product' menu_slug='publish_hanging_banner' sector_slug='all' %}" class="megamenu-list-link">게시대 현수막</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">실사 출력</a>
+                                                    <a href="{% url 'design:product' menu_slug='real_hanging_banner' sector_slug='all' %}" class="megamenu-list-link">실사 출력</a>
                                                 </li>
                                             </ul>
                                             <h6 class="text-uppercase">배너</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">실내용 배너</a>
+                                                    <a href="{% url 'design:product' menu_slug='banner' sector_slug='all' %}" class="megamenu-list-link">실내용 배너</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">실외용 배너</a>
+                                                    <a href="{% url 'design:product' menu_slug='banner' sector_slug='all' %}" class="megamenu-list-link">실외용 배너</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">미니 배너</a>
+                                                    <a href="{% url 'design:product' menu_slug='banner' sector_slug='all' %}" class="megamenu-list-link">미니 배너</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">대형 배너</a>
+                                                    <a href="{% url 'design:product' menu_slug='banner' sector_slug='all' %}" class="megamenu-list-link">대형 배너</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">가방 배너</a>
+                                                    <a href="{% url 'design:product' menu_slug='banner' sector_slug='all' %}" class="megamenu-list-link">가방 배너</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">배너 부속품</a>
+                                                    <a href="{% url 'design:product' menu_slug='banner' sector_slug='all' %}" class="megamenu-list-link">배너 부속품</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -225,19 +234,19 @@
                                             <h6 class="text-uppercase">판촉/홍보</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">명찰/사원증</a>
+                                                    <a href="{% url 'design:product' menu_slug='name_tag' sector_slug='all' %}" class="megamenu-list-link">명찰/사원증</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">부채</a>
+                                                    <a href="{% url 'design:product' menu_slug='fan' sector_slug='all' %}" class="megamenu-list-link">부채</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">물티슈</a>
+                                                    <a href="{% url 'design:product' menu_slug='wet_tissue' sector_slug='all' %}" class="megamenu-list-link">물티슈</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">에어탑</a>
+                                                    <a href="{% url 'design:product' menu_slug='air_top' sector_slug='all' %}" class="megamenu-list-link">에어탑</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">어깨띠</a>
+                                                    <a href="{% url 'design:product' menu_slug='air_top' sector_slug='all' %}" class="megamenu-list-link">어깨띠</a>
                                                 </li>
                                             </ul>
 
@@ -245,21 +254,21 @@
                                             <h6 class="text-uppercase">비품</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">대여복
+                                                    <a href="{% url 'design:product' menu_slug='wear' sector_slug='all' %}" class="megamenu-list-link">대여복
                                                         <span class="badge badge-warning ml-1">인기</span></a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">수건
+                                                    <a href="{% url 'design:product' menu_slug='wear' sector_slug='all' %}" class="megamenu-list-link">수건
                                                         <span class="badge badge-warning ml-1">인기</span></a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">샤워용품</a>
+                                                    <a href="{% url 'design:product' menu_slug='wear' sector_slug='all' %}" class="megamenu-list-link">샤워용품</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">청소용품</a>
+                                                    <a href="{% url 'design:product' menu_slug='wear' sector_slug='all' %}" class="megamenu-list-link">청소용품</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">평상/원목</a>
+                                                    <a href="{% url 'design:product' menu_slug='wear' sector_slug='all' %}" class="megamenu-list-link">평상/원목</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -268,14 +277,14 @@
                                             <h6 class="text-uppercase">주문</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">샘플로 주문</a>
+                                                    <a href="{% url 'design:product' menu_slug='all' sector_slug='all' %}" class="megamenu-list-link">샘플로 주문</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
                                                     <a href="1_cart.html" class="megamenu-list-link">견적 & 주문
                                                         요청하기</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design/product'%}" class="megamenu-list-link">마케팅 콘텐츠</a>
+                                                    <a href="{% url 'design:product' menu_slug='content' sector_slug='all' %}" class="megamenu-list-link">마케팅 콘텐츠</a>
                                                 </li>
                                             </ul>
 
@@ -346,19 +355,6 @@
                             </div>
                         </div>
                     </li>
-                    <!--&lt;!&ndash; /Megamenu end&ndash;&gt;-->
-                    <!--<li class="nav-item">-->
-                        <!--<a href="{% url 'design/product'%}" class="nav-link">디자인 샘플</a>-->
-                    <!--</li>-->
-                    <!--<li class="nav-item">-->
-                        <!--<a href="{% url 'design/cart'%}" class="nav-link">디자인 견적&주문</a>-->
-                    <!--</li>-->
-                    <!--<li class="nav-item">-->
-                        <!--<a href="{% url 'design/product'%}" class="nav-link">비품 주문</a>-->
-                    <!--</li>-->
-                    <!--<li class="nav-item">-->
-                        <!--<a href="{% url 'design/product'%}" class="nav-link">마케팅 콘텐츠</a>-->
-                    <!--</li>-->
                 </ul>
                 <!-- end 카테고리 -->
 
@@ -373,7 +369,7 @@
                     <!-- User Not Logged - link to login page-->
 
                     <div class="nav-item">
-                        <a href="{% url 'design/orders'%}" class="navbar-icon-link">
+                        <a href="{% url 'design:orders' %}" class="navbar-icon-link">
                             <svg class="svg-icon">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
@@ -383,7 +379,7 @@
 
                     <!-- Cart Dropdown-->
                     <div class="nav-item dropdown">
-                        <a href="{% url 'design/cart'%}" class="navbar-icon-link d-lg-none">
+                        <a href="{% url 'design:cart'%}" class="navbar-icon-link d-lg-none">
                             <svg class="svg-icon">
                                 <use xlink:href="#cart-1"></use>
                             </svg>
@@ -402,7 +398,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="{% url 'design/cart'%}">
+                                            <a href="{% url 'design:cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -410,7 +406,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design:cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -420,7 +416,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="{% url 'design/cart'%}">
+                                            <a href="{% url 'design:cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -428,7 +424,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design:cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -438,7 +434,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="{% url 'design/cart'%}">
+                                            <a href="{% url 'design:cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -446,7 +442,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design:cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -456,7 +452,7 @@
                                     <!-- cart item-->
                                     <div class="navbar-cart-product">
                                         <div class="d-flex align-items-center">
-                                            <a href="{% url 'design/cart'%}">
+                                            <a href="{% url 'design:cart'%}">
                                                 <img src="{% static 'design/img/product/product-square-ian-dooley-347968-unsplash.jpg' %}"
                                                      alt="..." class="img-fluid navbar-cart-product-image"></a>
                                             <div class="w-100">
@@ -464,7 +460,7 @@
                                                     <i class="fa fa-times"> </i>
                                                 </a>
                                                 <div class="pl-3">
-                                                    <a href="{% url 'design/cart'%}" class="navbar-cart-product-link">Skull Tee</a>
+                                                    <a href="{% url 'design:cart'%}" class="navbar-cart-product-link">Skull Tee</a>
                                                     <small class="d-block text-muted">Quantity: 1</small>
                                                     <strong class="d-block text-sm">$75.00 </strong>
                                                 </div>
@@ -478,7 +474,7 @@
                                 </div>
                                 <!-- buttons-->
                                 <div class="d-flex justify-content-between">
-                                    <a href="{% url 'design/cart'%}" class="btn btn-dark col">장바구니로 이동</a>
+                                    <a href="{% url 'design:cart'%}" class="btn btn-dark col">장바구니로 이동</a>
                                 </div>
                             </div>
                         </div>
