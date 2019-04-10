@@ -8,6 +8,20 @@ from django.contrib.auth.models import User
 from . import models
 import logging
 
+# class PageableMixin(object):
+#     logger = logging.getLogger(__name__)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(PageableMixin, self).get_context_data(**kwargs)
+#
+#         start_index = int((context['page_obj'].number - 1) / self.block_size) * self.block_size
+#         end_index = min(start_index + self.block_size, len(context['paginator'].page_range))
+#
+#         context['page_range'] = context['paginator'].page_range[start_index:end_index]
+#         return context
+#
+#     def get_paginate_by(self, queryset):
+#         return self.chunk_size
 
 class ProfileMixin(object):
 
@@ -25,6 +39,7 @@ class ProfileMixin(object):
                 context['staff'] = i.user.is_staff
             session = self.request.session
             context['session'] = session
+        print('ProfileMixin')
         return context
 
 
@@ -35,28 +50,21 @@ class HomeView(ProfileMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        if not 'company' in context:
-            context['company'] = '방문자'
         return context
 
 class ProductView(ProfileMixin, ListView):
     template_name = 'design/product.html'
+    context_object_name = 'sample_list'
 
     def get_queryset(self):
-        return
+        return models.Sample.objects.select_related( 'employees__user','sectors_category__parent')
 
 
     def get_context_data(self, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
-        context['company'] = 'get했습니다'
-        data = self.request.COOKIES
-        data['hello'] = 'hi'
-        if data['hello']:
-            print(data,'##########')
+        context['menu_slug']= self.kwargs['menu_slug']
+        context['sector_slug'] = self.kwargs['sector_slug']
 
-        print(self.kwargs['menu_slug'],self.kwargs['sector_slug'],context)
-        print('GET :',self.request.GET.dict())
-        print('POST :', self.request.POST.dict())
 
         return context
 
