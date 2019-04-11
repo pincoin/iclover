@@ -1,20 +1,17 @@
-import re
 import uuid
-from django.conf import settings
-from django.db import models
+
 from django.utils.translation import gettext_lazy as _
-from model_utils import Choices
 from model_utils.models import (
-    SoftDeletableModel, TimeStampedModel
+    SoftDeletableModel
 )
-from member.models import *
-from datetime import datetime, timedelta
 from mptt.fields import TreeForeignKey
+from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
+from member.models import *
 
 
-class Goods_banner(TimeStampedModel,SoftDeletableModel):
+class Goods_banner(TimeStampedModel, SoftDeletableModel):
     CATEGORY_GOODS_BANNER = Choices(
         (0, '전단지/포스터', _('전단지/포스터')),
         (1, '문어발', _('문어발')),
@@ -92,6 +89,7 @@ class Goods_banner(TimeStampedModel,SoftDeletableModel):
     def __str__(self):
         return '{} / {}'.format(self.get_category_display(), self.subtitle)
 
+
 class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
@@ -126,6 +124,7 @@ class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
     def __str__(self):
         return self.title
 
+
 class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
@@ -157,8 +156,11 @@ class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
         verbose_name = _('카테고리 업종')
         verbose_name_plural = _('카테고리 업종')
 
+    objects = TreeManager()
+
     def __str__(self):
         return self.title
+
 
 class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
@@ -202,6 +204,7 @@ class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
 
     def __str__(self):
         return self.title
+
 
 class StandardOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
@@ -274,6 +277,7 @@ class StandardOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     def __str__(self):
         return self.title
 
+
 class PaperOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
@@ -322,6 +326,7 @@ class PaperOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     def __str__(self):
         return self.title
 
+
 class DosuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
@@ -364,6 +369,7 @@ class DosuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
 
     def __str__(self):
         return self.title
+
 
 class BusuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
@@ -416,6 +422,7 @@ class BusuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     def __str__(self):
         return self.title
 
+
 class ProductPrice(TimeStampedModel, SoftDeletableModel):
     code = models.IntegerField(
         null=True,
@@ -425,7 +432,7 @@ class ProductPrice(TimeStampedModel, SoftDeletableModel):
         'design.Option',
         verbose_name=_('기타 옵션'),
         null=True,
-        blank= True,
+        blank=True,
         db_index=True,
         on_delete=models.SET_NULL,
     )
@@ -507,7 +514,8 @@ class ProductPrice(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('상품옵션 최종 가격')
 
     def __str__(self):
-        return '{} {} {}'.format(self.standard_option,self.price,self.selling_price)
+        return '{} {} {}'.format(self.standard_option, self.price, self.selling_price)
+
 
 class OrderInfo(TimeStampedModel, SoftDeletableModel):
     profile = models.ForeignKey(
@@ -560,7 +568,7 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
     state = models.IntegerField(
         verbose_name=_('상태값'),
         choices=STATE_WHAT,
-        default= 0,
+        default=0,
         blank=True,
         db_index=True,
     )
@@ -595,7 +603,6 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         blank=True,
     )
 
-
     uuid = models.UUIDField(
         default=uuid.uuid1
     )
@@ -606,6 +613,7 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
 
     def __str__(self):
         return '{} {} {}'.format(self.profile, self.company, self.employees)
+
 
 class OrderList(TimeStampedModel, SoftDeletableModel):
     order_info = models.ForeignKey(
@@ -693,7 +701,8 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('주문 2_품목')
 
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.standard, self.memo,)
+        return '{} {} {}'.format(self.name, self.standard, self.memo, )
+
 
 class OrderImg(TimeStampedModel, SoftDeletableModel):
     order_list = models.ForeignKey(
@@ -736,7 +745,7 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
     def upload_to_order(instance, filename):
         now = datetime.now()
         nowDate = now.strftime('%Y%m')
-        return 'order/{}/{}/{}'.format(instance.order_list.order_info.profile.user,nowDate, filename)
+        return 'order/{}/{}/{}'.format(instance.order_list.order_info.profile.user, nowDate, filename)
 
     order_img = models.ImageField(
         verbose_name=_('order_img'),
@@ -751,8 +760,8 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
     def __str__(self):
         return '{} {}'.format(self.sample, self.state)
 
-class OrderMemo(TimeStampedModel, SoftDeletableModel):
 
+class OrderMemo(TimeStampedModel, SoftDeletableModel):
     order_img = models.ForeignKey(
         'design.OrderImg',
         verbose_name=_('주문 이미지'),
@@ -767,7 +776,7 @@ class OrderMemo(TimeStampedModel, SoftDeletableModel):
     )
     memo = models.CharField(
         verbose_name=_('내용'),
-        max_length= 9000,
+        max_length=9000,
         blank=True,
         null=True,
     )
@@ -783,4 +792,4 @@ class OrderMemo(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('주문 4_시안 메모')
 
     def __str__(self):
-        return '{} {} {}'.format(self.order_img,self.check,self.memo,)
+        return '{} {} {}'.format(self.order_img, self.check, self.memo, )
