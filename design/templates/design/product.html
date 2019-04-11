@@ -1,7 +1,7 @@
 {% extends 'design/base.html'%}
 {% load static %}
 {% load design_tags %}
-{% block title%}전단지{% endblock %}
+{% block title%}위믹스 품목{% endblock %}
 {% block content%}
 <hr>
 <!-- Hero Section-->
@@ -31,7 +31,7 @@
                     <div class="row m-1">
                         <div class="col-12 mt-3 mb-3">
                             {% sample_list sector_slug as samples %}
-                        <h4>샘플리스트 {% for p in samples %}{{p}}{% endfor %}</h4>
+                            <h4>샘플리스트 {% for z in samples %}<p>{{z}}</p>{% endfor %}</h4>
                         </div>
                         <div class="col-12 mt-3 mb-3">
                         <div class="form-group align-content-center">

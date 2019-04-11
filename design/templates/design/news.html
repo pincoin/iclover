@@ -1,0 +1,33 @@
+{% extends 'design/leftsidebar.html'%}
+{% load static %}
+{% block title%}공지사항{% endblock %}
+{% block sidebar_title%}공지사항{% endblock %}
+{% block sidebar_subtitle%}위믹스(아이클로버)의 소식을 공유합니다.{% endblock %}
+{% block sidebar_active0 %}style="font-weight: bold;" {% endblock %}
+
+{% block sidebar_content%}
+<div id="pagesfolder" class="docs-item">
+    <h5>공지사항</h5>
+    <div class="mt-2">
+        <p>Pages folder where all the HTML pages are located. The pages here form a demo static site, mostly equivalent
+            to the online demo (source not minified and CDNs not used here).</p>
+        <p> You can open any of the files in your browser to see it in action, or modify their markup or content to suit
+            your needs.</p>
+        <p> If you will be using Gulp the help you with your work, these HTML files will be used by Gulp during the
+            development.</p>
+        <p><strong>Pages folder also includes these subfolders:</strong></p>
+        <ul>
+            <li><code>/component-variants</code> - demo of complex components' variants - e.g. page headers</li>
+            <li><code>/css</code> - main theme stylesheet (style.default.css), its colour variants and their minified
+                counterparts.
+            </li>
+            <li><code>/docs</code> - documentation you are reading now</li>
+            <li><code>/icons</code> - custom SVG icon sprite + its reference doc</li>
+            <li><code>/fonts</code></li>
+            <li><code>/img</code> - Images for demo purposes.</li>
+            <li><code>/js</code> - JavaScript files</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

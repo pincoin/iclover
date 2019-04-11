@@ -24,7 +24,6 @@ import logging
 #         return self.chunk_size
 
 class ProfileMixin(object):
-
     def get_context_data(self, **kwargs):
         context = super(ProfileMixin, self).get_context_data(**kwargs)
         user_id = self.request.user.id
@@ -39,7 +38,6 @@ class ProfileMixin(object):
                 context['staff'] = i.user.is_staff
             session = self.request.session
             context['session'] = session
-        print('ProfileMixin')
         return context
 
 
@@ -59,13 +57,10 @@ class ProductView(ProfileMixin, ListView):
     def get_queryset(self):
         return models.Sample.objects.select_related( 'employees__user','sectors_category__parent')
 
-
     def get_context_data(self, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
         context['menu_slug']= self.kwargs['menu_slug']
         context['sector_slug'] = self.kwargs['sector_slug']
-
-
         return context
 
 class CartView(TemplateView):
@@ -81,16 +76,18 @@ class OrdersView(ProfileMixin, TemplateView):
         context = super(OrdersView, self).get_context_data(**kwargs)
         return context
 #
-class ProfileView(TemplateView):
+class ProfileView(ProfileMixin,TemplateView):
     template_name = 'design/profile.html'
 
+class FaqView(ProfileMixin,TemplateView):
+    template_name = 'design/faq.html'
 
+class NewsView(ProfileMixin,TemplateView):
+    template_name = 'design/news.html'
 
-def testpage(request):
-    profile = models.OrderImg.objects.select_related('order_list__order_info__profile__user','order_list__order_info__employees__user').order_by('id')
-    # profile = ([i for i in profile])
-    # category = Category.objects.all()
-    # category = TreeQuerySet(model=Category)
-    # i = '<br>'.join([ i.title for i in category])
-    context = {'profile':profile}
-    return render(request, 'design/test.html',context)
+class OrderListView(ProfileMixin,TemplateView):
+    template_name = 'design/order_list.html'
+
+class MyPageView(ProfileMixin,TemplateView):
+    template_name = 'design/my_page.html'
+

@@ -1,0 +1,158 @@
+{% extends 'design/leftsidebar.html'%}
+{% load static %}
+{% block title%}마이페이지{% endblock %}
+{% block sidebar_title%}마이페이지{% endblock %}
+{% block sidebar_subtitle%} {% endblock %}
+{% block sidebar_active3 %}style="font-weight: bold;"{% endblock %}
+
+{% block sidebar_content%}
+<div id="pagesfolder" class="docs-item">
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="block mb-5">
+          <div class="block-header"><strong class="text-uppercase">비밀번호 변경</strong></div>
+          <div class="block-body">
+            <form>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="password_old" class="form-label">기존 비밀번호</label>
+                    <input id="password_old" type="password" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="password_1" class="form-label">새로운 비밀번호</label>
+                    <input id="password_1" type="password" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="password_2" class="form-label">새 비밀번호 확인</label>
+                    <input id="password_2" type="password" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-outline-dark"><i class="far fa-save mr-2"></i>비밀번호 변경</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="block mb-5">
+          <div class="block-header"><strong class="text-uppercase">개인 정보</strong><p class="text-muted">자세히 적어주세요</p></div>
+          <div class="block-body">
+            <form>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="firstname" class="form-label">상호명</label>
+                    <input id="firstname" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="lastname" class="form-label">전화번호</label>
+                    <input id="lastname" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="lastname" class="form-label">핸드폰</label>
+                    <input id="lastname" type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row-->
+              <div class="row">
+                <div class="col-sm-8">
+                  <div class="form-group">
+                    <label for="company" class="form-label">주소</label>
+                    <input id="company" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="company" class="form-label">E-mail</label>
+                    <input id="company" type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <!-- /.row-->
+              <div class="row">
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label for="city" class="form-label">사업자 번호</label>
+                    <input id="city" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label for="zip" class="form-label">대표자명</label>
+                    <input id="zip" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label for="state" class="form-label">업종</label>
+                    <input id="state" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label for="country" class="form-label">업태</label>
+                    <input id="country" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <p class="form-label">*받으시려는 영수증의 정보를 정확하게 입력해주시기 바랍니다</p>
+                  <div class="row">
+                    <div class="form-group col-md-6 d-flex align-items-center">
+                      <input type="radio" name="shippping" id="option0">
+                      <label for="option0" class="ml-3"><strong class="form-label">세금계산서</strong></label>
+                    </div>
+                    <div class="form-group col-md-6 d-flex align-items-center">
+                      <input type="radio" name="shippping" id="option1">
+                      <label for="option1" class="ml-3"><strong class="form-label">사업자 지출증빙</strong></label>
+                    </div>
+                    <div class="form-group col-md-6 d-flex align-items-center">
+                      <input type="radio" name="shippping" id="option2">
+                      <label for="option2" class="ml-3"><strong class="form-label">현금 영수증</strong></label>
+                    </div>
+                    <div class="form-group col-md-6 d-flex align-items-center">
+                      <input type="radio" name="shippping" id="option3">
+                      <label for="option3" class="ml-3"><strong class="form-label">미발행</strong></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="phone" class="form-label">사업자 등록증</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row-->
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-outline-dark"><i class="far fa-save mr-2"></i>저장하기</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+{% endblock %}

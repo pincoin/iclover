@@ -14,7 +14,7 @@ from mptt.models import MPTTModel
 
 
 
-class Goods_banner(TimeStampedModel):
+class Goods_banner(TimeStampedModel,SoftDeletableModel):
     CATEGORY_GOODS_BANNER = Choices(
         (0, '전단지/포스터', _('전단지/포스터')),
         (1, '문어발', _('문어발')),
@@ -92,8 +92,7 @@ class Goods_banner(TimeStampedModel):
     def __str__(self):
         return '{} / {}'.format(self.get_category_display(), self.subtitle)
 
-
-class Category(TimeStampedModel, MPTTModel):
+class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
         verbose_name=_('parent'),
@@ -127,7 +126,7 @@ class Category(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class SectorsCategory(TimeStampedModel, MPTTModel):
+class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
         verbose_name=_('parent'),
@@ -161,7 +160,7 @@ class SectorsCategory(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class Option(TimeStampedModel, MPTTModel):
+class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
         verbose_name=_('category'),
@@ -204,7 +203,7 @@ class Option(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class StandardOption(TimeStampedModel, MPTTModel):
+class StandardOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
         verbose_name=_('category'),
@@ -275,7 +274,7 @@ class StandardOption(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class PaperOption(TimeStampedModel, MPTTModel):
+class PaperOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
         verbose_name=_('category'),
@@ -323,7 +322,7 @@ class PaperOption(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class DosuOption(TimeStampedModel, MPTTModel):
+class DosuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
         verbose_name=_('category'),
@@ -366,7 +365,7 @@ class DosuOption(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class BusuOption(TimeStampedModel, MPTTModel):
+class BusuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     category = models.ForeignKey(
         'design.Category',
         verbose_name=_('category'),
@@ -417,8 +416,7 @@ class BusuOption(TimeStampedModel, MPTTModel):
     def __str__(self):
         return self.title
 
-
-class ProductPrice(TimeStampedModel):
+class ProductPrice(TimeStampedModel, SoftDeletableModel):
     code = models.IntegerField(
         null=True,
         blank=True,
@@ -511,7 +509,7 @@ class ProductPrice(TimeStampedModel):
     def __str__(self):
         return '{} {} {}'.format(self.standard_option,self.price,self.selling_price)
 
-class OrderInfo(TimeStampedModel):
+class OrderInfo(TimeStampedModel, SoftDeletableModel):
     profile = models.ForeignKey(
         'member.Profile',
         verbose_name=_('거래처'),
@@ -609,7 +607,7 @@ class OrderInfo(TimeStampedModel):
     def __str__(self):
         return '{} {} {}'.format(self.profile, self.company, self.employees)
 
-class OrderList(TimeStampedModel):
+class OrderList(TimeStampedModel, SoftDeletableModel):
     order_info = models.ForeignKey(
         'design.OrderInfo',
         verbose_name=_('주문 정보'),
@@ -697,7 +695,7 @@ class OrderList(TimeStampedModel):
     def __str__(self):
         return '{} {} {}'.format(self.name, self.standard, self.memo,)
 
-class OrderImg(TimeStampedModel):
+class OrderImg(TimeStampedModel, SoftDeletableModel):
     order_list = models.ForeignKey(
         'design.OrderList',
         verbose_name=_('주문 품목'),
@@ -753,7 +751,7 @@ class OrderImg(TimeStampedModel):
     def __str__(self):
         return '{} {}'.format(self.sample, self.state)
 
-class OrderMemo(TimeStampedModel):
+class OrderMemo(TimeStampedModel, SoftDeletableModel):
 
     order_img = models.ForeignKey(
         'design.OrderImg',

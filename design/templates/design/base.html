@@ -80,12 +80,12 @@
                     <div class="dropdown border-right px-3">
                         <a id="langsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                            class="dropdown-toggle topbar-link">
-                            안내사항
+                            고객센터
                         </a>
                         <form method="POST" name="dic_data">
                         <div aria-labelledby="langsDropdown" class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item text-sm" >공지사항</a>
-                            <a href="#" class="dropdown-item text-sm">자주묻는 질문</a>
+                            <a href="{% url 'design:news' %}" class="dropdown-item text-sm" >공지사항</a>
+                            <a href="{% url 'design:faq' %}" class="dropdown-item text-sm">자주묻는 질문</a>
                             <a href="#" class="dropdown-item text-sm">제품 한눈에 보기</a>
                         </div>
                         </form>
@@ -331,10 +331,10 @@
                                             <h6 class="text-uppercase">Company</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="#" class="megamenu-list-link">공지사항</a>
+                                                    <a href="{% url 'design:news' %}" class="megamenu-list-link">공지사항</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="#" class="megamenu-list-link">자주묻는 질문</a>
+                                                    <a href="{% url 'design:faq' %}" class="megamenu-list-link">자주묻는 질문</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -409,7 +409,7 @@
                     <!-- User Not Logged - link to login page-->
 
                     <div class="nav-item">
-                        <a href="{% url 'design:orders' %}" class="navbar-icon-link">
+                        <a href="{% url 'design:order_list' %}" class="navbar-icon-link">
                             <svg class="svg-icon">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
@@ -631,8 +631,8 @@
                 <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
                     <h6 class="text-uppercase text-dark mb-3">COMPANY</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-muted">공지사항</a></li>
-                        <li><a href="#" class="text-muted">자주묻는 질문</a></li>
+                        <li><a href="{% url 'design:news' %}" class="text-muted">공지사항</a></li>
+                        <li><a href="{% url 'design:faq' %}" class="text-muted">자주묻는 질문</a></li>
                         <li><a href="#" class="text-muted">회사소개</a></li>
                     </ul>
                 </div>

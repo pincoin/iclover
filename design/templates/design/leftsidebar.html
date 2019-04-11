@@ -1,0 +1,33 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% block content%}
+<div class="container mb-3 d-block d-lg-none d-xl-none"></div>
+<div class="container d-none d-lg-block">
+    <div class="hero-content pb-2 pt-3 text-center">
+        <h2 class="hero-heading">{% block sidebar_title%}{% endblock %}</h2>
+        <p>{% block sidebar_subtitle%}{% endblock %}</p>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2">
+            <div style="top: 120px;" class="sticky-top mb-5">
+                <div class="sidebar-block">
+                    <nav class="nav nav-pills flex-column">
+                        <a href="{% url 'design:news' %}" class="nav-link mb-2" {% block sidebar_active0 %}{%endblock%}>공지사항</a>
+                        <a href="{% url 'design:faq' %}" class="nav-link mb-2" {% block sidebar_active1 %}{%endblock%}>자주 묻는 질문 (F.A.Q)</a>
+                        <a href="{% url 'design:order_list' %}" class="nav-link mb-2" {% block sidebar_active2 %}{%endblock%}>주문 리스트</a>
+                        <a href="{% url 'design:my_page' %}" class="nav-link mb-2" {% block sidebar_active3 %}{%endblock%}>마이 페이지</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10 col-xl-8 docs-content text-lg">
+            {% block sidebar_content %} {% endblock %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
