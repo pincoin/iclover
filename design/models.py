@@ -570,7 +570,7 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
     )
     price = models.DecimalField(
         verbose_name=_('매입가'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
