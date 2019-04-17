@@ -160,28 +160,28 @@ class StandardOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
     )
     horizontal = models.DecimalField(
         verbose_name=_('가로'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
     )
     vertical = models.DecimalField(
         verbose_name=_('세로'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
     )
     width = models.DecimalField(
         verbose_name=_('넓이'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
     )
     height = models.DecimalField(
         verbose_name=_('높이'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
@@ -399,13 +399,13 @@ class ProductPrice(TimeStampedModel, SoftDeletableModel):
     )
 
     price = models.DecimalField(
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
     )
     selling_price = models.DecimalField(
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
@@ -577,21 +577,21 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
     )
     price_tax = models.DecimalField(
         verbose_name=_('매입 부가세'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
     )
     selling_price = models.DecimalField(
         verbose_name=_('판매가'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
     )
     selling_price_tax = models.DecimalField(
         verbose_name=_('판매 부가세'),
-        max_digits=100,
+        max_digits=11,
         decimal_places=4,
         null=True,
         blank=True,
