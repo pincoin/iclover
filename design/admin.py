@@ -1,16 +1,11 @@
 from django.contrib import admin
 from .models import (
-    Goods_banner, Category, Option, SectorsCategory,
+    Category, Option, SectorsCategory,
     StandardOption, PaperOption, DosuOption, ProductPrice,
     BusuOption,OrderImg,OrderInfo,OrderList,OrderMemo,
 
 )
 from mptt.admin import DraggableMPTTAdmin
-
-
-class Goods_bannerAdmin(admin.ModelAdmin):
-    pass
-
 
 class CategoryAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'indented_title', 'slug','is_removed')
@@ -78,7 +73,6 @@ class OrderImgAdmin(admin.ModelAdmin):
 class OrderMemoAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Goods_banner, Goods_bannerAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(Option, OptionAdmin)

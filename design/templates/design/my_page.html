@@ -7,7 +7,8 @@
 
 {% block sidebar_content%}
 <div id="pagesfolder" class="docs-item">
-
+  {{ form.as_p}}
+  {{my_list}}
 <section>
   <div class="container">
     <div class="row">
@@ -52,7 +53,7 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="firstname" class="form-label">상호명</label>
-                    <input id="firstname" type="text" class="form-control">
+                    <input id="firstname" type="text" class="form-control" placeholder="">
                   </div>
                 </div>
                 <div class="col-sm-4">

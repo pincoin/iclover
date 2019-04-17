@@ -48,7 +48,7 @@
                     <!-- Logo container-->
                     <div class="logo">
                         <!-- Text Logo -->
-                        <a href="{% url 'managing/main'%}" class="logo">
+                        <a href="{% url 'managing:main'%}" class="logo">
                             WIMIX & ICLOVER
                         </a>
                     </div>
@@ -199,29 +199,29 @@
                                 <a href="#"><i class="mdi mdi-view-dashboard"></i>기본 등록</a>
                                 <ul class="submenu">
                                     <li>
-                                        <a href="{% url 'managing/customer' %}">거래처 관리</a>
+                                        <a href="{% url 'managing:customer' %}">거래처 관리</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'managing/product' %}">품목 관리</a>
+                                        <a href="{% url 'managing:product' %}">품목 관리</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'managing/discount' %}">할인그룹 관리</a>
+                                        <a href="{% url 'managing:discount' %}">할인그룹 관리</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'managing/sample' %}">샘플 관리</a>
+                                        <a href="{% url 'managing:sample' %}">샘플 관리</a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'managing/category' %}">카테고리 관리</a>
+                                        <a href="{% url 'managing:category' %}">카테고리 관리</a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li class="has-submenu">
-                                <a href="{% url 'managing/demand' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span class="badge badge-purple">1</span></a>
+                                <a href="{% url 'managing:demand' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span class="badge badge-purple">1</span></a>
                             </li>
 
                             <li class="has-submenu">
-                                <a href="{% url 'managing/deal_list' %}"><i class="mdi mdi-view-list"></i>거래 내역</a>
+                                <a href="{% url 'managing:deal_list' %}"><i class="mdi mdi-view-list"></i>거래 내역</a>
                             </li>
 
                             <li class="has-submenu">

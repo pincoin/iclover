@@ -1,13 +1,17 @@
 from django.urls import path
-from .views import Main, Customer, Product, Sample, Category, Discount, Deal_list, Demand
+from .views import Main, CustomerView, ProductView, SampleView, CategoryView, DiscountView, Deal_listView, DemandView
+
+app_name = 'managing'
 
 urlpatterns = [
-    path('', Main.as_view(), name='managing/main'),
-    path('customer', Customer.as_view(), name='managing/customer'),
-    path('product', Product.as_view(), name='managing/product'),
-    path('sample', Sample.as_view(), name='managing/sample'),
-    path('category', Category.as_view(), name='managing/category'),
-    path('discount', Discount.as_view(), name='managing/discount'),
-    path('deal_list', Deal_list.as_view(), name='managing/deal_list'),
-    path('demand', Demand.as_view(), name='managing/demand'),
+    path('', Main.as_view(), name='main'),
+    path('customer', CustomerView.as_view(), name='customer'),
+    path('product', ProductView.as_view(), name='product'),
+    path('sample', SampleView.as_view(), name='sample'),
+    path('category', CategoryView.as_view(), name='category'),
+    path('discount', DiscountView.as_view(), name='discount'),
+    path('deal_list', Deal_listView.as_view(), name='deal_list'),
+    path('demand', DemandView.as_view(), name='demand'),
+
+
 ]

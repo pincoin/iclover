@@ -1,12 +1,15 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import TemplateView,ListView, View
+from django.views.generic import TemplateView,ListView, View, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from mptt.querysets import TreeQuerySet
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from . import models
+from . import models as design_model
+from member import models as member_model
+from managing import models as managing_model
 import logging
+from . import forms
 
 # class PageableMixin(object):
 #     logger = logging.getLogger(__name__)
@@ -28,7 +31,7 @@ class ProfileMixin(object):
         context = super(ProfileMixin, self).get_context_data(**kwargs)
         user_id = self.request.user.id
         if user_id:
-            user = models.Profile.objects.select_related('user').filter(user=user_id)
+            user = design_model.Profile.objects.select_related('user').filter(user=user_id)
             for i in user:
                 context['user'] = i.user
                 if i.company:
@@ -55,7 +58,7 @@ class ProductView(ProfileMixin, ListView):
     context_object_name = 'sample_list'
 
     def get_queryset(self):
-        return models.Sample.objects.select_related( 'employees__user','sectors_category__parent')
+        return managing_model.Sample.objects.select_related( 'sectors_category__parent')
 
     def get_context_data(self, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
@@ -69,7 +72,7 @@ class CartView(TemplateView):
 class CheckoutView(TemplateView):
     template_name = 'design/checkout.html'
 
-class OrdersView(ProfileMixin, TemplateView):
+class OrdersView(ProfileMixin, ListView):
     template_name = 'design/orders.html'
 
     def get_context_data(self, **kwargs):
@@ -85,9 +88,43 @@ class FaqView(ProfileMixin,TemplateView):
 class NewsView(ProfileMixin,TemplateView):
     template_name = 'design/news.html'
 
-class OrderListView(ProfileMixin,TemplateView):
+class OrderListView(ProfileMixin, ListView):
     template_name = 'design/order_list.html'
+    context_object_name = 'order_list'
+    form_class =forms.LoginForm
 
-class MyPageView(ProfileMixin,TemplateView):
+    def post(self, *args, **kwargs):
+        if self.request.POST:
+            form = forms.LoginForm(self.request.POST)
+            username = self.request.POST['login']
+            password = self.request.POST['password']
+        return form
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return design_model.OrderList.objects.filter(order_info__user__id= user).select_related('order_info__user','order_info__user').order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        form = forms.LoginForm()
+        context = super(OrderListView, self).get_context_data(**kwargs)
+        print(form)
+        context['form'] = form
+        return context
+
+class MyPageView(ProfileMixin, TemplateView):
     template_name = 'design/my_page.html'
+    context_object_name = 'my_list'
+    form_class = forms.ProfileForm
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return design_model.OrderList.objects.filter(order_info__user__id= user).select_related('order_info__user','order_info__user').order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        pk = self.request.user.id
+        form = forms.ProfileForm()
+        context = super(MyPageView, self).get_context_data(**kwargs)
+        print(form)
+        context['form'] = form
+        return context
 
