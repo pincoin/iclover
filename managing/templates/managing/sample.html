@@ -1,240 +1,159 @@
 {% extends 'managing/base.html'%}
 {% load static %}
+{% load humanize %}
 {% block title %}샘플 관리{% endblock%}
-
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title">샘플 관리</h4>
+            <a href="{% url 'managing:sample' %}">
+                <h4 class="page-title">샘플 관리</h4>
+            </a>
         </div>
     </div>
 </div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-icon alert-success alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <i class="mdi mdi-check-all"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+
+{% endif %}
+
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-
     <div class="row">
-        <div class="col-sm-8">
-            <form role="form">
+        <div class="col-sm-6">
+            <form role="form" method="GET">
                 <div class="form-group search-box">
-                    <input type="text" id="search-input" class="form-control product-search" placeholder="검색어를 입력해주세요">
+                    {{ data_search_form.q }}
                     <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
                 </div>
             </form>
         </div>
-        <div class="col-sm-4">
-            <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
-                    data-target="#con-close-modal">샘플 등록
-            </button>
+        <div class="col-sm-6">
+            <a href="{% url 'managing:sample_create' %}">
+                <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">샘플 등록
+                </button>
+            </a>
         </div>
     </div>
-    <!-- Responsive modal -->
-    <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">샘플 등록하기</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label class="control-label">이미지 선택</label>
-                                <div class="bootstrap-filestyle input-group ">
-                                <input type="file" class="filestyle" data-input="false" id="filestyle-1" style="position: absolute; clip: rect(0px, 0px, 0px, 0px);" tabindex="-1">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="field-3" class="control-label">샘플 번호</label>
-                                <input type="text" class="form-control" id="field-3" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">담당 직원</label>
-                                <select id="field-1" class="form-control">
-                                    <option>직원1</option>
-                                    <option>직원2</option>
-                                    <option>직원3</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">검색 키워드</label>
-                                <input type="text" class="form-control" id="field-4" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">품목 카테고리</label>
-                                <select id="field-5" class="form-control">
-                                    <option>디자인</option>
-                                    <option>비품</option>
-                                    <option>기타</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">업종 카테고리</label>
-                                <select id="field-6" class="form-control">
-                                    <option>피트니스</option>
-                                    <option>카페</option>
-                                    <option>요가</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group no-margin">
-                                <label for="field-17" class="control-label">직원 메모</label>
-                                <textarea class="form-control autogrow" id="field-17"
-                                          placeholder="내부 직원용"
-                                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-teal waves-effect waves-light">샘플 등록하기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.modal -->
-
     <ul class="nav nav-tabs tabs-bordered">
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">샘플 관리</span>
+                <span class="hidden-xs">샘플</span>
             </a>
         </li>
     </ul>
     <div class="tab-content">
+        <!-- 판매처  -->
         <div class="tab-pane active" id="home-b1">
             <div class="table-responsive">
-                <table class="table table-hover mails m-0 table table-actions-bar">
-                    <thead>
-                    <tr>
-                        <th>등록일</th>
-                        <th>이미지</th>
-                        <th>샘플명</th>
-                        <th>검색 키워드</th>
-                        <th>품목 카테고리</th>
-                        <th>업종 카테고리</th>
-                        <th>담당 직원</th>
-                        <th>수정</th>
-                    </tr>
-                    </thead>
+                <div class="table-responsive">
+                    <table class="table table-hover mails m-0 table table-actions-bar">
+                        <thead>
+                        <tr>
+                            <th>이미지</th>
+                            <th>샘플명</th>
+                            <th>품목 카테고리</th>
+                            <th>업종 카테고리</th>
+                            <th>키워드</th>
+                            <th>직원명</th>
+                            <th>수정</th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
-                    <tr>
-                        <td>
-                           2019.01.02
-                        </td>
-                        <td>
-                            <img src="{% static 'managing/images/properties/1.1.jpg'%}" width="100px;">
-                        </td>
-                        <td>
-                            nj199
-                        </td>
-                        <td>
-                            헬스,피트니스,다이어트,핑크,가격
-                        </td>
-                        <td>
-                            디자인 > 전단지,족자
-                        </td>
-                        <td>
-                            스포츠 > 요가
-                        </td>
+                        <tbody>
+                        {% for i in sample_list %}
+                        <tr>
+                            <td>
+                                <img src="/media/{{ i.sample_img}}" width="130px;"/>
 
-                        <td>
-                            직원1
-                        </td>
-                        <td>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-pencil-box-outline text-success"></i></a>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-close-box-outline text-danger"></i></a>
-                        </td>
-                    </tr>
+                            </td>
 
-                    <tr>
-                        <td>
-                           2019.01.02
-                        </td>
-                        <td>
-                            <img src="{% static 'managing/images/properties/2.1.jpg'%}" width="100px;">
-                        </td>
-                        <td>
-                            nj214
-                        </td>
-                        <td>
-                            어두운,검정,헬스,피트니스,금박,금색,럭셔리,어두운,검정,헬스,피트니스,금박,금색,럭셔리
-                        </td>
-                        <td>
-                            디자인 > 전단지,족자
-                        </td>
-                        <td>
-                            스포츠 > 피트니스
-                        </td>
+                            <td>
+                                 {{ i.name }}
+                            </td>
 
-                        <td>
-                            직원3
-                        </td>
-                        <td>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-pencil-box-outline text-success"></i></a>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-close-box-outline text-danger"></i></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            <td>
+                                <a href="#">{{ i.category }}</a>
+                            </td>
+                              <td>
+                                <a href="#">{{ i.sectors_category }}</a>
+                            </td>
+                            <td>
+                                {{ i.keyword }}
+                            </td>
+                             <td>
+                                {{ i.employees.name }}
+                            </td>
+                            <td>
+                                <a href="{% url 'managing:sample_update' i.pk %}" class="table-action-btn h2"><i
+                                        class="mdi mdi-pencil-box-outline text-success"></i></a>
+<!--                                <a href="#" class="table-action-btn h3"><i-->
+<!--                                        class="mdi mdi-close-box-outline text-danger"></i></a>-->
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div> <!-- end table responsive -->
             <div class="row m-t-30">
                 <div class="text-center m-t-30">
-                    <ul class="pagination pagination-split m-t-30">
-                        <li class="disabled">
-                            <a href="#"><i class="fa fa-angle-left"></i></a>
-                        </li>
-                        <li>
-                            <a href="#">1</a>
-                        </li>
-                        <li class="active">
-                            <a href="#">2</a>
-                        </li>
-                        <li>
-                            <a href="#">3</a>
-                        </li>
-                        <li>
-                            <a href="#">4</a>
-                        </li>
-                        <li>
-                            <a href="#">5</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-angle-right"></i></a>
-                        </li>
-                    </ul>
+
+                    {% if not sample_list %}
+                    <h3>검색 된 데이터가 없습니다.</h3>
+                    {% endif %}
+
+                    {% if is_paginated %}
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li>
+                                <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    <span>이전</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="disabled">
+                                <a href="#">
+                                    <span><strike>시작</strike></span>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for page in page_range %}
+                            <li {% if page == page_obj.number %}class="active" {% endif %}>
+                                <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    {{ page }}</a>
+                            </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    <span>다음</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li {% if not page_obj.has_next %}class="disabled" {% endif %}>
+                                <a href="#">
+                                    <strike>끝</strike>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
                 </div>
             </div>
         </div>

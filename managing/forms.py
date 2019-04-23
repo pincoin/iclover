@@ -133,3 +133,29 @@ class ProductUpdateForm(forms.ModelForm):
     class Meta:
         model = design_models.ProductBase
         fields = ['code']
+
+class SampleCreateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Sample
+        fields = ['category','sectors_category','employees','name','keyword','sample_img']
+        widgets = {
+            'category': forms.Select(attrs={'class': 'form-control' }),
+            'sectors_category': forms.Select(attrs={'class': 'form-control'}),
+            'employees': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
+            'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
+            'sample_img': forms.FileInput(attrs={'class':'form-control'})
+        }
+
+class SampleUpdateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Sample
+        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'sample_img']
+        widgets = {
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'sectors_category': forms.Select(attrs={'class': 'form-control'}),
+            'employees': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
+            'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
+            'sample_img': forms.FileInput(attrs={'class': 'form-control'})
+        }

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
-from model_utils.models import TimeStampedModel
+from model_utils.models import SoftDeletableModel, TimeStampedModel
 from datetime import datetime, timedelta
 
 # Create your models here.
@@ -88,7 +88,7 @@ class Product(TimeStampedModel):
     def __str__(self):
         return '{} {} {}'.format(self.purchase, self.name, self.state)
 
-class Deposit(TimeStampedModel):
+class Deposit(TimeStampedModel, SoftDeletableModel):
     name = models.CharField(
         verbose_name=_('name of the deposit'),
         max_length=255,
@@ -153,8 +153,7 @@ class Discount(TimeStampedModel):
     def __str__(self):
         return '{} {} {} {}'.format(self.product, self.discount1, self.discount2, self.discount3)
 
-class Employees(TimeStampedModel):
-
+class Employees(TimeStampedModel, SoftDeletableModel):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -170,33 +169,39 @@ class Employees(TimeStampedModel):
         verbose_name=_('name of employees'),
         max_length=255,
         blank=True,
+        null=True,
     )
 
     join = models.DateField(
         verbose_name=_('Join'),
         blank=True,
+        null=True,
     )
 
     leave = models.DateField(
         verbose_name=_('leave'),
         blank=True,
+        null=True,
     )
 
     cellphone = models.CharField(
         verbose_name=_('cellphone'),
         max_length=255,
         blank=True,
+        null=True,
     )
 
     def upload_to_employees(instance, filename):
         return 'employees/{}/{}'.format(instance.user.name, filename)
     join_pic = models.ImageField(
         verbose_name=_('join picture'),
+        null=True,
         blank= True,
         upload_to= upload_to_employees,
     )
     leave_pic = models.ImageField(
         verbose_name=_('leave picture'),
+        null=True,
         blank=True,
         upload_to=upload_to_employees,
     )
@@ -208,7 +213,7 @@ class Employees(TimeStampedModel):
     def __str__(self):
         return '{} {} {}'.format(self.user, self.name, self.state)
 
-class Ask(TimeStampedModel):
+class Ask(TimeStampedModel, SoftDeletableModel):
     ASK_PART_WHAT_TO_DO = Choices(
         (0, '환불', _('환불')),
         (1, '입금', _('입금')),
@@ -254,7 +259,7 @@ class Ask(TimeStampedModel):
     def __str__(self):
         return '{} to {} state:{} {}'.format(self.ask_from, self.ask_to, self.ask_part, self.ask_what)
 
-class Sample(TimeStampedModel):
+class Sample(TimeStampedModel, SoftDeletableModel):
     category = models.ForeignKey(
         'design.Category',
         blank=True,

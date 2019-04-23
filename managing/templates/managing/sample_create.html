@@ -1,0 +1,85 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}샘플 등록{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title"><a href="{% url 'managing:sample' %}">샘플 관리</a> / 샘플 등록</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="{% url 'managing:sample' %}">
+                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">샘플 목록
+                </button>
+            </a>
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.errors_from_post }}
+        {{ form.errors }}
+        <div class="row">
+            <div class="col-sm-3">
+                <span class="help-block"> 카테고리 : </span>
+                {{ form.category}}
+            </div>
+            <div class="col-sm-3">
+                 <span class="help-block"> 업종 : </span>
+                {{ form.sectors_category}}
+            </div>
+            <div class="col-sm-3">
+                 <span class="help-block"> 샘플명 : </span>
+                {{ form.name}}
+            </div>
+            <div class="col-sm-3">
+                 <span class="help-block"> 샘플 키워드 : </span>
+                {{ form.keyword}}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12 p-4">
+                {{ form.sample_img}}
+            </div>
+
+        </div>
+        <br> <br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <button class="form-control btn btn-danger">저장하기</button>
+            </div>
+            <div class="col-sm-3"><span id="ImgPreview"></span></div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(function () {
+        $("#sample_img").change(function () {
+            console.log('hi');
+            readURL(this);
+        });
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#bImgPreview img').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+{% endblock %}

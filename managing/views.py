@@ -129,7 +129,7 @@ class ProdcutCreateView(SuccessMessageMixin, generic.CreateView):
     form_class = managing_forms.ProductCreateForm
     template_name = 'managing/product_create.html'
     success_url = "/managing/product"
-    success_message = '님의 정보가 신규 등록 되었습니다..'
+    success_message = '신규 등록 되었습니다.'
 
     def get_queryset(self):
         queryset = super(ProdcutCreateView, self).get_queryset()
@@ -141,10 +141,69 @@ class ProductUpdateView(SuccessMessageMixin, generic.UpdateView):
     context_object_name = 'update_list'
     template_name = 'managing/product_update.html'
     success_url = "/managing/product"
-    success_message = '님의 정보가 수정되었습니다.'
+    success_message = '정보가 수정되었습니다.'
 
-class SampleView(generic.TemplateView):
+
+class SampleView(generic.ListView):
     template_name = 'managing/sample.html'
+    context_object_name = 'sample_list'
+    paginate_by = 10
+    model = managing_models.Sample
+    data_search_form = managing_forms.DataSearchForm
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('employees','category','sectors_category').order_by('-created')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            if q:
+                try:
+                    q = q.split()
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(keyword__icontains=i) | Q(name__icontains=i)| Q(employees__name__icontains=i)
+                            | Q(category__title__icontains=i)| Q(sectors_category__title__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(SampleView, self).get_context_data(**kwargs)
+        paginator = context['paginator']
+        context['data_search_form'] = self.data_search_form(
+            q = self.request.GET.get('q') if self.request.GET.get('q') else ''
+        )
+        page_numbers_range = 5  # Display only 5 page numbers
+        max_index = paginator.page_range[-1]
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+        return context
+
+
+class SampleCreateView(SuccessMessageMixin, generic.CreateView):
+    form_class = managing_forms.SampleCreateForm
+    template_name = 'managing/sample_create.html'
+    success_url = "/managing/sample"
+    success_message = '샘플이 신규 등록 되었습니다.'
+
+    def get_queryset(self):
+        queryset = super(SampleCreateView, self).get_queryset()
+        return queryset
+
+class SampleUpdateView(SuccessMessageMixin, generic.UpdateView):
+    model = managing_models.Sample
+    form_class = managing_forms.SampleUpdateForm
+    context_object_name = 'update_list'
+    template_name = 'managing/sample_update.html'
+    success_url = "/managing/sample"
+    success_message = '샘플이 수정되었습니다.'
 
 class CategoryView(generic.TemplateView):
     template_name = 'managing/category.html'
