@@ -1,0 +1,120 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}품목 등록{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title"><a href="{% url 'managing:product' %}">품목 관리</a> / 품목 등록</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="{% url 'managing:product' %}">
+                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">품목 목록
+                </button>
+            </a>
+        </div>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p}}}
+        {{ form.errors_from_post }}
+        {{ form.user }}
+        {{ form.user.errors  }}
+        <div class="row">
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.code.help_text}}</span>
+                {{ form.code}}
+                {% if form.errors.code %}<span style="color: #d33333"> {{form.errors.code.as_text}}</span> {% endif %}
+            </div>
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.company.help_text}}</span>
+                {{ form.company}}
+            </div>
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.company_keyword.help_text}}</span>
+                {{ form.company_keyword}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.ceo.help_text}}</span>
+                {{ form.ceo}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.sectors.help_text}}</span>
+                {{ form.sectors}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.business.help_text}}</span>
+                {{ form.business}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.tell.help_text}}</span>
+                {{ form.tell}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="help-block"> {{ form.address.help_text}}</span>
+                {{ form.address}}
+            </div>
+            <div class="col-sm-6">
+                <span class="help-block"> {{ form.address2.help_text}}</span>
+                {{ form.address2}}
+            </div>
+        </div>
+        <br>
+         <div class="row">
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.phone.help_text}}</span>
+                {{ form.phone}}
+            </div>
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.confirm.help_text}}</span>
+                {{ form.confirm}}
+            </div>
+
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.options.help_text}}</span>
+                {{ form.options}}
+            </div>
+         </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.keywords.help_text}}</span>
+                {{ form.keywords}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.memo.help_text}}</span>
+                {{ form.memo}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.tax_bill_mail.help_text}}</span>
+                {{ form.tax_bill_mail}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> {{ form.manager.help_text}}</span>
+                {{ form.manager}}
+            </div>
+        </div>
+        <br> <br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <button class="form-control btn btn-danger">저장하기</button>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

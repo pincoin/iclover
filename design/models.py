@@ -1,14 +1,13 @@
 import uuid
-
+from django.conf import settings
+from django.db import models
 from django.utils.translation import gettext_lazy as _
-from model_utils.models import (
-    SoftDeletableModel
-)
+from model_utils import Choices
+from model_utils.models import SoftDeletableModel, TimeStampedModel
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
-from member.models import *
 
 class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
     parent = TreeForeignKey(
@@ -125,38 +124,124 @@ class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
     def __str__(self):
         return self.title
 
-
-class StandardOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
+class ProductBase(TimeStampedModel, SoftDeletableModel):
     category = models.ForeignKey(
         'design.Category',
-        verbose_name=_('category'),
-        related_name='StandardOption',
+        verbose_name=_('카테고리'),
+        related_name='product_base_category',
         null=True,
         db_index=True,
         on_delete=models.SET_NULL,
     )
 
-    parent = TreeForeignKey(
-        'self',
-        verbose_name=_('parent'),
+    supplier = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('매입처'),
+        blank= True,
+    )
+
+    standard = models.ManyToManyField(
+        'design.StandardOption',
+        related_name='product_base_standard',
         blank=True,
+    )
+
+    paper = models.ManyToManyField(
+        'design.PaperOption',
+        related_name='product_base_paper',
+        blank=True,
+    )
+
+    side = models.ManyToManyField(
+        'SideOption',
+        related_name='product_base_side',
+        blank=True,
+    )
+
+    hoo = models.ManyToManyField(
+        'design.HooOption',
+        related_name='product_base_hoo',
+        blank=True,
+    )
+
+    delivery = models.ManyToManyField(
+        'design.DeliveryOption',
+        related_name='product_base_delivery',
+        blank=True,
+    )
+
+    etc = models.ManyToManyField(
+        'design.EtcOption',
+        related_name='product_base_etc',
+        blank=True,
+    )
+
+    code = models.IntegerField(
+        verbose_name=_('품목코드'),
         null=True,
-        related_name='children',
-        db_index=True,
-        on_delete=models.SET_NULL,
+        blank=True,
     )
 
     title = models.CharField(
-        verbose_name=_('title'),
+        verbose_name=_('품목명'),
+        null=True,
+        blank=True,
         max_length=128,
     )
 
     slug = models.SlugField(
         verbose_name=_('slug'),
-        help_text=_('A short label containing only letters, numbers, underscores or hyphens for URL'),
         max_length=255,
+        null=True,
+        blank=True,
         unique=True,
         allow_unicode=True,
+    )
+
+    sell_price = models.DecimalField(
+        verbose_name=_('판매가'),
+        max_digits=11,
+        decimal_places=4,
+        null=True,
+        blank=True,
+    )
+
+    buy_price = models.DecimalField(
+        verbose_name=_('매입가'),
+        max_digits=11,
+        decimal_places=4,
+        null=True,
+        blank=True,
+    )
+
+    main_quantity = models.BooleanField(
+        verbose_name=_('메인 수량'),
+        default = False,
+    )
+
+    ecount = models.BooleanField(
+        verbose_name=_('이카운트 전송'),
+        default=False,
+    )
+
+    product_active = models.BooleanField(
+        verbose_name=_('활성화'),
+        default = False,
+    )
+
+    class Meta:
+        verbose_name = _('상품옵션_통합')
+        verbose_name_plural = _('상품옵션_통합')
+
+    def __str__(self):
+        return self.title
+
+class StandardOption(TimeStampedModel, SoftDeletableModel):
+    title = models.CharField(
+        verbose_name=_('품목명'),
+        blank=True,
+        null=True,
+        max_length=100,
     )
     horizontal = models.DecimalField(
         verbose_name=_('가로'),
@@ -187,254 +272,157 @@ class StandardOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
         blank=True,
     )
 
-    class MPTTMeta:
-        order_insertion_by = ['created']
-
     class Meta:
-        verbose_name = _('상품옵션 규격')
-        verbose_name_plural = _('상품옵션 규격')
+        verbose_name = _('상품옵션 _기본 규격')
+        verbose_name_plural = _('상품옵션 _기본 규격')
 
     def __str__(self):
         return self.title
 
-
-class PaperOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
-    category = models.ForeignKey(
-        'design.Category',
-        verbose_name=_('category'),
-        related_name='PaperOption',
-        null=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
-    parent = TreeForeignKey(
-        'self',
-        verbose_name=_('parent'),
-        blank=True,
-        null=True,
-        related_name='children',
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
+class PaperOption(TimeStampedModel, SoftDeletableModel):
     title = models.CharField(
-        verbose_name=_('title'),
-        max_length=128,
+        verbose_name=_('용지 이름'),
+        blank = True,
+        null = True,
+        max_length=100,
     )
 
-    slug = models.SlugField(
-        verbose_name=_('slug'),
-        help_text=_('A short label containing only letters, numbers, underscores or hyphens for URL'),
-        max_length=255,
-        unique=True,
-        allow_unicode=True,
-    )
-    gram = models.IntegerField(
+    gram = models.CharField(
         verbose_name=_('그람수'),
         blank=True,
         null=True,
+        max_length=100,
     )
 
-    class MPTTMeta:
-        order_insertion_by = ['created']
+    color = models.CharField(
+        verbose_name=_('색상'),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+
+    option = models.CharField(
+        verbose_name=_('옵션 코팅/유무'),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
 
     class Meta:
-        verbose_name = _('상품옵션 용지')
-        verbose_name_plural = _('상품옵션 용지')
+        verbose_name = _('상품옵션 _용지옵션')
+        verbose_name_plural = _('상품옵션 _용지옵션')
 
     def __str__(self):
         return self.title
 
 
-class DosuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
-    category = models.ForeignKey(
-        'design.Category',
-        verbose_name=_('category'),
-        related_name='DosuOption',
-        null=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
-    parent = TreeForeignKey(
-        'self',
-        verbose_name=_('parent'),
-        blank=True,
-        null=True,
-        related_name='children',
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
+class SideOption(TimeStampedModel, SoftDeletableModel):
     title = models.CharField(
-        verbose_name=_('title'),
-        max_length=128,
+        verbose_name=_('양면 / 단면'),
+        blank=True,
+        null=True,
+        max_length=100,
     )
-
-    slug = models.SlugField(
-        verbose_name=_('slug'),
-        help_text=_('A short label containing only letters, numbers, underscores or hyphens for URL'),
-        max_length=255,
-        unique=True,
-        allow_unicode=True,
-    )
-
-    class MPTTMeta:
-        order_insertion_by = ['created']
 
     class Meta:
-        verbose_name = _('상품옵션 도수')
-        verbose_name_plural = _('상품옵션 도수')
+        verbose_name = _('상품옵션 _양면/단면')
+        verbose_name_plural = _('상품옵션 _양면/단면')
 
     def __str__(self):
         return self.title
 
-
-class BusuOption(TimeStampedModel, SoftDeletableModel, MPTTModel):
-    category = models.ForeignKey(
-        'design.Category',
-        verbose_name=_('category'),
-        related_name='BusuOption',
-        null=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
-    parent = TreeForeignKey(
-        'self',
-        verbose_name=_('parent'),
-        blank=True,
-        null=True,
-        related_name='children',
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
+class HooOption(TimeStampedModel, SoftDeletableModel):
     title = models.CharField(
-        verbose_name=_('title'),
-        max_length=128,
-    )
-
-    slug = models.SlugField(
-        verbose_name=_('slug'),
-        help_text=_('A short label containing only letters, numbers, underscores or hyphens for URL'),
-        max_length=255,
-        null=True,
+        verbose_name=_('후가공명'),
         blank=True,
-        unique=True,
-        allow_unicode=True,
-    )
-
-    quantity = models.IntegerField(
-        verbose_name=_('수량'),
         null=True,
-        blank=True,
+        max_length=100,
     )
-
-    class MPTTMeta:
-        order_insertion_by = ['created']
-
-    class Meta:
-        verbose_name = _('상품옵션 수량')
-        verbose_name_plural = _('상품옵션 수량')
-
-    def __str__(self):
-        return self.title
-
-
-class ProductPrice(TimeStampedModel, SoftDeletableModel):
-    code = models.IntegerField(
-        null=True,
+    option = models.CharField(
+        verbose_name=_('상위 품목'),
         blank=True,
-    )
-    option = models.ForeignKey(
-        'design.Option',
-        verbose_name=_('기타 옵션'),
         null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
-    standard_option = models.ForeignKey(
-        'design.StandardOption',
-        verbose_name=_('기본 옵션'),
-        null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-    paper_option = models.ForeignKey(
-        'design.PaperOption',
-        verbose_name=_('용지 옵션'),
-        null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-    dosu_option = models.ForeignKey(
-        'design.DosuOption',
-        verbose_name=_('도수 옵션'),
-        null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-    busu_option = models.ForeignKey(
-        'design.BusuOption',
-        verbose_name=_('수량 옵션'),
-        null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-    purchase = models.ForeignKey(
-        'member.Profile',
-        verbose_name=_('매입처'),
-        null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
+        max_length=100,
     )
 
     price = models.DecimalField(
+        verbose_name=_('후가공 가격'),
         max_digits=11,
         decimal_places=4,
-        null=True,
-        blank=True,
-    )
-    selling_price = models.DecimalField(
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-    group_product = models.CharField(
-        verbose_name=_('품목 그룹'),
-        max_length=100,
-        null=True,
-        blank=True,
-    )
-    group_manage = models.CharField(
-        verbose_name=_('관리 항목'),
-        max_length=100,
-        null=True,
-        blank=True,
-    )
-    info = models.CharField(
-        verbose_name=_('품목 정보'),
-        max_length=100,
         null=True,
         blank=True,
     )
 
     class Meta:
-        verbose_name = _('상품옵션 최종 가격')
-        verbose_name_plural = _('상품옵션 최종 가격')
+        verbose_name = _('상품옵션 _후가공')
+        verbose_name_plural = _('상품옵션 _후가공')
 
     def __str__(self):
-        return '{} {} {}'.format(self.standard_option, self.price, self.selling_price)
+        return self.title
+
+class DeliveryOption(TimeStampedModel, SoftDeletableModel):
+    title = models.CharField(
+        verbose_name=_('배송 방법'),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+
+    price = models.DecimalField(
+        verbose_name=_('배송 비용'),
+        max_digits=11,
+        decimal_places=4,
+        null=True,
+        blank=True,
+    )
+
+    tax = models.BooleanField(
+        verbose_name=_('부가세 포함여부'),
+        default = False,
+    )
+
+    class Meta:
+        verbose_name = _('상품옵션 _배송비')
+        verbose_name_plural = _('상품옵션 _배송비')
+
+    def __str__(self):
+        return self.title
+
+class EtcOption(TimeStampedModel, SoftDeletableModel):
+    title = models.CharField(
+        verbose_name=_('기타 옵션'),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    option = models.CharField(
+        verbose_name=_('기타 옵션 상세'),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+
+    memo = models.CharField(
+        verbose_name=_('기타 옵션 메모'),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+
+    price = models.DecimalField(
+        verbose_name=_('기타 옵션 가격'),
+        max_digits=11,
+        decimal_places=4,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _('상품옵션 _기타옵션')
+        verbose_name_plural = _('상품옵션 _기타옵션')
+
+    def __str__(self):
+        return self.title
 
 
 class OrderInfo(TimeStampedModel, SoftDeletableModel):

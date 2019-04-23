@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import (
-    Category, Option, SectorsCategory,
-    StandardOption, PaperOption, DosuOption, ProductPrice,
-    BusuOption,OrderImg,OrderInfo,OrderList,OrderMemo,
-
-)
+from design import models
 from mptt.admin import DraggableMPTTAdmin
 
 class CategoryAdmin(DraggableMPTTAdmin):
@@ -21,45 +16,26 @@ class SectorsCategoryAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
+class ProductBaseAdmin(admin.ModelAdmin):
+    pass
 
-class StandardOptionAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'category', 'indented_title', 'slug')
-    list_filter = ('category__title', 'created')
-    prepopulated_fields = {'slug': ('title',)}
-    mptt_level_indent = 20
-    ordering = ['tree_id', 'lft']
+class PaperOptionAdmin(admin.ModelAdmin):
+    pass
 
+class StandardOptionAdmin(admin.ModelAdmin):
+    pass
 
-class PaperOptionAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'category', 'indented_title', 'slug')
-    list_filter = ('category__title', 'created')
-    prepopulated_fields = {'slug': ('title',)}
-    mptt_level_indent = 20
-    ordering = ['tree_id', 'lft']
+class SideOptionAdmin(admin.ModelAdmin):
+    pass
 
-class DosuOptionAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'category', 'indented_title', 'slug')
-    list_filter = ('category__title', 'created')
-    prepopulated_fields = {'slug': ('title',)}
-    mptt_level_indent = 20
-    ordering = ['tree_id', 'lft']
+class HooOptionAdmin(admin.ModelAdmin):
+    pass
 
-class BusuOptionAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'category', 'indented_title', 'slug')
-    list_filter = ('category__title', 'created')
-    prepopulated_fields = {'slug': ('title',)}
-    mptt_level_indent = 20
-    ordering = ['tree_id', 'lft']
+class DeliveryOptionAdmin(admin.ModelAdmin):
+    pass
 
-class OptionAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'category', 'indented_title', 'slug')
-    list_filter = ('category__title', 'created')
-    prepopulated_fields = {'slug': ('title',)}
-    mptt_level_indent = 20
-    ordering = ['tree_id', 'lft']
-
-class ProductPriceAdmin(admin.ModelAdmin):
-    list_filter = ('purchase', 'created')
+class EtcOptionAdmin(admin.ModelAdmin):
+    pass
 
 class OrderInfoAdmin(admin.ModelAdmin):
     pass
@@ -73,15 +49,16 @@ class OrderImgAdmin(admin.ModelAdmin):
 class OrderMemoAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(SectorsCategory, SectorsCategoryAdmin)
-admin.site.register(Option, OptionAdmin)
-admin.site.register(StandardOption, StandardOptionAdmin)
-admin.site.register(PaperOption, PaperOptionAdmin)
-admin.site.register(DosuOption, DosuOptionAdmin)
-admin.site.register(BusuOption, BusuOptionAdmin)
-admin.site.register(ProductPrice, ProductPriceAdmin)
-admin.site.register(OrderInfo, OrderInfoAdmin)
-admin.site.register(OrderList, OrderListAdmin)
-admin.site.register(OrderImg, OrderImgAdmin)
-admin.site.register(OrderMemo, OrderMemoAdmin)
+admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
+admin.site.register(models.ProductBase, ProductBaseAdmin)
+admin.site.register(models.PaperOption, PaperOptionAdmin)
+admin.site.register(models.StandardOption, StandardOptionAdmin)
+admin.site.register(models.SideOption, SideOptionAdmin)
+admin.site.register(models.HooOption, HooOptionAdmin)
+admin.site.register(models.DeliveryOption, DeliveryOptionAdmin)
+admin.site.register(models.EtcOption, EtcOptionAdmin)
+admin.site.register(models.OrderInfo, OrderInfoAdmin)
+admin.site.register(models.OrderList, OrderListAdmin)
+admin.site.register(models.OrderImg, OrderImgAdmin)
+admin.site.register(models.OrderMemo, OrderMemoAdmin)

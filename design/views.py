@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import TemplateView,ListView, View, CreateView, UpdateView
+from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from mptt.querysets import TreeQuerySet
@@ -44,7 +44,7 @@ class ProfileMixin(object):
         return context
 
 
-class HomeView(ProfileMixin, ListView):
+class HomeView(ProfileMixin, generic.ListView):
     template_name = 'design/home.html'
     def get_queryset(self):
         return
@@ -53,7 +53,7 @@ class HomeView(ProfileMixin, ListView):
         context = super(HomeView, self).get_context_data(**kwargs)
         return context
 
-class ProductView(ProfileMixin, ListView):
+class ProductView(ProfileMixin, generic.ListView):
     template_name = 'design/product.html'
     context_object_name = 'sample_list'
 
@@ -66,29 +66,29 @@ class ProductView(ProfileMixin, ListView):
         context['sector_slug'] = self.kwargs['sector_slug']
         return context
 
-class CartView(TemplateView):
+class CartView(generic.TemplateView):
     template_name = 'design/cart.html'
 
-class CheckoutView(TemplateView):
+class CheckoutView(generic.TemplateView):
     template_name = 'design/checkout.html'
 
-class OrdersView(ProfileMixin, ListView):
+class OrdersView(ProfileMixin, generic.ListView):
     template_name = 'design/orders.html'
 
     def get_context_data(self, **kwargs):
         context = super(OrdersView, self).get_context_data(**kwargs)
         return context
 #
-class ProfileView(ProfileMixin,TemplateView):
+class ProfileView(ProfileMixin,generic.TemplateView):
     template_name = 'design/profile.html'
 
-class FaqView(ProfileMixin,TemplateView):
+class FaqView(ProfileMixin,generic.TemplateView):
     template_name = 'design/faq.html'
 
-class NewsView(ProfileMixin,TemplateView):
+class NewsView(ProfileMixin,generic.TemplateView):
     template_name = 'design/news.html'
 
-class OrderListView(ProfileMixin, ListView):
+class OrderListView(ProfileMixin, generic.ListView):
     template_name = 'design/order_list.html'
     context_object_name = 'order_list'
     form_class =forms.LoginForm
@@ -111,7 +111,7 @@ class OrderListView(ProfileMixin, ListView):
         context['form'] = form
         return context
 
-class MyPageView(ProfileMixin, TemplateView):
+class MyPageView(ProfileMixin, generic.TemplateView):
     template_name = 'design/my_page.html'
     context_object_name = 'my_list'
     form_class = forms.ProfileForm

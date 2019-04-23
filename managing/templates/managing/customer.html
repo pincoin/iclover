@@ -7,30 +7,44 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title">거래처 관리</h4>
+            <a href="{% url 'managing:customer' %}">
+                <h4 class="page-title">거래처 관리</h4>
+            </a>
         </div>
     </div>
 </div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-icon alert-success alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <i class="mdi mdi-check-all"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+
+{% endif %}
+
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             <form role="form" method="GET">
                 <div class="form-group search-box">
-                    <input type="text" id="q" name='q' class="form-control product-search" placeholder="검색어를 입력해주세요"
-                           autocomplete="off" value="{% if q %}{{ q }}{% endif %}">
+                    {{ data_search_form.q }}
                     <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
                 </div>
             </form>
         </div>
-        <div class="col-sm-4">
-            <button class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
-                    data-target="#con-close-modal">거래처 등록
-            </button>
+        <div class="col-sm-6">
+            <a href="{% url 'managing:customer_create' %}">
+                <button class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30">거래처 등록
+                </button>
+            </a>
         </div>
     </div>
- {% include 'managing/include_test.html'%}
     <ul class="nav nav-tabs tabs-bordered">
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
@@ -54,16 +68,22 @@
                             <th>주문자</th>
                             <th>시안</th>
                             <th>결제/포함/택배</th>
+                            <th>담당</th>
                             <th>수정</th>
                         </tr>
                         </thead>
 
                         <tbody>
-
                         {% for i in customer_list %}
                         <tr>
                             <td>
-                                <a href="#">{{ i.code }}</a>{{ i.user }}
+                                {% if i.state_select == 1 %}
+                                <span style="color: #c9302c">폐업
+                                    {% if i.state != None %}<br><small>{{ i.state }}</small>{% endif %}
+                                </span>
+                                {% else %}
+                                 {{ i.code }}
+                                {% endif %}
                             </td>
 
                             <td>
@@ -76,21 +96,30 @@
 
                             <td>
                                 {{ i.tell }}<br>{{ i.address }}
+                                {% if i.address2 %}<br>{{ i.address2 }}{% endif %}
                             </td>
                             <td>
-                                {{ i.state_select }}
-                            </td>
-                            <td>
+                                {% if i.phone != None %}
+                                {{ i.phone }}
+                                {% endif %}
 
                             </td>
                             <td>
-                                <br>
+                                {{ i.confirm }}
                             </td>
                             <td>
-                                <a href="#" class="table-action-btn h3"><i
+                                {{ i.options }}<br> {{ i.memo }}
+                            </td>
+                            <td>
+                                {% if i.manager != None %}
+                                {{ i.manager }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'managing:customer_update' i.pk %}" class="table-action-btn h2"><i
                                         class="mdi mdi-pencil-box-outline text-success"></i></a>
-                                <a href="#" class="table-action-btn h3"><i
-                                        class="mdi mdi-close-box-outline text-danger"></i></a>
+<!--                                <a href="#" class="table-action-btn h3"><i-->
+<!--                                        class="mdi mdi-close-box-outline text-danger"></i></a>-->
                             </td>
                         </tr>
                         {% endfor %}
@@ -110,7 +139,7 @@
                         <ul class="pagination">
                             {% if page_obj.has_previous %}
                             <li>
-                                <a href="?page={{ page_obj.previous_page_number }}">
+                                <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
                                     <span>이전</span>
                                 </a>
                             </li>
@@ -124,13 +153,14 @@
 
                             {% for page in page_range %}
                             <li {% if page == page_obj.number %}class="active" {% endif %}>
-                                <a href="?page={{ page }}{% if q %}&q={{q}}{% endif %}">{{ page }}</a>
+                                <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    {{ page }}</a>
                             </li>
                             {% endfor %}
 
                             {% if page_obj.has_next %}
                             <li>
-                                <a href="?page={{ page_obj.next_page_number }}">
+                                <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
                                     <span>다음</span>
                                 </a>
                             </li>
