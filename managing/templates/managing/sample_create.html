@@ -27,19 +27,25 @@
         {{ form.errors_from_post }}
         {{ form.errors }}
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <span class="help-block"> 카테고리 : </span>
                 {{ form.category}}
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                  <span class="help-block"> 업종 : </span>
                 {{ form.sectors_category}}
             </div>
-            <div class="col-sm-3">
+             <div class="col-sm-4">
+                 <span class="help-block"> 제작자 : </span>
+                {{ form.employees}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-sm-6">
                  <span class="help-block"> 샘플명 : </span>
                 {{ form.name}}
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6">
                  <span class="help-block"> 샘플 키워드 : </span>
                 {{ form.keyword}}
             </div>

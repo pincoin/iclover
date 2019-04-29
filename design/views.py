@@ -31,7 +31,7 @@ class ProfileMixin(object):
         context = super(ProfileMixin, self).get_context_data(**kwargs)
         user_id = self.request.user.id
         if user_id:
-            user = design_model.Profile.objects.select_related('user').filter(user=user_id)
+            user = member_model.Profile.objects.select_related('user').filter(user=user_id)
             for i in user:
                 context['user'] = i.user
                 if i.company:

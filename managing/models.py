@@ -95,7 +95,7 @@ class Deposit(TimeStampedModel, SoftDeletableModel):
         blank=True,
     )
 
-    amount = models.IntegerField(
+    ㅁ = models.IntegerField(
         verbose_name=_('amount'),
         blank=True,
     )
@@ -216,18 +216,20 @@ class Employees(TimeStampedModel, SoftDeletableModel):
 class Ask(TimeStampedModel, SoftDeletableModel):
     ASK_PART_WHAT_TO_DO = Choices(
         (0, '환불', _('환불')),
-        (1, '입금', _('입금')),
+        (1, '입금 요청', _('입금 요청')),
         (2, '영수증/계산서', _('영수증/계산서')),
+        (3, '기타', _('기타')),
     )
 
     ask_from = models.CharField(
-        verbose_name=_('name of employees requester'),
+        verbose_name=_('질문자'),
         max_length=255,
         blank=True,
     )
 
     ask_to = models.ForeignKey(
         'Employees',
+        verbose_name=_('받는사람'),
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -241,7 +243,7 @@ class Ask(TimeStampedModel, SoftDeletableModel):
     )
 
     ask_what = models.CharField(
-        verbose_name=_('request comment'),
+        verbose_name=_('요청내용'),
         max_length=255,
         blank=True,
     )
@@ -306,6 +308,10 @@ class Sample(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('샘플 패키지'),
         max_length=255,
         blank=True,
+    )
+    state = models.BooleanField(
+        verbose_name=_('샘플 상태'),
+        default=True,
     )
 
     def upload_to_sample(instance, filename):

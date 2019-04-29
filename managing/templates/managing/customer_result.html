@@ -1,0 +1,203 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title %}고객 검색 결과{% endblock%}
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <a href="{% url 'managing:sample' %}">
+                <h4 class="page-title">고객 관리 차트</h4>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-icon alert-success alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <i class="mdi mdi-check-all"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+
+{% endif %}
+
+{% if page_all_count == 1%}
+{% for i in object_list%}
+<div class="card-box">
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            <div class="text-center card-box">
+                <div class="member-card">
+                    <div class="">
+                        <h4 class="m-b-5 ">
+                            <span class="">{{ i.company }} </span>
+                            {% if i.manager %}
+                        <small class="label label-teal" style="font-size: 10px;" >{{ i.manager }}</small>
+                        {% endif %}
+                        </h4>
+
+                        <p class="text-muted">{{ i.company_keyword }}</p>
+                        <p class="text-muted">{{ i.code }} / {{ i.ceo }}</p>
+                    </div>
+
+                    <hr>
+
+                    <div class="text-left">
+                        <p class="text-muted font-13"><strong>결재/포함/택배:</strong>
+                            <span class="m-l-5">{{ i.options }}</span></p>
+
+                        <p class="text-muted font-13"><strong>전번:</strong>
+                            <span class="m-l-5">{{ i.tell }}</span></p>
+
+                        <p class="text-muted font-13"><strong>주문자 :</strong>
+                            <span class="m-l-5">{{ i.phone }}</span>
+                        </p>
+
+                        <p class="text-muted font-13"><strong>시안 확인 :</strong>
+                            <span class="m-l-5">{{ i.confirm }}</span>
+                        </p>
+
+                        <p class="text-muted font-13"><strong>주소1:</strong>
+                            <span class="m-l-5">{{ i.address }}</span></p>
+
+                         <p class="text-muted font-13"><strong>주소2:</strong>
+                            <span class="m-l-5">{{ i.address2 }}</span></p>
+
+                        <p class="text-muted font-13"><strong>Email :</strong>
+                            <span class="m-l-5">{{ i.tax_bill_mail }}</span>
+                        </p>
+
+                        <p class="text-muted font-13"><strong>업군 :</strong>
+                            <span class="m-l-5"> {{ i.sectors }} / {{ i.business }}</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div> <!-- end card-box -->
+
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="card-box widget-box-one">
+                    <div class="wigdet-one-content">
+                        <p class="m-0 font-600 font-secondary text-overflow" >마지막 주문 <small class="text-danger">+ 100일</small></p>
+                        <h3 class="">2018-04-04</h3>
+
+                    </div>
+                </div>
+            </div><!-- end col -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="card-box widget-box-one">
+                    <div class="wigdet-one-content">
+                        <p class="m-0 font-600 font-secondary text-overflow" >마지막 견적</p>
+                        <h3 class="">2019-04-04</h3>
+                    </div>
+                </div>
+            </div><!-- end col -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="card-box widget-box-one">
+                    <div class="wigdet-one-content">
+                        <p class="m-0 font-600 font-secondary text-overflow" >최초 주문일자</p>
+                        <h3 class="">2016-04-04</h3>
+                    </div>
+                </div>
+            </div><!-- end col -->
+
+
+        </div>
+    </div>
+<div class="card-box widget-box-one">
+    table
+</div>
+
+
+</div>
+{% endfor %}
+{% else %}
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+    <br>
+    {% if q%}
+    <h3 class="text-center">{{ page_all_count }} 건의 ( {{ q }} )의 검색 결과 내용입니다.</h3>
+    {% endif %}
+    <br>
+    <div class="row">
+        <form role="form" method="GET">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="input-group m-t-10">
+                    {{ data_search_form.q }}
+                    <span class="input-group-btn">
+                                <button type="button" class="btn waves-effect waves-light btn-custom"><i
+                                        class="fa fa-search m-r-5"></i> Search</button>
+                            </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br><br>
+    <div class="row text-center p-6">
+        <form method="GET" action="{% url 'managing:customer_result' %}">
+
+        {% for i in object_list%}
+
+        <button type="submit"  name='q'  value="{{i.user}}" class="btn btn-default waves-effect w-md waves-light" style="margin: 5px;">
+            {{ i.company }}<br>{{ i.code }}
+            {% if i.address %}
+            <br>{{ i.address }}
+            {% else %}
+            <br>&nbsp
+            {% endif %}{{ i.user }}
+        </button>
+        {% endfor %}
+        </form>
+    </div>
+    {% if is_paginated %}
+    <nav class="text-center">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                    <span>이전</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="disabled">
+                <a href="#">
+                    <span><strike>시작</strike></span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for page in page_range %}
+            <li {% if page == page_obj.number %}class="active" {% endif %}>
+                <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                    {{ page }}</a>
+            </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                    <span>다음</span>
+                </a>
+            </li>
+            {% else %}
+            <li {% if not page_obj.has_next %}class="disabled" {% endif %}>
+                <a href="#">
+                    <strike>끝</strike>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+{% endif %}
+{% endblock %}

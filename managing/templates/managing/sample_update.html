@@ -25,6 +25,17 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
+            <div class="col-sm-1">
+                <span class="help-block"> Active </span>
+                <div class="checkbox checkbox-success">
+                    {{ form.state}}
+                    {% if form.state.value %}
+                    <label>노출</label>
+                    {% else %}
+                    <label style="color:#c9302c">미노출</label>
+                    {% endif %}
+                </div>
+            </div>
              <div class="col-sm-4">
                 <span class="help-block"> 카테고리 : </span>
                 {{ form.category}}
@@ -33,7 +44,7 @@
                 <span class="help-block"> 업종 : </span>
                 {{ form.sectors_category}}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <span class="help-block"> 제작자 : </span>
                 {{ form.employees}}
             </div>

@@ -3,7 +3,6 @@ from member import models as member_models
 from managing import models as managing_models
 from design import models as design_models
 
-
 class DataSearchForm(forms.Form):
     q = forms.CharField(
         label=('search word'),
@@ -150,12 +149,34 @@ class SampleCreateForm(forms.ModelForm):
 class SampleUpdateForm(forms.ModelForm):
     class Meta:
         model = managing_models.Sample
-        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'sample_img']
+        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'sample_img','state']
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control'}),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
             'employees': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
             'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
-            'sample_img': forms.FileInput(attrs={'class': 'form-control'})
+            'sample_img': forms.FileInput(attrs={'class': 'form-control'}),
+            'state':forms.CheckboxInput(attrs={ 'style':"width:50px;,height:50px;"})
+        }
+
+class AskCreateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Ask
+        fields = ['ask_to','ask_what','ask_part']
+        widgets = {
+            'ask_to': forms.Select(attrs={'class': 'form-control'}),
+            'ask_what': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': "off"}),
+            'ask_part': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class AskUpdateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Ask
+        fields = ['ask_to', 'ask_what', 'ask_part','ask_finish']
+        widgets = {
+            'ask_to': forms.Select(attrs={'class': 'form-control'}),
+            'ask_what': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': "off"}),
+            'ask_part': forms.Select(attrs={'class': 'form-control'}),
+            'ask_finish': forms.CheckboxInput(attrs={'style': "width:50px;,height:50px;"})
         }

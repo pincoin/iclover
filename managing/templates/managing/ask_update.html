@@ -1,0 +1,72 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}요청 수정{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title"><a href="{% url 'managing:ask' %}">요청 관리</a> </h4>
+        </div>
+    </div>
+</div>
+{{ form.errors}}
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="{% url 'managing:ask' %}">
+                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">요청 목록
+                </button>
+            </a>
+        </div>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.errors_from_post }}
+        {{ form.errors }}
+        <div class="row">
+             <div class="col-sm-3">
+                 <span class="help-block"> 종류 : </span>
+                {{ form.ask_part}}
+            </div>
+            <div class="col-sm-3">
+                 <span class="help-block"> 응답자 : </span>
+                {{ form.ask_to}}
+            </div>
+            <div class="col-sm-3">
+                <div class="checkbox checkbox-success">
+                 <span class="help-block"> 처리상태 : </span>
+                 {{ form.ask_finish}}
+                    {% if form.ask_finish.value %}
+                    <label style="color:#33b86c">완료</label>
+                    {% else %}
+                    <label style="color:#c9302c">미완료</label>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-sm-12">
+                 <span class="help-block"> 내용 : </span>
+                {{ form.ask_what}}
+            </div>
+        </div>
+        <hr>
+        <br> <br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <button class="form-control btn btn-danger">저장하기</button>
+            </div>
+            <div class="col-sm-3"><span id="ImgPreview"></span></div>
+        </div>
+    </form>
+
+</div>
+
+
+{% endblock %}

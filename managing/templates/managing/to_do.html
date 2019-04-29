@@ -1,14 +1,14 @@
 {% extends 'managing/base.html'%}
 {% load static %}
 {% load humanize %}
-{% block title %}샘플 관리{% endblock%}
+{% block title %}할일 관리{% endblock%}
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
             <a href="{% url 'managing:sample' %}">
-                <h4 class="page-title">샘플 관리</h4>
+                <h4 class="page-title">할일 관리</h4>
             </a>
         </div>
     </div>
@@ -40,7 +40,7 @@
         </div>
         <div class="col-sm-6">
             <a href="{% url 'managing:sample_create' %}">
-                <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">샘플 등록
+                <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">할일 등록
                 </button>
             </a>
         </div>
@@ -49,7 +49,7 @@
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">샘플</span>
+                <span class="hidden-xs">할일</span>
             </a>
         </li>
     </ul>
@@ -62,7 +62,7 @@
                         <thead>
                         <tr>
                             <th>&nbsp &nbsp &nbsp 이미지</th>
-                            <th>샘플명</th>
+                            <th>할일명</th>
                             <th>품목 카테고리</th>
                             <th>업종 카테고리</th>
                             <th>키워드</th>

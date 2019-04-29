@@ -1,14 +1,14 @@
 {% extends 'managing/base.html'%}
 {% load static %}
 {% load humanize %}
-{% block title %}샘플 관리{% endblock%}
+{% block title %}요청 관리{% endblock%}
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <a href="{% url 'managing:sample' %}">
-                <h4 class="page-title">샘플 관리</h4>
+            <a href="{% url 'managing:ask' %}">
+                <h4 class="page-title">요청 관리</h4>
             </a>
         </div>
     </div>
@@ -39,8 +39,8 @@
             </form>
         </div>
         <div class="col-sm-6">
-            <a href="{% url 'managing:sample_create' %}">
-                <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">샘플 등록
+            <a href="{% url 'managing:ask_create' %}">
+                <button class="btn btn-orange btn-rounded btn-md waves-effect waves-light m-b-30">요청 등록
                 </button>
             </a>
         </div>
@@ -49,7 +49,7 @@
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">샘플</span>
+                <span class="hidden-xs">요청</span>
             </a>
         </li>
     </ul>
@@ -61,54 +61,40 @@
                     <table class="table table-hover mails m-0 table table-actions-bar">
                         <thead>
                         <tr>
-                            <th>&nbsp &nbsp &nbsp 이미지</th>
-                            <th>샘플명</th>
-                            <th>품목 카테고리</th>
-                            <th>업종 카테고리</th>
-                            <th>키워드</th>
-                            <th>직원명</th>
+                            <th>일자</th>
+                            <th>종류</th>
+                            <th>내용</th>
+                            <th>요청/응답</th>
                             <th>노출/수정</th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        {% for i in sample_list %}
-                        <tr>
+                        {% for i in ask_list %}
+                        <tr
+                        {% if i.ask_finish%}
+                        style="background-color:#d3d3d4"
+                        {% endif %}
+                        >
                             <td>
-                                 <a href="{% url 'managing:sample_update' i.pk %}">
-                                     {% if i.state %}
-                                    <img src="/media/{{ i.sample_img}}" width="130px;"/>
-                                     {% else %}
-                                     <img src="/media/{{ i.sample_img}}" width="130px;" style="opacity: 0.7"/>
-                                     {% endif %}
-                                 </a>
-
-                            </td>
-
-                            <td>
-                                 {{ i.name }}
-                            </td>
-
-                            <td>
-                               {{ i.category }}
-                            </td>
-                              <td>
-                               {{ i.sectors_category }}
+                                {{ i.created }}
                             </td>
                             <td>
-                                {{ i.keyword }}
+                                {{ i.get_ask_part_display }}
                             </td>
-                             <td>
-                                {{ i.employees.name }}
-                            </td>
-
                             <td>
-                                {% if i.state %}
-                                    <a href="{% url 'managing:sample_update' i.pk %}" class="table-action-btn h2">
-                                    <i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                {{ i.ask_what|linebreaksbr }}
+                            </td>
+                            <td>
+                                {{ i.ask_from }}님이  {{ i.ask_to.user.username }}님에게 요청한 내용입니다.
+                            </td>
+                            <td>
+                                {% if i.ask_finish %}
+                                <a href="{% url 'managing:ask_update' i.pk %}" class="table-action-btn h2">
+                                    <i class="mdi mdi-pencil-box-outline text-teal"></i></a>
                                 {% else %}
-                                   <a href="{% url 'managing:sample_update' i.pk %}" class="table-action-btn h2">
-                                    <i class="mdi mdi-pencil-box-outline text-danger"></i></a>
+                                <a href="{% url 'managing:ask_update' i.pk %}" class="table-action-btn h2">
+                                    <i class="mdi mdi-pencil-box-outline text-success"></i></a>
                                 {% endif %}
 
                             </td>
@@ -121,7 +107,7 @@
             <div class="row m-t-30">
                 <div class="text-center m-t-30">
 
-                    {% if not sample_list %}
+                    {% if not ask_list %}
                     <h3>검색 된 데이터가 없습니다.</h3>
                     {% endif %}
 
@@ -143,7 +129,7 @@
                             {% endif %}
 
                             {% for page in page_range %}
-                            <li {% if page == page_obj.number %}class="active" {% endif %}>
+                            <li {% if page == page_obj.number %} class="active" {% endif %}>
                                 <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
                                     {{ page }}</a>
                             </li>
