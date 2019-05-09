@@ -243,7 +243,7 @@
                     </li>
 
                     <li class="has-submenu">
-                        <a href="#"><i class="glyphicon glyphicon-list-alt"></i>
+                        <a href="{% url 'managing:to_do'%}"><i class="glyphicon glyphicon-list-alt"></i>
                             TO DO List <span class="badge badge-danger">9</span>
                         </a>
                     </li>
@@ -254,7 +254,6 @@
                             <li><a href="blogs-blog-list.html">품목배너 관리</a></li>
                             <li><a href="blogs-blog-column.html">매입처 매칭</a></li>
                             <li><a href="blogs-blog-post.html">나스 비교</a></li>
-                            <li><a href="blogs-blog-post.html">영수증 처리</a></li>
                             <li><a href="blogs-blog-post.html">보류 시안</a></li>
                             <li><a href="blogs-blog-post.html">직원 관리</a></li>
                             <li><a href="blogs-blog-post.html">이카운트 API</a></li>
@@ -292,6 +291,25 @@
 </div>
 <!-- end wrapper -->
 
+  <!-- Modal -->
+  <div class="content-modal modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
 
 <!-- jQuery  -->
 <script src="{% static 'managing/js/jquery.min.js' %}"></script>
@@ -303,10 +321,35 @@
 <script src="{% static 'managing/js/jquery.slimscroll.js' %}"></script>
 <script src="{% static 'managing/js/jquery.scrollTo.min.js' %}"></script>
 <script src="{% static 'managing/plugins/switchery/switchery.min.js' %}"></script>
-{% block addjs %}
-{% endblock %}
+
 <!-- App js -->
 <script src="{% static 'managing/js/jquery.core.js' %}"></script>
 <script src="{% static 'managing/js/jquery.app.js' %}"></script>
+
+<script>
+    $(function(){
+        $(document).on('click','.content-modal-btn',function(e) {
+            e.preventDefault();
+            var action_url = $(this).attr("href");
+            $.get(action_url)
+                .done(function (form_html) {
+                    var $modal = $('.content-modal');
+                    $modal.find('.modal-body').html(form_html);
+                    $form = $modal.find('.modal-body form');
+                    var title = $form.attr('text');
+                    $modal.find('.modal-title').text(title);
+                    $form.attr('action',action_url);
+
+                    $modal.modal();
+                })
+                .fail(function (xhr, textStatus, error) {
+                    console.log(error)
+            });
+        });
+    });
+</script>
+{% block addjs %}
+{% endblock %}
+
 </body>
 </html>

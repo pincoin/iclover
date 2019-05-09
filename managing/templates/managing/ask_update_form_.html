@@ -1,0 +1,39 @@
+<form method="POST" text="요청 수정" autocomplete="off">
+    {% csrf_token %}
+    {{ form.errors_from_post }}
+    {{ form.errors }}
+    <div class="row">
+        <div class="col-sm-3">
+            <span class="help-block"> 종류 : </span>
+            {{ form.ask_part}}
+        </div>
+        <div class="col-sm-3">
+            <span class="help-block"> 응답자 : </span>
+            {{ form.ask_to}}
+        </div>
+        <div class="col-sm-3">
+            <div class="checkbox checkbox-success">
+                <span class="help-block"> 처리상태 : </span>
+                  {{ form.ask_finish}}
+                {% if form.ask_finish.value %}
+                <label style="color:#33b86c">완료</label>
+                {% else %}
+                <label style="color:#c9302c">완료</label>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <span class="help-block"> 내용 : </span>
+            {{ form.ask_what}}
+        </div>
+    </div>
+    <br>
+    <div class="modal-footer">
+        <button class="btn btn-danger">저장하기</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</form>

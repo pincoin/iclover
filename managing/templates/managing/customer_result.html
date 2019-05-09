@@ -34,16 +34,24 @@
         <div class="col-lg-4 col-md-4">
             <div class="text-center card-box">
                 <div class="member-card">
+                      {% if i.manager %}
+                        <div class="alert alert-warning">
+                          <a class="alert-link">{{ i.manager }}</a>
+                        </div>
+                        {% endif %}
                     <div class="">
                         <h4 class="m-b-5 ">
-                            <span class="">{{ i.company }} </span>
-                            {% if i.manager %}
-                        <small class="label label-teal" style="font-size: 10px;" >{{ i.manager }}</small>
-                        {% endif %}
+                            {% if i.state_select == 0 %}
+                            <p class="text-teal">{{ i.company }}</p>
+                             <p class="text-teal">{{ i.company_keyword }}</p>
+                            <p class="text-teal">{{ i.code }} / {{ i.ceo }}</p>
+                            {%else %}
+                            <p class="text-danger">{{ i.company }}</p>
+                             <p class="text-danger">{{ i.company_keyword }}</p>
+                            <p class="text-danger">{{ i.code }} / {{ i.ceo }}</p>
+                            {% endif %}
                         </h4>
 
-                        <p class="text-muted">{{ i.company_keyword }}</p>
-                        <p class="text-muted">{{ i.code }} / {{ i.ceo }}</p>
                     </div>
 
                     <hr>
@@ -146,13 +154,21 @@
 
         {% for i in object_list%}
 
-        <button type="submit"  name='q'  value="{{i.user}}" class="btn btn-default waves-effect w-md waves-light" style="margin: 5px;">
-            {{ i.company }}<br>{{ i.code }}
+        <button type="submit"  name='q'  value="{{i.user}} {{ i.code }}" class="btn btn-default waves-effect w-md waves-light" style="margin: 5px;">
+            {% if i.state_select == 0 %}
+            <span class="text-teal">{{ i.company }}</span>
+            {%else %}
+            <span class="text-danger">{{ i.company }}</span>
+            {% endif %}
+            <br>
+            {{ i.code }}
+
             {% if i.address %}
             <br>{{ i.address }}
             {% else %}
             <br>&nbsp
-            {% endif %}{{ i.user }}
+            {% endif %}
+
         </button>
         {% endfor %}
         </form>

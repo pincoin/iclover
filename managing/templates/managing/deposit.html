@@ -39,7 +39,7 @@
             </form>
         </div>
         <div class="col-sm-6">
-            <a href="{% url 'managing:sample_create' %}">
+            <a href="{% url 'managing:deposit_create' %}" class="content-modal-btn">
                 <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">입금 등록
                 </button>
             </a>
@@ -58,70 +58,61 @@
         <div class="tab-pane active" id="home-b1">
             <div class="table-responsive">
                 <div class="table-responsive">
+
+
+
                     <table class="table table-hover mails m-0 table table-actions-bar">
                         <thead>
                         <tr>
-                            <th>&nbsp &nbsp &nbsp 이미지</th>
-                            <th>입금명</th>
-                            <th>품목 카테고리</th>
-                            <th>업종 카테고리</th>
-                            <th>키워드</th>
-                            <th>직원명</th>
-                            <th>노출/수정</th>
+                            <th>은행명</th>
+                            <th>입금 날짜</th>
+                            <th>입금자명</th>
+                            <th>입금액</th>
+                            <th>메모</th>
+                            <th>영수처리</th>
+                            <th>저장</th>
                         </tr>
                         </thead>
-
                         <tbody>
-                        {% for i in sample_list %}
+                                {% for i in deposit_list %}
                         <tr>
                             <td>
-                                 <a href="{% url 'managing:sample_update' i.pk %}">
-                                     {% if i.state %}
-                                    <img src="/media/{{ i.sample_img}}" width="130px;"/>
-                                     {% else %}
-                                     <img src="/media/{{ i.sample_img}}" width="130px;" style="opacity: 0.7"/>
-                                     {% endif %}
-                                 </a>
-
+                                {{ i.bank }}
                             </td>
 
                             <td>
-                                 {{ i.name }}
-                            </td>
-
-                            <td>
-                               {{ i.category }}
-                            </td>
-                              <td>
-                               {{ i.sectors_category }}
+                                {{ i.date }}
                             </td>
                             <td>
-                                {{ i.keyword }}
+                                {{ i.name }}
                             </td>
-                             <td>
-                                {{ i.employees.name }}
-                            </td>
-
                             <td>
-                                {% if i.state %}
-                                    <a href="{% url 'managing:sample_update' i.pk %}" class="table-action-btn h2">
-                                    <i class="mdi mdi-pencil-box-outline text-success"></i></a>
-                                {% else %}
-                                   <a href="{% url 'managing:sample_update' i.pk %}" class="table-action-btn h2">
-                                    <i class="mdi mdi-pencil-box-outline text-danger"></i></a>
-                                {% endif %}
-
+                                {{ i.amount|intcomma }}
                             </td>
+                            <form method="POST" action="{% url 'managing:deposit_update' i.pk %}" autocomplete="off">
+                                {% csrf_token %}
+                                <td>
+                                    <input type="text" class="form-control" name="memo" value="{{i.memo}}">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control"  name="bill" value="{{i.bill}}">
+                                </td>
+
+                                <td>
+                                    <input type="submit" class="btn btn-primary" value="저장"/>
+                                </td>
+                            </form>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
+
                 </div>
             </div> <!-- end table responsive -->
             <div class="row m-t-30">
                 <div class="text-center m-t-30">
 
-                    {% if not sample_list %}
+                    {% if not deposit_list %}
                     <h3>검색 된 데이터가 없습니다.</h3>
                     {% endif %}
 

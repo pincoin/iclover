@@ -30,22 +30,22 @@ class CustomerCreateForm(forms.ModelForm):
             'options','keywords','memo','sectors','business','tax_bill_mail','address2'
         ]
         widgets = {
-            'code': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'company': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'company_keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'ceo': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'tell': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'address': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'address2': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'phone': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'confirm': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'manager': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'options': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'keywords': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'memo': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'sectors': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'business': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'tax_bill_mail': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
+            'code': forms.TextInput(attrs={'class': 'form-control','type':'number'}),
+            'company': forms.TextInput(attrs={'class': 'form-control'}),
+            'company_keyword': forms.TextInput(attrs={'class': 'form-control'}),
+            'ceo': forms.TextInput(attrs={'class': 'form-control'}),
+            'tell': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'address2': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'confirm': forms.TextInput(attrs={'class': 'form-control'}),
+            'manager': forms.TextInput(attrs={'class': 'form-control'}),
+            'options': forms.TextInput(attrs={'class': 'form-control'}),
+            'keywords': forms.TextInput(attrs={'class': 'form-control'}),
+            'memo': forms.TextInput(attrs={'class': 'form-control'}),
+            'sectors': forms.TextInput(attrs={'class': 'form-control'}),
+            'business': forms.TextInput(attrs={'class': 'form-control'}),
+            'tax_bill_mail': forms.TextInput(attrs={'class': 'form-control'}),
         }
         help_texts = {
             'code':'사업자번호 -숫자만',
@@ -84,24 +84,24 @@ class CustomerUpdateForm(forms.ModelForm):
             'options', 'keywords', 'memo', 'sectors', 'business', 'tax_bill_mail', 'address2', 'state_select', 'state'
         ]
         widgets = {
-            'code': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'company': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'company_keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'ceo': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'tell': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'address': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'address2': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'phone': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'confirm': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'manager': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'options': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'keywords': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'memo': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'sectors': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'business': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
-            'tax_bill_mail': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off",}),
+            'code': forms.TextInput(attrs={'class': 'form-control','type':'hidden'}),
+            'company': forms.TextInput(attrs={'class': 'form-control',}),
+            'company_keyword': forms.TextInput(attrs={'class': 'form-control',}),
+            'ceo': forms.TextInput(attrs={'class': 'form-control',}),
+            'tell': forms.TextInput(attrs={'class': 'form-control',}),
+            'address': forms.TextInput(attrs={'class': 'form-control',}),
+            'address2': forms.TextInput(attrs={'class': 'form-control',}),
+            'phone': forms.TextInput(attrs={'class': 'form-control',}),
+            'confirm': forms.TextInput(attrs={'class': 'form-control',}),
+            'manager': forms.TextInput(attrs={'class': 'form-control',}),
+            'options': forms.TextInput(attrs={'class': 'form-control',}),
+            'keywords': forms.TextInput(attrs={'class': 'form-control',}),
+            'memo': forms.TextInput(attrs={'class': 'form-control',}),
+            'sectors': forms.TextInput(attrs={'class': 'form-control',}),
+            'business': forms.TextInput(attrs={'class': 'form-control',}),
+            'tax_bill_mail': forms.TextInput(attrs={'class': 'form-control',}),
             'state_select': forms.Select(attrs={'class': 'form-control' }),
-            'state': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': "off", }),
+            'state': forms.TextInput(attrs={'class': 'form-control',  }),
         }
         help_texts = {
             'code':'사업자번호 -숫자만',
@@ -170,6 +170,8 @@ class AskCreateForm(forms.ModelForm):
             'ask_part': forms.Select(attrs={'class': 'form-control'}),
         }
 
+
+
 class AskUpdateForm(forms.ModelForm):
     class Meta:
         model = managing_models.Ask
@@ -178,5 +180,25 @@ class AskUpdateForm(forms.ModelForm):
             'ask_to': forms.Select(attrs={'class': 'form-control'}),
             'ask_what': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': "off"}),
             'ask_part': forms.Select(attrs={'class': 'form-control'}),
-            'ask_finish': forms.CheckboxInput(attrs={'style': "width:50px;,height:50px;"})
+            'ask_finish': forms.CheckboxInput(attrs={'style': "width:100px;,height:100px;"})
+        }
+
+class DepositCreateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Deposit
+        fields = ['bank','name','amount','part']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'bank': forms.TextInput(attrs={'class': 'form-control'}),
+            'amount': forms.TextInput(attrs={'type': 'number','class': 'form-control'}),
+            'part': forms.TextInput(attrs={'type':'hidden'}),
+             }
+
+class DepositUpdateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Deposit
+        fields = ['memo','bill']
+        widgets = {
+            'memo': forms.TextInput(attrs={'class': 'form-control'}),
+            'bill': forms.TextInput(attrs={'class': 'form-control'}),
         }

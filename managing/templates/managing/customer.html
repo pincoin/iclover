@@ -39,10 +39,11 @@
             </form>
         </div>
         <div class="col-sm-6">
-            <a href="{% url 'managing:customer_create' %}">
-                <button class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30">거래처 등록
+            <a href="{% url 'managing:customer_create' %}" class="content-modal-btn">
+                <button class=" btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30"
+                      >거래처 등록
                 </button>
-            </a>
+        </a>
         </div>
     </div>
     <ul class="nav nav-tabs tabs-bordered">
@@ -116,8 +117,10 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'managing:customer_update' i.pk %}" class="table-action-btn h2"><i
-                                        class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="{% url 'managing:customer_update' i.pk %}" class="content-modal-btn table-action-btn h2"
+                                data-target="{{ i.pk }}">
+                                    <i class="mdi mdi-pencil-box-outline text-success"></i>
+                                </a>
 <!--                                <a href="#" class="table-action-btn h3"><i-->
 <!--                                        class="mdi mdi-close-box-outline text-danger"></i></a>-->
                             </td>

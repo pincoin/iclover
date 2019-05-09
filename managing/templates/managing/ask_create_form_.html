@@ -1,0 +1,28 @@
+<form method="POST" text="요청 등록"  autocomplete="off">
+        {% csrf_token %}
+        {{ form.errors_from_post }}
+        {{ form.errors }}
+        <div class="row">
+             <div class="col-sm-3">
+                 <span class="help-block"> 종류 : </span>
+                {{ form.ask_part}}
+            </div>
+            <div class="col-sm-3">
+                 <span class="help-block"> 응답자 : </span>
+                {{ form.ask_to}}
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-sm-12">
+                 <span class="help-block"> 내용 : </span>
+                {{ form.ask_what}}
+            </div>
+        </div>
+    <br>
+    <div class="modal-footer">
+        <button class="btn btn-danger">저장하기</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+    </form>

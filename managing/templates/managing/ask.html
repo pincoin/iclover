@@ -39,7 +39,7 @@
             </form>
         </div>
         <div class="col-sm-6">
-            <a href="{% url 'managing:ask_create' %}">
+            <a href="{% url 'managing:ask_create' %}" class="content-modal-btn">
                 <button class="btn btn-orange btn-rounded btn-md waves-effect waves-light m-b-30">요청 등록
                 </button>
             </a>
@@ -77,7 +77,7 @@
                         {% endif %}
                         >
                             <td>
-                                {{ i.created }}
+                                {{ i.created|date:"Y. m. d a f" }}
                             </td>
                             <td>
                                 {{ i.get_ask_part_display }}
@@ -86,14 +86,14 @@
                                 {{ i.ask_what|linebreaksbr }}
                             </td>
                             <td>
-                                {{ i.ask_from }}님이  {{ i.ask_to.user.username }}님에게 요청한 내용입니다.
+                                To - <b>{{ i.ask_to.user.username }}님 </b> <small class=""> _from_ {{ i.ask_from }}님</small>
                             </td>
                             <td>
                                 {% if i.ask_finish %}
-                                <a href="{% url 'managing:ask_update' i.pk %}" class="table-action-btn h2">
+                                <a href="{% url 'managing:ask_update' i.pk %}" class="content-modal-btn table-action-btn h2">
                                     <i class="mdi mdi-pencil-box-outline text-teal"></i></a>
                                 {% else %}
-                                <a href="{% url 'managing:ask_update' i.pk %}" class="table-action-btn h2">
+                                <a href="{% url 'managing:ask_update' i.pk %}" class="content-modal-btn table-action-btn h2">
                                     <i class="mdi mdi-pencil-box-outline text-success"></i></a>
                                 {% endif %}
 

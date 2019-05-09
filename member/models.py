@@ -28,7 +28,6 @@ class Profile(TimeStampedModel):
     code = models.IntegerField(
         verbose_name=_('사업자번호'),
         unique = True,
-        blank=True,
         null=True,
     )
 

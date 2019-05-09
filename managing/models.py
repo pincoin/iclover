@@ -89,25 +89,46 @@ class Product(TimeStampedModel):
         return '{} {} {}'.format(self.purchase, self.name, self.state)
 
 class Deposit(TimeStampedModel, SoftDeletableModel):
+    date = models.DateTimeField(
+        verbose_name=_('날짜'),
+        blank = True,
+        null = True,
+    )
+
+    bank = models.CharField(
+        verbose_name=_('은행명'),
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+
+    part = models.CharField(
+        verbose_name=_('입/출금'),
+        max_length= 100,
+        blank=True,
+        null=True,
+
+    )
+
     name = models.CharField(
-        verbose_name=_('name of the deposit'),
+        verbose_name=_('입금자명'),
         max_length=255,
         blank=True,
     )
 
-    ㅁ = models.IntegerField(
-        verbose_name=_('amount'),
+    amount = models.IntegerField(
+        verbose_name=_('입금액'),
         blank=True,
     )
 
     memo = models.CharField(
-        verbose_name=_('memo and company name of deposit'),
+        verbose_name=_('메모'),
         max_length=255,
         blank=True,
     )
 
     bill = models.CharField(
-        verbose_name=_('bill sate of deposit'),
+        verbose_name=_('영수처리'),
         max_length=255,
         blank=True,
     )
@@ -154,7 +175,7 @@ class Discount(TimeStampedModel):
         return '{} {} {} {}'.format(self.product, self.discount1, self.discount2, self.discount3)
 
 class Employees(TimeStampedModel, SoftDeletableModel):
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
@@ -211,7 +232,7 @@ class Employees(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('직원')
 
     def __str__(self):
-        return '{} {} {}'.format(self.user, self.name, self.state)
+        return '{}'.format(self.user)
 
 class Ask(TimeStampedModel, SoftDeletableModel):
     ASK_PART_WHAT_TO_DO = Choices(

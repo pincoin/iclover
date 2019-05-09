@@ -1,13 +1,13 @@
 {% extends 'managing/base.html'%}
 {% load static %}
-{% block title %}거래처 등록{% endblock%}
+{% block title %}입금 등록{% endblock%}
 
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title"><a href="{% url 'managing:customer' %}">거래처 관리</a> / 거래처 등록</h4>
+            <h4 class="page-title"><a href="{% url 'managing:deposit' %}">입금 관리</a> / 입금 등록</h4>
         </div>
     </div>
 </div>
@@ -16,14 +16,14 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <a href="{% url 'managing:customer' %}">
-                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">거래처 목록
+            <a href="{% url 'managing:deposit' %}">
+                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">입금 목록
                 </button>
             </a>
         </div>
     </div>
 
-    {% include 'managing/customer_create_form_.html' %}
+    {% include 'managing/deposit_create_form_.html' %}
 
 </div>
 
