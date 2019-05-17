@@ -3,111 +3,183 @@
 {% block title %}관리자 페이지{% endblock%}
 
 {% block content%}
-                <!-- Page-Title -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="page-title-box">
-                            <h4 class="page-title">Dashboard</h4>
-                        </div>
-                    </div>
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Dashboard</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="card-box tilebox-two tilebox-success">
+                    <i class="mdi mdi-basket-unfill pull-right text-dark"></i>
+                    <h6 class="text-success m-b-15 m-t-10"><b>어제 나의 발주</b></h6>
+                    <h2 class="m-b-10"><span data-plugin="counterup">12</span> 건</h2>
                 </div>
-                <!-- end page title end breadcrumb -->
+            </div>
 
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box tilebox-two tilebox-success">
-                            <i class="mdi mdi-basket-unfill pull-right text-dark"></i>
-                            <h6 class="text-success m-b-15 m-t-10"><b>어제 나의 발주</b></h6>
-                            <h2 class="m-b-10"><span data-plugin="counterup">12</span> 건</h2>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box tilebox-two tilebox-primary">
-                            <i class="mdi mdi-basket-fill pull-right text-dark"></i>
-                            <h6 class="text-primary text-uppercase m-b-15 m-t-10"><b>어제 나의 주문</b></h6>
-                            <h2 class="m-b-10"><span data-plugin="counterup">8</span> 건</h2>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box tilebox-two tilebox-pink">
-                            <i class="mdi mdi-burst-mode pull-right text-dark"></i>
-                            <h6 class="text-pink text-uppercase m-b-15 m-t-10"><b>미완료</b></h6>
-                            <h2 class="m-b-10"><span data-plugin="counterup">5</span> 건</h2>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card-box tilebox-two tilebox-info">
-                            <i class="mdi mdi-tooltip-image pull-right text-dark"></i>
-                            <h6 class="text-info text-uppercase m-b-15 m-t-10"><b>이달의 샘플 제출</b></h6>
-                            <h2 class="m-b-10"><span data-plugin="counterup">2</span> 개</h2>
-                        </div>
-                    </div>
-
+            <div class="col-lg-3 col-md-6">
+                <div class="card-box tilebox-two tilebox-primary">
+                    <i class="mdi mdi-basket-fill pull-right text-dark"></i>
+                    <h6 class="text-primary text-uppercase m-b-15 m-t-10"><b>어제 나의 주문</b></h6>
+                    <h2 class="m-b-10"><span data-plugin="counterup">8</span> 건</h2>
                 </div>
-                <!-- end row -->
+            </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card-box">
-                            <h4 class="header-title m-t-0 m-b-20">미완료 리스트</h4>
-
-                            <table class="table table-centered m-b-0">
-                                <tbody>
-                                    <tr>
-                                        <td>
-
-                                            <h3 class="m-0"><small>2019/06/09 10:45</small></h3>
-                                        </td>
-                                        <td>
-                                            <h3 class="m-0"><small>제이제이 피트니스 클럽</small></h3>
-                                        </td>
-                                        <td class="hide-phone">
-                                            <h3 class="m-0"><small>전단지 16절 외 4건</small></h3>
-                                        </td>
-                                        <td class="hide-phone">
-                                            <h3 class="m-0"><small>198,000</small></h3>
-                                        </td>
-                                        <td class="hide-phone">
-                                            <h3 class="m-0"><small>19,800</small></h3>
-                                        </td>
-                                        <td class="text-right">
-                                            <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-primary">내역 보기</a>
-                                            <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-danger">시안 등록</a>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-
-                                            <h3 class="m-0"><small>2019/02/09 10:45</small></h3>
-                                        </td>
-                                        <td>
-                                            <h3 class="m-0"><small>래미안 아파트 피트니스</small></h3>
-                                        </td>
-                                        <td class="hide-phone">
-                                            <h3 class="m-0"><small>전단지 16절 외 4건</small></h3>
-                                        </td>
-                                        <td class="hide-phone">
-                                            <h3 class="m-0"><small>198,000</small></h3>
-                                        </td>
-                                        <td class="hide-phone">
-                                            <h3 class="m-0"><small>19,800</small></h3>
-                                        </td>
-                                        <td class="text-right">
-                                            <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-primary">내역 보기</a>
-                                            <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-danger">시안 등록</a>
-
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> <!-- end col -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card-box tilebox-two tilebox-pink">
+                    <i class="mdi mdi-burst-mode pull-right text-dark"></i>
+                    <h6 class="text-pink text-uppercase m-b-15 m-t-10"><b>미완료</b></h6>
+                    <h2 class="m-b-10"><span data-plugin="counterup">5</span> 건</h2>
                 </div>
-                <!-- end row -->
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card-box tilebox-two tilebox-info">
+                    <i class="mdi mdi-tooltip-image pull-right text-dark"></i>
+                    <h6 class="text-info text-uppercase m-b-15 m-t-10"><b>이달의 샘플 제출</b></h6>
+                    <h2 class="m-b-10"><span data-plugin="counterup">2</span> 개</h2>
+                </div>
+            </div>
+
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-box">
+                    <h4 class="header-title m-t-0 m-b-20">미완료 리스트</h4>
+
+                    <table class="table table-centered m-b-0">
+                        <tbody>
+                        <tr>
+                            <td>
+
+                                <h3 class="m-0">
+                                    <small>2019/06/09 10:45</small>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3 class="m-0">
+                                    <small>제이제이 피트니스 클럽</small>
+                                </h3>
+                            </td>
+                            <td class="hide-phone">
+                                <h3 class="m-0">
+                                    <small>전단지 16절 외 4건</small>
+                                </h3>
+                            </td>
+                            <td class="hide-phone">
+                                <h3 class="m-0">
+                                    <small>198,000</small>
+                                </h3>
+                            </td>
+                            <td class="hide-phone">
+                                <h3 class="m-0">
+                                    <small>19,800</small>
+                                </h3>
+                            </td>
+                            <td class="text-right">
+                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-primary">내역
+                                    보기</a>
+                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-danger">시안
+                                    등록</a>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+
+                                <h3 class="m-0">
+                                    <small>2019/02/09 10:45</small>
+                                </h3>
+                            </td>
+                            <td>
+                                <h3 class="m-0">
+                                    <small>래미안 아파트 피트니스</small>
+                                </h3>
+                            </td>
+                            <td class="hide-phone">
+                                <h3 class="m-0">
+                                    <small>전단지 16절 외 4건</small>
+                                </h3>
+                            </td>
+                            <td class="hide-phone">
+                                <h3 class="m-0">
+                                    <small>198,000</small>
+                                </h3>
+                            </td>
+                            <td class="hide-phone">
+                                <h3 class="m-0">
+                                    <small>19,800</small>
+                                </h3>
+                            </td>
+                            <td class="text-right">
+                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-primary">내역
+                                    보기</a>
+                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-danger">시안
+                                    등록</a>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <div class="col-lg-3">
+        <div class="inner-box card-box">
+            <div class="plan-stats text-center">
+                <a href="{% url 'managing:memo_create' common=0 %}" class="content-modal-btn">
+                    <h3 class="plan-title text-custom"><b>개인 메모</b>
+                        <small><i class="mdi mdi-comment-plus-outline text-custom"></i></small>
+                    </h3>
+                </a>
+            </div>
+            <div class="plan-stats list-unstyled text-center">
+                {% for i in my_list %}
+                <a href="{% url 'managing:memo_update' i.0 %}" class="content-modal-btn">
+                {% if i.1 == True %}
+                <p class="text-danger" style="font-weight: bold">{{ i.2 }}</p>
+                {% elif i.4 == True %}
+                    <p class="text-success" style="font-weight: bold">{{ i.2 }}</p>
+                {% else %}
+                    <p class="text-brown">{{ i.2 }}</p>
+                {% endif %}
+                 </a>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="text-center">
+                <a href="{% url 'managing:memo_create' common=1 %}" class="content-modal-btn">
+                <h3 class="plan-title text-success"><b>공유 메모</b>
+                        <small><i class=" mdi mdi-comment-plus-outline text-custom text-success"></i></small>
+                </h3>  </a>
+                {% for i in common_list %}
+                <a href="{% url 'managing:memo_update' i.0 %}" class="content-modal-btn">
+                    <p data-toggle="tooltip" data-placement="top" data-original-title="{{ i.3 }}"
+                        {% if i.1 %}
+                        class="text-danger"
+                        {% else %}
+                        class="text-success"
+                        {% endif %}>
+                        <b>{{ i.2 }}</b>
+                    </p>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

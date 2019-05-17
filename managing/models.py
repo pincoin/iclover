@@ -175,22 +175,34 @@ class Discount(TimeStampedModel):
         return '{} {} {} {}'.format(self.product, self.discount1, self.discount2, self.discount3)
 
 class Employees(TimeStampedModel, SoftDeletableModel):
+    GROUP_EM = Choices(
+        (0, '관리자', _('관리자')),
+        (1, '팀장', _('팀장')),
+        (2, '디자이너', _('디자이너')),
+        (3, '알바', _('알바')),
+        (4, '기타', _('기타')),
+    )
+
+    group = models.IntegerField(
+        verbose_name=_('그룹선택'),
+        default=2,
+        choices=GROUP_EM,
+        db_index=True,
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
 
-    state = models.IntegerField(
+    state = models.BooleanField(
         verbose_name=_('state'),
-        blank=True,
-        null=True,
+        default=True,
     )
 
     name = models.CharField(
         verbose_name=_('name of employees'),
         max_length=255,
-        blank=True,
-        null=True,
     )
 
     join = models.DateField(
@@ -213,7 +225,7 @@ class Employees(TimeStampedModel, SoftDeletableModel):
     )
 
     def upload_to_employees(instance, filename):
-        return 'employees/{}/{}'.format(instance.user.name, filename)
+        return 'employees/{}/{}'.format(instance.name, filename)
     join_pic = models.ImageField(
         verbose_name=_('join picture'),
         null=True,
@@ -249,7 +261,7 @@ class Ask(TimeStampedModel, SoftDeletableModel):
     )
 
     ask_to = models.ForeignKey(
-        'Employees',
+        settings.AUTH_USER_MODEL,
         verbose_name=_('받는사람'),
         on_delete=models.SET_NULL,
         null=True,
@@ -259,7 +271,6 @@ class Ask(TimeStampedModel, SoftDeletableModel):
     ask_part = models.IntegerField(
         verbose_name=_('division of requests'),
         choices=ASK_PART_WHAT_TO_DO,
-        blank=True,
         db_index=True,
     )
 
@@ -301,7 +312,7 @@ class Sample(TimeStampedModel, SoftDeletableModel):
     )
 
     employees = models.ForeignKey(
-        'Employees',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         verbose_name=_('직원명'),
         null=True,
@@ -351,4 +362,52 @@ class Sample(TimeStampedModel, SoftDeletableModel):
 
     def __str__(self):
         return '{} {} {}'.format(self.name, self.employees, self.keyword)
+
+class Memo(TimeStampedModel, SoftDeletableModel):
+    order = models.ForeignKey(
+        'design.OrderInfo',
+        blank=True,
+        null=True,
+        verbose_name=_('품목 연결'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+
+    employees = models.CharField(
+        verbose_name=_('담당자'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    content = models.CharField(
+        verbose_name=_('내용'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    confirm = models.BooleanField(
+        default=False,
+        verbose_name=_('확인'),
+    )
+
+    common = models.BooleanField(
+        default=False,
+        verbose_name=_('개인/공유'),
+    )
+
+    importance = models.BooleanField(
+        default=False,
+        verbose_name=_('중요도'),
+    )
+
+    notice = models.BooleanField(
+        default=False,
+        verbose_name=_('공지사항'),
+    )
+
+    class Meta:
+        verbose_name = _('할일 to_do')
+        verbose_name_plural = _('할일 to_do')
 

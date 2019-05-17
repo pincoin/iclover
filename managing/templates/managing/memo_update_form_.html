@@ -1,0 +1,58 @@
+{% load addattr %}
+<form method="POST" text="메모 수정"  autocomplete="off">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-sm-6">
+            <p>{{ form.employees.value}}님이 작성하신 메모 :</p>
+            {% if request.user.username == form.employees.value %}
+            <p>{{ form.content}}</p>
+            {% else %}
+            <input type="text" class="form-control" value="{{form.content.value}}" disabled/>
+            <p>{{ form.content|addhidden }}</p>
+            {% endif %}
+
+            {{ form.employees}}
+        </div>
+        <div class="col-sm-6">
+            {% if request.user.username == form.employees.value %}
+            <p class="checkbox checkbox-danger">
+                {{ form.importance}}
+                <label class="text-danger">중요도 표시</label>
+            </p>
+             <p class="checkbox checkbox-success">
+                 {{ form.common}}
+                <label class="text-success">공유</label>
+            </p>
+            {% else %}
+            <p class="checkbox checkbox-danger">
+                {{ form.importance|addhidden }}
+                <input type="checkbox" disabled=""
+                {% if form.importance.value %}
+                       checked=""
+                       {% endif %}
+                >
+                <label class="text-danger">중요도 표시</label>
+            </p>
+             <p class="checkbox checkbox-success">
+                 {{ form.common|addhidden }}
+                 <input type="checkbox" disabled=""
+                 {% if form.common.value %}
+                       checked=""
+                       {% endif %}
+                 >
+                <label class="text-success">공유</label>
+            </p>
+            {% endif %}
+            <p class="checkbox checkbox-brown">
+                {{ form.confirm}}
+                <label class="text-brown">완료</label>
+            </p>
+        </div>
+    </div>
+<br><br>
+    <div class="modal-footer">
+            <button class="btn btn-success" value="Update">수정하기</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+</form>
+

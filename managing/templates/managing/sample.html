@@ -39,10 +39,12 @@
             </form>
         </div>
         <div class="col-sm-6">
+            {% if group_name != '디자이너'%}
             <a href="{% url 'managing:sample_create' %}">
                 <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">샘플 등록
                 </button>
             </a>
+            {% endif %}
         </div>
     </div>
     <ul class="nav nav-tabs tabs-bordered">
@@ -99,7 +101,7 @@
                                 {{ i.keyword }}
                             </td>
                              <td>
-                                {{ i.employees.name }}
+                                {{ i.employees }}
                             </td>
 
                             <td>

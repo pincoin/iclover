@@ -1,7 +1,28 @@
 from django import forms
+from django.contrib.auth.models import User
 from member import models as member_models
 from managing import models as managing_models
 from design import models as design_models
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder':'이름',
+            }
+        ),
+        help_text='ID :'
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Password',
+            }
+        ),
+        help_text='PW :'
+    )
 
 class DataSearchForm(forms.Form):
     q = forms.CharField(
@@ -134,6 +155,10 @@ class ProductUpdateForm(forms.ModelForm):
         fields = ['code']
 
 class SampleCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SampleCreateForm, self).__init__(*args, **kwargs)
+        self.fields['employees'].queryset = User.objects.filter(is_staff=True)
+
     class Meta:
         model = managing_models.Sample
         fields = ['category','sectors_category','employees','name','keyword','sample_img']
@@ -147,6 +172,10 @@ class SampleCreateForm(forms.ModelForm):
         }
 
 class SampleUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SampleUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['employees'].queryset = User.objects.filter(is_staff=True)
+
     class Meta:
         model = managing_models.Sample
         fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'sample_img','state']
@@ -161,6 +190,10 @@ class SampleUpdateForm(forms.ModelForm):
         }
 
 class AskCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AskCreateForm, self).__init__(*args, **kwargs)
+        self.fields['ask_to'].queryset = User.objects.filter(is_staff=True)
+
     class Meta:
         model = managing_models.Ask
         fields = ['ask_to','ask_what','ask_part']
@@ -171,8 +204,11 @@ class AskCreateForm(forms.ModelForm):
         }
 
 
-
 class AskUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AskUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['ask_to'].queryset = User.objects.filter(is_staff=True)
+
     class Meta:
         model = managing_models.Ask
         fields = ['ask_to', 'ask_what', 'ask_part','ask_finish']
@@ -201,4 +237,58 @@ class DepositUpdateForm(forms.ModelForm):
         widgets = {
             'memo': forms.TextInput(attrs={'class': 'form-control'}),
             'bill': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class EmployeesCreateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Employees
+        fields = ['name','cellphone']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control' }),
+            'cellphone': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class EmployeesUpdateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Employees
+        fields = ['name', 'cellphone','state','join','leave','join_pic','leave_pic']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control','type':'hidden'}),
+            'cellphone': forms.TextInput(attrs={'class': 'form-control'}),
+            'join': forms.DateInput(attrs={'class': 'form-control','placeholder':'0000-00-00'}),
+            'leave': forms.DateInput(attrs={'class': 'form-control','placeholder':'0000-00-00'}),
+
+        }
+
+
+class MemoCreateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Memo
+        fields = ['content','importance']
+        widgets = {
+            'content': forms.TextInput(attrs={'class': 'form-control'}),
+            'importance': forms.CheckboxInput(attrs={ 'style':"width:50px;,height:50px;"}),
+        }
+        help_texts = {
+            'content': '내용',
+            'importance': '중요도 체크',
+        }
+
+class MemoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = managing_models.Memo
+        fields = ['content','importance','common','confirm','employees']
+        widgets = {
+            'content': forms.TextInput(attrs={'class': 'form-control'}),
+            'importance': forms.CheckboxInput(attrs={ 'style':"width:50px;,height:50px;"}),
+            'common': forms.CheckboxInput(attrs={'style': "width:50px;,height:50px;"}),
+            'confirm': forms.CheckboxInput(attrs={'style': "width:50px;,height:50px;"}),
+            'employees': forms.TextInput(attrs={'type': "hidden"}),
+        }
+        help_texts = {
+            'content': '내용',
+            'importance': '중요도 체크',
+            'common': '공유',
+            'confirm': '종료',
         }

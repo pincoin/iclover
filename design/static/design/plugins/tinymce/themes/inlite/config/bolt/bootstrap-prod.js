@@ -758,7 +758,7 @@ kernel.api.config = def(
       return {
         define: engine.define,
         require: engine.require,
-        demand: engine.demand
+        demand: engine.demand_list
       };
     };
 
@@ -1102,7 +1102,7 @@ module.api = def(
     return {
       define: delegate('define'),
       require: delegate('require'),
-      demand: delegate('demand'),
+      demand: delegate('demand_list.html'),
       main: delegate('main'),
       load: delegate('load'),
       loadscript: delegate('loadscript')
@@ -1465,7 +1465,7 @@ module.bootstrap.install = def(
         var bolt = config.configure(configuration, builtins, error.die);
         runtime.define = bolt.define;
         runtime.require = bolt.require;
-        runtime.demand = bolt.demand;
+        runtime.demand = bolt.demand_list;
 
         deferred.configured(runtime.require);
       });

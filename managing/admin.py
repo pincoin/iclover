@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Product, Deposit, Discount, Employees, Ask, Sample
+    Product, Deposit, Discount, Employees, Ask, Sample, Memo
 )
 
 
@@ -23,6 +23,9 @@ class AskAdmin(admin.ModelAdmin):
 class SampleAdmin(admin.ModelAdmin):
     pass
 
+class MemoAdmin(admin.ModelAdmin):
+    pass
+
 
 
 
@@ -32,3 +35,4 @@ admin.site.register(Discount, DiscountAdmin)
 admin.site.register(Employees, EmployeesAdmin)
 admin.site.register(Ask, AskAdmin)
 admin.site.register(Sample, SampleAdmin)
+admin.site.register(Memo,MemoAdmin)

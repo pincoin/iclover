@@ -1,0 +1,31 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}메모 등록{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title"><a href="{% url 'managing:main' %}">메모 관리</a> / 메모 등록</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="{% url 'managing:main' %}">
+                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">메모 목록
+                </button>
+            </a>
+        </div>
+    </div>
+
+    {% include 'managing/memo_create_form_.html' %}
+
+</div>
+
+{% endblock %}

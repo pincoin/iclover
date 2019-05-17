@@ -1,0 +1,97 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}직원 수정{% endblock%}
+
+{% block content%}
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title"><a href="{% url 'managing:employees' %}">직원 관리</a> </h4>
+        </div>
+    </div>
+</div>
+{{ form.errors}}
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="{% url 'managing:employees' %}">
+                <button class="btn btn-teal btn-rounded btn-md waves-effect waves-light m-b-30">직원 목록
+                </button>
+            </a>
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data" autocomplete="off">
+
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-1">
+                <span class="help-block"> Active </span>
+                <div class="checkbox checkbox-success">
+                    {{ form.state}}
+                    {% if form.state.value %}
+                    <label>상태</label>
+                    {% else %}
+                    <label style="color:#c9302c">상태</label>
+                    {% endif %}
+                </div>
+            </div>
+             <div class="col-sm-2">
+                <span class="help-block"> 직원명 : </span>
+                 <b>{{ form.name.value }}</b>
+                 {{ form.name }}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> 연락처 : </span>
+                {{ form.cellphone}}
+            </div>
+            <div class="col-sm-2">
+                <span class="help-block"> 입사일 : <small class="text-danger">*형식 준수</small> </span>
+                {{ form.join}}
+            </div>
+            <div class="col-sm-2">
+                <span class="help-block"> 퇴사일 :  <small class="text-danger">*형식 준수</small></span>
+                {{ form.leave}}
+            </div>
+        </div>
+        <hr>
+         <div class="row">
+             <div class="col-sm-6"> {{ form.join_pic}} </div>
+              <div class="col-sm-6"> {{ form.leave_pic}} </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            {% if form.join_pic.value %}
+            <div class="col-sm-2">
+                <span class="help-block"> 근로계약서 : </span>
+                 <a href="/media/{{form.join_pic.value}}" target="_blank">
+             <img src="/media/{{form.join_pic.value}}" class="img-rounded img-responsive" width="200px"/>
+                 </a>
+            </div>
+            {% endif %}
+            {% if form.leave_pic.value %}
+            <div class="col-sm-2">
+                <span class="help-block"> 사직서 : </span>
+                <a href="/media/{{form.leave_pic.value}}" target="_blank">
+             <img src="/media/{{form.leave_pic.value}}" class="img-rounded img-responsive" width="200px"/>
+            </a>
+            </div>
+              {% endif %}
+        </div>
+
+        <br> <br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <button class="form-control btn btn-success" value="Update">정보 수정하기</button>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+    </form>
+
+</div>
+
+
+{% endblock %}

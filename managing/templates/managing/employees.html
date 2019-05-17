@@ -1,14 +1,14 @@
 {% extends 'managing/base.html'%}
 {% load static %}
 {% load humanize %}
-{% block title %}요청 관리{% endblock%}
+{% block title %}직원 관리{% endblock%}
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <a href="{% url 'managing:ask' %}">
-                <h4 class="page-title">요청 관리</h4>
+            <a href="{% url 'managing:employees' %}">
+                <h4 class="page-title">직원 관리</h4>
             </a>
         </div>
     </div>
@@ -39,8 +39,8 @@
             </form>
         </div>
         <div class="col-sm-6">
-            <a href="{% url 'managing:ask_create' %}" class="content-modal-btn">
-                <button class="btn btn-orange btn-rounded btn-md waves-effect waves-light m-b-30">요청 등록
+            <a href="{% url 'managing:employees_create' %}" class="content-modal-btn">
+                <button class="btn btn-warning btn-rounded btn-md waves-effect waves-light m-b-30">직원 등록
                 </button>
             </a>
         </div>
@@ -49,7 +49,7 @@
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">요청</span>
+                <span class="hidden-xs">직원</span>
             </a>
         </li>
     </ul>
@@ -61,40 +61,48 @@
                     <table class="table table-hover mails m-0 table table-actions-bar">
                         <thead>
                         <tr>
-                            <th>일자</th>
-                            <th>종류</th>
-                            <th>내용</th>
-                            <th>요청/응답</th>
-                            <th>노출/수정</th>
+                            <th>직원명</th>
+                            <th>근무일</th>
+                            <th>입사/퇴사</th>
+                            <th>전화번호</th>
+                            <th>직원명</th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        {% for i in ask_list %}
+                        {% for i in employees_list %}
                         <tr
-                        {% if i.ask_finish%}
-                        style="background-color:#d3d3d4"
-                        {% endif %}
+                                {% if i.state %}
+                                class="text-teal"
+                                {% else %}
+                                class="text-danger"
+                                {% endif %}
+
                         >
                             <td>
-                                {{ i.created|date:"Y. m. d a f" }}
+                                {{ i.name }} <small>{{i.get_group_display}}</small>
+                            </td>
+
+                            <td>
+                                <b>{{ i.join|timesince }}</b>
+                                {% if '11개월' in i.join|timesince%}
+                                <br><b class="text-danger">*연봉 협상 대상자</b>
+                                {% endif %}
+                            </td>
+                              <td>
+                               입사 : {{ i.join }}<br>퇴사 : {{ i.leave }}
                             </td>
                             <td>
-                                {{ i.get_ask_part_display }}
+                                {{ i.cellphone }}
                             </td>
+
                             <td>
-                                {{ i.ask_what|linebreaksbr }}
-                            </td>
-                            <td>
-                                To - <b>{{ i.ask_to.first_name }} </b> <small class=""> _from_ {{ i.ask_from }}님</small>
-                            </td>
-                            <td>
-                                {% if i.ask_finish %}
-                                <a href="{% url 'managing:ask_update' i.pk %}" class="content-modal-btn table-action-btn h2">
-                                    <i class="mdi mdi-pencil-box-outline text-teal"></i></a>
-                                {% else %}
-                                <a href="{% url 'managing:ask_update' i.pk %}" class="content-modal-btn table-action-btn h2">
+                                {% if i.state %}
+                                    <a href="{% url 'managing:employees_update' i.pk %}" class="table-action-btn h2">
                                     <i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                {% else %}
+                                   <a href="{% url 'managing:employees_update' i.pk %}" class="table-action-btn h2">
+                                    <i class="mdi mdi-pencil-box-outline text-danger"></i></a>
                                 {% endif %}
 
                             </td>
@@ -107,7 +115,7 @@
             <div class="row m-t-30">
                 <div class="text-center m-t-30">
 
-                    {% if not ask_list %}
+                    {% if not employees_list %}
                     <h3>검색 된 데이터가 없습니다.</h3>
                     {% endif %}
 
@@ -129,7 +137,7 @@
                             {% endif %}
 
                             {% for page in page_range %}
-                            <li {% if page == page_obj.number %} class="active" {% endif %}>
+                            <li {% if page == page_obj.number %}class="active" {% endif %}>
                                 <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
                                     {{ page }}</a>
                             </li>

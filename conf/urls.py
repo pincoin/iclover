@@ -6,10 +6,10 @@ from django.urls import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('minsmine/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('design/', include('design.urls')),
-    path('managing/', include('managing.urls')),
+    path('clovi/', include('managing.urls')),
     path('api/', include('api.urls', namespace='api')),
 ]
 

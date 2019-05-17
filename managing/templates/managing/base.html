@@ -2,6 +2,7 @@
 <html>
 <head>
     {% load static%}
+    {% load addattr %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="아이클로버 관리자페이지">
@@ -38,8 +39,8 @@
 
 
 <body>
-
-
+{% group_employees as groups %}
+{# 템플릿태그 호출 #}
 <!-- Navigation Bar-->
 <header id="topnav">
     <div class="topbar-main">
@@ -59,78 +60,33 @@
 
                 <ul class="nav navbar-nav navbar-right pull-right">
                     <li class="navbar-c-items">
-                        <form method="GET"  role="search" class="navbar-left app-search pull-left hidden-xs" action="{% url 'managing:customer_result'%}" >
-                            <input type="text" name='q'placeholder="거래처 검색" class="form-control" autocomplete="off">
+                        {% if user.is_authenticated %}
+                        <form method="GET" role="search" class="navbar-left app-search pull-left hidden-xs"
+                              action="{% url 'managing:customer_result'%}">
+                            <input type="text" name='q' placeholder="거래처 검색" class="form-control" autocomplete="off">
                             <a href=""><i class="fa fa-search" type="submit"></i></a>
                         </form>
-                    </li>
-
-                    <li class="dropdown navbar-c-items">
-                        <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-won"></i>
-                            <span class="badge up bg-danger">8</span>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
-                            <li class="text-center">
-                                <h5>입금확인</h5>
-                            </li>
-                            <li>
-                                <a href="#" class="user-list-item">
-                                    <div class="avatar">
-                                        <img src="{% static 'managing/images/sinhan.gif' %} " alt=""
-                                             style="opacity: 0.5;">
-                                    </div>
-                                    <div class="user-desc">
-                                        <span class="name">홍길동</span>
-                                        <span class="name">198,000</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="user-list-item">
-                                    <div class="avatar">
-                                        <img src="{% static 'managing/images/sinhan.gif' %} " alt=""
-                                             style="opacity: 0.5;">
-                                    </div>
-                                    <div class="user-desc">
-                                        <span class="name">제이제이크로스핏</span>
-                                        <span class="name">98,000</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="user-list-item">
-                                    <div class="avatar">
-                                        <img src="{% static 'managing/images/sinhan.gif' %} " alt=""
-                                             style="opacity: 0.5;">
-                                    </div>
-                                    <div class="user-desc">
-                                        <span class="name">홍길동</span>
-                                        <span class="name">198,000</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="all-msgs text-center">
-                                <p class="m-0"><a href="#">모두 보기</a></p>
-                            </li>
-                        </ul>
+                        {% else %}
+                        <form class="navbar-left app-search pull-left hidden-xs">
+                            <input type="text" name='q' placeholder="거래처 검색" class="form-control" disabled>
+                            <a href=""><i class="ti-lock"></i></a>
+                        </form>
+                        {% endif %}
                     </li>
 
                     <li class="dropdown navbar-c-items">
                         <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi mdi-web"></i>
-                            <span class="badge up bg-success">4</span>
                         </a>
-
+                             {% if user.is_authenticated %}
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
                             <li class="text-center">
                                 <h5>사이트 바로가기</h5>
                             </li>
                             <li>
-                                <a href="{% url 'design:home'%}" class="user-list-item">
-                                    <div class="icon bg-info">
-                                        <i class="mdi mdi-account"></i>
+                                <a href="{% url 'design:home'%}" target="_blank" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/clo.jpg' %}" width="70%;" class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">고객 페이지</span>
@@ -138,9 +94,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'design:home'%}" class="user-list-item">
-                                    <div class="icon bg-info">
-                                        <i class="mdi mdi-account"></i>
+                                <a href="http://aceprinting.co.kr" target="_blank" class="user-list-item">
+                                    <div class="icon">
+                                         <img src="{% static 'managing/images/logos/ace.jpg' %}" width="70%;" class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">에이스 프린팅</span>
@@ -148,30 +104,103 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'design:home'%}" class="user-list-item">
-                                    <div class="icon bg-info">
-                                        <i class="mdi mdi-account"></i>
+                                <a href="http://www.adchunha.com/" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/gg.jpg' %}" width="70%;" class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">광고 천하</span>
                                     </div>
                                 </a>
                             </li>
+                            <li>
+                                <a href="http://www.xn--ob0b70f19ljql.com/" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/fac.jpg' %}" width="70%;" class="img-responsive"/>
+                                    </div>
+                                    <div class="user-desc">
+                                        <span class="name">배너 공장</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.iclickart.co.kr/" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/ic.jpg' %}" width="70%;" class="img-responsive"/>
+                                    </div>
+                                    <div class="user-desc">
+                                        <span class="name">아이클릭아트</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://da2000.co.kr/" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/da.jpg' %}" width="70%;" class="img-responsive"/>
+                                    </div>
+                                    <div class="user-desc">
+                                        <span class="name">다이천</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://accounts.kakao.com/" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/yy.jpg' %}" width="70%;" class="img-responsive"/>
+                                    </div>
+                                    <div class="user-desc">
+                                        <span class="name">플러스친구 Kakao</span>
+                                    </div>
+                                </a>
+                            </li>
+                            {% if group_name != '디자이너' %}
+                            <li>
+                                <a href="https://accounts.kakao.com/" class="user-list-item">
+                                    <div class="icon">
+                                        <img src="{% static 'managing/images/logos/ww.jpg' %}" width="70%;" class="img-responsive"/>
+                                    </div>
+                                    <div class="user-desc">
+                                        <span class="name">왕도매</span>
+                                    </div>
+                                </a>
+                            </li>
+                            {% endif %}
                         </ul>
                     </li>
+                    {% else %}
+                        <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                            <li class="text-center">
+                                <h5>사이트 바로가기</h5>
+                            </li>
+                            <li class="text-center m-t-30 m-b-30">
+                                <h1><i class="ti-lock"></i></h1>
+                                <p>보안을 위해 <br>잠금처리 되었습니다.</p>
+                            </li>
+
+                        </ul>
+                     {% endif %}
 
                     <li class="dropdown navbar-c-items">
                         <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown"
-                           aria-expanded="true"><img src="assets/images/users/avatar-1.jpg" alt="user-img"
-                                                     class="img-circle"> </a>
+                           aria-expanded="true">my</a>
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                             <li class="text-center">
-                                <h5>{{ user }}님</h5>
+                                <h5>{{ user.first_name }}</h5>
+
                             </li>
+                            {% if user.is_authenticated %}
                             <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Lock screen</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                            <li><a href="{% url 'managing:logout'%}"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                            {% else %}
+                            <li class="text-center">
+                                <h5>마이 페이지</h5>
+                            </li>
+                            <li class="text-center m-t-30 m-b-30">
+                                <h1><i class="ti-lock"></i></h1>
+                                <p>보안을 위해 <br>잠금처리 되었습니다.</p>
+                            </li>
+                            {% endif %}
                         </ul>
 
                     </li>
@@ -193,7 +222,7 @@
         </div> <!-- end container -->
     </div>
     <!-- end topbar-main -->
-
+{% if user.is_authenticated %}
     <div class="navbar-custom">
         <div class="container">
             <div id="navigation">
@@ -213,16 +242,16 @@
                                 <a href="{% url 'managing:sample' %}">샘플 관리</a>
                             </li>
                             <li>
-                                <a href="{% url 'managing:discount' %}">할인그룹 관리</a>
+                                <a href="{% url 'managing:discount' %}">할인그룹 관리<small class="text-danger">_(준비중)</small></a>
                             </li>
                             <li>
-                                <a href="{% url 'managing:category' %}">카테고리 관리</a>
+                                <a href="{% url 'managing:category' %}">카테고리 관리<small class="text-danger">_(준비중)</small></a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="has-submenu">
-                        <a href="{% url 'managing:demand' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span
+                        <a href="{% url 'managing:demand_list' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span
                                 class="badge badge-purple">1</span></a>
                     </li>
 
@@ -243,34 +272,82 @@
                     </li>
 
                     <li class="has-submenu">
-                        <a href="{% url 'managing:to_do'%}"><i class="glyphicon glyphicon-list-alt"></i>
-                            TO DO List <span class="badge badge-danger">9</span>
+                        <a href="{% url 'managing:main'%}"><i class="glyphicon glyphicon-list-alt"></i>
+                            TO DO List
                         </a>
                     </li>
+                    {% if group_name != '디자이너' %}
                     <li class="has-submenu">
                         <a href="#"><i class="mdi mdi-comment-text"></i>Master</a>
                         <ul class="submenu">
-                            <li><a href="blogs-dashboard.html">광고배너 관리</a></li>
-                            <li><a href="blogs-blog-list.html">품목배너 관리</a></li>
-                            <li><a href="blogs-blog-column.html">매입처 매칭</a></li>
-                            <li><a href="blogs-blog-post.html">나스 비교</a></li>
-                            <li><a href="blogs-blog-post.html">보류 시안</a></li>
-                            <li><a href="blogs-blog-post.html">직원 관리</a></li>
-                            <li><a href="blogs-blog-post.html">이카운트 API</a></li>
-                            <li><a href="blogs-blog-post.html">거래처</a></li>
+                            <li><a href="#">
+                                광고배너 관리
+                                <small class="text-danger">_(준비중)</small>
+                            </a>
+                            </li>
+                            <li>
+                                <a href="#">품목배너 관리
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#ml">매입처 매칭
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">나스 비교
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">보류 시안
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'managing:employees' %}">직원 관리
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">이카운트 API
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">체육시설업 현황
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">상담 멘트 관리
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    {% endif %}
                 </ul>
                 <!-- End navigation menu -->
             </div> <!-- end #navigation -->
         </div> <!-- end container -->
     </div> <!-- end navbar-custom -->
+{%else %}
+     <div class="navbar-custom">
+        <div class="container">
+            <div class="text-center">
+                <h3><i class="ti-lock"></i> 메뉴 잠금</h3>
+                </div>
+        </div> <!-- end container -->
+    </div> <!-- end navbar-custom -->
+{% endif %}
 </header>
 <!-- End Navigation Bar-->
 
 
 <div class="wrapper">
     <div class="container">
+
         {% block content%}
 
         {% endblock %}
@@ -291,23 +368,23 @@
 </div>
 <!-- end wrapper -->
 
-  <!-- Modal -->
-  <div class="content-modal modal fade" role="dialog">
+<!-- Modal -->
+<div class="content-modal modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
 
-      </div>
+        </div>
     </div>
-  </div>
+</div>
 </div>
 <!-- modal end -->
 
@@ -327,8 +404,8 @@
 <script src="{% static 'managing/js/jquery.app.js' %}"></script>
 
 <script>
-    $(function(){
-        $(document).on('click','.content-modal-btn',function(e) {
+    $(function () {
+        $(document).on('click', '.content-modal-btn', function (e) {
             e.preventDefault();
             var action_url = $(this).attr("href");
             $.get(action_url)
@@ -338,13 +415,13 @@
                     $form = $modal.find('.modal-body form');
                     var title = $form.attr('text');
                     $modal.find('.modal-title').text(title);
-                    $form.attr('action',action_url);
+                    $form.attr('action', action_url);
 
                     $modal.modal();
                 })
                 .fail(function (xhr, textStatus, error) {
                     console.log(error)
-            });
+                });
         });
     });
 </script>

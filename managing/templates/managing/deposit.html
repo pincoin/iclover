@@ -39,10 +39,12 @@
             </form>
         </div>
         <div class="col-sm-6">
+            {% if group_name != '디자이너'%}
             <a href="{% url 'managing:deposit_create' %}" class="content-modal-btn">
                 <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">입금 등록
                 </button>
             </a>
+            {% endif %}
         </div>
     </div>
     <ul class="nav nav-tabs tabs-bordered">
@@ -94,8 +96,14 @@
                                 <td>
                                     <input type="text" class="form-control" name="memo" value="{{i.memo}}">
                                 </td>
+
                                 <td>
+                                    {% if group_name != '디자이너'%}
                                     <input type="text" class="form-control"  name="bill" value="{{i.bill}}">
+                                    {% else %}
+                                    <input type="text" class="form-control"  value="{{i.bill}}" disabled>
+                                    <input type="hidden" class="form-control"  name="bill" value="{{i.bill}}">
+                                    {% endif %}
                                 </td>
 
                                 <td>

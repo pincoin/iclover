@@ -1,0 +1,35 @@
+<form method="POST"
+      {% if "0" in request.path %}
+      text="개인메모 등록"
+      {% else %}
+      text="공유메모 등록"
+      {% endif %}
+      autocomplete="off"
+>
+
+    {% csrf_token %}
+    {{ form.errors_from_post }}
+    {{ form.user }}
+    {{ errors_message }}
+    {{ form.user.errors }}
+    <div class="row">
+        <div class="col-sm-2 text-center">
+            <div class="checkbox checkbox-danger">
+                <span class="help-block text-danger">&nbsp</span>
+                {{ form.importance}}
+                <label class="text-danger">중요도 표시</label>
+            </div>
+
+        </div>
+        <div class="col-sm-8">
+            <span class="help-block"> {{ form.content.help_text}}</span>
+            {{ form.content}}
+        </div>
+
+    </div>
+    <br><br><br>
+<div class="modal-footer">
+    <button class="btn btn-danger">저장하기</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+</form>
