@@ -230,13 +230,13 @@ class ProductView(LoginRequiredMixin, viewmixin.PageableMixin, viewmixin.DataSea
     template_name = 'managing/product.html'
     context_object_name = 'product_list'
     paginate_by = 10
-    model = design_models.ProductBase
+    model = design_models.ProductText
     data_search_form = managing_forms.DataSearchForm
     # optional
     login_url = clovi_login_url
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().select_related('category').prefetch_related('supplier__profile').order_by('-created')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -267,10 +267,10 @@ class ProdcutCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateV
         queryset = super(ProdcutCreateView, self).get_queryset()
         return queryset
 
+
 class ProductUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
-    model = design_models.ProductBase
+    model = design_models.ProductText
     form_class = managing_forms.ProductUpdateForm
-    context_object_name = 'update_list'
     template_name = 'managing/product_update.html'
     success_url = "/clovi/product"
     success_message = '정보가 수정되었습니다.'

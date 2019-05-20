@@ -1,20 +1,20 @@
 {% extends 'managing/base.html'%}
 {% load static %}
-{% block title %}품목 수정{% endblock%}
+{% load humanize %}
+{% block title %}품목 등록{% endblock%}
 
 {% block content%}
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title"><a href="{% url 'managing:product' %}">품목 관리</a> </h4>
+            <h4 class="page-title"><a href="{% url 'managing:product' %}">품목 관리</a> / 품목 등록</h4>
         </div>
     </div>
 </div>
-{{ form.errors}}
-{{ form.as_p }}
 <!-- end page title end breadcrumb -->
 <div class="card-box">
+
     <div class="row">
         <div class="col-sm-12">
             <a href="{% url 'managing:product' %}">
@@ -25,110 +25,118 @@
     </div>
     <form method="POST">
         {% csrf_token %}
+        {{ form.errors_from_post }}
         <div class="row">
-            <div class="col-sm-2">
-                  <span class="help-block"
-                        {% if form.state_select.value == 0 %}
-                        style="color: #3e8f3e"
-                        {% else %}
-                         style="color:#d33333"
-                        {% endif %}>
-                      {{ form.state_select.help_text}}</span>
-                {{ form.state_select}}
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.category.label}}</span>
+                {{ form.category}}
+            </div>
+            <div class="col-sm-4">
+                <span class="help-block"> {{ form.supplier.label}}</span>
+                {{ form.supplier}}
             </div>
             <div class="col-sm-2">
-                <span class="help-block"> {{ form.state.help_text}}</span>
-                {{ form.state}}
+                <span class="help-block"> 수량 </span>
+                {{ form.quantity}}
             </div>
             <div class="col-sm-2">
-                <span class="help-block"> {{ form.manager.help_text}}</span>
-                {{ form.manager}}
+                <span class="help-block"> 해당 품목의 기본/최소 </span>
+                {{ form.main_quantity}}
             </div>
-
-
         </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-3">
+                <span class="help-block"><b>{{ form.code.label}}</b></span>
+                {{ form.code}}
+                {% if form.errors.code %}<span style="color: #d33333"> {{form.errors.code.as_text}}</span> {% endif %}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> <b>{{ form.title.label}}</b></span>
+                {{ form.title}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> 현재 {{ form.sell_price.label}} : <b>{{ form.sell_price.value|floatformat:'0'|intcomma}} </b> </span>
+                {{ form.sell_price}}
+            </div>
+            <div class="col-sm-3">
+                <span class="help-block"> 현재 {{ form.buy_price.label}} : <b>{{ form.buy_price.value|floatformat:'0'|intcomma}} </b></span>
+                {{ form.buy_price}}
+            </div>
+        </div>
+        <br>
         <hr>
         <div class="row">
             <div class="col-sm-4">
-                <span class="help-block"> {{ form.code.help_text}}</span>
-                {{ form.code}}
+                <span class="help-block"> {{ form.standard.label}}</span>
+                {{ form.standard}}
             </div>
-            <div class="col-sm-4">
-                <span class="help-block"> {{ form.company.help_text}}</span>
-                {{ form.company}}
+            <div class="col-sm-2">
+                <span class="help-block"> {{ form.horizontal.label}}</span>
+                {{ form.horizontal}}
             </div>
-            <div class="col-sm-4">
-                <span class="help-block"> {{ form.company_keyword.help_text}}</span>
-                {{ form.company_keyword}}
+            <div class="col-sm-2">
+                <span class="help-block"> {{ form.vertical.label}}</span>
+                {{ form.vertical}}
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <span class="help-block"> {{ form.ceo.help_text}}</span>
-                {{ form.ceo}}
+            <div class="col-sm-2">
+                <span class="help-block"> {{ form.width.label}}</span>
+                {{ form.width}}
             </div>
-            <div class="col-sm-3">
-                <span class="help-block"> {{ form.sectors.help_text}}</span>
-                {{ form.sectors}}
-            </div>
-            <div class="col-sm-3">
-                <span class="help-block"> {{ form.business.help_text}}</span>
-                {{ form.business}}
-            </div>
-            <div class="col-sm-3">
-                <span class="help-block"> {{ form.tell.help_text}}</span>
-                {{ form.tell}}
+            <div class="col-sm-2">
+                <span class="help-block"> {{ form.height.label}}</span>
+                {{ form.height}}
             </div>
         </div>
+        <br>
         <div class="row">
-            <div class="col-sm-6">
-                <span class="help-block"> {{ form.address.help_text}}</span>
-                {{ form.address}}
+            <div class="col-sm-4">
+                <span class="help-block"> 용지 or 재질 </span>
+                {{ form.paper}}
             </div>
-            <div class="col-sm-6">
-                <span class="help-block"> {{ form.address2.help_text}}</span>
-                {{ form.address2}}
+            <div class="col-sm-2">
+                <span class="help-block"> 무게 / 그람</span>
+                {{ form.gram}}
+            </div>
+            <div class="col-sm-2">
+                <span class="help-block"> {{ form.color.label}}</span>
+                {{ form.color}}
+            </div>
+             <div class="col-sm-2">
+                <span class="help-block"> {{ form.paper_option.label}}</span>
+                {{ form.paper_option}}
+            </div>
+            <div class="col-sm-2">
+                <span class="help-block"> {{ form.side.label}}</span>
+                {{ form.side}}
             </div>
         </div>
         <br>
          <div class="row">
             <div class="col-sm-4">
-                <span class="help-block"> {{ form.phone.help_text}}</span>
-                {{ form.phone}}
+                <span class="help-block"> {{ form.etc.label}}</span>
+                {{ form.etc}}
             </div>
             <div class="col-sm-4">
-                <span class="help-block"> {{ form.confirm.help_text}}</span>
-                {{ form.confirm}}
+                <span class="help-block"> {{ form.etc_option.label}}</span>
+                {{ form.etc_option}}
             </div>
 
             <div class="col-sm-4">
-                <span class="help-block"> {{ form.options.help_text}}</span>
-                {{ form.options}}
-            </div>
-            <div class="col-sm-4">
-                <span class="help-block"> {{ form.keywords.help_text}}</span>
-                {{ form.keywords}}
-            </div>
-            <div class="col-sm-4">
-                <span class="help-block"> {{ form.memo.help_text}}</span>
+                <span class="help-block"> {{ form.memo.label}}</span>
                 {{ form.memo}}
             </div>
-            <div class="col-sm-4">
-                <span class="help-block"> {{ form.tax_bill_mail.help_text}}</span>
-                {{ form.tax_bill_mail}}
-            </div>
-        </div>
+         </div>
         <br> <br>
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6">
-                <button class="form-control btn btn-success" value="Update">님 정보 수정하기</button>
+                <button class="form-control btn btn-danger">저장하기</button>
             </div>
             <div class="col-sm-3"></div>
         </div>
     </form>
 
 </div>
-
 
 {% endblock %}

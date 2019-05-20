@@ -72,7 +72,9 @@
                             <th>시안</th>
                             <th>결제/포함/택배</th>
                             <th>담당</th>
+                            {% if group_name != '디자이너'%}
                             <th>수정</th>
+                            {% endif %}
                         </tr>
                         </thead>
 
@@ -118,14 +120,14 @@
                                 {{ i.manager }}
                                 {% endif %}
                             </td>
+                            {% if group_name != '디자이너'%}
                             <td>
-                                {% if group_name != '디자이너'%}
                                 <a href="{% url 'managing:customer_update' i.pk %}" class="content-modal-btn table-action-btn h2"
                                 data-target="{{ i.pk }}">
                                     <i class="mdi mdi-pencil-box-outline text-success"></i>
                                 </a>
-                                {% endif %}
                             </td>
+                             {% endif %}
                         </tr>
                         {% endfor %}
                         </tbody>

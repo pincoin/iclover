@@ -19,6 +19,9 @@ class SectorsCategoryAdmin(DraggableMPTTAdmin):
 class ProductBaseAdmin(admin.ModelAdmin):
     pass
 
+class ProductTextAdmin(admin.ModelAdmin):
+    pass
+
 class PaperOptionAdmin(admin.ModelAdmin):
     pass
 
@@ -52,6 +55,7 @@ class OrderMemoAdmin(admin.ModelAdmin):
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(models.ProductBase, ProductBaseAdmin)
+admin.site.register(models.ProductText, ProductTextAdmin)
 admin.site.register(models.PaperOption, PaperOptionAdmin)
 admin.site.register(models.StandardOption, StandardOptionAdmin)
 admin.site.register(models.SideOption, SideOptionAdmin)

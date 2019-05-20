@@ -101,7 +101,7 @@ class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = member_models.Profile
         fields = [
-            'code', 'company', 'company_keyword', 'ceo', 'tell', 'address', 'phone', 'confirm', 'manager',\
+            'code', 'company', 'company_keyword', 'ceo', 'tell', 'address', 'phone', 'confirm', 'manager','division',\
             'options', 'keywords', 'memo', 'sectors', 'business', 'tax_bill_mail', 'address2', 'state_select', 'state'
         ]
         widgets = {
@@ -123,6 +123,7 @@ class CustomerUpdateForm(forms.ModelForm):
             'tax_bill_mail': forms.TextInput(attrs={'class': 'form-control',}),
             'state_select': forms.Select(attrs={'class': 'form-control' }),
             'state': forms.TextInput(attrs={'class': 'form-control',  }),
+            'division': forms.TextInput(attrs={'class': 'form-control', }),
         }
         help_texts = {
             'code':'사업자번호 -숫자만',
@@ -143,16 +144,76 @@ class CustomerUpdateForm(forms.ModelForm):
             'tax_bill_mail': '이메일',
             'state_select': '사업자 상태',
             'state': '폐업일자',
+            'division': '판매=1 매입=2',
         }
 class ProductCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProductCreateForm, self).__init__(*args, **kwargs)
+        self.fields['supplier'].queryset = User.objects.filter(profile__division=2)
+
     class Meta:
-        model = design_models.ProductBase
-        fields = '__all__'
+        model = design_models.ProductText
+        fields = ['category','supplier','standard','horizontal','vertical','width','height',\
+                  'paper','gram','color','paper_option','side','etc','etc_option','memo',\
+                  'code','title','sell_price','buy_price','quantity','main_quantity'
+                  ]
+        widgets = {
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'standard': forms.TextInput(attrs={'class': 'form-control','placeholder':'예) a4 [4000장], b5 [8000장] , 상의, 하의'}),
+            'horizontal': forms.TextInput(attrs={'class': 'form-control','type':'number',' step':'0.001'}),
+            'vertical': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'width': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'height': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'paper': forms.TextInput(attrs={'class': 'form-control','placeholder':'예) 아트지, 2445, 물비누'}),
+            'gram': forms.TextInput(attrs={'class': 'form-control','placeholder':'예) 150g , 18kg, XXL'}),
+            'color': forms.TextInput(attrs={'class': 'form-control'}),
+            'paper_option': forms.TextInput(attrs={'class': 'form-control'}),
+            'side': forms.TextInput(attrs={'class': 'form-control'}),
+            'etc': forms.TextInput(attrs={'class': 'form-control'}),
+            'etc_option': forms.TextInput(attrs={'class': 'form-control'}),
+            'memo': forms.TextInput(attrs={'class': 'form-control'}),
+            'code': forms.TextInput(attrs={'class': 'form-control', 'type': 'number','placeholder':'예) 사업자번호'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'sell_price': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'buy_price': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'quantity': forms.TextInput(attrs={'class': 'form-control', 'type': 'number'}),
+            'main_quantity': forms.CheckboxInput(attrs={'style': "width:100px;,height:100px;"}),
+        }
 
 class ProductUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProductUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['supplier'].queryset = User.objects.filter(profile__division=2)
+
     class Meta:
-        model = design_models.ProductBase
-        fields = ['code']
+        model = design_models.ProductText
+        fields = ['category', 'supplier', 'standard', 'horizontal', 'vertical', 'width', 'height', \
+                  'paper', 'gram', 'color', 'paper_option', 'side', 'etc', 'etc_option', 'memo', \
+                  'code', 'title', 'sell_price', 'buy_price', 'quantity', 'main_quantity'
+                  ]
+        widgets = {
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'standard': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': '예) a4 [4000장], b5 [8000장] , 상의, 하의'}),
+            'horizontal': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'vertical': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'width': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'height': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'paper': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '예) 아트지, 2445, 물비누'}),
+            'gram': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '예) 150g , 18kg, XXL'}),
+            'color': forms.TextInput(attrs={'class': 'form-control'}),
+            'paper_option': forms.TextInput(attrs={'class': 'form-control'}),
+            'side': forms.TextInput(attrs={'class': 'form-control'}),
+            'etc': forms.TextInput(attrs={'class': 'form-control'}),
+            'etc_option': forms.TextInput(attrs={'class': 'form-control'}),
+            'memo': forms.TextInput(attrs={'class': 'form-control'}),
+            'code': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', 'placeholder': '예) 사업자번호'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'sell_price': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'buy_price': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
+            'quantity': forms.TextInput(attrs={'class': 'form-control', 'type': 'number'}),
+            'main_quantity': forms.CheckboxInput(attrs={'style': "width:100px;,height:100px;"}),
+        }
 
 class SampleCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

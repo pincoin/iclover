@@ -149,12 +149,14 @@
             <div class="plan-stats list-unstyled text-center">
                 {% for i in my_list %}
                 <a href="{% url 'managing:memo_update' i.0 %}" class="content-modal-btn">
-                {% if i.1 == True %}
+                {% if i.1 and i.4 %}
+                <p class="text-orange" style="font-weight: bold">{{ i.2 }}</p>
+                {% elif i.1 %}
                 <p class="text-danger" style="font-weight: bold">{{ i.2 }}</p>
-                {% elif i.4 == True %}
-                    <p class="text-success" style="font-weight: bold">{{ i.2 }}</p>
+                {% elif i.4 %}
+                <p class="text-success" style="font-weight: bold">{{ i.2 }}</p>
                 {% else %}
-                    <p class="text-brown">{{ i.2 }}</p>
+                <p class="text-brown">{{ i.2 }}</p>
                 {% endif %}
                  </a>
                 {% endfor %}
@@ -167,7 +169,7 @@
                 </h3>  </a>
                 {% for i in common_list %}
                 <a href="{% url 'managing:memo_update' i.0 %}" class="content-modal-btn">
-                    <p data-toggle="tooltip" data-placement="top" data-original-title="{{ i.3 }}"
+                    <p data-toggle="tooltip" data-placement="top" data-original-title="{{ i.3 }}님"
                         {% if i.1 %}
                         class="text-danger"
                         {% else %}

@@ -29,6 +29,19 @@
             {{ form.manager}}
         </div>
 
+        <div class="col-sm-2">
+            <span class="help-block"> {{ form.division.help_text}}</span>
+
+            {{ form.division}}
+        </div>
+         <div class="col-sm-2">
+            <span class="help-block"> 구분 </span>
+             {% if form.division.value == 1%}
+             <h3 class="text-primary"> 판매처</h3>
+             {%else%}
+             <h3 class="text-orange"> 매입처</h3>
+             {% endif %}
+        </div>
 
     </div>
     <hr>

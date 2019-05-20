@@ -24,6 +24,7 @@
     <link href="{% static 'managing/css/pages.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'managing/css/menu.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'managing/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/plugins/select2/css/select2.css' %}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{% static 'managing/plugins/switchery/switchery.min.css' %}">
 
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -398,6 +399,7 @@
 <script src="{% static 'managing/js/jquery.slimscroll.js' %}"></script>
 <script src="{% static 'managing/js/jquery.scrollTo.min.js' %}"></script>
 <script src="{% static 'managing/plugins/switchery/switchery.min.js' %}"></script>
+<script src="{% static 'managing/plugins/select2/js/select2.js' %}"></script>
 
 <!-- App js -->
 <script src="{% static 'managing/js/jquery.core.js' %}"></script>
@@ -423,6 +425,11 @@
                     console.log(error)
                 });
         });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('select').select2();
     });
 </script>
 {% block addjs %}
