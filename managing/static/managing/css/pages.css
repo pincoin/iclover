@@ -40,7 +40,6 @@ File: Menu
   border-bottom: 1px solid #ddd;
 }
 .mails td:last-of-type {
-  width: 100px;
   padding-right: 20px;
 }
 .mails tr:hover .text-white {

@@ -150,6 +150,7 @@ class ProductCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductCreateForm, self).__init__(*args, **kwargs)
         self.fields['supplier'].queryset = User.objects.filter(profile__division=2)
+        self.fields['category'].queryset = design_models.Category.objects.filter(level=1)
 
     class Meta:
         model = design_models.ProductText
@@ -172,7 +173,7 @@ class ProductCreateForm(forms.ModelForm):
             'etc': forms.TextInput(attrs={'class': 'form-control'}),
             'etc_option': forms.TextInput(attrs={'class': 'form-control'}),
             'memo': forms.TextInput(attrs={'class': 'form-control'}),
-            'code': forms.TextInput(attrs={'class': 'form-control', 'type': 'number','placeholder':'예) 사업자번호'}),
+            'code': forms.TextInput(attrs={'class': 'form-control', 'type': 'number','placeholder':'예) 품목 번호'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'sell_price': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
             'buy_price': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', ' step': '0.001'}),
@@ -184,6 +185,7 @@ class ProductUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductUpdateForm, self).__init__(*args, **kwargs)
         self.fields['supplier'].queryset = User.objects.filter(profile__division=2)
+        self.fields['category'].queryset = design_models.Category.objects.filter(level=1)
 
     class Meta:
         model = design_models.ProductText
@@ -219,6 +221,7 @@ class SampleCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SampleCreateForm, self).__init__(*args, **kwargs)
         self.fields['employees'].queryset = User.objects.filter(is_staff=True)
+        self.fields['category'].queryset = design_models.Category.objects.filter(level=1)
 
     class Meta:
         model = managing_models.Sample
@@ -236,6 +239,7 @@ class SampleUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SampleUpdateForm, self).__init__(*args, **kwargs)
         self.fields['employees'].queryset = User.objects.filter(is_staff=True)
+        self.fields['category'].queryset = design_models.Category.objects.filter(level=1)
 
     class Meta:
         model = managing_models.Sample

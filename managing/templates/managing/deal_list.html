@@ -1,201 +1,174 @@
 {% extends 'managing/base.html'%}
 {% load static %}
+{% load humanize %}
 {% block title %}거래처 관리{% endblock%}
 {% block addcss %}
         <!-- Bx slider css -->
         <link href="{% static 'managing/plugins/bx-slider/jquery.bxslider.css'%}" rel="stylesheet" type="text/css" />
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 {% endblock %}
 {% block content%}
 <!-- Page-Title -->
-<div class="row">
+<div class="row m-t-50">
     <div class="col-sm-12">
-        <div class="page-title-box">
-            <h4 class="page-title">거래 내역</h4>
-        </div>
+<!--        <div class="page-title-box">-->
+<!--            <h4 class="page-title">거래 내역</h4>-->
+
+
+<!--            &lt;!&ndash;- ajax &ndash;&gt;-->
+<!--            <h2>자동완성기능</h2>-->
+<!--            <script>-->
+<!--                function delay(fn, ms) {-->
+<!--                    let timer = 0;-->
+<!--                    return function (...args) {-->
+<!--                        clearTimeout(timer);-->
+<!--                        timer = setTimeout(fn.bind(this, ...args), ms || 0)-->
+<!--                    }-->
+<!--                }-->
+<!--            </script>-->
+<!--            <script type="text/javascript">-->
+<!--                $(document).ready(function () {-->
+<!--                    $.ajax({-->
+<!--                        url: '/api/profile.json',-->
+<!--                        datatype: 'json',-->
+<!--                        success: function (data, status, xhr) {-->
+<!--                            $('#auto-search').keyup(delay(function (e) {-->
+<!--                                $("#result").html('');-->
+<!--                                var search_val = $('#auto-search').val();-->
+<!--                                var expression = new RegExp(search_val, "i");-->
+<!--                                var expression_array = expression.source.split(' ');-->
+<!--                                var index_num = 0;-->
+<!--                                data_list = {};-->
+<!--                                if (search_val != '') {-->
+<!--                                    $.each(data, function (key, item) {-->
+<!--                                        var company = item.company;-->
+<!--                                        var company_keyword = item.company_keyword;-->
+<!--                                        if (expression_array.length == 1){-->
+<!--                                            if (company.search(expression) != -1 || company_keyword.search(expression) != -1) {-->
+<!--                                                    if (index_num < 5){-->
+<!--                                                    $('#result').append(-->
+<!--                                                        '<a><li class="list-group-item link-class" id="'+ item.id +-->
+<!--                                                        '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li></a>'-->
+<!--                                                    );-->
+<!--                                                    data_id = item.id;-->
+<!--                                                    data_list[data_id] = item;-->
+<!--                                                    index_num += 1;-->
+<!--                                                    }else{-->
+<!--                                                        $('#result').append(-->
+<!--                                                        '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'-->
+<!--                                                    );-->
+<!--                                                        index_num = 0;-->
+<!--                                                        return false;-->
+
+<!--                                                    }-->
+<!--                                            }-->
+<!--                                            }else{-->
+<!--                                            var expression0 = new RegExp(expression_array[0], "i");-->
+<!--                                            var expression1 = new RegExp(expression_array[1], "i");-->
+<!--                                            var expression2 = new RegExp(expression_array[2], "i");-->
+<!--                                            if (company.search(expression0) != -1 || company_keyword.search(expression0) != -1) {-->
+<!--                                                if (company.search(expression1) != -1 || company_keyword.search(expression1) != -1) {-->
+<!--                                                    if (company.search(expression2) != -1 || company_keyword.search(expression2) != -1) {-->
+<!--                                                    if (index_num < 5){-->
+<!--                                                    $('#result').append(-->
+<!--                                                        '<a><li class="list-group-item link-class" id="'+ item.id +-->
+<!--                                                        '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li></a>'-->
+<!--                                                    );-->
+<!--                                                    data_id = item.id;-->
+<!--                                                    data_list[data_id] = item;-->
+
+<!--                                                    index_num += 1;-->
+<!--                                                    }else{-->
+<!--                                                        $('#result').append(-->
+<!--                                                        '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'-->
+<!--                                                    );-->
+<!--                                                        index_num = 0;-->
+<!--                                                        return false;-->
+
+<!--                                                    }-->
+<!--                                                }}-->
+<!--                                            }-->
+<!--                                        }-->
+<!--                                        })-->
+<!--                                }-->
+<!--                            }, 400));-->
+<!--                        }-->
+<!--                    });-->
+<!--                   $('#result').on('click', 'li', function () {-->
+<!--                       var idx = $(this).attr('id');-->
+<!--                       if (idx){-->
+<!--                        custromer = data_list[idx];-->
+<!--                        var click_text = $(this).text().split('|');-->
+<!--                        $('#auto-search').val($.trim(click_text[0]));-->
+<!--                        $("#result").html(-->
+<!--                            custromer['company'] + '<br>' +-->
+<!--                            custromer['code'] + '<br>' +-->
+<!--                            custromer['address'] + '<br>' +-->
+<!--                            custromer['tax_bill_mail'] + '<br>' +-->
+<!--                            custromer['tell'] + '<br>' +-->
+<!--                            custromer['phone'] + '<br>' +-->
+<!--                            custromer['keywords'] + '<br>' +-->
+<!--                            custromer['memo'] + '<br>' +-->
+<!--                            custromer['options'] + '<br>' +-->
+<!--                            custromer['confirm'] + '<br>' +-->
+<!--                            custromer['manager']-->
+<!--                        );-->
+<!--                        data_list = {};-->
+<!--                        }-->
+<!--                    })-->
+
+
+
+<!--                });-->
+<!--            </script>-->
+<div class="container m-t-30" style="width:900px;">
+   <h2 align="center">거래 내역</h2>
+<!--   <h3 align="center">Employee Data</h3>-->
+   <br /><br />
+   <div align="center">
+       <form role="form" method="GET" autocomplete="off">
+           <div class="form-group search-box">
+               {{ data_search_form.q }}
+               <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+           </div>
+       </form>
+   </div>
+   <ul class="list-group" id="result"></ul>
+   <br />
+  </div>
+
+<!--            &lt;!&ndash;- ajax &ndash;&gt;-->
+
+<!--        </div>-->
     </div>
 </div>
 <!-- end page title end breadcrumb -->
 <div class="card-box">
+<!--    <div class="row m-t-50 m-b-30">-->
+<!--        <div class="col-sm-3"></div>-->
+<!--     <div class="col-sm-6 ">-->
+<!--            <form role="form" method="GET" autocomplete="off">-->
+<!--                <div class="form-group search-box">-->
+<!--                    {{ data_search_form.q }}-->
+<!--                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--        <div class="col-sm-3">-->
+<!--            <button class="btn btn-custom btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"-->
+<!--                    data-target="#con-close-modal">내역 등록-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="row">
-        <div class="col-sm-2">
-            <form role="form">
-                <div class="form-group search-box">
-                    <select class="form-control">
-                        <option>전체</option>
-                        <option>견적서</option>
-                        <option>주문서</option>
-                        <option>진행중</option>
-                        <option>보류</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            <form role="form">
-                <div class="form-group search-box">
-                    <input type="text" id="search-input" class="form-control product-search" placeholder="검색어를 입력해주세요">
-                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-4">
-            <button class="btn btn-custom btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"
-                    data-target="#con-close-modal">내역 등록
-            </button>
-        </div>
-    </div>
-    <!-- Responsive modal -->
-    <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">거래처 등록하기</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">판매/구매</label>
-                                <select id="field-1" class="form-control">
-                                    <option>판매처</option>
-                                    <option>구매처</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">사업자번호</label>
-                                <input type="text" class="form-control" id="field-2" placeholder="숫자만">
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="field-3" class="control-label">주문자</label>
-                                <input type="text" class="form-control" id="field-3" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-4" class="control-label">상호명</label>
-                                <input type="text" class="form-control" id="field-4" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-5" class="control-label">검색 키워드</label>
-                                <input type="text" class="form-control" id="field-5" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="field-6" class="control-label">전화번호</label>
-                                <input type="text" class="form-control" id="field-6" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-8" class="control-label">업종</label>
-                                <input type="text" class="form-control" id="field-8" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-9" class="control-label">종목</label>
-                                <input type="text" class="form-control" id="field-9" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-7" class="control-label">이메일</label>
-                                <input type="text" class="form-control" id="field-7" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-10" class="control-label">할인 그룹</label>
-                                <select id="field-10" class="form-control">
-                                    <option>일반가</option>
-                                    <option>할인 1</option>
-                                    <option>할인 2</option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-11" class="control-label">결제/포함/택배</label>
-                                <input type="text" class="form-control" id="field-11" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-12" class="control-label">적요</label>
-                                <input type="text" class="form-control" id="field-12" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-13" class="control-label">시안확인</label>
-                                <input type="text" class="form-control" id="field-13" placeholder="">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="field-14" class="control-label">담당 직원</label>
-                                <select id="field-14" class="form-control">
-                                    <option>없음</option>
-                                    <option>직원1</option>
-                                    <option>직원2</option>
-                                    <option>직원3</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="field-15" class="control-label">주소1</label>
-                                <input type="text" class="form-control" id="field-15" placeholder="">
-                            </div>
-                            <div class="form-group">
-                                <label for="field-16" class="control-label">주소2</label>
-                                <input type="text" class="form-control" id="field-16" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group no-margin">
-                                <label for="field-17" class="control-label">직원 메모</label>
-                                <textarea class="form-control autogrow" id="field-17"
-                                          placeholder="내부 직원용"
-                                          style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-custom waves-effect waves-light">거래처 등록하기</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.modal -->
-
-    <ul class="nav nav-tabs tabs-bordered">
+    <ul class="nav nav-pills m-b-30 pull-left" style="font-weight:900">
         <li class="active">
             <a href="#home-b1" data-toggle="tab" aria-expanded="true">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
@@ -220,53 +193,77 @@
                 <span class="hidden-xs">전체</span>
             </a>
         </li>
+
     </ul>
     <div class="tab-content">
+
         <!-- 견적서  -->
         <div class="tab-pane active" id="home-b1">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-hover mails m-0 table table-actions-bar">
-                            <thead>
+                        <div class="text-right">{{page_obj}}</div>
+                        <table class="table table-fixed table-hover mails m-0 table table-actions-bar">
+                            <thead >
                             <tr>
-                                <th>날짜</th>
-                                <th>거래처명</th>
-                                <th>검색창내용</th>
-                                <th>매장번호 /배송지</th>
-                                <th>주문자/시안</th>
-                                <th>결제/포함/택배</th>
-                                <th>금액</th>
-                                <th>수정</th>
+                                <th  width="10%">날짜</th>
+                                <th  width="5%">작업자</th>
+                                <th  width="25%">거래처명</th>
+                                <th  width="28%">품목명</th>
+                                <th  width="10%">금액</th>
+                                <th  width="15%" >정보</th>
+                                <th width="20px;">수정</th>
                             </tr>
                             </thead>
 
                             <tbody>
+                            {% for data in object_list%}
                             <tr>
                                 <td>
-                                    <a href="#">2019.01.08</a>
+                                    <a href="#">{{data.joo_date}}</a>
+                                    <br>
+                                    {{data.order_date|date:"Y/m/d"}}
+                                </td>
+                                <td>
+                                    {{data.employees}}
+
+                                </td>
+                                <td>
+                                    <span class="m-t-15"><b class="text-custom" >{{data.company}}</b></span>
+                                    <small class="text-muted"><br>{{data.company_keyword}}</small>
+                                    <small><br>{{data.tell}}</small>
+                                    <small><br>{{data.address}}</small>
+
                                 </td>
 
                                 <td>
-                                    노원 휘트니스
+                                    <b><a href="#">{{data.products}}</a><br></b>
+
                                 </td>
 
                                 <td>
-                                    <a href="#">파인 휘트니스</a>
-                                </td>
-
-                                <td>
-                                    233-3332<br>서울시 관악구 남부순환로 1682
+                                   <p>{{data.total|floatformat:'0'|intcomma}}원</p>
                                 </td>
                                 <td>
-                                    홍길동<br> 옐로우 : 아아아아아
-                                </td>
-                                <td>
-                                    선결/O/선불<br>
-                                </td>
-                                <td class="text-right">
-                                    120,000
-                                    <br> <input type="text" class="form-control input-sm align-right" placeholder="">
+                                    {% if data.keywords %}
+                                   {{data.keywords}}
+                                    {% endif %}
+                                    <br>
+                                     {% if data.checker %}
+                                   {{data.checker}}
+                                    {% endif %}
+                                    <br>
+                                     {% if data.options %}
+                                   {{data.options}}
+                                    {% endif %}
+                                    <br>
+                                     {% if data.deposit %}
+                                   {{data.deposit}}
+                                    {% endif %}
+                                    <br>
+                                     {% if data.deposit %}
+                                   {{data.deposit}}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     <a href="#" class="table-action-btn h3"><i
@@ -275,411 +272,64 @@
                                             class="mdi mdi-close-box-outline text-danger"></i></a>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#">2019.01.01</a>
-                                </td>
-
-                                <td>
-                                    비엠짐
-                                </td>
-
-                                <td>
-                                    <a href="#">나인 휘트니스</a>
-                                </td>
-
-                                <td>
-                                    987-3210<br>경북 구미 순환로 555
-                                </td>
-                                <td>
-                                    임꺽정<br>이메일
-                                </td>
-                                <td>
-                                    선결/O/선불<br>세금계산서
-                                </td>
-                                <td class="text-right">
-                                    320,000<br> <input type="text" class="form-control input-sm align-right"
-                                                       placeholder="">
-                                </td>
-                                <td>
-                                    <a href="#" class="table-action-btn h3">
-                                        <i class="mdi mdi-pencil-box-outline text-success"></i>
-                                    </a>
-                                    <a href="#" class="table-action-btn h3">
-                                        <i class="mdi mdi-close-box-outline text-danger"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
-                    </div>
-                    <!-- end table responsive -->
-                    <div class="row m-t-30">
-                        <div class="text-center m-t-30">
-                            <ul class="pagination pagination-split m-t-30">
-                                <li class="disabled">
-                                    <a href="#"><i class="fa fa-angle-left"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#">1</a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">2</a>
-                                </li>
-                                <li>
-                                    <a href="#">3</a>
-                                </li>
-                                <li>
-                                    <a href="#">4</a>
-                                </li>
-                                <li>
-                                    <a href="#">5</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-angle-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="panel panel-border panel-teal">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">입금 확인창</h3>
-                        </div>
-                        <div class="panel-body">
-                            <p>#1154# 홍길동 120,000</p>
-                            <p>#1155# 노노노 50,000</p>
-                            <p>#1156# 가가가 10,000</p>
-                            <p>#1157# 호호호 320,000</p>
-                            <p>#1158# 히히동 22,000</p>
-                            <p>#1159# 자이 98,000</p>
-                            <p>#1160# 콜센 75,000</p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 매입처 -->
-        <div class="tab-pane" id="profile-b1">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-hover mails m-0 table table-actions-bar">
-                            <thead>
-                            <tr>
-                                <th>사업자번호</th>
-                                <th>거래처명</th>
-                                <th>검색창내용</th>
-                                <th>매장번호 /배송지</th>
-                                <th>주문자</th>
-                                <th>시안</th>
-                                <th>결제/포함/택배</th>
-                                <th>시안 등록</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <a href="#">365-044-00311</a>
-                                </td>
-
-                                <td>
-                                    팩토리 공장
-                                </td>
-
-                                <td>
-                                    <a href="#">파인 휘트니스</a>
-                                </td>
-
-                                <td>
-                                    233-3332<br>서울시 관악구 남부순환로 1682
-                                </td>
-                                <td>
-                                    홍길동
-                                </td>
-                                <td>
-                                    옐로우 : 아아아아아
-                                </td>
-                                <td>
-                                    선결/O/선불<br>
-                                </td>
-                                <td>
-                                    <a href="#" class="table-action-btn h3"><i
-                                            class="mdi mdi-folder-multiple-image text-success"></i></a>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#">323-112-8881</a>
-                                </td>
-
-                                <td>
-                                    프린팅<br>
-                                    <span class="text-danger">-23,000</span>
-                                </td>
-
-                                <td>
-                                    <a href="#">인쇄물</a>
-                                </td>
-
-                                <td>
-                                    987-23123<br>충북 구미 자유로 555
-                                </td>
-                                <td>
-                                    임꺽정
-                                </td>
-                                <td>
-                                    이메일
-                                </td>
-                                <td>
-                                    선결/O/선불<br>세금계산서
-                                </td>
-                                <td>
-                                    <a href="#" class="table-action-btn h3">
-                                        <i class="mdi mdi-folder-multiple-image text-success"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div> <!-- end table responsive -->
-                    <div class="row m-t-30">
-                        <div class="text-center m-t-30">
-                            <ul class="pagination pagination-split m-t-30">
-                                <li class="disabled">
-                                    <a href="#"><i class="fa fa-angle-left"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#">1</a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">2</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-angle-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card-box">
-                        <div class="col-md-12 m-b-10">
-                            <a>https://fordesigner.co.kr/usermane/date/123</a>
-                            <button class="btn btn-icon btn-xs waves-effect btn-info m-b-5"> copy</button>
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-success waves-effect waves-light btn-lg m-b-30 col-2">
-                                초안
-                            </button>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel panel-border panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">2019.01.02 팩토리 공장 시안 등록</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p>#px 1. 전단지.</p>
-                                        <p>#px 2. 배송비.</p>
-                                        <p>#px 3. 현수막.</p>
-                                        <p>#px 4. 배송비.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-
-                                <div class="row">
-                                    <div class="panel panel-border panel-info">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">파일 업로드</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <p>img1</p>
-                                            <p>img2</p>
-                                            <p>img3</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="tab-pane" id="profile-b2">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-hover mails m-0 table table-actions-bar">
-                            <thead>
-                            <tr>
-                                <th>사업자번호</th>
-                                <th>거래처명</th>
-                                <th>검색창내용</th>
-                                <th>매장번호 /배송지</th>
-                                <th>주문자</th>
-                                <th>시안</th>
-                                <th>결제/포함/택배</th>
-                                <th>시안 등록</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <a href="#">365-044-00311</a>
-                                </td>
-
-                                <td>
-                                    팩토리 공장
-                                </td>
-
-                                <td>
-                                    <a href="#">파인 휘트니스</a>
-                                </td>
-
-                                <td>
-                                    233-3332<br>서울시 관악구 남부순환로 1682
-                                </td>
-                                <td>
-                                    홍길동
-                                </td>
-                                <td>
-                                    옐로우 : 아아아아아
-                                </td>
-                                <td>
-                                    선결/O/선불<br>
-                                </td>
-                                <td>
-                                    <a href="#" class="table-action-btn h3"><i
-                                            class="mdi mdi-folder-multiple-image text-success"></i></a>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#">323-112-8881</a>
-                                </td>
-
-                                <td>
-                                    프린팅<br>
-                                    <span class="text-danger">-23,000</span>
-                                </td>
-
-                                <td>
-                                    <a href="#">인쇄물</a>
-                                </td>
-
-                                <td>
-                                    987-23123<br>충북 구미 자유로 555
-                                </td>
-                                <td>
-                                    임꺽정
-                                </td>
-                                <td>
-                                    이메일
-                                </td>
-                                <td>
-                                    선결/O/선불<br>세금계산서
-                                </td>
-                                <td>
-                                    <a href="#" class="table-action-btn h3">
-                                        <i class="mdi mdi-folder-multiple-image text-success"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div> <!-- end table responsive -->
-                    <div class="row m-t-30">
-                        <div class="text-center m-t-30">
-                            <ul class="pagination pagination-split m-t-30">
-                                <li class="disabled">
-                                    <a href="#"><i class="fa fa-angle-left"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#">1</a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">2</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-angle-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card-box">
-                        <div class="col-md-12 m-b-10">
-                            <a>https://fordesigner.co.kr/usermane/date/123</a>
-                            <button class="btn btn-icon btn-xs waves-effect btn-info m-b-5"> copy</button>
-                            # 수정완료 / 고객 미확인 / 고객 확인
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-success waves-effect waves-light btn-lg m-b-30">
-                                초안
-                            </button>
-                            <button class="btn btn-success waves-effect waves-light btn-lg m-b-30">
-                                1 / 수정 완료
-                            </button>
-                            <button class="btn btn-custom waves-effect waves-light btn-lg m-b-30">
-                                2 / 고객 미확인
-                            </button>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel panel-border panel-success">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">2019.01.02 팩토리 공장 시안 등록</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p>#px 1. 전단지.</p>
-                                        <p>#px 2. 배송비.</p>
-                                        <p>#px 3. 현수막.</p>
-                                        <p>#px 4. 배송비.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-
-                                <div class="row">
-                                    <div class="panel panel-border panel-info">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">파일 업로드</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <p>img1</p>
-                                            <p>img2</p>
-                                            <p>img3</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
     </div>
+     <div class="row m-t-30">
+                <div class="text-center m-t-30">
+
+                    {% if not object_list %}
+                    <h3>검색 된 데이터가 없습니다.</h3>
+                    {% endif %}
+
+                    {% if is_paginated %}
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li>
+                                <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    <span>이전</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="disabled">
+                                <a href="#">
+                                    <span><strike>시작</strike></span>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for page in page_range %}
+                            <li {% if page == page_obj.number %}class="active" {% endif %}>
+                                <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    {{ page }}</a>
+                            </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    <span>다음</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li {% if not page_obj.has_next %}class="disabled" {% endif %}>
+                                <a href="#">
+                                    <strike>끝</strike>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {{page_obj}}
+                    {% endif %}
+                </div>
+            </div>
 </div>
 {% endblock %}
 
@@ -697,5 +347,4 @@
                 });
             });
         </script>
-
 {% endblock %}

@@ -3,15 +3,27 @@
 {% block title %}거래처 관리{% endblock%}
 
 {% block content%}
-<!-- Page-Title -->
-<div class="row">
-    <div class="col-sm-12">
-        <div class="page-title-box">
-            <a href="{% url 'managing:customer' %}">
-                <h4 class="page-title">거래처 관리</h4>
-            </a>
-        </div>
+
+
+<div class="container m-t-30 m-b-30" style="width:800px;">
+    <h2 align="center"><b>거래처 관리</b>
+        {% if group_name != '디자이너'%}
+        <a href="{% url 'managing:customer_create' %}" class="content-modal-btn">
+            <i class="ti-plus text-success"></i>
+        </a>
+        {% endif %}
+    </h2>
+    <br/><br/>
+    <div align="center">
+        <form role="form" method="GET" autocomplete="off">
+            <div class="form-group search-box">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
     </div>
+    <ul class="list-group" id="result"></ul>
+    <br/>
 </div>
 
 {% if messages %}
@@ -24,57 +36,26 @@
     <strong>{{ message }}</strong>
 </div>
 {% endfor %}
-
 {% endif %}
+
 
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-    <div class="row">
-        <div class="col-sm-6">
-            <form role="form" method="GET">
-                <div class="form-group search-box">
-                    {{ data_search_form.q }}
-                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            {% if group_name != '디자이너'%}
-            <a href="{% url 'managing:customer_create' %}" class="content-modal-btn">
-                <button class=" btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30"
-                      >거래처 등록
-                </button>
-        </a>
-            {% endif %}
-        </div>
-    </div>
-    <ul class="nav nav-tabs tabs-bordered">
-        <li class="active">
-            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
-                <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">거래처</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
+    <div class="">
         <!-- 판매처  -->
         <div class="tab-pane active" id="home-b1">
-            <div class="table-responsive">
+              <div class="table-responsive">
                 <div class="table-responsive">
                     <table class="table table-hover mails m-0 table table-actions-bar">
-                        <thead>
+                        <thead class="">
                         <tr>
                             <th>사업자번호</th>
-                            <th>거래처명</th>
-                            <th>검색창내용</th>
+                            <th width="15%">거래처명 / 검색창내용</th>
                             <th>매장번호 /배송지</th>
-                            <th>주문자</th>
-                            <th>시안</th>
-                            <th>결제/포함/택배</th>
-                            <th>담당</th>
-                            {% if group_name != '디자이너'%}
-                            <th>수정</th>
-                            {% endif %}
+                            <th>주문자 / 시안</th>
+                            <th width="15%">결제/포함/택배</th>
+                            <th width="70px;">담당</th>
+                            <th width="10px;">수정</th>
                         </tr>
                         </thead>
 
@@ -91,14 +72,10 @@
                                 {% endif %}
                             </td>
 
-                            <td>
-                                {{ i.company }}
+                            <td >
+                                <b class="text-custom" data-toggle="tooltip" data-placement="top" data-original-title="{{ i.code }}">{{ i.company }}</b><br>
+                                <small>{{ i.company_keyword|linebreaksbr }}</small>
                             </td>
-
-                            <td>
-                                <a href="#">{{ i.company_keyword }}</a>
-                            </td>
-
                             <td>
                                 {{ i.tell }}<br>{{ i.address }}
                                 {% if i.address2 %}<br>{{ i.address2 }}{% endif %}
@@ -107,27 +84,23 @@
                                 {% if i.phone != None %}
                                 {{ i.phone }}
                                 {% endif %}
-
+                                <br>
+                                {{ i.confirm|linebreaks  }}
                             </td>
                             <td>
-                                {{ i.confirm }}
-                            </td>
-                            <td>
-                                {{ i.options }}<br> {{ i.memo }}
+                                {{ i.options|linebreaks  }}<br> {{ i.memo|linebreaks  }}
                             </td>
                             <td>
                                 {% if i.manager != None %}
                                 {{ i.manager }}
                                 {% endif %}
                             </td>
-                            {% if group_name != '디자이너'%}
                             <td>
                                 <a href="{% url 'managing:customer_update' i.pk %}" class="content-modal-btn table-action-btn h2"
                                 data-target="{{ i.pk }}">
                                     <i class="mdi mdi-pencil-box-outline text-success"></i>
                                 </a>
                             </td>
-                             {% endif %}
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -180,6 +153,7 @@
                             {% endif %}
                         </ul>
                     </nav>
+                    {{page_obj}}
                     {% endif %}
                 </div>
             </div>

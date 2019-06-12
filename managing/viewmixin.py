@@ -1,3 +1,7 @@
+from django.contrib.auth.mixins import (UserPassesTestMixin,
+    LoginRequiredMixin, PermissionRequiredMixin)
+from django.http import HttpResponse
+
 class PageableMixin(object):
 
     def get_context_data(self, **kwargs):
@@ -27,3 +31,13 @@ class DataSearchFormMixin(object):
             context['q'] = self.request.GET.get('q')
 
         return context
+
+class UserIsStaffMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def dispatch(self, request, *args, **kwargs):
+        user_test_result = self.get_test_func()()
+        if not user_test_result:
+            return HttpResponse('Wemix 관리자가 아닌 경우 접근을 불허합니다.')
+        return super(UserPassesTestMixin, self).dispatch(request, *args, **kwargs)

@@ -3,16 +3,28 @@
 {% load humanize %}
 {% block title %}품목 관리{% endblock%}
 {% block content%}
-<!-- Page-Title -->
-<div class="row">
-    <div class="col-sm-12">
-        <div class="page-title-box">
-            <a href="{% url 'managing:product' %}">
-                <h4 class="page-title">품목 관리</h4>
-            </a>
-        </div>
+
+<div class="container m-t-30 m-b-30" style="width:800px;">
+    <h2 align="center"><b>품목 관리</b>
+        {% if group_name != '디자이너'%}
+        <a href="{% url 'managing:product_create' %}">
+            <i class="ti-plus text-success"></i>
+        </a>
+        {% endif %}
+    </h2>
+    <br/><br/>
+    <div align="center">
+        <form role="form" method="GET" autocomplete="off">
+            <div class="form-group search-box">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
     </div>
+    <ul class="list-group" id="result"></ul>
+    <br/>
 </div>
+
 
 {% if messages %}
 {% for message in messages %}
@@ -24,38 +36,10 @@
     <strong>{{ message }}</strong>
 </div>
 {% endfor %}
-
 {% endif %}
-
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-    <div class="row">
-        <div class="col-sm-6">
-            <form role="form" method="GET">
-                <div class="form-group search-box">
-                    {{ data_search_form.q }}
-                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            {% if group_name != '디자이너'%}
-            <a href="{% url 'managing:product_create' %}">
-                <button class="btn btn-pink btn-rounded btn-md waves-effect waves-light m-b-30">품목 등록
-                </button>
-            </a>
-            {% endif %}
-        </div>
-    </div>
-    <ul class="nav nav-tabs tabs-bordered">
-        <li class="active">
-            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
-                <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">품목</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
+    <div class="">
         <!-- 판매처  -->
         <div class="tab-pane active" id="home-b1">
             <div class="table-responsive">
@@ -69,7 +53,7 @@
                             <th>가로/세로</th>
                             <th>금액</th>
                             <th>규격/재질</th>
-                            <th>기타 정보</th>
+                            <th width="250px;">기타 정보</th>
                             {% if group_name != '디자이너'%}
                             <th>수정</th>
                             {% endif %}
@@ -80,12 +64,13 @@
                         {% for i in product_list %}
                         <tr>
                             <td>
-                               {{ i.category }}
+                               {% if i.category %}
+                                {{ i.category }}
+                                {% endif %}<br>
+                                v.{{ i.product_version }}
                             </td>
                             <td>
-                                {% for z in i.supplier.all %}
-                                {{z.profile.company}}
-                                {% endfor %}
+                                {{ i.company }}
                             </td>
 
                             <td>
@@ -183,6 +168,7 @@
                             {% endif %}
                         </ul>
                     </nav>
+                    {{page_obj}}
                     {% endif %}
                 </div>
             </div>

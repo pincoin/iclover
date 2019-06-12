@@ -17,6 +17,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+REST_FRAMEWORK_TOKEN = 'e8b0ddbbe7152d35771a20c6669d1c2016175580'
+
 # Our own apps
 INSTALLED_APPS += [
     'core',

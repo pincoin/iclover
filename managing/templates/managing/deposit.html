@@ -3,16 +3,6 @@
 {% load humanize %}
 {% block title %}입금 관리{% endblock%}
 {% block content%}
-<!-- Page-Title -->
-<div class="row">
-    <div class="col-sm-12">
-        <div class="page-title-box">
-            <a href="{% url 'managing:sample' %}">
-                <h4 class="page-title">입금 관리</h4>
-            </a>
-        </div>
-    </div>
-</div>
 
 {% if messages %}
 {% for message in messages %}
@@ -27,35 +17,33 @@
 
 {% endif %}
 
+
+
+<div class="container m-t-30 m-b-30" style="width:800px;">
+    <h2 align="center"><b>입금 관리</b>
+        {% if group_name != '디자이너'%}
+        <a href="{% url 'managing:deposit_create' %}" class="content-modal-btn">
+            <i class="ti-plus text-success"></i>
+        </a>
+        {% endif %}
+    </h2>
+    <br/><br/>
+    <div align="center">
+        <form role="form" method="GET" autocomplete="off">
+            <div class="form-group search-box">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <ul class="list-group" id="result"></ul>
+    <br/>
+</div>
+
+
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-    <div class="row">
-        <div class="col-sm-6">
-            <form role="form" method="GET">
-                <div class="form-group search-box">
-                    {{ data_search_form.q }}
-                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            {% if group_name != '디자이너'%}
-            <a href="{% url 'managing:deposit_create' %}" class="content-modal-btn">
-                <button class="btn btn-purple btn-rounded btn-md waves-effect waves-light m-b-30">입금 등록
-                </button>
-            </a>
-            {% endif %}
-        </div>
-    </div>
-    <ul class="nav nav-tabs tabs-bordered">
-        <li class="active">
-            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
-                <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">입금</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
+    <div class="">
         <!-- 판매처  -->
         <div class="tab-pane active" id="home-b1">
             <div class="table-responsive">
@@ -73,6 +61,9 @@
                             <th>메모</th>
                             <th>영수처리</th>
                             <th>저장</th>
+                             {% if group_name != '디자이너'%}
+                            <th>삭제</th>
+                            {% endif %}
                         </tr>
                         </thead>
                         <tbody>
@@ -83,7 +74,11 @@
                             </td>
 
                             <td>
+                                {%if '관리자 등록' in i.bank %}
+                                <small >관리자 등록일<br>{{ i.date }}</small>
+                                {% else %}
                                 {{ i.date }}
+                                {% endif %}
                             </td>
                             <td>
                                 {{ i.name }}
@@ -110,6 +105,13 @@
                                     <input type="submit" class="btn btn-primary" value="저장"/>
                                 </td>
                             </form>
+                             {% if group_name != '디자이너'%}
+                            <form method="post" action="{%url 'managing:deposit_delete' i.pk %}">{% csrf_token %}
+                                <td>
+                                    <button class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?');">삭제</button>
+                                </td>
+                            </form>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                         </tbody>

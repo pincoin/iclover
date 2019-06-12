@@ -8,6 +8,8 @@ app_name = 'api'
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'profile', views.ProfileViewSet)
+# router.register(r'user_profile', views,ProfileViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

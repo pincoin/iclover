@@ -229,15 +229,18 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
     category = models.ForeignKey(
         'design.Category',
         verbose_name=_('카테고리'),
+        blank=True,
         null=True,
         db_index=True,
         on_delete=models.SET_NULL,
     )
 
-    supplier = models.ManyToManyField(
+    supplier = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
         verbose_name=_('매입처'),
         blank=True,
+        null=True,
     )
 
     standard = models.CharField(
@@ -276,6 +279,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
     )
 
     paper = models.CharField(
+        verbose_name=_('재질'),
         max_length=255,
         blank=True,
         null=True,
@@ -383,24 +387,41 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
 
     ecount = models.BooleanField(
         verbose_name=_('이카운트 전송'),
-        default=False,
+        default=True,
     )
 
     product_active = models.BooleanField(
         verbose_name=_('활성화'),
         default = False,
     )
+    product_version = models.IntegerField(
+        verbose_name=_('version'),
+        blank=True,
+        null=True,
+    )
+    group = models.IntegerField(
+        verbose_name=_('group'),
+        blank=True,
+        null=True,
+    )
 
     @property
     def benefit(self):
         if self.sell_price and self.buy_price:
-            data = self.buy_price / self.sell_price * 100
-            data = 100-data
-            return data
+            data = 0
+            try:
+                data = self.buy_price / self.sell_price * 100
+                data = 100-data
+                return data
+            except:
+                return data
 
     class Meta:
         verbose_name = _('상품옵션_통합 str')
         verbose_name_plural = _('상품옵션_통합 str')
+
+    def __str__(self):
+        return self.title
 
 
 class StandardOption(TimeStampedModel, SoftDeletableModel):
@@ -560,20 +581,20 @@ class EtcOption(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('기타 옵션'),
         blank=True,
         null=True,
-        max_length=100,
+        max_length=255,
     )
     option = models.CharField(
         verbose_name=_('기타 옵션 상세'),
         blank=True,
         null=True,
-        max_length=100,
+        max_length=255,
     )
 
     memo = models.CharField(
         verbose_name=_('기타 옵션 메모'),
         blank=True,
         null=True,
-        max_length=100,
+        max_length=255,
     )
 
     price = models.DecimalField(
@@ -601,30 +622,41 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         db_index=True,
         on_delete=models.SET_NULL,
     )
-    employees = models.CharField(
-        verbose_name=_('작업자'),
+
+    joo_date = models.DateField(
+        verbose_name=_('주문일'),
         null=True,
         blank=True,
-        max_length= 100,
-        db_index=True,
+    )
+
+    order_date = models.DateField(
+        verbose_name=_('발주일'),
+        null=True,
+        blank=True,
     )
 
     company = models.CharField(
         verbose_name=_('업체명'),
-        max_length=100,
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    company_keyword = models.CharField(
+        verbose_name=_('업체 키워드'),
+        max_length=255,
         null=True,
         blank=True,
     )
 
     address = models.CharField(
         verbose_name=_('주소'),
-        max_length=100,
+        max_length=255,
         null=True,
         blank=True,
     )
-    tel = models.CharField(
+    tell = models.CharField(
         verbose_name=_('연락처'),
-        max_length=100,
+        max_length=255,
         null=True,
         blank=True,
     )
@@ -646,21 +678,23 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         blank=True,
         db_index=True,
     )
-    order_date = models.CharField(
-        verbose_name=_('발주일'),
-        max_length=100,
-        null=True,
-        blank=True,
+
+
+    tax = models.BooleanField(
+        verbose_name=_('부가세포함'),
+        default=True,
     )
+
     keywords = models.CharField(
         verbose_name=_('검색창 내용'),
         max_length=1000,
         null=True,
         blank=True,
     )
+
     checker = models.CharField(
         verbose_name=_('시안 확인'),
-        max_length=100,
+        max_length=255,
         null=True,
         blank=True,
     )
@@ -672,7 +706,37 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
     )
     options = models.CharField(
         verbose_name=_('결제/포함/택배'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    employees = models.CharField(
+        verbose_name=_('작업자'),
+        null=True,
+        blank=True,
         max_length=100,
+        db_index=True,
+    )
+
+    fix_manager = models.CharField(
+        verbose_name=_('담당자'),
+        null=True,
+        blank=True,
+        max_length=100,
+        db_index=True,
+    )
+
+    in_memo = models.CharField(
+        verbose_name=_('관리자메모'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    out_memo = models.CharField(
+        verbose_name=_('고객표시 메모'),
+        max_length=255,
         null=True,
         blank=True,
     )
@@ -703,8 +767,15 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('내역 순서'),
         db_index=True,
     )
+    num = models.IntegerField(
+        verbose_name=_('동일 전표'),
+        null=True,
+        blank=True,
+    )
     code = models.IntegerField(
         verbose_name=_('품목코드'),
+        null=True,
+        blank=True,
         db_index=True,
     )
     name = models.CharField(

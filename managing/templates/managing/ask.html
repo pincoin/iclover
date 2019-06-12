@@ -3,16 +3,26 @@
 {% load humanize %}
 {% block title %}요청 관리{% endblock%}
 {% block content%}
-<!-- Page-Title -->
-<div class="row">
-    <div class="col-sm-12">
-        <div class="page-title-box">
-            <a href="{% url 'managing:ask' %}">
-                <h4 class="page-title">요청 관리</h4>
-            </a>
-        </div>
+
+<div class="container m-t-30 m-b-30" style="width:800px;">
+    <h2 align="center"><b>요청 관리</b>
+        <a href="{% url 'managing:ask_create' %}" class="content-modal-btn">
+            <i class="ti-plus text-orange"></i>
+        </a>
+    </h2>
+    <br/><br/>
+    <div align="center">
+        <form role="form" method="GET" autocomplete="off">
+            <div class="form-group search-box">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
     </div>
+    <ul class="list-group" id="result"></ul>
+    <br/>
 </div>
+
 
 {% if messages %}
 {% for message in messages %}
@@ -24,36 +34,11 @@
     <strong>{{ message }}</strong>
 </div>
 {% endfor %}
-
 {% endif %}
 
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-    <div class="row">
-        <div class="col-sm-6">
-            <form role="form" method="GET">
-                <div class="form-group search-box">
-                    {{ data_search_form.q }}
-                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            <a href="{% url 'managing:ask_create' %}" class="content-modal-btn">
-                <button class="btn btn-orange btn-rounded btn-md waves-effect waves-light m-b-30">요청 등록
-                </button>
-            </a>
-        </div>
-    </div>
-    <ul class="nav nav-tabs tabs-bordered">
-        <li class="active">
-            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
-                <span class="visible-xs"><i class="fa fa-home"></i></span>
-                <span class="hidden-xs">요청</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
+    <div class="">
         <!-- 판매처  -->
         <div class="tab-pane active" id="home-b1">
             <div class="table-responsive">
@@ -61,11 +46,11 @@
                     <table class="table table-hover mails m-0 table table-actions-bar">
                         <thead>
                         <tr>
-                            <th>일자</th>
-                            <th>종류</th>
+                            <th width="15%">일자</th>
+                            <th width="15%">종류</th>
                             <th>내용</th>
-                            <th>요청/응답</th>
-                            <th>노출/수정</th>
+                            <th width="30%">요청/응답</th>
+                            <th width="20px;">노출/수정</th>
                         </tr>
                         </thead>
 
@@ -73,7 +58,7 @@
                         {% for i in ask_list %}
                         <tr
                         {% if i.ask_finish%}
-                        style="background-color:#d3d3d4"
+                        style="background-color:#f5ebeb"
                         {% endif %}
                         >
                             <td>

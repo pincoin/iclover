@@ -15,7 +15,8 @@ class Profile(TimeStampedModel):
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     division = models.IntegerField(
@@ -86,7 +87,7 @@ class Profile(TimeStampedModel):
 
     phone = models.CharField(
         verbose_name=_('phone number'),
-        max_length=17,
+        max_length=255,
         blank=True,
         null=True,
     )
