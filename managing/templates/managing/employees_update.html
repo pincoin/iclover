@@ -22,7 +22,7 @@
             </a>
         </div>
     </div>
-    <form method="POST" enctype="multipart/form-data" autocomplete="off">
+    <form id="form_id" method="post" enctype="multipart/form-data" autocomplete="off" action="">
 
         {% csrf_token %}
         <div class="row">
@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6">
-                <button class="form-control btn btn-success" value="Update">정보 수정하기</button>
+                <button id='sub-btn' type="submit" class="form-control btn btn-success" >정보 수정하기</button>
             </div>
             <div class="col-sm-3"></div>
         </div>
@@ -95,3 +95,4 @@
 
 
 {% endblock %}
+

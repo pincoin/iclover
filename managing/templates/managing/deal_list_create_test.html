@@ -7,11 +7,6 @@
         <link href="{% static 'managing/plugins/bx-slider/jquery.bxslider.css'%}" rel="stylesheet" type="text/css" />
 
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 {% endblock %}
 {% block content%}
@@ -151,54 +146,38 @@
 </div>
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-<!--    <div class="row m-t-50 m-b-30">-->
-<!--        <div class="col-sm-3"></div>-->
-<!--     <div class="col-sm-6 ">-->
-<!--            <form role="form" method="GET" autocomplete="off">-->
-<!--                <div class="form-group search-box">-->
-<!--                    {{ data_search_form.q }}-->
-<!--                    <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--        <div class="col-sm-3">-->
-<!--            <button class="btn btn-custom btn-rounded btn-md waves-effect waves-light m-b-30" data-toggle="modal"-->
-<!--                    data-target="#con-close-modal">내역 등록-->
-<!--            </button>-->
-<!--        </div>-->
-<!--    </div>-->
-
     <ul class="nav nav-pills m-b-30 pull-left" style="font-weight:900">
-        <li class="active">
-            <a href="#home-b1" data-toggle="tab" aria-expanded="true">
+        <li {% if request.path.17 == '0' %}class="active"{% endif %}>
+            <a href="{% url 'managing:deal_list' common=0%}">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
                 <span class="hidden-xs">견적서</span>
+
             </a>
         </li>
-        <li class="">
-            <a href="#profile-b1" data-toggle="tab" aria-expanded="false">
+        <li {% if request.path.17 == '1' %}class="active"{% endif %}>
+            <a href="{% url 'managing:deal_list' common=1 %}" >
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs">주문서</span>
             </a>
         </li>
-        <li class="">
-            <a href="#profile-b2" data-toggle="tab" aria-expanded="false">
+        <li {% if request.path.17 == '2' %}class="active"{% endif %}>
+            <a href="{% url 'managing:deal_list' common=2 %}" >
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs">시안 확인중</span>
             </a>
         </li>
-        <li class="">
-            <a href="#profile-b3" data-toggle="tab" aria-expanded="false">
+        <li {% if request.path.17 == '3' %}class="active"{% endif %}>
+            <a href="{% url 'managing:deal_list' common=3 %}">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs">전체</span>
             </a>
         </li>
 
     </ul>
-    <div class="tab-content">
+    <div class="">
 
         <!-- 견적서  -->
-        <div class="tab-pane active" id="home-b1">
+        <div class="">
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">

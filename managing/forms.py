@@ -1,8 +1,10 @@
+import json
 from django import forms
 from django.contrib.auth.models import User
 from member import models as member_models
 from managing import models as managing_models
 from design import models as design_models
+from django.db.models import Q
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -227,12 +229,12 @@ class SampleCreateForm(forms.ModelForm):
         model = managing_models.Sample
         fields = ['category','sectors_category','employees','name','keyword','sample_img']
         widgets = {
-            'category': forms.Select(attrs={'class': 'form-control' }),
+            'category': forms.Select(attrs={'class': 'form-control','required':'' }),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
             'employees': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
             'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
-            'sample_img': forms.FileInput(attrs={'class':'form-control'})
+            'sample_img': forms.FileInput(attrs={'class':'form-control','required':'' })
         }
 
 class SampleUpdateForm(forms.ModelForm):
@@ -285,12 +287,13 @@ class AskUpdateForm(forms.ModelForm):
         }
 
 class DepositCreateForm(forms.ModelForm):
+
     class Meta:
         model = managing_models.Deposit
         fields = ['bank','name','amount','part']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'bank': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control','required':''}),
+            'bank': forms.TextInput(attrs={'class': 'form-control','required':''}),
             'amount': forms.TextInput(attrs={'type': 'number','class': 'form-control'}),
             'part': forms.TextInput(attrs={'type':'hidden'}),
              }
@@ -340,6 +343,8 @@ class MemoCreateForm(forms.ModelForm):
             'importance': '중요도 체크',
         }
 
+
+
 class MemoUpdateForm(forms.ModelForm):
     class Meta:
         model = managing_models.Memo
@@ -357,3 +362,120 @@ class MemoUpdateForm(forms.ModelForm):
             'common': '공유',
             'confirm': '종료',
         }
+
+class OrderForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
+        self.fields['company_keyword'].required = False
+        self.fields['order_date'].required = False
+        self.fields['manager'].required = False
+        self.fields['option'].required = False
+        self.fields['confirm'].required = False
+        self.fields['memo'].required = False
+        self.fields['fix_manager'].required = False
+        self.fields['in_memo'].required = False
+        self.fields['out_memo'].required = False
+
+
+    company = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='상호명 :'
+    )
+    company_keyword = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='키워드 :'
+    )
+    manager =  forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='작업자 :'
+    )
+    option = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='결재/포함/택배 :'
+    )
+    confirm = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='시안확인 :'
+    )
+    memo = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+                'rows': 2,
+            }
+        ),
+        help_text='거래처 정보 :'
+    )
+    in_memo = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='관리자 메모 :'
+    )
+    out_memo = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='고객 노출 메모 :'
+    )
+    code = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
+    fix_manager = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
+    joo_date = forms.CharField()
+    order_date = forms.CharField()
+    json_data = forms.CharField()
+
+
+class SpecialPriceForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(SpecialPriceForm, self).__init__(*args, **kwargs)
+
+    customer = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type': "hidden"
+            }
+        ),
+        help_text='업체 :'
+    )
+    product = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type': "hidden"
+            }
+        ),
+        help_text='품목 :'
+    )
+    new_price = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='새로운 가격 :'
+    )

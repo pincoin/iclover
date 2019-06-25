@@ -2102,6 +2102,30 @@ textarea.form-control {
   border-color: #f9c851;
   box-shadow: none !important;
 }
+.has-customer .form-control {
+  border-color: #70a5ff;
+  box-shadow: none !important;
+}
+.has-product .form-control {
+  border-color: #35a855;
+  box-shadow: none !important;
+}
+.has-sample .form-control {
+  border-color: #9a70cb;
+  box-shadow: none !important;
+}
+.has-special .form-control {
+  border-color: #cb5852;
+  box-shadow: none !important;
+}
+.has-ask .form-control {
+  border-color: #e6ba61;
+  box-shadow: none !important;
+}
+.has-deposit .form-control {
+  border-color: #936bc1;
+  box-shadow: none !important;
+}
 .has-error .form-control {
   border-color: #f5707a;
   box-shadow: none !important;

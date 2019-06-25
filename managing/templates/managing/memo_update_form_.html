@@ -1,5 +1,5 @@
 {% load addattr %}
-<form method="POST" text="메모 수정"  autocomplete="off">
+<form id="form_id" method="POST" text="메모 수정"  autocomplete="off">
     {% csrf_token %}
     <div class="row">
         <div class="col-sm-6">
@@ -51,8 +51,7 @@
     </div>
 <br><br>
     <div class="modal-footer">
-            <button class="btn btn-success" value="Update">수정하기</button>
+            <button id='sub-btn' class="btn btn-success" value="Update">수정하기</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
 </form>
-

@@ -1,6 +1,8 @@
 import datetime
+import re
 from django.core import serializers as core_serializer
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login as django_login, logout as django_logout, authenticate ,update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import (UserPassesTestMixin,
@@ -16,7 +18,7 @@ from rest_framework import generics as api_generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from design import models as design_models
 from member import models as member_models
 from . import forms as managing_forms
@@ -186,7 +188,7 @@ class CustomerView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixi
     login_url = clovi_login_url
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related('user').order_by('state','created')
+        queryset = super().get_queryset().select_related('user').order_by('company')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -250,11 +252,13 @@ class CustomerUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
     form_class = managing_forms.CustomerUpdateForm
     context_object_name = 'update_list'
     success_url = "/clovi/customer"
-    success_message = '%(company)s님의 정보가 수정되었습니다.'
+    success_message = '%(company)s 님의 정보가 수정되었습니다.'
     # optional
     login_url = clovi_login_url
 
     def form_valid(self, form):
+        if self.request.is_ajax():
+            self.success_url = self.request.META.get('HTTP_REFERER')
         response = super(CustomerUpdateView, self).form_valid(form)
         return response
 
@@ -309,9 +313,13 @@ class ProdcutCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic
     form_class = managing_forms.ProductCreateForm
     template_name = 'managing/product_create.html'
     success_url = "/clovi/product"
-    success_message = '신규 등록 되었습니다.'
+    success_message = '%(standard)s 신규 등록 되었습니다.'
     # optional
     login_url = clovi_login_url
+
+    def form_valid(self, form):
+        response = super(ProdcutCreateView, self).form_valid(form)
+        return response
 
     def get_queryset(self):
         queryset = super(ProdcutCreateView, self).get_queryset()
@@ -323,9 +331,13 @@ class ProductUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic
     form_class = managing_forms.ProductUpdateForm
     template_name = 'managing/product_update.html'
     success_url = "/clovi/product"
-    success_message = '정보가 수정되었습니다.'
+    success_message = '%(standard)s 정보가 수정되었습니다.'
     # optional
     login_url = clovi_login_url
+
+    def form_valid(self, form):
+        response = super(ProductUpdateView, self).form_valid(form)
+        return response
 
 
 class SampleView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
@@ -367,6 +379,9 @@ class SampleCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     success_message = '샘플이 신규 등록 되었습니다.'
     # optional
     login_url = clovi_login_url
+    def form_valid(self, form):
+        response = super(SampleCreateView, self).form_valid(form)
+        return response
 
     def get_queryset(self):
         queryset = super(SampleCreateView, self).get_queryset().prefetch_related('employees__user')
@@ -383,6 +398,10 @@ class SampleUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     # optional
     login_url = clovi_login_url
 
+    def form_valid(self, form):
+        response = super(SampleUpdateView, self).form_valid(form)
+        return response
+
 
 class CategoryView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     template_name = 'managing/category.html'
@@ -395,20 +414,40 @@ class DiscountView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     # optional
     login_url = clovi_login_url
 
-class DealListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
-    template_name = 'managing/deal_list.html'
+class OrderListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+    template_name = 'managing/order.html'
     paginate_by = 10
     model = design_models.OrderInfo
     data_search_form = managing_forms.DataSearchForm
 
     def get_queryset(self):
-        queryset = super(DealListView, self).get_queryset().select_related('user').prefetch_related('orderlist_set').filter(~Q(state=1)).order_by('-joo_date')
+        state = int(self.kwargs['common'])
+        queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related('orderlist_set').filter(Q(state=state)).order_by('-joo_date')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
+            match_term = re.search(r'\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}', q)
+            match = re.search(r'\d{4}-\d{2}-\d{2}',q)
+
             if q:
                 try:
                     q = q.split()
+                    if match_term:
+                        term_date = match_term.group()
+                        q.remove(term_date)
+                        term_date = term_date.split('~')
+                        start_date = list(map(int, term_date[0].split('-')))
+                        end_date =  list(map(int,term_date[1].split('-')))
+                        start_date = datetime.date(start_date[0], start_date[1],start_date[2])
+                        end_date = datetime.date(end_date[0], end_date[1], end_date[2])
+                        queryset = queryset.filter(joo_date__range=[start_date,end_date])
+
+                    elif match:
+                        single_date = match.group()
+                        q.remove(single_date)
+                        single_date = list(map(int, single_date.split('-')))
+                        start_date = datetime.date(single_date[0], single_date[1], single_date[2])
+                        queryset = queryset.filter(joo_date=start_date)
                     for i in q:
                         queryset = queryset.filter(
                              Q(employees__icontains=i)|Q(company__icontains=i)|Q(company_keyword__icontains=i)
@@ -419,7 +458,7 @@ class DealListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmix
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(DealListView, self).get_context_data(**kwargs)
+        context = super(OrderListView, self).get_context_data(**kwargs)
         data = {}
         for i in context['object_list']:
             orderlist = i.orderlist_set.all()
@@ -459,10 +498,165 @@ class DealListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmix
     # optional
     login_url = clovi_login_url
 
+class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    form_class = managing_forms.OrderForm
+    model = design_models.OrderInfo
+    success_url = "/clovi/order/0/"
+    success_message = '%(code)s 신규 등록 되었습니다.'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrdersCreateView, self).get_context_data(**kwargs)
+        context['today'] = datetime.date.today().strftime('%Y-%m-%d')
+        employees = User.objects.filter(is_staff=True).order_by('username')
+        data_manager ={}
+        for i in employees:
+            data_manager[i.username] = i.id
+        context['manager_ls'] = data_manager
+        return context
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['managing/order_create_form_.html']
+        return ['managing/order_create.html']
+
+    def form_valid(self, form):
+        json_data = form.cleaned_data['json_data'].split('#,,#')
+        json_all_num = len(json_data)
+        json_tr_long = 11 #한 tr의 갯수
+        json_pre = 0 # 인덱싱
+        json_next = json_tr_long # 인덱싱
+        if json_all_num:
+            json_all_num = json_all_num/json_tr_long
+            try:
+                for i in range(0, int(json_all_num)):
+                    print(json_data[json_pre:json_next])
+                    json_pre += json_tr_long
+                    json_next += json_tr_long
+            except:
+                messages.error(self.request, '알수없는 에러가 발생하였습니다.')
+                urls = self.request.META.get('HTTP_REFERER')
+                return redirect(urls)
+            json_pre = 0
+            json_next = json_tr_long
+
+
+        if self.request.is_ajax():
+            self.success_url = self.request.META.get('HTTP_REFERER')
+        response = super(OrdersCreateView, self).form_valid(form)
+        return response
+
+    def form_invalid(self, form):
+        error_message = '[확인 해야할 오류 항목] \n'
+        if 'company' in form.errors:
+            error_message += '업체명\n'
+        if 'code' in form.errors:
+            error_message += '코드번호'
+        if 'manager' in form.errors:
+            error_message += '담당자'
+        if 'json_data' in form.errors:
+            error_message += '품목이 없거나 잘못되었습니다.'
+        messages.error(self.request, error_message)
+        urls = self.request.META.get('HTTP_REFERER')
+        return redirect(urls)
+
+    # optional
+    login_url = clovi_login_url
+
 class DemandView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     template_name = 'managing/demand_list.html'
     # optional
     login_url = clovi_login_url
+
+class SpecialPriceView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,generic.ListView):
+    template_name = 'managing/special_price.html'
+    paginate_by = 10
+    model = managing_models.SpecialPrice
+    data_search_form = managing_forms.DataSearchForm
+    # optional
+    login_url = clovi_login_url
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('product__supplier__profile','customer__profile').order_by('-created')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            if q:
+                try:
+                    q = q.split()
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(customer__profile__company__icontains=i) | Q(new_price__icontains=i)
+                            | Q(product__standard__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+
+class SpecialPriceCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    template_name = 'managing/special_price_create.html'
+    form_class = managing_forms.SpecialPriceForm
+    success_url = "/clovi/special_price"
+    success_message = '신규 등록 되었습니다.'
+
+    def form_valid(self, form):
+        customer = form.cleaned_data['customer']
+        try:
+            customer= member_models.Profile.objects.filter(code=customer)
+        except:
+            messages.error(self.request, '고객 정보를 불러오는데 실패하였습니다.')
+            return redirect('/clovi/special_price')
+        for i in customer:
+            customer = i.user_id
+        product =form.cleaned_data['product']
+        new_price =form.cleaned_data['new_price']
+        managing_models.SpecialPrice(customer_id=customer, product_id=product, new_price=new_price).save()
+        response = super(SpecialPriceCreateView, self).form_valid(form)
+        return response
+
+class SpecialPriceUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    template_name = 'managing/special_price_update.html'
+    form_class = managing_forms.SpecialPriceForm
+    success_url = "/clovi/special_price"
+    success_message = '수정 되었습니다.'
+
+    def get_context_data(self, **kwargs):
+        context = super(SpecialPriceUpdateView, self).get_context_data(**kwargs)
+        path = self.kwargs['pk']
+        data = managing_models.SpecialPrice.objects.select_related('product__supplier__profile','customer__profile').filter(id=path)
+        for z in data:
+            context['new'] =z.new_price
+            context['customer'] = z.customer.profile.company
+            context['product'] = z.product.standard
+            context['customer_id'] = z.customer.profile.code
+            context['product_id'] = z.product.id
+        return context
+
+
+    def form_valid(self, form):
+        path = self.kwargs['pk']
+        data = managing_models.SpecialPrice.objects.get(id=path)
+        customer = form.cleaned_data['customer']
+        try:
+            customer = member_models.Profile.objects.filter(code=customer)
+        except:
+            messages.error(self.request, '고객 정보를 불러오는데 실패하였습니다.')
+            return redirect('/clovi/special_price')
+        for i in customer:
+            customer = i.user_id
+        product = form.cleaned_data['product']
+        new_price = form.cleaned_data['new_price']
+        data.customer_id = customer
+        data.product_id = product
+        data.new_price = new_price
+        data.save()
+        response = super(SpecialPriceUpdateView, self).form_valid(form)
+        return response
+
+
+class SpecialPriceDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
+    model = managing_models.SpecialPrice
+    success_url ="/clovi/special_price"
 
 
 class EmployeesView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
@@ -486,7 +680,7 @@ class EmployeesView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
 class EmployeesCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.CreateView):
     form_class = managing_forms.EmployeesCreateForm
     success_url = "/clovi/employees"
-    success_message = '직원이 신규 등록 되었습니다.'
+    success_message = '%(user)s 신규 등록 되었습니다.'
     # optional
     login_url = clovi_login_url
 
@@ -576,14 +770,17 @@ class DepositCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.date = datetime.datetime.now()
-        obj.bank = obj.bank + '_(관리자 등록)'
+        try:
+            obj.bank = obj.bank + '_(관리자 등록)'
+        except:
+            return redirect('managing:deposit')
         obj.part = '입금'
         return super(DepositCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
         if self.request.is_ajax():
             return JsonResponse(dict(form.errors, is_success=False))
-        return redirect('/managing/deposit/create')
+        return redirect('/clovi/deposit/create')
 
     def get_template_names(self):
         if self.request.is_ajax():
@@ -598,6 +795,13 @@ class DepositUpdateView(viewmixin.UserIsStaffMixin, generic.UpdateView):
     success_message = '요청사항이 수정되었습니다.'
     # optional
     login_url = clovi_login_url
+
+    def form_valid(self, form):
+        if self.request.is_ajax():
+            self.success_url = self.request.META.get('HTTP_REFERER')
+        response = super(DepositUpdateView, self).form_valid(form)
+        return response
+
 
     def get_context_data(self, **kwargs):
         context = super(DepositUpdateView, self).get_context_data(**kwargs)
@@ -654,6 +858,8 @@ class AskCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.Cre
         return queryset
 
     def form_valid(self, form):
+        if self.request.is_ajax():
+            self.success_url = self.request.META.get('HTTP_REFERER')
         obj = form.save(commit=False)
         obj.ask_from = self.request.user
         return super(AskCreateView, self).form_valid(form)
@@ -661,7 +867,7 @@ class AskCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.Cre
     def form_invalid(self, form):
         if self.request.is_ajax():
             return JsonResponse(dict(form.errors, is_success=False))
-        return redirect('/managing/ask/create')
+        return redirect('/clovi/ask/create')
 
     def get_template_names(self):
         if self.request.is_ajax():
@@ -679,6 +885,8 @@ class AskUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.Upd
     login_url = clovi_login_url
 
     def form_valid(self, form):
+        if self.request.is_ajax():
+            self.success_url = self.request.META.get('HTTP_REFERER')
         response = super(AskUpdateView, self).form_valid(form)
         return response
 

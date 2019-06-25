@@ -23,16 +23,16 @@
             </a>
         </div>
     </div>
-    <form method="POST">
+    <form id="form_id" method="POST" class="has-product">
         {% csrf_token %}
         {{ form.errors_from_post }}
         <div class="row">
             <div class="col-sm-4">
-                <span class="help-block"> {{ form.category.label}}</span>
+                <span class="help-block"> <b>{{ form.category.label}}</b></span>
                 {{ form.category}}
             </div>
             <div class="col-sm-4">
-                <span class="help-block"> {{ form.supplier.label}}</span>
+                <span class="help-block"> <b>{{ form.supplier.label}}</b></span>
                 {{ form.supplier}}
             </div>
             <div class="col-sm-2">
@@ -131,7 +131,7 @@
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6">
-                <button class="form-control btn btn-danger">저장하기</button>
+                <button id='sub-btn' class="form-control btn btn-danger">저장하기</button>
             </div>
             <div class="col-sm-3"></div>
         </div>

@@ -22,7 +22,7 @@
             </a>
         </div>
     </div>
-    <form method="POST" enctype="multipart/form-data">
+    <form id="form_id" method="POST" enctype="multipart/form-data" class="has-sample">
         {% csrf_token %}
         {{ form.errors_from_post }}
         {{ form.errors }}
@@ -61,31 +61,12 @@
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6">
-                <button class="form-control btn btn-danger">저장하기</button>
+                <button id='sub-btn' type="submit" class="form-control btn btn-danger">저장하기</button>
             </div>
             <div class="col-sm-3"><span id="ImgPreview"></span></div>
         </div>
     </form>
 
 </div>
-
-<script>
-    $(function () {
-        $("#sample_img").change(function () {
-            console.log('hi');
-            readURL(this);
-        });
-    });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#bImgPreview img').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>
 
 {% endblock %}

@@ -26,6 +26,17 @@ jQuery(document).ready(function () {
     // Date Picker
     jQuery('#datepicker').datepicker();
     jQuery('#datepicker-autoclose').datepicker({
+        format: "yyyy/mm/dd",
+        autoclose: true,
+        todayHighlight: true
+    });
+    jQuery('#joo_date').datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayHighlight: true
+    });
+    jQuery('#order_date').datepicker({
+        format: "yyyy-mm-dd",
         autoclose: true,
         todayHighlight: true
     });

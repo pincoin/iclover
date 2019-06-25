@@ -1,0 +1,246 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block modal_size %}90%;{% endblock %}
+{% load humanize %}
+{% block title %}주문서 관리{% endblock%}
+{% block addcss %}
+<!-- Bx slider css -->
+<link href="{% static 'managing/plugins/bx-slider/jquery.bxslider.css'%}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'managing/plugins/timepicker/bootstrap-timepicker.min.css'%}" rel="stylesheet">
+<link href="{% static 'managing/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css'%}" rel="stylesheet">
+<link href="{% static 'managing/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'%}" rel="stylesheet">
+<link href="{% static 'managing/plugins/clockpicker/css/bootstrap-clockpicker.min.css'%}" rel="stylesheet">
+<link href="{% static 'managing/plugins/bootstrap-daterangepicker/daterangepicker.css'%}" rel="stylesheet">
+
+{% endblock %}
+{% block content%}
+<div class="container m-t-50 m-b-30" style="width:800px;">
+    <h2 align="center"><b>거래 내역 관리</b>
+        <a href="{% url 'managing:orders_create' %}" class="content-modal-btn">
+            <i class="ti-plus text-orange"></i>
+        </a>
+    </h2>
+    <br/><br/>
+    <div align="center">
+        <form role="form" method="GET" autocomplete="off">
+            <div class="form-group search-box">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <br/>
+</div>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-icon
+{% if message.tags == 'success' %}alert-success{%else%}alert-danger{% endif %}
+alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <i class="mdi mdi-check-all"></i>
+    <strong>{{ message|linebreaksbr }}</strong>
+</div>
+{% endfor %}
+{% endif %}
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+    <ul class="nav nav-pills m-b-30 pull-left" style="font-weight:900">
+        <li
+        {% if request.path|slice:'-2:-1' == '0' %}class="active"{% endif %}
+        >
+        <a href="{% url 'managing:order' common=0%}">
+            <span class="visible-xs"><i class="fa fa-home"></i></span>
+            <span class="hidden-xs">견적서</span>
+
+        </a>
+        </li>
+        <li {% if request.path|slice:'-2:-1' == '1' %}class="active"{% endif %}>
+        <a href="{% url 'managing:order' common=1 %}">
+            <span class="visible-xs"><i class="fa fa-user"></i></span>
+            <span class="hidden-xs">주문서</span>
+        </a>
+        </li>
+        <li {% if request.path|slice:'-2:-1' == '2' %}class="active"{% endif %}>
+        <a href="{% url 'managing:order' common=2 %}">
+            <span class="visible-xs"><i class="fa fa-user"></i></span>
+            <span class="hidden-xs">시안 확인중</span>
+        </a>
+        </li>
+        <li {% if request.path|slice:'-2:-1' == '3' %}class="active"{% endif %}>
+        <a href="{% url 'managing:order' common=3 %}">
+            <span class="visible-xs"><i class="fa fa-user"></i></span>
+            <span class="hidden-xs">발주 완료</span>
+        </a>
+        </li>
+        <li {% if request.path|slice:'-2:-1' == '4' %}class="active"{% endif %}>
+        <a href="{% url 'managing:order' common=4 %}">
+            <span class="visible-xs"><i class="fa fa-user"></i></span>
+            <span class="hidden-xs">전체</span>
+        </a>
+        </li>
+        <li {% if request.path|slice:'-2:-1' == '5' %}class="active"{% endif %}>
+        <a href="{% url 'managing:order' common=5 %}">
+            <span class="visible-xs"><i class="fa fa-user"></i></span>
+            <span class="hidden-xs">취소/보류/환불</span>
+        </a>
+        </li>
+
+    </ul>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div class="text-right">{{page_obj}}</div>
+                <table class="table table-fixed table-hover mails m-0 table table-actions-bar">
+                    <thead>
+                    <tr>
+                        <th width="10%">날짜</th>
+                        <th width="5%">작업자</th>
+                        <th width="25%">거래처명</th>
+                        <th width="28%">품목명</th>
+                        <th width="10%">금액</th>
+                        <th width="15%">정보</th>
+                        <th width="20px;">수정</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for data in object_list%}
+                    <tr>
+                        <td>
+                            <a href="#">{{data.joo_date}}</a>
+                            <br>
+                            {{data.order_date|date:"Y/m/d"}}
+                        </td>
+                        <td>
+                            {{data.employees}}
+
+                        </td>
+                        <td>
+                            <span class="m-t-15"><b class="text-custom">{{data.company}}</b></span>
+                            <small class="text-muted"><br>{{data.company_keyword}}</small>
+                            <small><br>{{data.tell}}</small>
+                            <small><br>{{data.address}}</small>
+
+                        </td>
+
+                        <td>
+                            <b><a href="#">{{data.products}}</a><br></b>
+
+                        </td>
+
+                        <td>
+                            <p>{{data.total|floatformat:'0'|intcomma}}원</p>
+                        </td>
+                        <td>
+                            {% if data.keywords %}
+                            {{data.keywords}}
+                            {% endif %}
+                            <br>
+                            {% if data.checker %}
+                            {{data.checker}}
+                            {% endif %}
+                            <br>
+                            {% if data.options %}
+                            {{data.options}}
+                            {% endif %}
+                            <br>
+                            {% if data.deposit %}
+                            {{data.deposit}}
+                            {% endif %}
+                            <br>
+                            {% if data.deposit %}
+                            {{data.deposit}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#" class="table-action-btn h3"><i
+                                    class="mdi mdi-pencil-box-outline text-success"></i></a>
+                            <a href="#" class="table-action-btn h3"><i
+                                    class="mdi mdi-close-box-outline text-danger"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-30">
+        <div class="text-center m-t-30">
+
+            {% if not object_list %}
+            <h3>검색 된 데이터가 없습니다.</h3>
+            {% endif %}
+
+            {% if is_paginated %}
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="disabled">
+                        <a href="#">
+                            <span><strike>시작</strike></span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for page in page_range %}
+                    <li {% if page == page_obj.number %}class="active" {% endif %}>
+                        <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                            {{ page }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li {% if not page_obj.has_next %}class="disabled" {% endif %}>
+                        <a href="#">
+                            <strike>끝</strike>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {{page_obj}}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block addjs %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script src="{% static 'managing/plugins/moment/moment.js'%}"></script>
+     	<script src="{% static 'managing/plugins/timepicker/bootstrap-timepicker.js'%}"></script>
+     	<script src="{% static 'managing/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js'%}"></script>
+     	<script src="{% static 'managing/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'%}"></script>
+     	<script src="{% static 'managing/plugins/clockpicker/js/bootstrap-clockpicker.min.js'%}"></script>
+     	<script src="{% static 'managing/plugins/bootstrap-daterangepicker/daterangepicker.js'%}"></script>
+
+
+<!-- Bx slider js -->
+<script src="{% static 'managing/plugins/bx-slider/jquery.bxslider.min.js'%} "></script>
+
+<script>
+    $(document).ready(function () {
+        $('.property-slider').bxSlider({
+            pagerCustom: '#bx-pager'
+        });
+    });
+</script>
+
+{% endblock %}

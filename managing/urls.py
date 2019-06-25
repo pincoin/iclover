@@ -5,6 +5,7 @@ from . import views
 app_name = 'managing'
 
 urlpatterns = [
+
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.logout, name='logout'),
     path('password/', views.change_password, name='change_password'),
@@ -18,12 +19,17 @@ urlpatterns = [
     path('product/', views.ProductView.as_view(), name='product'),
     path('product/create/', views.ProdcutCreateView.as_view(), name='product_create'),
     path('product/<int:pk>/update/', views.ProductUpdateView.as_view(), name='product_update'),
+    path('special_price/', views.SpecialPriceView.as_view(), name='special_price'),
+    path('special_price/create/', views.SpecialPriceCreateView.as_view(), name='special_price_create'),
+    path('special_price/<int:pk>/update/', views.SpecialPriceUpdateView.as_view(), name='special_price_update'),
+    path('special_price/<int:pk>/delete/', views.SpecialPriceDeleteView.as_view(), name='special_price_delete'),
     path('sample/', views.SampleView.as_view(), name='sample'),
     path('sample/create/', views.SampleCreateView.as_view(), name='sample_create'),
     path('sample/<int:pk>/update/', views.SampleUpdateView.as_view(), name='sample_update'),
     path('category/', views.CategoryView.as_view(), name='category'),
     path('discount/', views.DiscountView.as_view(), name='discount'),
-    path('deal_list/<slug:common>/', views.DealListView.as_view(), name='deal_list'),
+    path('order/<int:common>/', views.OrderListView.as_view(), name='order'),
+    path('orders/create/', views.OrdersCreateView.as_view(), name='orders_create'),
     path('demand_list/', views.DemandView.as_view(), name='demand_list'),
     path('employees/', views.EmployeesView.as_view(), name='employees'),
     path('employees/create/', views.EmployeesCreateView.as_view(), name='employees_create'),

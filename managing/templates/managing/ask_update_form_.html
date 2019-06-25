@@ -1,4 +1,4 @@
-<form method="POST" text="요청 수정" autocomplete="off">
+<form id='form_id' method="post" text="요청 수정" autocomplete="off" class="has-ask">
     {% csrf_token %}
     {{ form.errors_from_post }}
     {{ form.errors }}
@@ -33,7 +33,7 @@
     </div>
     <br>
     <div class="modal-footer">
-        <button class="btn btn-danger">저장하기</button>
+        <button id='sub-btn' class="btn btn-danger">저장하기</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
 </form>

@@ -1,12 +1,18 @@
-<form method="POST" text="입금 신규 등록" autocomplete="off">
+<form id="form_id" method="POST" text="입금 신규 등록" autocomplete="off" class="has-deposit">
     {% csrf_token %}
     {{ form.errors_from_post }}
     {{ form.user }}
     {{ errors_message }}
     {{ form.user.errors }}
-    {{ form.as_p }}
+    <div class="row m-b-30">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6"> {{ form.as_p }}</div>
+        <div class="col-lg-3"></div>
+
+    </div>
+
 <div class="modal-footer">
-    <button class="btn btn-danger">저장하기</button>
+    <button id='sub-btn' class="btn btn-danger">저장하기</button>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 </div>
 </form>

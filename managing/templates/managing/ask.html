@@ -4,7 +4,7 @@
 {% block title %}요청 관리{% endblock%}
 {% block content%}
 
-<div class="container m-t-30 m-b-30" style="width:800px;">
+<div class="container m-t-50 m-b-30" style="width:800px;">
     <h2 align="center"><b>요청 관리</b>
         <a href="{% url 'managing:ask_create' %}" class="content-modal-btn">
             <i class="ti-plus text-orange"></i>
@@ -13,13 +13,12 @@
     <br/><br/>
     <div align="center">
         <form role="form" method="GET" autocomplete="off">
-            <div class="form-group search-box">
+            <div class="form-group search-box has-ask">
                 {{ data_search_form.q }}
                 <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
-    <ul class="list-group" id="result"></ul>
     <br/>
 </div>
 

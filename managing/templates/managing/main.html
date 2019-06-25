@@ -150,11 +150,11 @@
                 {% for i in my_list %}
                 <a href="{% url 'managing:memo_update' i.0 %}" class="content-modal-btn">
                 {% if i.1 and i.4 %}
-                <p class="text-orange" style="font-weight: bold">{{ i.2 }}</p>
+                <p class="text-orange">{{ i.2 }}</p>
                 {% elif i.1 %}
-                <p class="text-danger" style="font-weight: bold">{{ i.2 }}</p>
+                <p class="text-danger" >{{ i.2 }}</p>
                 {% elif i.4 %}
-                <p class="text-success" style="font-weight: bold">{{ i.2 }}</p>
+                <p class="text-success">{{ i.2 }}</p>
                 {% else %}
                 <p class="text-brown">{{ i.2 }}</p>
                 {% endif %}

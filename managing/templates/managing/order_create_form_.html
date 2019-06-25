@@ -1,0 +1,497 @@
+{% block addcss %}
+<style>
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
+{% endblock%}
+{% load static %}
+<form id='form_id' method="post" text="내역 생성" autocomplete="off"  action="">
+    {% csrf_token %}
+    {{ form.errors_from_post }}
+    {{ form.user }}
+    {{ errors_message }}
+    {{ form.user.errors }}
+
+    <h4 class="m-t-0 header-title"><b>견적서 생성</b></h4>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card-box row">
+
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <span class="help-block"> 주문 일자</span>
+                        <div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="joo_date" name="joo_date" value="{{today}}">
+                                <span class="input-group-addon bg-custom b-0">
+                                    <i class="mdi mdi-calendar text-white"></i>
+                                 </span>
+                            </div><!-- input-group -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 has-sample">
+                    <span class="help-block"><b>{{ form.company.help_text}}</b></span>
+                    {{ form.company}}
+                     {{ form.code}}
+                     {{ form.fix_manager}}
+                    <ul class="list-group" id="search_result"></ul>
+                    {% if form.errors.company %}
+                    <span style="color: #d33333"> {{form.errors.company.as_text}}</span>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-3"><span class="help-block"> {{ form.manager.help_text}}</span>
+                    <select name="manager" id="manager" class="form-control">
+                        <option value=""></option>
+                        {% for ma in manager_ls%}
+                        <option value="{{ma}}">{{ma}}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+                 <div class="col-lg-6">
+                    <span class="help-block"> {{ form.company_keyword.help_text}}</span>
+                    {{ form.company_keyword}}
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <span class="help-block"> 발주 일자</span>
+                        <div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="order_date" name="order_date">
+                                <span class="input-group-addon bg-custom b-0">
+                                    <i class="mdi mdi-calendar text-white"></i>
+                                </span>
+                            </div><!-- input-group -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                </div>
+                 <div class="col-lg-3">
+                    <span class="help-block"> {{ form.in_memo.help_text}}</span>
+                    {{ form.in_memo}}
+                </div>
+                <div class="col-lg-3">
+                    <span class="help-block"> {{ form.option.help_text}}</span>
+                    {{ form.option}}
+                </div>
+                <div class="col-lg-3">
+                    <span class="help-block"> {{ form.confirm.help_text}}</span>
+                    {{ form.confirm}}
+                </div>
+                 <div class="col-lg-3 has-error">
+                    <span class="help-block"> {{ form.out_memo.help_text}}</span>
+                    {{ form.out_memo}}
+                </div>
+                <div class="col-lg-12">
+                    <span class="help-block"> {{ form.memo.help_text}}</span>
+                    {{ form.memo}}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card-box">
+                <div class="m-b-10"><span class="badge up bg-danger">&ensp;</span> <span class="badge up bg-custom">&ensp;</span></div>
+                <div id="informations">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-box">
+            <div id="demo" class="row m-b-30 collapse in">
+                <div class="col-lg-3 ">
+                    <div class="col-lg-12 has-sample">
+                        <span class="help-block"><b>품목 등록</b></span>
+                        <input type="text" id='product_search' class="form-control col-lg-2 m-5">
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="help-block">부가세</span>
+                        <select class="form-control">
+                            <option value="0" selected>부가세 포함</option>
+                            <option value='1'>부가세 미포함</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="help-block">배송비</span>
+                        <select class="form-control">
+                            <option value="선불 택배" selected>선불 택배비</option>
+                            <option value='착불 택배'>착불 택배비</option>
+                            <option value='퀵'>퀵</option>
+                            <option value='방문 수령'>방문 수령</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-9 container-fluid">
+                    <ul class="list-group col-12 flex-wrap" id="product_result"></ul>
+                </div>
+
+            </div>
+
+<!--            <input type="checkbox" checked data-toggle="collapse" data-size="sm"  data-target="#demo">-->
+            <div class="table-responsive">
+            <input type="checkbox" id="switch1" checked="" data-toggle="collapse" switch="bool" data-target="#demo">
+            <label for="switch1" data-on-label="" data-off-label=""></label>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th width="20px;">No.</th>
+                        <th width="200px;">품목명</th>
+                        <th width="100px;">규격</th>
+                        <th width="80px;">수량</th>
+                        <th width="110px;">판매가</th>
+                        <th width="110px;">판매 부가세</th>
+                        <th width="110px;">매입가</th>
+                        <th>기타</th>
+                        <th>적요</th>
+                        <th>품목정보</th>
+                        <th width="50px;">
+                                <div class="checkbox checkbox-danger h3">
+                                    <input id="delete_check" type="checkbox">
+                                    <label for="delete_check">
+                                       <i class="fa fa-trash-o text-danger"></i>
+                                    </label>
+                                </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="sortable">
+                    <input type="hidden" id='id_json_data' name="json_data" />
+                    </tbody>
+                    <tfoot>
+                     <tr>
+                         <th></th>
+                        <th></th>
+                        <th class="text-center"></th>
+                         <th></th>
+                        <th></th>
+                        <th ></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type='submit'id='sub-btn' onclick="" class="btn btn-danger">저장</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</form>
+
+<script type="text/javascript">
+$('input[type="text"]').keydown(function() {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+    }
+});
+</script>
+
+<script>
+    function delay(fn, ms) {
+        let timer = 0;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(fn.bind(this, ...args), ms || 0)
+        }
+    }
+
+    function SortableSpan() {
+        $('#sortable span').each(function (i) {
+            var numbering = i + 1;
+            $(this).text(numbering + '.');
+        });
+    }
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#id_company :input:text:first").focus();
+        $.ajax({
+            url: '/api/profile.json',
+            dataType : 'json',
+            contentType : 'application/json; charset=UTF-8',
+            success: function (data, status, xhr) {
+                $('#id_company').keyup(delay(function (e) {
+                    $("#search_result").html('');
+                    var search_val = $('#id_company').val();
+                    var expression = new RegExp(search_val, "i");
+                    var expression_array = expression.source.split(' ');
+                    var index_num = 0;
+                    var max_num = 4;
+                    data_list = {};
+                    if (search_val != '') {
+                        $.each(data, function (key, item) {
+                            var company = item.company;
+                            var company_keyword = item.company_keyword;
+                            if (expression_array.length == 1) {
+                                if (company.search(expression) != -1 || company_keyword.search(expression) != -1) {
+                                    if (index_num < max_num) {
+                                        $('#search_result').append(
+                                            '<li class="list-group-item link-class text-custom"  id="' + item.id +
+                                            '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
+                                        );
+                                        data_id = item.id;
+                                        data_list[data_id] = item;
+                                        index_num += 1;
+                                    } else {
+                                        $('#search_result').append(
+                                            '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
+                                        );
+                                        index_num = 0;
+                                        return false;
+
+                                    }
+                                }
+                            } else {
+                                var expression0 = new RegExp(expression_array[0], "i");
+                                var expression1 = new RegExp(expression_array[1], "i");
+                                var expression2 = new RegExp(expression_array[2], "i");
+                                if (company.search(expression0) != -1 || company_keyword.search(expression0) != -1) {
+                                    if (company.search(expression1) != -1 || company_keyword.search(expression1) != -1) {
+                                        if (company.search(expression2) != -1 || company_keyword.search(expression2) != -1) {
+                                            if (index_num < max_num) {
+                                                $('#search_result').append(
+                                                    '<li class="list-group-item link-class text-custom" id="' + item.id +
+                                                    '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
+                                                );
+                                                data_id = item.id;
+                                                data_list[data_id] = item;
+
+                                                index_num += 1;
+                                            } else {
+                                                $('#search_result').append(
+                                                    '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
+                                                );
+                                                index_num = 0;
+                                                return false;
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }, 400));
+            }
+        });
+
+        $('#search_result').on('click', 'li', function () {
+            var idx = $(this).attr('id');
+            if (idx) {
+                custromer = data_list[idx];
+                var click_text = $(this).text().split('|');
+                $('#id_company').val($.trim(click_text[0]));
+                $('#id_code').val(custromer['code']);
+                $('#id_address').val(custromer['address']);
+                $('#id_company_keyword').val(custromer['company_keyword']);
+                $('#id_option').val(custromer['options']);
+                $('#id_confirm').val(custromer['confirm']);
+                $('#id_fix_manager').val(custromer['manager']);
+                $('#id_memo').val(custromer['memo'].replace(/<br\s?\/?>/g,"\n"));
+                $('#manager').val(custromer['manager']).attr('selected','selected');
+                $("#search_result").html('');
+                $("#informations").html(
+                    '<b>'+custromer['company'] + '</b><br>' +
+                    custromer['company_keyword'] + '<br>' +
+                    custromer['code'] + '<br>' +
+                    custromer['address'] + '<br>' +
+                    custromer['tax_bill_mail'] + '<br>' +
+                    custromer['tell'] + '<br>' +
+                    custromer['phone'] + '<br>' +
+                    custromer['keywords'] + '<br>' +
+                    custromer['memo'] + '<br>' +
+                    custromer['options'] + '<br>' +
+                    custromer['confirm'] + '<br>' +
+                    custromer['manager']
+                );
+                $('input[id="product_search"]').focus();
+                data_list = {};
+            }
+        });
+
+           $.ajax({
+            url: '/api/product.json',
+            dataType : 'json',
+            contentType : 'application/json; charset=UTF-8',
+            success: function (data, status, xhr) {
+                $('#product_search').keyup(delay(function (e) {
+                    $("#product_result").html('');
+                    var search_val = $('#product_search').val();
+                    var expression = new RegExp(search_val, "i");
+                    var expression_array = expression.source.split(' ');
+                    var index_num = 0;
+                    var max_num = 12;
+                    var max_text = 10;
+                    data_list = {};
+                    if (search_val != '') {
+                        $.each(data, function (key, item) {
+                            var company = item.title;
+                            var company_name = item.company_name;
+                            var horizontal = item.horizontal;
+                            var vertical = item.vertical;
+                            var etc = item.etc;
+                            var gram = item.gram;
+                            var memo = item.memo;
+                            var standard = item.standard;
+                            var buy_price = item.buy_price;
+                            var sell_price = item.sell_price;
+                            if (expression_array.length == 1) {
+                                if (company.search(expression) != -1 || standard.search(expression) != -1 || gram.search(expression) != -1
+                                       || etc.search(expression) != -1 || company_name.search(expression) != -1 || memo.search(expression) != -1)  {
+                                    if(etc.length > max_text){etc = etc.substr(0,max_text)+'...'}
+                                    if(gram.length > max_text){gram = gram.substr(0,max_text)+'...'}
+                                    if(memo.length > max_text){memo = memo.substr(0,max_text)+'...'}
+                                    if (index_num < max_num) {
+                                        $('#product_result').append(
+                                            '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
+                                            ''+item.id +'"><b>' + company+'&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
+                                            '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
+                                            '&nbsp<span class="text-muted">' + gram + '</span>' +
+                                            '<br> <span class="text-dark">' +  parseInt(sell_price) + '</span>' +
+                                            '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
+                                            '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
+                                            '</div></a>'
+                                                );
+                                        data_id = item.id;
+                                        data_list[data_id] = item;
+                                        index_num += 1;
+                                    }else{
+                                         $('#product_result').append(
+                                                    '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
+                                                );
+                                                index_num = 0;
+                                                return false;
+                                    }
+                                }
+                            }else{
+                                var expression0 = new RegExp(expression_array[0], "i");
+                                var expression1 = new RegExp(expression_array[1], "i");
+                                var expression2 = new RegExp(expression_array[2], "i");
+                                if (company.search(expression0) != -1 || standard.search(expression0) != -1 || gram.search(expression0) != -1
+                                    || etc.search(expression0) != -1 || company_name.search(expression0) != -1 || memo.search(expression0) != -1) {
+                                    if (company.search(expression1) != -1 || standard.search(expression1) != -1  || gram.search(expression1) != -1
+                                        || etc.search(expression1) != -1 || company_name.search(expression1) != -1 || memo.search(expression1) != -1) {
+                                        if (company.search(expression2) != -1 || standard.search(expression2) != -1  || gram.search(expression2) != -1
+                                            || etc.search(expression2) != -1 || company_name.search(expression2) != -1 || memo.search(expression2) != -1) {
+                                            if(etc.length > max_text){etc = etc.substr(0,max_text)+'...'}
+                                            if(gram.length > max_text){gram = gram.substr(0,max_text)+'...'}
+                                            if(memo.length > max_text){memo = memo.substr(0,max_text)+'...'}
+                                            if (index_num < max_num) {
+                                                $('#product_result').append(
+                                                    '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
+                                                    ''+item.id +'"><b>' + company+'&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
+                                                    '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
+                                                    '&nbsp<span class="text-muted">' + gram + '</span>' +
+                                                    '<br> <span class="text-dark">' +  parseInt(sell_price) + '</span>' +
+                                                    '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
+                                                    '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
+                                                    '</div></a>'
+                                                );
+                                                data_id = item.id;
+                                                data_list[data_id] = item;
+                                                index_num += 1;
+                                            } else {
+                                                $('#product_result').append(
+                                                    '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
+                                                );
+                                                index_num = 0;
+                                                return false;
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }, 400));
+           }});
+
+
+            $('#product_result').on('click', 'div', function () {
+            var idx = $(this).attr('id');
+            if (idx) {
+                product = data_list[idx];
+                 $('#sortable').append(
+                    '<tr><td><span class="text_data"></span></td>' +
+                     '<input class="form-control" type="hidden" name="text_data" value="'+ parseInt(product['code'])+'">' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['standard']+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+parseInt(product['horizontal'])+'*'+parseInt(product['vertical'])+'"></td>' +
+                     '<td><input class="form-control" type="number" name="text_data" value="'+ parseInt(product['quantity'])+'"></td>' +
+                     '<td><input class="form-control" type="number" name="text_data" value="'+ parseInt(product['sell_price'])+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+parseInt(product['sell_price'])/10+'"></td>' +
+                     '<td class="has-ask"><input class="form-control" type="number" name="text_data" value="'+ parseInt(product['buy_price'])+'"></td>' +
+                     '<input class="form-control" type="hidden" name="text_data" value="'+product['company_name']+'">' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['gram']+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['etc']+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['memo']+'"></td>' +
+                     '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
+                     '</tr>'
+
+
+
+                 ).ready(function () {
+                        SortableSpan();
+                     })
+            }
+        });
+    });
+
+
+    $(function () {
+        $("#sortable").sortable({
+            update: function (event, ui) {
+                SortableSpan();
+            }
+        });
+    });
+    $("#sub-btn").click(function(e) {
+        var list = new Array();
+        $("input[name=text_data]").each(function (index, item) {
+            list.push($(item).val());
+        });
+        $('#id_json_data').val(list.join('#,,#'));
+    });
+    $("#delete_check").click(function() {
+        if($('input:checkbox[id="delete_check"]').is(":checked") == true){
+             $(".delete-button").show();
+        }else{
+            $(".delete-button").hide();
+        }
+         SortableSpan();
+    });
+    setTimeout(function() { $('input[name="company"]').focus() }, 500);
+</script>
+
+
+
+<script type="text/javascript"  src="{% static 'managing/pages/jquery.form-pickers.init.js'%}"></script>

@@ -1,14 +1,14 @@
-<form method="POST" text="요청 등록"  autocomplete="off">
+<form id="form_id" method="POST" text="요청 등록"  autocomplete="off" class="has-ask">
         {% csrf_token %}
         {{ form.errors_from_post }}
         {{ form.errors }}
         <div class="row">
              <div class="col-sm-3">
-                 <span class="help-block"> 종류 : </span>
+                 <span class="help-block">종류 : <small class="text-danger">* 필수</small> </span>
                 {{ form.ask_part}}
             </div>
             <div class="col-sm-3">
-                 <span class="help-block"> 응답자 : </span>
+                 <span class="help-block"> 응답자 : <small class="text-danger">* 필수</small></span>
                 {{ form.ask_to}}
             </div>
             <div class="col-sm-6">
@@ -22,7 +22,7 @@
         </div>
     <br>
     <div class="modal-footer">
-        <button class="btn btn-danger">저장하기</button>
+        <button id='sub-btn' type="submit" class="btn btn-danger">저장하기</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
     </form>
@@ -31,4 +31,5 @@
     $(document).ready(function () {
         $('select').select2();
     });
+
 </script>

@@ -10,9 +10,6 @@
 
     <link rel="shortcut icon" href="{% static 'managing/images/favicon.png' %}">
 
-    <!-- 나눔 스퀘어 폰트-->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
-
     <title>{% block title %}{% endblock%}</title>
     {% block addcss %}
     {% endblock %}
@@ -35,6 +32,13 @@
     <![endif]-->
 
     <script src="{% static 'managing/js/modernizr.min.js' %}"></script>
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
 
 </head>
 
@@ -79,7 +83,7 @@
                         <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi mdi-web"></i>
                         </a>
-                             {% if user.is_authenticated %}
+                        {% if user.is_authenticated %}
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
                             <li class="text-center">
                                 <h5>사이트 바로가기</h5>
@@ -87,7 +91,8 @@
                             <li>
                                 <a href="{% url 'design:home'%}" target="_blank" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/clo.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/clo.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">고객 페이지</span>
@@ -97,7 +102,8 @@
                             <li>
                                 <a href="http://aceprinting.co.kr" target="_blank" class="user-list-item">
                                     <div class="icon">
-                                         <img src="{% static 'managing/images/logos/ace.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/ace.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">에이스 프린팅</span>
@@ -107,7 +113,8 @@
                             <li>
                                 <a href="http://www.adchunha.com/" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/gg.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/gg.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">광고 천하</span>
@@ -117,7 +124,8 @@
                             <li>
                                 <a href="http://www.xn--ob0b70f19ljql.com/" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/fac.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/fac.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">배너 공장</span>
@@ -127,7 +135,8 @@
                             <li>
                                 <a href="http://www.iclickart.co.kr/" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/ic.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/ic.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">아이클릭아트</span>
@@ -137,7 +146,8 @@
                             <li>
                                 <a href="http://da2000.co.kr/" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/da.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/da.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">다이천</span>
@@ -147,7 +157,8 @@
                             <li>
                                 <a href="https://accounts.kakao.com/" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/yy.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/yy.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">플러스친구 Kakao</span>
@@ -158,7 +169,8 @@
                             <li>
                                 <a href="https://accounts.kakao.com/" class="user-list-item">
                                     <div class="icon">
-                                        <img src="{% static 'managing/images/logos/ww.jpg' %}" width="70%;" class="img-responsive"/>
+                                        <img src="{% static 'managing/images/logos/ww.jpg' %}" width="70%;"
+                                             class="img-responsive"/>
                                     </div>
                                     <div class="user-desc">
                                         <span class="name">왕도매</span>
@@ -169,17 +181,17 @@
                         </ul>
                     </li>
                     {% else %}
-                        <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
-                            <li class="text-center">
-                                <h5>사이트 바로가기</h5>
-                            </li>
-                            <li class="text-center m-t-30 m-b-30">
-                                <h1><i class="ti-lock"></i></h1>
-                                <p>보안을 위해 <br>잠금처리 되었습니다.</p>
-                            </li>
+                    <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                        <li class="text-center">
+                            <h5>사이트 바로가기</h5>
+                        </li>
+                        <li class="text-center m-t-30 m-b-30">
+                            <h1><i class="ti-lock"></i></h1>
+                            <p>보안을 위해 <br>잠금처리 되었습니다.</p>
+                        </li>
 
-                        </ul>
-                     {% endif %}
+                    </ul>
+                    {% endif %}
 
                     <li class="dropdown navbar-c-items">
                         <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown"
@@ -192,7 +204,8 @@
                             {% if user.is_authenticated %}
                             <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
-                            <li><a href="{% url 'managing:change_password'%}"><i class="ti-lock m-r-5"></i> change password</a></li>
+                            <li><a href="{% url 'managing:change_password'%}"><i class="ti-lock m-r-5"></i> change
+                                password</a></li>
                             <li><a href="{% url 'managing:logout'%}"><i class="ti-power-off m-r-5"></i> Logout</a></li>
                             {% else %}
                             <li class="text-center">
@@ -224,7 +237,7 @@
         </div> <!-- end container -->
     </div>
     <!-- end topbar-main -->
-{% if user.is_authenticated %}
+    {% if user.is_authenticated %}
     <div class="navbar-custom">
         <div class="container">
             <div id="navigation">
@@ -244,10 +257,14 @@
                                 <a href="{% url 'managing:sample' %}">샘플 관리</a>
                             </li>
                             <li>
-                                <a href="{% url 'managing:discount' %}">할인그룹 관리<small class="text-danger">_(준비중)</small></a>
+                                <a href="{% url 'managing:discount' %}">할인그룹 관리
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
                             </li>
                             <li>
-                                <a href="{% url 'managing:category' %}">카테고리 관리<small class="text-danger">_(준비중)</small></a>
+                                <a href="{% url 'managing:category' %}">카테고리 관리
+                                    <small class="text-danger">_(준비중)</small>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -258,7 +275,7 @@
                     </li>
 
                     <li class="has-submenu">
-                        <a href="{% url 'managing:deal_list' common=0%}"><i class="mdi mdi-view-list"></i>거래 내역</a>
+                        <a href="{% url 'managing:order' common=0%}"><i class="mdi mdi-view-list"></i>거래 내역</a>
                     </li>
 
                     <li class="has-submenu">
@@ -334,15 +351,15 @@
             </div> <!-- end #navigation -->
         </div> <!-- end container -->
     </div> <!-- end navbar-custom -->
-{%else %}
-     <div class="navbar-custom">
+    {%else %}
+    <div class="navbar-custom">
         <div class="container">
             <div class="text-center">
                 <h3><i class="ti-lock"></i> 메뉴 잠금</h3>
-                </div>
+            </div>
         </div> <!-- end container -->
     </div> <!-- end navbar-custom -->
-{% endif %}
+    {% endif %}
 </header>
 <!-- End Navigation Bar-->
 
@@ -372,7 +389,7 @@
 
 <!-- Modal -->
 <div class="content-modal modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width:{% block modal_size %}80%;{% endblock %}">
 
         <!-- Modal content-->
         <div class="modal-content">
@@ -401,14 +418,16 @@
 <script src="{% static 'managing/js/jquery.scrollTo.min.js' %}"></script>
 <script src="{% static 'managing/plugins/switchery/switchery.min.js' %}"></script>
 <script src="{% static 'managing/plugins/select2/js/select2.js' %}"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 
 <!-- App js -->
 <script src="{% static 'managing/js/jquery.core.js' %}"></script>
 <script src="{% static 'managing/js/jquery.app.js' %}"></script>
 
 <script>
-    $(function () {
+    $(document).ready(function () {
+        $('select').select2();
         $(document).on('click', '.content-modal-btn', function (e) {
             e.preventDefault();
             var action_url = $(this).attr("href");
@@ -420,7 +439,6 @@
                     var title = $form.attr('text');
                     $modal.find('.modal-title').text(title);
                     $form.attr('action', action_url);
-
                     $modal.modal();
                 })
                 .fail(function (xhr, textStatus, error) {
@@ -428,13 +446,11 @@
                 });
         });
     });
-</script>
-<script>
-    $(document).ready(function () {
-        $('select').select2();
-    });
+
+
 </script>
 {% block addjs %}
+
 {% endblock %}
 
 </body>

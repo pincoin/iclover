@@ -7,8 +7,6 @@ from model_utils import Choices
 from model_utils.models import SoftDeletableModel, TimeStampedModel
 from datetime import datetime, timedelta
 
-# Create your models here.
-
 class Product(TimeStampedModel):
     purchase = models.ForeignKey(
         'member.Profile',
@@ -145,9 +143,39 @@ class Deposit(TimeStampedModel, SoftDeletableModel):
     def __str__(self):
         return '{} {} {}'.format(self.name, self.amount, self.memo)
 
+
+class SpecialPrice(TimeStampedModel):
+    product = models.ForeignKey(
+        'design.ProductText',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    customer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    new_price = models.DecimalField(
+        verbose_name=_('new_price'),
+        decimal_places=4,
+        max_digits=11,
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = _('특별가격')
+        verbose_name_plural = _('특별가격')
+
+    def __str__(self):
+        return '{} {} {}'.format(self.product, self.customer, self.new_price)
+
 class Discount(TimeStampedModel):
     product = models.ForeignKey(
-        'Product',
+        'design.ProductText',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
