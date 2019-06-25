@@ -176,7 +176,7 @@ class Profile(TimeStampedModel):
         verbose_name_plural = _('profiles')
 
     def __str__(self):
-        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user.username)
+        return '{} ( {} ) / {}'.format(self.company, self.company_keyword, self.user)
 
     @property
     def full_name(self):

@@ -221,7 +221,7 @@ class CustomerCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
 
     def form_valid(self, form):
         obj = form.save(commit=False)
-        name = str(obj.company) + '_temporary'
+        name = '[임시]_'+str(obj.company)+'_'+str(obj.code)
         check_is = User.objects.filter(username=name).exists()
         if check_is:
             if self.request.is_ajax():
@@ -239,7 +239,8 @@ class CustomerCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
     def form_invalid(self, form):
         if self.request.is_ajax():
             return JsonResponse(dict(form.errors, is_success=False))
-        return redirect('/clovi/customer/create')
+        messages.error(self.request, '생성할 수 없습니다')
+        return redirect('/clovi/customer/')
 
     def get_template_names(self):
         if self.request.is_ajax():

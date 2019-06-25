@@ -46,6 +46,11 @@ class DataSearchForm(forms.Form):
 
 
 class CustomerCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomerCreateForm, self).__init__(*args, **kwargs)
+        self.fields['code'].required = True
+        self.fields['company'].required = True
+
     class Meta:
         model = member_models.Profile
         fields = [
