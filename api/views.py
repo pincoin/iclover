@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 from rest_framework import viewsets
 from member import models as member_models
 from design import models as design_models
+from managing import models as managing_models
 from . import serializers
 from django.db.models import Q
 from rest_framework.permissions import IsAdminUser
@@ -21,8 +22,13 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = member_models.Profile.objects.filter(~Q(state_select=1)).order_by('company')
+    queryset = member_models.Profile.objects.select_related('user').filter(~Q(state_select=1)).order_by('company')
     serializer_class = serializers.ProfileSerializer
+    def get_queryset(self):
+        queryset = self.queryset
+        for i in queryset:
+            i.id = i.user.id
+        return queryset
 
 class ProductTextViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
@@ -51,3 +57,19 @@ class ProductTextViewSet(viewsets.ModelViewSet):
             if i.memo == None:
                 i.memo = ''
         return queryset
+
+class SpecialPriceViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAdminUser,)
+    queryset = managing_models.SpecialPrice.objects.select_related('product','customer')
+    serializer_class = serializers.SpecialPriceSerializer
+
+    def get_queryset(self):
+        get_data = self.request.GET
+        try:
+            queryset = self.queryset.filter(customer_id =get_data['data'])
+        except:
+            return {}
+        return queryset
+
+    def get_parser_context(self, http_request):
+        print(http_request)

@@ -10,6 +10,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'profile', views.ProfileViewSet)
 router.register(r'product', views.ProductTextViewSet)
+router.register(r'special_price', views.SpecialPriceViewSet)
 # router.register(r'user_profile', views,ProfileViewSet)
 
 urlpatterns = [

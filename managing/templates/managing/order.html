@@ -109,9 +109,9 @@ alert-dismissible fade in" role="alert">
                     {% for data in object_list%}
                     <tr>
                         <td>
-                            <a href="#">{{data.joo_date}}</a>
+                            <a href="#">{{data.joo_date|date:"Y.m.d"}}-{{data.today_num}}</a>
                             <br>
-                            {{data.order_date|date:"Y/m/d"}}
+                            {{data.order_date|date:"Y.m.d"}}
                         </td>
                         <td>
                             {{data.employees}}
@@ -119,15 +119,19 @@ alert-dismissible fade in" role="alert">
                         </td>
                         <td>
                             <span class="m-t-15"><b class="text-custom">{{data.company}}</b></span>
-                            <small class="text-muted"><br>{{data.company_keyword}}</small>
-                            <small><br>{{data.tell}}</small>
-                            <small><br>{{data.address}}</small>
+                            <small class="text-muted"><br>{% if data.company_keyword %}{{data.company_keyword}}{% endif %}</small>
+                            <small><br>{% if data.tell %}{{data.tell}}{% endif %}</small>
+                            <small><br>{% if data.address %}{{data.address}}{% endif %}</small>
 
                         </td>
 
                         <td>
-                            <b><a href="#">{{data.products}}</a><br></b>
-
+                            <b>
+                                {% if data.product %}
+                                {{data.product}}
+                                 {% endif %}
+                                <br>
+                            </b>
                         </td>
 
                         <td>

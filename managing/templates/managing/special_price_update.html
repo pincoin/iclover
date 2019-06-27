@@ -212,6 +212,50 @@ $('input[type="text"]').keydown(function() {
 
                                     }
                                 }}
+                             else {
+                                var expression0 = new RegExp(expression_array[0], "i");
+                                var expression1 = new RegExp(expression_array[1], "i");
+                                var expression2 = new RegExp(expression_array[2], "i");
+                                 if (company_name.search(expression0) != -1 || standard.search(expression0) != -1
+                                     || horizontal.search(expression0) != -1 || vertical.search(expression0) != -1
+                                     || memo.search(expression0) != -1 || etc.search(expression0) != -1 || gram.search(expression0) != -1
+                                 ) {
+                                     if (company_name.search(expression1) != -1 || standard.search(expression1) != -1
+                                         || horizontal.search(expression1) != -1 || vertical.search(expression1) != -1
+                                         || memo.search(expression1) != -1 || etc.search(expression1) != -1 || gram.search(expression1) != -1
+                                     ) {
+                                         if (company_name.search(expression2) != -1 || standard.search(expression2) != -1
+                                             || horizontal.search(expression2) != -1 || vertical.search(expression2) != -1
+                                             || memo.search(expression2) != -1 || etc.search(expression2) != -1 || gram.search(expression2) != -1
+                                         ) {
+                                         if (index_num < max_num) {
+                                        if(etc.length > max_text){etc = etc.substr(0,max_text)+'...'}
+                                        if(gram.length > max_text){gram = gram.substr(0,max_text)+'...'}
+                                        if(memo.length > max_text){memo = memo.substr(0,max_text)+'...'}
+                                        $('#product_result').append(
+                                            '<li class="list-group-item link-class text-custom" style="height: 80px;" id="' + item.id +
+                                            '">' + standard +'&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
+                                            '<span class="text-dark">&nbsp&nbsp' + parseInt(buy_price) + '</span>' +
+                                            '<small class="text-muted">&nbsp&nbsp' + company_name + '</small>' +
+                                            '<br><span class="text-muted">' + memo + '</span>' +
+                                            '<br><span class="text-muted">' + etc + '</span>' +
+
+                                            '</li>'
+                                        );
+                                        data_id = item.id;
+                                        data_list[data_id] = item;
+                                        index_num += 1;
+                                        }else {
+                                        $('#product_result').append(
+                                            '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
+                                        );
+                                        index_num = 0;
+                                        return false;
+
+                                    }
+                                    }}
+                                }
+                            }
                          });
                     }}, 400));
 

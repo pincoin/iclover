@@ -623,6 +623,11 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         on_delete=models.SET_NULL,
     )
 
+    today_num = models.IntegerField(
+        verbose_name=_('today-넘버링'),
+        default=1,
+    )
+
     joo_date = models.DateField(
         verbose_name=_('주문일'),
         null=True,
@@ -759,6 +764,7 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
     order_info = models.ForeignKey(
         'design.OrderInfo',
         verbose_name=_('주문 정보'),
+        related_name= 'order_list',
         null=True,
         blank=True,
         db_index=True,
@@ -800,6 +806,7 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('매입가'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -807,6 +814,7 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('매입 부가세'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -814,6 +822,7 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('판매가'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -821,6 +830,7 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('판매 부가세'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -830,8 +840,15 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
         null=True,
         blank=True,
     )
-    info = models.CharField(
-        verbose_name=_('품목 정보'),
+    gram = models.CharField(
+        verbose_name=_('기타'),
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+
+    etc = models.CharField(
+        verbose_name=_('적요'),
         max_length=100,
         null=True,
         blank=True,

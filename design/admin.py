@@ -41,16 +41,16 @@ class EtcOptionAdmin(admin.ModelAdmin):
     pass
 
 class OrderInfoAdmin(admin.ModelAdmin):
-    pass
+    list_per_page = 10
 
 class OrderListAdmin(admin.ModelAdmin):
-    pass
+    list_per_page = 10
 
 class OrderImgAdmin(admin.ModelAdmin):
-    pass
+    list_per_page = 10
 
 class OrderMemoAdmin(admin.ModelAdmin):
-    pass
+    list_per_page = 10
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)

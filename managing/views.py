@@ -3,13 +3,13 @@ import re
 from django.core import serializers as core_serializer
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login as django_login, logout as django_logout, authenticate ,update_session_auth_hash
+from django.contrib.auth import login as django_login, logout as django_logout, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import (UserPassesTestMixin,
-    LoginRequiredMixin, PermissionRequiredMixin)
+                                        LoginRequiredMixin, PermissionRequiredMixin)
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views import generic
@@ -27,6 +27,7 @@ from . import viewmixin
 from . import serializers
 
 clovi_login_url = '/clovi/login/'
+
 
 class Login(generic.FormView):
     template_name = 'managing/login.html'
@@ -58,6 +59,7 @@ def logout(request):
     django_logout(request)
     return redirect('managing:main')
 
+
 def change_password(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -75,6 +77,7 @@ def change_password(request):
         })
     else:
         return redirect('managing:login')
+
 
 class Main(LoginRequiredMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
     template_name = 'managing/main.html'
@@ -147,7 +150,8 @@ class MemoUpdateView(SuccessMessageMixin, generic.UpdateView):
         return ['managing/memo_update.html']
 
 
-class CustomerResultView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+class CustomerResultView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                         generic.ListView):
     template_name = 'managing/customer_result.html'
     context_object_name = 'result_list'
     paginate_by = 12
@@ -179,7 +183,8 @@ class CustomerResultView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, vi
         return context
 
 
-class CustomerView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+class CustomerView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                   generic.ListView):
     context_object_name = 'customer_list'
     paginate_by = 10
     model = member_models.Profile
@@ -221,7 +226,7 @@ class CustomerCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
 
     def form_valid(self, form):
         obj = form.save(commit=False)
-        name = '[임시]_'+str(obj.company)+'_'+str(obj.code)
+        name = '[임시]_' + str(obj.company) + '_' + str(obj.code)
         check_is = User.objects.filter(username=name).exists()
         if check_is:
             if self.request.is_ajax():
@@ -293,7 +298,7 @@ class ProductView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin
                                 etc_option__icontains=i)
                             | Q(standard__icontains=i) | Q(horizontal__icontains=i) | Q(vertical__icontains=i)
                             | Q(paper__icontains=i) | Q(gram__icontains=i) | Q(paper_option__icontains=i)
-                            | Q(color__icontains=i) | Q(side__icontains=i)| Q(supplier__username__icontains=i)
+                            | Q(color__icontains=i) | Q(side__icontains=i) | Q(supplier__username__icontains=i)
                         )
                 except:
                     pass
@@ -380,6 +385,7 @@ class SampleCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     success_message = '샘플이 신규 등록 되었습니다.'
     # optional
     login_url = clovi_login_url
+
     def form_valid(self, form):
         response = super(SampleCreateView, self).form_valid(form)
         return response
@@ -415,7 +421,9 @@ class DiscountView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     # optional
     login_url = clovi_login_url
 
-class OrderListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+
+class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                    generic.ListView):
     template_name = 'managing/order.html'
     paginate_by = 10
     model = design_models.OrderInfo
@@ -423,12 +431,13 @@ class OrderListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmi
 
     def get_queryset(self):
         state = int(self.kwargs['common'])
-        queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related('orderlist_set').filter(Q(state=state)).order_by('-joo_date')
+        queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
+            'order_list').filter(Q(state=state)).order_by('-joo_date', '-today_num')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
             match_term = re.search(r'\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}', q)
-            match = re.search(r'\d{4}-\d{2}-\d{2}',q)
+            match = re.search(r'\d{4}-\d{2}-\d{2}', q)
 
             if q:
                 try:
@@ -438,10 +447,10 @@ class OrderListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmi
                         q.remove(term_date)
                         term_date = term_date.split('~')
                         start_date = list(map(int, term_date[0].split('-')))
-                        end_date =  list(map(int,term_date[1].split('-')))
-                        start_date = datetime.date(start_date[0], start_date[1],start_date[2])
+                        end_date = list(map(int, term_date[1].split('-')))
+                        start_date = datetime.date(start_date[0], start_date[1], start_date[2])
                         end_date = datetime.date(end_date[0], end_date[1], end_date[2])
-                        queryset = queryset.filter(joo_date__range=[start_date,end_date])
+                        queryset = queryset.filter(joo_date__range=[start_date, end_date])
 
                     elif match:
                         single_date = match.group()
@@ -451,8 +460,8 @@ class OrderListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmi
                         queryset = queryset.filter(joo_date=start_date)
                     for i in q:
                         queryset = queryset.filter(
-                             Q(employees__icontains=i)|Q(company__icontains=i)|Q(company_keyword__icontains=i)
-                             | Q(company_keyword__icontains=i)
+                            Q(employees__icontains=i) | Q(company__icontains=i) | Q(company_keyword__icontains=i)
+                            | Q(company_keyword__icontains=i)
                         )
                 except:
                     pass
@@ -460,59 +469,45 @@ class OrderListView(viewmixin.UserIsStaffMixin,  viewmixin.PageableMixin, viewmi
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(OrderListView, self).get_context_data(**kwargs)
-        data = {}
         for i in context['object_list']:
-            orderlist = i.orderlist_set.all()
+            orderlist = i.order_list.all()
+            total_price = 0
+            count = 0
+            name = ''
             for z in orderlist:
-                check_date = i.joo_date.strftime('%Y/%m/%d')+'-'+str(z.num)
-                if check_date not in data:
-                    data[check_date] = [0,0]
+                total_price += z.selling_price
+                total_price += z.selling_price_tax
+                if z.list_sort == 1:
                     name = z.name
-                    if not z.price:
-                        z.price=0
-                    if not z.price_tax:
-                        z.price_tax=0
-                    if not z.selling_price:
-                        z.selling_price=0
-                    if not z.selling_price_tax:
-                        z.selling_price_tax=0
+                count += 1
 
-                    data[check_date][1] = z.selling_price+z.selling_price_tax
-                else:
-                    data[check_date][0] += 1
-                    if not z.price:
-                        z.price=0
-                    if not z.price_tax:
-                        z.price_tax=0
-                    if not z.selling_price:
-                        z.selling_price=0
-                    if not z.selling_price_tax:
-                        z.selling_price_tax=0
+            i.total = total_price
+            if count == 1:
+                i.product = name
+            else:
+                i.product = name+' 외 '+ str(count)+' 건'
 
-                    data[check_date][1] += z.selling_price+z.selling_price_tax
-
-            i.total = data[check_date][1]
-            i.joo_date = check_date
-            i.products = name+' 외 '+ str(data[check_date][0])+'건'
+            # i.products = name+' 외 '+ str(data[check_date][0])+'건'
         return context
 
     # optional
     login_url = clovi_login_url
 
+
 class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
     form_class = managing_forms.OrderForm
     model = design_models.OrderInfo
     success_url = "/clovi/order/0/"
-    success_message = '%(code)s 신규 등록 되었습니다.'
+    success_message = '%(company)s 신규 등록 되었습니다.'
 
     def get_context_data(self, **kwargs):
         context = super(OrdersCreateView, self).get_context_data(**kwargs)
         context['today'] = datetime.date.today().strftime('%Y-%m-%d')
         employees = User.objects.filter(is_staff=True).order_by('username')
-        data_manager ={}
+        data_manager = {}
         for i in employees:
             data_manager[i.username] = i.id
-        context['manager_ls'] = data_manager
+        context['manager_ls'] = data_manager  # 직원이름 select
         return context
 
     def get_template_names(self):
@@ -523,23 +518,82 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     def form_valid(self, form):
         json_data = form.cleaned_data['json_data'].split('#,,#')
         json_all_num = len(json_data)
-        json_tr_long = 11 #한 tr의 갯수
-        json_pre = 0 # 인덱싱
-        json_next = json_tr_long # 인덱싱
+        json_tr_long = 11  # 한 tr의 갯수
+        json_pre = 0  # 인덱싱
+        json_next = json_tr_long  # 인덱싱
         if json_all_num:
-            json_all_num = json_all_num/json_tr_long
+            product_list = []
+            json_all_num = json_all_num / json_tr_long  # tr 수 찾기
             try:
                 for i in range(0, int(json_all_num)):
-                    print(json_data[json_pre:json_next])
+                    product_list.append(json_data[json_pre:json_next])
                     json_pre += json_tr_long
                     json_next += json_tr_long
             except:
                 messages.error(self.request, '알수없는 에러가 발생하였습니다.')
                 urls = self.request.META.get('HTTP_REFERER')
                 return redirect(urls)
+            if product_list:
+                code = int(form.cleaned_data['code'])
+                user = member_models.Profile.objects.select_related('user').get(code=code)
+                joo_date = form.cleaned_data['joo_date']
+                today_num = design_models.OrderInfo.objects.filter(joo_date=joo_date).aggregate(Max('today_num'))
+                if not today_num['today_num__max']:  # 1번을 만들기 위함
+                    today_num['today_num__max'] = 0
+                today_num = today_num['today_num__max'] + 1
+                tax = True if form.cleaned_data['tax'] == '0' else False
+                order_info = design_models.OrderInfo(
+                    user=user.user,
+                    today_num=today_num,
+                    joo_date=joo_date,
+                    company=form.cleaned_data['company'],
+                    company_keyword=form.cleaned_data['company_keyword'],
+                    employees=form.cleaned_data['manager'],
+                    options=form.cleaned_data['option'],
+                    address=form.cleaned_data['address'],
+                    tell=form.cleaned_data['tell'],
+                    checker=form.cleaned_data['confirm'],
+                    keywords=form.cleaned_data['memo'],
+                    in_memo=form.cleaned_data['in_memo'],
+                    out_memo=form.cleaned_data['out_memo'],
+                    fix_manager=form.cleaned_data['fix_manager'],
+                    order_date=None,
+                    state=0,
+                    tax=tax,
+                )
+                order_info.save()
+                list_sort = 1
+
+                for product_data in product_list:
+                    if tax:
+                        try:
+                            price_tax = float(product_data[6]) / 10
+                        except:
+                            price_tax = 0
+                    else:
+                        price_tax = 0
+                    design_models.OrderList(
+                        order_info_id=order_info.id,
+                        list_sort=list_sort,
+                        num=today_num,
+                        code=product_data[0],
+                        name=product_data[1],
+                        standard=product_data[2],
+                        quantity=product_data[3],
+                        selling_price=product_data[4],
+                        selling_price_tax=product_data[5],
+                        price=product_data[6],
+                        price_tax=price_tax,
+                        group_manage=product_data[7],
+                        gram=product_data[8],
+                        etc=product_data[9],
+                        memo=product_data[10],
+                    ).save()
+
+                    list_sort += 1
+                list_sort = 1
             json_pre = 0
             json_next = json_tr_long
-
 
         if self.request.is_ajax():
             self.success_url = self.request.META.get('HTTP_REFERER')
@@ -563,12 +617,15 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     # optional
     login_url = clovi_login_url
 
+
 class DemandView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     template_name = 'managing/demand_list.html'
     # optional
     login_url = clovi_login_url
 
-class SpecialPriceView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,generic.ListView):
+
+class SpecialPriceView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                       generic.ListView):
     template_name = 'managing/special_price.html'
     paginate_by = 10
     model = managing_models.SpecialPrice
@@ -577,7 +634,8 @@ class SpecialPriceView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, view
     login_url = clovi_login_url
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related('product__supplier__profile','customer__profile').order_by('-created')
+        queryset = super().get_queryset().select_related('product__supplier__profile', 'customer__profile').order_by(
+            '-created')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -603,17 +661,18 @@ class SpecialPriceCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, ge
     def form_valid(self, form):
         customer = form.cleaned_data['customer']
         try:
-            customer= member_models.Profile.objects.filter(code=customer)
+            customer = member_models.Profile.objects.filter(code=customer)
         except:
             messages.error(self.request, '고객 정보를 불러오는데 실패하였습니다.')
             return redirect('/clovi/special_price')
         for i in customer:
             customer = i.user_id
-        product =form.cleaned_data['product']
-        new_price =form.cleaned_data['new_price']
+        product = form.cleaned_data['product']
+        new_price = form.cleaned_data['new_price']
         managing_models.SpecialPrice(customer_id=customer, product_id=product, new_price=new_price).save()
         response = super(SpecialPriceCreateView, self).form_valid(form)
         return response
+
 
 class SpecialPriceUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
     template_name = 'managing/special_price_update.html'
@@ -624,15 +683,15 @@ class SpecialPriceUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, ge
     def get_context_data(self, **kwargs):
         context = super(SpecialPriceUpdateView, self).get_context_data(**kwargs)
         path = self.kwargs['pk']
-        data = managing_models.SpecialPrice.objects.select_related('product__supplier__profile','customer__profile').filter(id=path)
+        data = managing_models.SpecialPrice.objects.select_related('product__supplier__profile',
+                                                                   'customer__profile').filter(id=path)
         for z in data:
-            context['new'] =z.new_price
+            context['new'] = z.new_price
             context['customer'] = z.customer.profile.company
             context['product'] = z.product.standard
             context['customer_id'] = z.customer.profile.code
             context['product_id'] = z.product.id
         return context
-
 
     def form_valid(self, form):
         path = self.kwargs['pk']
@@ -657,10 +716,11 @@ class SpecialPriceUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, ge
 
 class SpecialPriceDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
     model = managing_models.SpecialPrice
-    success_url ="/clovi/special_price"
+    success_url = "/clovi/special_price"
 
 
-class EmployeesView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+class EmployeesView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                    generic.ListView):
     template_name = 'managing/employees.html'
     context_object_name = 'employees_list'
     model = managing_models.Employees
@@ -803,15 +863,15 @@ class DepositUpdateView(viewmixin.UserIsStaffMixin, generic.UpdateView):
         response = super(DepositUpdateView, self).form_valid(form)
         return response
 
-
     def get_context_data(self, **kwargs):
         context = super(DepositUpdateView, self).get_context_data(**kwargs)
         print(context)
         return context
 
+
 class DepositDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
     model = managing_models.Deposit
-    success_url ='/clovi/deposit/'
+    success_url = '/clovi/deposit/'
 
 
 class AskView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
@@ -901,15 +961,16 @@ class PaymentListView(APIView):
     permission_classes = (IsAuthenticated,) if not settings.DEBUG else ()
 
     def get(self, request, format=None):
-        payments = [{'상호명':p.name,'금액':p.amount} for p in managing_models.Deposit.objects.all()[:10]] if settings.DEBUG else None
+        payments = [{'상호명': p.name, '금액': p.amount} for p in
+                    managing_models.Deposit.objects.all()[:10]] if settings.DEBUG else None
         return Response(payments)
 
     def post(self, request, format=None):
         serializer = serializers.PaymentSerializer(data=request.data)
         if serializer.is_valid():
             print('{} {} {} '.format(request.data['phone'],
-                                             request.data['tell'],
-                                             request.data['message'],))
+                                     request.data['tell'],
+                                     request.data['message'], ))
             save = True
 
             if save:

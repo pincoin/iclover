@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from member import models as member_models
 from design import models as design_models
+from managing import models as managing_models
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -36,3 +37,8 @@ class ProductTextSerializer(serializers.ModelSerializer):
         if obj.supplier:
             company_name = obj.supplier.username.split('_')[-2]
         return company_name
+
+class SpecialPriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= managing_models.SpecialPrice
+        fields = '__all__'

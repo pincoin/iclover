@@ -39,6 +39,7 @@ input[type="number"]::-webkit-inner-spin-button {
                     {{ form.company}}
                      {{ form.code}}
                      {{ form.fix_manager}}
+                    {{ form.tell}}
                     <ul class="list-group" id="search_result"></ul>
                     {% if form.errors.company %}
                     <span style="color: #d33333"> {{form.errors.company.as_text}}</span>
@@ -89,6 +90,10 @@ input[type="number"]::-webkit-inner-spin-button {
                     {{ form.out_memo}}
                 </div>
                 <div class="col-lg-12">
+                    <span class="help-block"> {{ form.address.help_text}}</span>
+                    {{ form.address}}
+                </div>
+                <div class="col-lg-12">
                     <span class="help-block"> {{ form.memo.help_text}}</span>
                     {{ form.memo}}
                 </div>
@@ -127,7 +132,7 @@ input[type="number"]::-webkit-inner-spin-button {
                     </div>
                     <div class="col-lg-6">
                         <span class="help-block">부가세</span>
-                        <select class="form-control">
+                        <select class="form-control" name="tax">
                             <option value="0" selected>부가세 포함</option>
                             <option value='1'>부가세 미포함</option>
                         </select>
@@ -179,17 +184,16 @@ input[type="number"]::-webkit-inner-spin-button {
                     <input type="hidden" id='id_json_data' name="json_data" />
                     </tbody>
                     <tfoot>
-                     <tr>
+                     <tr class="total-tr">
                          <th></th>
                         <th></th>
                         <th class="text-center"></th>
+                         <th class="text-center h4" id="total_quantity"></th>
+                        <th class="text-center h4" id="total_price"></th>
+                        <th class="text-center h4" id="total_tax"></th>
+                        <th colspan="2" class="text-center h4" id="total"></th>
                          <th></th>
-                        <th></th>
-                        <th ></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                         <th></th>
                         <th></th>
                     </tr>
                     </tfoot>
@@ -229,6 +233,24 @@ $('input[type="text"]').keydown(function() {
             $(this).text(numbering + '.');
         });
     }
+    function Total() {
+        var total_price = 0;
+        var total_tax = 0;
+        var total_quantity = 0;
+        $('#sortable tr').each(function () {
+            total_quantity += parseInt($(this).children().eq(4).children().val());
+            total_price += parseInt($(this).children().eq(5).children().val());
+            total_tax += parseInt($(this).children().eq(6).children().val());
+        });
+        var total =  total_price + total_tax;
+        if(total_quantity != 0){
+            $('#total_quantity').text(total_quantity);
+            $('#total_price').text(total_price);
+            $('#total_tax').text(total_tax);
+            $('#total').text('판매 합계 : '+total);
+            $('.total-tr').attr('style','background-color: #f3f3f3');
+        }
+    }
 
 </script>
 <script type="text/javascript">
@@ -240,6 +262,8 @@ $('input[type="text"]').keydown(function() {
             contentType : 'application/json; charset=UTF-8',
             success: function (data, status, xhr) {
                 $('#id_company').keyup(delay(function (e) {
+                    $("#product_result").html('');
+                    $("#product_search").val('');
                     $("#search_result").html('');
                     var search_val = $('#id_company').val();
                     var expression = new RegExp(search_val, "i");
@@ -306,6 +330,7 @@ $('input[type="text"]').keydown(function() {
 
         $('#search_result').on('click', 'li', function () {
             var idx = $(this).attr('id');
+            console.log(idx);
             if (idx) {
                 custromer = data_list[idx];
                 var click_text = $(this).text().split('|');
@@ -315,6 +340,8 @@ $('input[type="text"]').keydown(function() {
                 $('#id_company_keyword').val(custromer['company_keyword']);
                 $('#id_option').val(custromer['options']);
                 $('#id_confirm').val(custromer['confirm']);
+                $('#id_address').val(custromer['address']);
+                $('#id_tell').val(custromer['tell']);
                 $('#id_fix_manager').val(custromer['manager']);
                 $('#id_memo').val(custromer['memo'].replace(/<br\s?\/?>/g,"\n"));
                 $('#manager').val(custromer['manager']).attr('selected','selected');
@@ -336,6 +363,15 @@ $('input[type="text"]').keydown(function() {
                 $('input[id="product_search"]').focus();
                 data_list = {};
             }
+             $.ajax({
+            url: '/api/special_price.json',
+            dataType : 'json',
+            data : {data:idx },
+            contentType : 'application/json; charset=UTF-8',
+            success: function (special_price_data, status, xhr) {
+                special_price = special_price_data;
+             }});
+
         });
 
            $.ajax({
@@ -362,8 +398,15 @@ $('input[type="text"]').keydown(function() {
                             var gram = item.gram;
                             var memo = item.memo;
                             var standard = item.standard;
-                            var buy_price = item.buy_price;
                             var sell_price = item.sell_price;
+                            if(typeof(special_price) != 'undefined'){
+                                $.each(special_price, function (keys, items) {
+                                    if (item['id'] == items['product']) {
+                                        sell_price = items['new_price'];
+                                    }
+                                });
+                            }
+
                             if (expression_array.length == 1) {
                                 if (company.search(expression) != -1 || standard.search(expression) != -1 || gram.search(expression) != -1
                                        || etc.search(expression) != -1 || company_name.search(expression) != -1 || memo.search(expression) != -1)  {
@@ -441,39 +484,51 @@ $('input[type="text"]').keydown(function() {
             var idx = $(this).attr('id');
             if (idx) {
                 product = data_list[idx];
+                price_check = false;
+                price_origin = '';
+                if(typeof(special_price) != 'undefined'){
+                 $.each(special_price, function (key, item) {
+                       if(product['id']==item['product']){
+                           price_origin = product['sell_price'];
+                           price_check = true;
+                           product['sell_price'] = item['new_price'];
+                       }
+                 });}
                  $('#sortable').append(
                     '<tr><td><span class="text_data"></span></td>' +
                      '<input class="form-control" type="hidden" name="text_data" value="'+ parseInt(product['code'])+'">' +
                      '<td><input class="form-control" type="text" name="text_data" value="'+product['standard']+'"></td>' +
                      '<td><input class="form-control" type="text" name="text_data" value="'+parseInt(product['horizontal'])+'*'+parseInt(product['vertical'])+'"></td>' +
-                     '<td><input class="form-control" type="number" name="text_data" value="'+ parseInt(product['quantity'])+'"></td>' +
-                     '<td><input class="form-control" type="number" name="text_data" value="'+ parseInt(product['sell_price'])+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+ parseInt(product['quantity'])+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+ parseInt(product['sell_price'])+'"></td>' +
                      '<td><input class="form-control" type="text" name="text_data" value="'+parseInt(product['sell_price'])/10+'"></td>' +
-                     '<td class="has-ask"><input class="form-control" type="number" name="text_data" value="'+ parseInt(product['buy_price'])+'"></td>' +
+                     '<td class="has-ask"><input class="form-control" type="text" name="text_data" value="'+ parseInt(product['buy_price'])+'"></td>' +
                      '<input class="form-control" type="hidden" name="text_data" value="'+product['company_name']+'">' +
                      '<td><input class="form-control" type="text" name="text_data" value="'+product['gram']+'"></td>' +
                      '<td><input class="form-control" type="text" name="text_data" value="'+product['etc']+'"></td>' +
                      '<td><input class="form-control" type="text" name="text_data" value="'+product['memo']+'"></td>' +
                      '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
                      '</tr>'
-
-
-
                  ).ready(function () {
+                     if(price_check){
+                         product['sell_price'] = price_origin
+                     }
                         SortableSpan();
+                         Total()
                      })
             }
         });
     });
 
-
     $(function () {
         $("#sortable").sortable({
             update: function (event, ui) {
                 SortableSpan();
+                Total();
             }
         });
     });
+
     $("#sub-btn").click(function(e) {
         var list = new Array();
         $("input[name=text_data]").each(function (index, item) {

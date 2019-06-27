@@ -380,6 +380,9 @@ class OrderForm(forms.Form):
         self.fields['fix_manager'].required = False
         self.fields['in_memo'].required = False
         self.fields['out_memo'].required = False
+        self.fields['address'].required = False
+        self.fields['tell'].required = False
+        self.fields['tax'].required = False
 
 
     company = forms.CharField(
@@ -447,11 +450,22 @@ class OrderForm(forms.Form):
         ),
         help_text='고객 노출 메모 :'
     )
+    address = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='주소 :'
+    )
     code = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
     fix_manager = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
+    tell = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
     joo_date = forms.CharField()
     order_date = forms.CharField()
     json_data = forms.CharField()
+    tax = forms.CharField()
+
 
 
 class SpecialPriceForm(forms.Form):
