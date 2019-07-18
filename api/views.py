@@ -22,7 +22,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = member_models.Profile.objects.select_related('user').filter(~Q(state_select=1)).order_by('company')
+    queryset = member_models.Profile.objects.filter(~Q(state_select=1)).order_by('company')
     serializer_class = serializers.ProfileSerializer
     def get_queryset(self):
         queryset = self.queryset
@@ -32,7 +32,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class ProductTextViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = design_models.ProductText.objects.select_related('supplier').filter(Q(product_version=1)).order_by('-standard')
+    queryset = design_models.ProductText.objects.filter(Q(product_version=1)).order_by('-standard')
     serializer_class = serializers.ProductTextSerializer
 
     def get_queryset(self):
@@ -60,7 +60,7 @@ class ProductTextViewSet(viewsets.ModelViewSet):
 
 class SpecialPriceViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = managing_models.SpecialPrice.objects.select_related('product','customer')
+    queryset = managing_models.SpecialPrice.objects.all()
     serializer_class = serializers.SpecialPriceSerializer
 
     def get_queryset(self):
