@@ -17,13 +17,13 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ('url', 'name')
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model= member_models.Profile
         fields = ['id','code','company','company_keyword','address','tax_bill_mail','tell','keywords','memo',
                   'phone','options','confirm','manager']
 
-class ProductTextSerializer(serializers.ModelSerializer):
+class ProductTextSerializer(serializers.HyperlinkedModelSerializer):
     company_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -38,7 +38,7 @@ class ProductTextSerializer(serializers.ModelSerializer):
             company_name = obj.supplier.username.split('_')[-2]
         return company_name
 
-class SpecialPriceSerializer(serializers.ModelSerializer):
+class SpecialPriceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model= managing_models.SpecialPrice
         fields = '__all__'
