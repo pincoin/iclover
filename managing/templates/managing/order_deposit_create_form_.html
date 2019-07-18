@@ -1,0 +1,164 @@
+<form id="form_id" method="POST" text="입금 연결" autocomplete="off" class="has-deposit">
+    {% load humanize %}
+    {% csrf_token %}
+    {{ form.errors_from_post }}
+    {{ form.user }}
+    {{ errors_message }}
+    {{ form.user.errors }}
+
+    <div class="row m-b-30">
+        <div class="col-lg-6">
+            <table class="text-center" align="center" width="100%">
+                <tr>
+                    <td>
+                        <div class="row card-box">
+                        <h2>{{company}}</h2>
+                            <div class="p-t-10"></div>
+                            <h4>{{selling_price|intcomma}}</h4>
+                            <h4>{{selling_price_tax|intcomma}}</h4>
+                            <h2 class="total_num">{{total|intcomma}}</h2>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1>
+                            {% if deposit_check != 987654 %}
+                            <i class="glyphicon glyphicon-sort"></i>
+                            <small class="balance"></small>
+                            {%else%}
+                            <i class="fa fa-chain text-success"></i>
+                            <small class="balance text-danger"></small>
+                            {% endif %}
+                        </h1>
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row card-box">
+                            {{form.delete}}
+                            {{form.deposit}}
+                            {{form.balance}}
+                            <h2>연결 된 입금내역</h2>
+                            <div class="p-t-10"></div>
+                              <div class="deposit_list">
+                            {% for i in order_deposit_list %}
+                            <h3 id ='{{i.id}}'>
+                                <small>{{i.deposit_with.name}}</small>
+                                <span class="deposit_num">{{i.deposit_with.amount|intcomma}}</span>
+                                    <i class="ion-close-circled"></i>
+
+                            </h3>
+                            {% endfor %}
+
+                                </div>
+                            <h3 class="difference"></h3>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6" style="overflow-y:auto;height:500px;">
+            <table class="table table-striped m-0">
+                {% for i in deposit_list %}
+                <tr class="p-20" id="{{ i.id }}">
+                    <td><input type="checkbox" class="form-control checking"></td>
+                    <td><b><span class="name">{{i.name}}</span><br>
+                        <span class="amount">{{i.amount|intcomma}}</span> </b></td>
+                    <td>
+                        <small class="text-muted"> {{i.bank}} {{i.date}}</small>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% if deposit_check != 0 %}
+    <div class="row p-b-10">
+    <div align="right" class="col-lg-11"></div>
+    <div align="right" class="col-lg-1">
+
+          <select name="division" class="form-control">
+              <option value="">수동 승인</option>
+              <option value="987654"
+              {% if deposit_check == 987654 %}selected{% endif %}
+              >승인</option>
+              <option value="-1">취소</option>
+          </select>
+        </div>
+        </div>
+    {% endif %}
+<div class="modal-footer">
+    <button id='sub-btn' class="btn btn-danger">저장하기</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+    <script>
+        var $total_num = $('.total_num');
+        var $checking = $(".checking");
+        var $balance = $('.balance');
+
+        total = $total_num.text().replace(/,/gi, '');
+
+        function Total() {
+            var deposit = 0;
+            var $deposit_num = $('.deposit_num');
+            $deposit_num.each(function () {
+                deposit += parseFloat($(this).text().replace(/,/gi, ''));
+            });
+            balance = deposit- total;
+            $balance.text(balance);
+
+            if (balance == 0) {
+                $balance.parent().attr('class', 'text-success')
+            } else {
+                $balance.parent().attr('class', 'text-danger')
+            }
+        }
+
+        var $ion_close_circled_class = $('.ion-close-circled');
+        var del_list = Array();
+        var add_list = Array();
+        $ion_close_circled_class.click(function () {
+            if (confirm('삭제하시겠습니까?')) {
+                var id = $(this).parent().attr("id");
+                $('.difference').html('<d class="text-danger">저장하기를 눌러야 삭제가 완료됩니다.</b>');
+                del_list.push(id);
+                $(this).parent().remove();
+                Total();
+                return false;
+            }
+        });
+
+        $(document).ready(function () {
+            Total();
+            $checking.on('click', function () {
+                var amount = $(this).parent().parent().find('span.amount').text();
+                var name = $(this).parent().parent().find('span.name').text();
+                var id = $(this).parent().parent().attr('id');
+                if ($(this).is(":checked") == true) {
+                    if ($.inArray(id, add_list) != -1) {
+                    } else {
+                        add_list.push(id);
+                        $(".deposit_list").append(
+                            '<h3 id ="' + id + '">' +
+                            '<small>' + name + '</small>' + ' ' +
+                            '<span class="deposit_num">' + amount + '</span></h3>'
+                        );
+                        Total();
+                    }
+
+                } else {
+                    add_list.pop(id);
+                    $(".deposit_list").find('h3#' + id).remove();
+                    Total();
+                }
+            });
+        });
+        $('#sub-btn').click(function () {
+            $('#id_balance').val(balance);
+            $('#id_delete').val(del_list);
+            $('#id_deposit').val(add_list);
+        });
+    </script>
+</form>

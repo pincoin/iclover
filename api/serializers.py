@@ -42,3 +42,5 @@ class SpecialPriceSerializer(serializers.ModelSerializer):
     class Meta:
         model= managing_models.SpecialPrice
         fields = '__all__'
+
+

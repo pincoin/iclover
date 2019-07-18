@@ -60,6 +60,7 @@
                             <th>입금액</th>
                             <th>메모</th>
                             <th>영수처리</th>
+                            <th>완료</th>
                             <th>저장</th>
                              {% if group_name != '디자이너'%}
                             <th>삭제</th>
@@ -68,7 +69,9 @@
                         </thead>
                         <tbody>
                                 {% for i in deposit_list %}
-                        <tr>
+                        <tr
+                            {% if i.state%} class="text-teal"{% endif %}
+                            >
                             <td>
                                 {{ i.bank }}
                             </td>
@@ -82,6 +85,13 @@
                             </td>
                             <td>
                                 {{ i.name }}
+                                <br>
+                                {% for z in i.data_list%}
+                                <div>
+                                <a target="_blank" href="{% url 'managing:order' common=99%}?q={{z.0}} {{z.1}}">
+                                    <small class="text-muted">{{z.0}} / {{z.2|intcomma}}<br> {{z.1}}</small>
+                                </a></div>
+                                {% endfor %}
                             </td>
                             <td>
                                 {{ i.amount|intcomma }}
@@ -98,6 +108,21 @@
                                     {% else %}
                                     <input type="text" class="form-control"  value="{{i.bill}}" disabled>
                                     <input type="hidden" class="form-control"  name="bill" value="{{i.bill}}">
+                                    {% endif %}
+                                </td>
+                                 <td>
+                                    {% if group_name != '디자이너'%}
+                                     <div class="checkbox checkbox-success">
+                                                 <input type="checkbox" name="state"
+                                    {% if i.state%}checked{% endif %}
+                                    >
+                                                <label for="{{i.state}}">
+
+                                                </label>
+                                            </div>
+
+
+
                                     {% endif %}
                                 </td>
 

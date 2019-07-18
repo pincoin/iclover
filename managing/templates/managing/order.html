@@ -1,6 +1,6 @@
 {% extends 'managing/base.html'%}
 {% load static %}
-{% block modal_size %}90%;{% endblock %}
+{% block modal_size %}95%;{% endblock %}
 {% load humanize %}
 {% block title %}주문서 관리{% endblock%}
 {% block addcss %}
@@ -11,6 +11,10 @@
 <link href="{% static 'managing/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'%}" rel="stylesheet">
 <link href="{% static 'managing/plugins/clockpicker/css/bootstrap-clockpicker.min.css'%}" rel="stylesheet">
 <link href="{% static 'managing/plugins/bootstrap-daterangepicker/daterangepicker.css'%}" rel="stylesheet">
+
+<!-- Jquery filer css -->
+<link href="{% static 'managing/plugins/jquery.filer/css/jquery.filer.css'%} " rel="stylesheet"/>
+<link href="{% static 'managing/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css'%} " rel="stylesheet"/>
 
 {% endblock %}
 {% block content%}
@@ -97,9 +101,13 @@ alert-dismissible fade in" role="alert">
                     <tr>
                         <th width="10%">날짜</th>
                         <th width="5%">작업자</th>
-                        <th width="25%">거래처명</th>
-                        <th width="28%">품목명</th>
-                        <th width="10%">금액</th>
+                        <th width="20%">거래처명</th>
+                        <th width="20%">품목명</th>
+                        <th width="25%" class="row">
+                        <div class="col-lg-4">판매가</div>
+                            <div class="col-lg-3">부가세</div>
+                            <div class="col-lg-5">합계</div>
+                        </th>
                         <th width="15%">정보</th>
                         <th width="20px;">수정</th>
                     </tr>
@@ -109,16 +117,20 @@ alert-dismissible fade in" role="alert">
                     {% for data in object_list%}
                     <tr>
                         <td>
-                            <a href="#">{{data.joo_date|date:"Y.m.d"}}-{{data.today_num}}</a>
+                            <span class="text-brown">{{data.joo_date|date:"Y-m-d"}}_{{data.today_num}}</span>
                             <br>
-                            {{data.order_date|date:"Y.m.d"}}
+                            <span class="text-teal">{{data.order_date|date:"Y-m-d"}}</span>
                         </td>
                         <td>
                             {{data.employees}}
 
                         </td>
                         <td>
-                            <span class="m-t-15"><b class="text-custom">{{data.company}}</b></span>
+                            <span class="m-t-15">
+                                <a href="{% url 'managing:bill' data.id %}" onClick="window.open(this.href, '', 'width=1000, height=700')" target="_blank">
+                                <b class="text-custom" >{{data.company}} <i class="ion-ios7-paper-outline "></i></b>
+                                </a>
+                            </span>
                             <small class="text-muted"><br>{% if data.company_keyword %}{{data.company_keyword}}{% endif %}</small>
                             <small><br>{% if data.tell %}{{data.tell}}{% endif %}</small>
                             <small><br>{% if data.address %}{{data.address}}{% endif %}</small>
@@ -129,40 +141,66 @@ alert-dismissible fade in" role="alert">
                             <b>
                                 {% if data.product %}
                                 {{data.product}}
+                                <a href="{% url 'managing:order_images'  data.id %}" class="content-modal-btn">
+                                  {% if data.img_bool %}
+                                    <i class="fa fa-image"></i>
+                                    {% else %}
+                                    <i class="fa fa-folder-o"></i>
+                                    {% endif %}
+                                </a>
                                  {% endif %}
                                 <br>
                             </b>
                         </td>
 
-                        <td>
-                            <p>{{data.total|floatformat:'0'|intcomma}}원</p>
+
+                        <td class="row text-center">
+                                <div class="col-lg-4">
+                                    <p>{{data.total_price|floatformat:'0'|intcomma}}</p>
+                                </div>
+                                <div class="col-lg-3">
+                                    <p>{{data.total_tax|floatformat:'0'|intcomma}}</p>
+                                </div>
+                                <div class="col-lg-5">
+                                    <a href="{% url 'managing:order_deposit' data.pk %}" class="content-modal-btn">
+                                        <p>
+                                        <strong>{{data.total|floatformat:'0'|intcomma}}</strong>
+
+                                            {% if data.deposit_check == 0%}
+                                             <i class="fa fa-check text-success"></i>
+                                             {% elif data.deposit_check == 987654 %}
+                                             <i class="fa fa-chain text-success"></i>
+                                            {%else%}
+                                            {% if data.deposit_check%}
+                                            <i class="fa fa-chain-broken text-danger"></i>
+                                            {% endif %}
+                                            {% endif %}
+                                    </p></a>
+                                </div>
                         </td>
                         <td>
                             {% if data.keywords %}
                             {{data.keywords}}
-                            {% endif %}
                             <br>
+                            {% endif %}
+
                             {% if data.checker %}
-                            {{data.checker}}
-                            {% endif %}
+                            <span class="text-purple">{{data.checker}}</span>
                             <br>
+                            {% endif %}
+
                             {% if data.options %}
                             {{data.options}}
-                            {% endif %}
                             <br>
-                            {% if data.deposit %}
-                            {{data.deposit}}
                             {% endif %}
+                            {% if data.in_memo %}
+                            <b class="text-purple">{{data.in_memo}}</b>
                             <br>
-                            {% if data.deposit %}
-                            {{data.deposit}}
                             {% endif %}
                         </td>
                         <td>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-pencil-box-outline text-success"></i></a>
-                            <a href="#" class="table-action-btn h3"><i
-                                    class="mdi mdi-close-box-outline text-danger"></i></a>
+                            <a href="{% url 'managing:order_update' data.pk %}" class="table-action-btn h3 content-modal-btn">
+                                <i class="mdi mdi-pencil-box-outline text-success"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -228,16 +266,16 @@ alert-dismissible fade in" role="alert">
 {% block addjs %}
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-        <script src="{% static 'managing/plugins/moment/moment.js'%}"></script>
-     	<script src="{% static 'managing/plugins/timepicker/bootstrap-timepicker.js'%}"></script>
-     	<script src="{% static 'managing/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js'%}"></script>
-     	<script src="{% static 'managing/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'%}"></script>
-     	<script src="{% static 'managing/plugins/clockpicker/js/bootstrap-clockpicker.min.js'%}"></script>
-     	<script src="{% static 'managing/plugins/bootstrap-daterangepicker/daterangepicker.js'%}"></script>
-
+<script src="{% static 'managing/plugins/moment/moment.js'%}"></script>
+<script src="{% static 'managing/plugins/timepicker/bootstrap-timepicker.js'%}"></script>
+<script src="{% static 'managing/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js'%}"></script>
+<script src="{% static 'managing/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'%}"></script>
+<script src="{% static 'managing/plugins/clockpicker/js/bootstrap-clockpicker.min.js'%}"></script>
+<script src="{% static 'managing/plugins/bootstrap-daterangepicker/daterangepicker.js'%}"></script>
 
 <!-- Bx slider js -->
 <script src="{% static 'managing/plugins/bx-slider/jquery.bxslider.min.js'%} "></script>
+
 
 <script>
     $(document).ready(function () {

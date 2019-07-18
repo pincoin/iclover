@@ -23,11 +23,12 @@ class SampleAdmin(admin.ModelAdmin):
 class MemoAdmin(admin.ModelAdmin):
     pass
 
-
-
+class OrderWithDepositAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(models.SpecialPrice, SpecialPriceAdmin)
 admin.site.register(models.Deposit, DepositAdmin)
+admin.site.register(models.OrderWithDeposit, OrderWithDepositAdmin)
 admin.site.register(models.Discount, DiscountAdmin)
 admin.site.register(models.Employees, EmployeesAdmin)
 admin.site.register(models.Ask, AskAdmin)

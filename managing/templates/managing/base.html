@@ -269,17 +269,17 @@
                         </ul>
                     </li>
 
-                    <li class="has-submenu">
-                        <a href="{% url 'managing:demand_list' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span
-                                class="badge badge-purple">1</span></a>
-                    </li>
+<!--                    <li class="has-submenu">-->
+<!--                        <a href="{% url 'managing:demand_list' %}"><i class="mdi mdi-android-studio"></i>요청받은 견적 <span-->
+<!--                                class="badge badge-purple">1</span></a>-->
+<!--                    </li>-->
 
                     <li class="has-submenu">
                         <a href="{% url 'managing:order' common=0%}"><i class="mdi mdi-view-list"></i>거래 내역</a>
                     </li>
 
                     <li class="has-submenu">
-                        <a href="#"><i class="mdi mdi-image-filter"></i>이미지 검색</a>
+                        <a href="{% url 'managing:img_box'%}"><i class="mdi mdi-image-filter"></i>이미지 검색</a>
                     </li>
 
                     <li class="has-submenu">
@@ -446,6 +446,15 @@
                 });
         });
     });
+
+    $(document).on('click','#sub-btn', function() {
+        var $this = $(this);
+        $this.slideUp(100, function () {
+            setTimeout(function() {
+                    $this.slideDown(400);
+            }, 2000);
+        });
+    })
 
 
 </script>

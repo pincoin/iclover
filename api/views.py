@@ -70,6 +70,3 @@ class SpecialPriceViewSet(viewsets.ModelViewSet):
         except:
             return {}
         return queryset
-
-    def get_parser_context(self, http_request):
-        print(http_request)

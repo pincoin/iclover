@@ -107,12 +107,10 @@ class CustomerCreateForm(forms.ModelForm):
 class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = member_models.Profile
-        fields = [
-            'code', 'company', 'company_keyword', 'ceo', 'tell', 'address', 'phone', 'confirm', 'manager','division',\
+        fields = ['company', 'company_keyword', 'ceo', 'tell', 'address', 'phone', 'confirm', 'manager','division',\
             'options', 'keywords', 'memo', 'sectors', 'business', 'tax_bill_mail', 'address2', 'state_select', 'state'
         ]
         widgets = {
-            'code': forms.TextInput(attrs={'class': 'form-control','type':'hidden'}),
             'company': forms.TextInput(attrs={'class': 'form-control',}),
             'company_keyword': forms.TextInput(attrs={'class': 'form-control',}),
             'ceo': forms.TextInput(attrs={'class': 'form-control',}),
@@ -232,14 +230,14 @@ class SampleCreateForm(forms.ModelForm):
 
     class Meta:
         model = managing_models.Sample
-        fields = ['category','sectors_category','employees','name','keyword','sample_img']
+        fields = ['category','sectors_category','employees','name','keyword','images']
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control','required':'' }),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
             'employees': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
             'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
-            'sample_img': forms.FileInput(attrs={'class':'form-control','required':'' })
+            'images': forms.FileInput(attrs={'class':'form-control','required':'' })
         }
 
 class SampleUpdateForm(forms.ModelForm):
@@ -250,14 +248,14 @@ class SampleUpdateForm(forms.ModelForm):
 
     class Meta:
         model = managing_models.Sample
-        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'sample_img','state']
+        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'images','state']
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control'}),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
             'employees': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
             'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
-            'sample_img': forms.FileInput(attrs={'class': 'form-control'}),
+            'images': forms.FileInput(attrs={'class': 'form-control'}),
             'state':forms.CheckboxInput(attrs={ 'style':"width:50px;,height:50px;"})
         }
 
@@ -306,12 +304,72 @@ class DepositCreateForm(forms.ModelForm):
 class DepositUpdateForm(forms.ModelForm):
     class Meta:
         model = managing_models.Deposit
-        fields = ['memo','bill']
+        fields = ['memo','bill','state']
         widgets = {
             'memo': forms.TextInput(attrs={'class': 'form-control'}),
             'bill': forms.TextInput(attrs={'class': 'form-control'}),
+            'state': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
 
+class OrderWithDepositCreateForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(OrderWithDepositCreateForm, self).__init__(*args, **kwargs)
+        self.fields['order'].required = False
+        self.fields['deposit'].required = False
+        self.fields['delete'].required = False
+        self.fields['balance'].required = False
+        self.fields['division'].required = False
+
+    order = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'hidden',
+            }
+        ),
+        help_text='주문 :'
+    )
+    deposit = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'hidden',
+            }
+        ),
+        help_text='입금 :'
+    )
+    delete = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type':'hidden',
+            }
+        ),
+        help_text='삭제 리스트 :'
+    )
+    balance = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'hidden',
+            }
+        ),
+        help_text='차액 :'
+    )
+    division = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        help_text='분할 :'
+    )
+
+class OrderWithImagesCreateForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(OrderWithImagesCreateForm, self).__init__(*args, **kwargs)
+
+    pro_image = forms.FileInput()
 
 class EmployeesCreateForm(forms.ModelForm):
     class Meta:
@@ -383,6 +441,7 @@ class OrderForm(forms.Form):
         self.fields['address'].required = False
         self.fields['tell'].required = False
         self.fields['tax'].required = False
+        self.fields['code'].required = False
 
 
     company = forms.CharField(
@@ -461,12 +520,11 @@ class OrderForm(forms.Form):
     code = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
     fix_manager = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
     tell = forms.CharField(widget=forms.TextInput(attrs={'type': 'hidden', }), )
-    joo_date = forms.CharField()
-    order_date = forms.CharField()
-    json_data = forms.CharField()
-    tax = forms.CharField()
-
-
+    joo_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    order_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    json_data = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    tax = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',}))
+    state = forms.CharField()
 
 class SpecialPriceForm(forms.Form):
     def __init__(self, *args, **kwargs):

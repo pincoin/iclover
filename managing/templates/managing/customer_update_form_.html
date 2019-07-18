@@ -48,9 +48,8 @@
     <hr>
     <div class="row has-customer" >
         <div class="col-sm-4">
-            <span class="text-dark help-block"> {{ form.code.help_text}}</span>
-            <input class="form-control" type="text" value="{{form.code.value }}" disabled/>
-         {{ form.code }}
+            <span class="text-dark help-block">사업자 번호</span>
+            <input class="form-control" type="text" value="{{ update_list.code}}" disabled/>
         </div>
         <div class="col-sm-4">
             <span class="text-dark help-block"> {{ form.company.help_text}}</span>

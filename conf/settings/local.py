@@ -26,4 +26,6 @@ INSTALLED_APPS += [
     'design',
     'managing',
     'api',
+    'imagekit',
+    'mathfilters',
 ]

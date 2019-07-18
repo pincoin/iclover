@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static%}
+    {% load humanize %}
+    {% load mathfilters %}
+    {% load addattr %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="아이클로버 관리자페이지">
+    <meta name="author" content="Coderthemes">
+
+    <link rel="shortcut icon" href="{% static 'managing/images/favicon.png' %}">
+
+    <title>{% block title %}{{object.company}}{% endblock%}</title>
+    {% block addcss %}
+    {% endblock %}
+    <!-- App css -->
+    <link href="{% static 'managing/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/css/core.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/css/components.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/css/icons.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/css/pages.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/css/menu.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'managing/plugins/select2/css/select2.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'managing/plugins/switchery/switchery.min.css' %}">
+
+    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="{% static 'managing/js/modernizr.min.js' %}"></script>
+    <script src="{% static 'managing/js/jquery.min.js' %}"></script>
+</head>
+<body>
+
+        <div class="p-t-10" style="background-color: #f4f4f4">
+            <div class="container p-t-10 p-b-10">
+                <div class="row p-t-10">
+
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="clearfix">
+                                    <div class="pull-left">
+                                        <script>
+                                           var today = new Date();
+                                            var dd = today.getDate();
+                                            var mm = today.getMonth() + 1; //January is 0!
+                                            var yyyy = today.getFullYear();
+                                            // var currentTime = today.getHours() + "시 " + today.getMinutes() + "분 " + today.getSeconds() + "초";
+                                            if (dd < 10) {
+                                                dd = '0' + dd
+                                            }
+                                            if (mm < 10) {
+                                                mm = '0' + mm
+                                            }
+                                            today = '발행일 : '+yyyy+ '-' + mm + '-' + dd;
+                                            document.write(today);
+                                        </script>
+                                        <div><small>(유효기간:발행 후 3일 이내)</small></div>
+                                        <div class="p-b-10"></div>
+                                        <h3>To.</h3>
+                                         <strong>{{object.company}}</strong>
+                                        {% if object.tell%}
+                                            <div>{{object.tell}}</div>
+                                        {% endif %}
+                                        {% if object.address%}
+                                            <div>{{object.address}}</div>
+                                        {% endif %}
+                                        {% if object.phone%}
+                                            <div>{{object.phone}}</div>
+                                        {% endif %}
+                                        <br>
+                                           {% if object.out_memo%}
+                                                <p class="text-custom m-b-10">
+                                                    {{object.out_memo}}
+                                                </p>
+                                                {% endif %}
+
+
+                                    </div>
+                                    <div class="pull-right">
+                                         <h3 align="right"><img src="{% static 'managing/images/icons/logo.svg'%}" height="50px;"></h3>
+                                        <div class="text-right"><h4>위믹스 <small>(아이클로버)</small></h4>
+                                            <span>391-06-00311</span><br>
+                                            <span>iclover77@naver.com</span><br>
+                                            <span>T 02-824-7177 . F 02-824-7277</span><br>
+                                              {% if object.employees%}
+                                            <p>진행: <strong>{{object.employees}}</strong></p>
+                                              {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="text-center">
+                                         <div class="text-center">귀사의 일익 번창하심을 기원하며 아래와 같이 견적 드리오니 검토 바랍니다.</div>
+
+                                        </div>
+                                    </div><!-- end col -->
+                                </div>
+                                <!-- end row -->
+
+                                <div class="m-h-50"></div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table m-t-30">
+                                                <thead>
+                                                    <tr style="background-color: #fafafa">
+                                                    <th>품목</th>
+                                                    <th>규격</th>
+                                                    <th class="text-right">수량</th>
+                                                    <th class="text-right">단가</th>
+                                                    <th class="text-right">공급가</th>
+                                                    <th class="text-right">세액</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                 {% for data in object.order_list.all %}
+                                                    <tr>
+                                                        <td>{{data.name}}</td>
+                                                        <td>{{data.standard}}</td>
+                                                        <td class="text-right">{{data.quantity|floatformat:'0'|intcomma}}</td>
+                                                        <td class="text-right">{{data.selling_price|floatformat:'0'|intcomma}}</td>
+                                                        <td class="text-right">{{data.selling_price|mul:data.quantity|floatformat:'0'|intcomma}}</td>
+                                                        <td class="text-right">{{data.selling_price_tax|mul:data.quantity|floatformat:'0'|intcomma}}</td>
+                                                    </tr>
+                                                 {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <table width="100%">
+                                        <tr>
+                                            <td rowspan="2" class="p-l-r-10">
+                                                <h5 class="small text-inverse font-600">꼭 읽고 확인해주세요!</h5>
+                                            <small>
+                                                ※ 받아 보시기까지의 기간은 공정＆배송으로 인해 안내 드린 날보다 늘어날 수 있으며,<br>
+                                                이로 인한 제작상품의 환불 및 재인쇄는 불가하오니 사용일보다 여유있는 주문을 부탁 드립니다.<br>
+                                                ※ 주문후 디자인작업 진행중 중도 취소시 작업비용이 발생될 수 있으니 유의하여 주시기 바랍니다.<br>
+                                                ※ 실제 인쇄출력물(CMYK/종이)과 모니터시안(RGB/스크린) 색차이로 인한 재인쇄&환불 불가합니다.<br>
+                                                ※ 입금시 꼭 상호명을 넣어주세요. 상호 및 이름이 다른 경우 미리 연락 주시기 바랍니다.<br>
+                                                ※ 합판인쇄 < 독판인쇄 < 디지털인쇄 (선명한 출력물/정매수가 필요하신 경우 독판&디지털 문의)<br>
+                                                ★ 최종 시안확인 후 진행된 인쇄물의 오탈자는 재인쇄&환불이 불가하오니 꼼꼼히 확인 부탁드립니다.<br>
+                                            </small></td>
+                                            <td class="text-right p-l-r-10">
+                                                <br>
+                                                <p class="text-right" style="font-size: 16px;"><b>공급가 :</b> {{object.sub|intcomma}}</p>
+                                             <p class="text-right"  style="font-size: 16px;">VAT: {{object.tax|intcomma}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right p-l-r-10">
+                                                <h2 class="text-right"><i class="fa fa-won"></i> {{object.total|intcomma}}</h2>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                 <div class="card-box m-t-20 text-center h5" ><span id="bank"></span> </div>
+                                <hr>
+                                <div class="hidden-print">
+                                    <div class="pull-left">
+                                        <select name="bank_select" class="form-control">
+                                            <option value="신한은행 110-457-857437 (윤영주) 계좌로 {{object.total|intcomma}}원 송금 후 연락 부탁드립니다~!" selected>신한은행</option>
+                                            <option value="국민은행 620601-01-306582 (윤영주) 계좌로 {{object.total|intcomma}}원 송금 후 연락 부탁드립니다~!">국민은행</option>
+                                            <option value="">없음</option>
+                                        </select>
+                                    <script>
+                                        $(document).ready(function () {
+                                            var $bank = $("#bank");
+                                            var $select =$("select[name='bank_select']");
+                                             $bank.text($select.val());
+                                            $select.change(function() {
+                                               $bank.text($(this).val());
+                                                });
+
+                                        })
+                                    </script>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="javascript:window.print()" class="btn btn-inverse waves-effect waves-light"><i class="fa fa-print"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
+                <!-- end row -->
+
+
+                <!-- Footer -->
+                <footer class="footer text-right">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                wemix & iclover
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End Footer -->
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+<!-- jQuery  -->
+
+<script src="{% static 'managing/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'managing/js/detect.js' %}"></script>
+<script src="{% static 'managing/js/fastclick.js' %}"></script>
+<script src="{% static 'managing/js/jquery.blockUI.js' %}"></script>
+<script src="{% static 'managing/js/waves.js' %}"></script>
+<script src="{% static 'managing/js/jquery.slimscroll.js' %}"></script>
+<script src="{% static 'managing/js/jquery.scrollTo.min.js' %}"></script>
+<script src="{% static 'managing/plugins/switchery/switchery.min.js' %}"></script>
+<script src="{% static 'managing/plugins/select2/js/select2.js' %}"></script>
+
+
+
+<!-- App js -->
+<script src="{% static 'managing/js/jquery.core.js' %}"></script>
+<script src="{% static 'managing/js/jquery.app.js' %}"></script>
+</body>
+
+</html>

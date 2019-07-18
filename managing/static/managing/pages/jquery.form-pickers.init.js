@@ -30,12 +30,12 @@ jQuery(document).ready(function () {
         autoclose: true,
         todayHighlight: true
     });
-    jQuery('#joo_date').datepicker({
+    jQuery('#id_joo_date').datepicker({
         format: "yyyy-mm-dd",
         autoclose: true,
         todayHighlight: true
     });
-    jQuery('#order_date').datepicker({
+    jQuery('#id_order_date').datepicker({
         format: "yyyy-mm-dd",
         autoclose: true,
         todayHighlight: true

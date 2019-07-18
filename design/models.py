@@ -736,14 +736,20 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
 
     in_memo = models.CharField(
         verbose_name=_('관리자메모'),
-        max_length=255,
+        max_length=1000,
         null=True,
         blank=True,
     )
 
     out_memo = models.CharField(
         verbose_name=_('고객표시 메모'),
-        max_length=255,
+        max_length=1000,
+        null=True,
+        blank=True,
+    )
+
+    deposit_check = models.IntegerField(
+        verbose_name=_('입금 확인 및 차액'),
         null=True,
         blank=True,
     )
@@ -760,7 +766,7 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         return '{} {} {}'.format(self.user, self.company, self.employees)
 
 
-class OrderList(TimeStampedModel, SoftDeletableModel):
+class OrderList(TimeStampedModel):
     order_info = models.ForeignKey(
         'design.OrderInfo',
         verbose_name=_('주문 정보'),
@@ -788,13 +794,13 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
     )
     name = models.CharField(
         verbose_name=_('제품명'),
-        max_length=100,
+        max_length=1000,
         null=True,
         blank=True,
     )
     standard = models.CharField(
         verbose_name=_('규격'),
-        max_length=100,
+        max_length=1000,
         null=True,
         blank=True,
     )
@@ -836,26 +842,26 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
     )
     group_manage = models.CharField(
         verbose_name=_('관리 항목'),
-        max_length=100,
+        max_length=1000,
         null=True,
         blank=True,
     )
     gram = models.CharField(
         verbose_name=_('기타'),
-        max_length=100,
+        max_length=1000,
         null=True,
         blank=True,
     )
 
     etc = models.CharField(
         verbose_name=_('적요'),
-        max_length=100,
+        max_length=1000,
         null=True,
         blank=True,
     )
     memo = models.CharField(
         verbose_name=_('메모'),
-        max_length=100,
+        max_length=2000,
         null=True,
         blank=True,
     )
@@ -867,13 +873,36 @@ class OrderList(TimeStampedModel, SoftDeletableModel):
     def __str__(self):
         return '{} {} {}'.format(self.name, self.standard, self.memo, )
 
+    @property
+    def total(self):
+        data1 = round(self.selling_price)*self.quantity
+        data2 = round(self.selling_price_tax)*self.quantity
+        data = data1+data2
+        return data
 
 class OrderImg(TimeStampedModel, SoftDeletableModel):
-    order_list = models.ForeignKey(
-        'design.OrderList',
-        verbose_name=_('주문 품목'),
+    order_info = models.ForeignKey(
+        'design.OrderInfo',
+        verbose_name=_('주문 리스트'),
+        related_name='order_img',
         null=True,
         blank=True,
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+    category = models.ForeignKey(
+        'design.Category',
+        blank=True,
+        null=True,
+        verbose_name=_('카테고리'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+    sectors_category = models.ForeignKey(
+        'design.SectorsCategory',
+        blank=True,
+        null=True,
+        verbose_name=_('업종'),
         db_index=True,
         on_delete=models.SET_NULL,
     )
@@ -883,10 +912,20 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         null=True,
         blank=True,
     )
-    sample = models.CharField(
-        verbose_name=_('샘플명'),
-        max_length=100,
-        null=True,
+    plush_date = models.DateTimeField(
+        verbose_name=_('등록일'),
+        auto_now_add=True,
+    )
+
+    name = models.CharField(
+        verbose_name=_('제목'),
+        max_length=255,
+        blank=True,
+    )
+
+    keyword = models.CharField(
+        verbose_name=_('키워드'),
+        max_length=255,
         blank=True,
     )
     # 연결된 이미지의 구분값  1-수정완료 > 1-수정완료 > 1-대기
@@ -898,23 +937,33 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         (4, '취소', _('취소')),
         (5, '무효처리', _('무효처리')),
     )
-    state = models.IntegerField(
+    state_at = models.IntegerField(
         verbose_name=_('시안 상태'),
         choices=IMG_STATE_WHAT,
         null=True,
         blank=True,
         default=0,
     )
+    state = models.BooleanField(
+        verbose_name=_('노출 상태'),
+        default=True,
+    )
 
     def upload_to_order(instance, filename):
-        now = datetime.now()
+        now = datetime.datetime.now()
         nowDate = now.strftime('%Y%m')
-        return 'order/{}/{}/{}'.format(instance.order_list.order_info.user, nowDate, filename)
+        return 'order/{}/{}/{}'.format(instance.order_info.user, nowDate, filename)
 
-    order_img = models.ImageField(
+    images = models.ImageField(
         verbose_name=_('order_img'),
         blank=True,
         upload_to=upload_to_order,
+    )
+
+    link = models.CharField(
+        verbose_name=_('링크 url'),
+        max_length=255,
+        blank=True,
     )
 
     class Meta:
@@ -922,7 +971,7 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('주문 3_시안')
 
     def __str__(self):
-        return '{} {}'.format(self.sample, self.state)
+        return '{} {}'.format(self.name, self.state)
 
 
 class OrderMemo(TimeStampedModel, SoftDeletableModel):

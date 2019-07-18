@@ -262,6 +262,10 @@ class CustomerUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
     # optional
     login_url = clovi_login_url
 
+    def get_context_data(self, **kwargs):
+        context = super(CustomerUpdateView, self).get_context_data(**kwargs)
+        return context
+
     def form_valid(self, form):
         if self.request.is_ajax():
             self.success_url = self.request.META.get('HTTP_REFERER')
@@ -431,8 +435,12 @@ class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
 
     def get_queryset(self):
         state = int(self.kwargs['common'])
-        queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
-            'order_list').filter(Q(state=state)).order_by('-joo_date', '-today_num')
+        if state == 99:
+            queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
+                'order_list','order_img').filter(~Q(state=state)).order_by('-joo_date', '-today_num')
+        else:
+            queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
+                'order_list','order_img').filter(Q(state=state)).order_by('-joo_date', '-today_num')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -472,22 +480,29 @@ class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
         for i in context['object_list']:
             orderlist = i.order_list.all()
             total_price = 0
+            total_tax = 0
             count = 0
             name = ''
             for z in orderlist:
-                total_price += z.selling_price
-                total_price += z.selling_price_tax
+                total_price += (round(z.selling_price) *z.quantity)
+                total_tax += (round(z.selling_price_tax)*z.quantity)
                 if z.list_sort == 1:
                     name = z.name
                 count += 1
 
-            i.total = total_price
+            i.total = total_price+total_tax
+            i.total_price = total_price
+            i.total_tax = total_tax
+
             if count == 1:
                 i.product = name
+            elif count == 0:
+                i.product = ''
             else:
-                i.product = name+' 외 '+ str(count)+' 건'
+                i.product = name+' 외 '+ str(count-1)+' 건'
 
             # i.products = name+' 외 '+ str(data[check_date][0])+'건'
+            i.img_bool = i.order_img.exists()
         return context
 
     # optional
@@ -500,10 +515,15 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     success_url = "/clovi/order/0/"
     success_message = '%(company)s 신규 등록 되었습니다.'
 
+    def get_form(self, form_class=None):
+        today = datetime.date.today().strftime('%Y-%m-%d')
+        form = super(OrdersCreateView, self).get_form(form_class)
+        form.fields['joo_date'].widget.attrs.update({'value': today})
+        return form
+
     def get_context_data(self, **kwargs):
         context = super(OrdersCreateView, self).get_context_data(**kwargs)
-        context['today'] = datetime.date.today().strftime('%Y-%m-%d')
-        employees = User.objects.filter(is_staff=True).order_by('username')
+        employees = User.objects.filter(is_staff=True,is_active=True).order_by('username')
         data_manager = {}
         for i in employees:
             data_manager[i.username] = i.id
@@ -518,7 +538,7 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     def form_valid(self, form):
         json_data = form.cleaned_data['json_data'].split('#,,#')
         json_all_num = len(json_data)
-        json_tr_long = 11  # 한 tr의 갯수
+        json_tr_long = 12  # 한 tr의 td 개수
         json_pre = 0  # 인덱싱
         json_next = json_tr_long  # 인덱싱
         if json_all_num:
@@ -537,7 +557,15 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
                 code = int(form.cleaned_data['code'])
                 user = member_models.Profile.objects.select_related('user').get(code=code)
                 joo_date = form.cleaned_data['joo_date']
+                state = form.cleaned_data['state']
+                if state == '1' :
+                    self.success_url = "/clovi/order/1/"
                 today_num = design_models.OrderInfo.objects.filter(joo_date=joo_date).aggregate(Max('today_num'))
+                if form.cleaned_data['order_date']:
+                    order_date = form.cleaned_data['order_date']
+                    state = 1
+                else:
+                    order_date = None
                 if not today_num['today_num__max']:  # 1번을 만들기 위함
                     today_num['today_num__max'] = 0
                 today_num = today_num['today_num__max'] + 1
@@ -557,43 +585,41 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
                     in_memo=form.cleaned_data['in_memo'],
                     out_memo=form.cleaned_data['out_memo'],
                     fix_manager=form.cleaned_data['fix_manager'],
-                    order_date=None,
-                    state=0,
+                    order_date=order_date,
+                    state=state,
                     tax=tax,
                 )
                 order_info.save()
                 list_sort = 1
 
                 for product_data in product_list:
+                    quantity = product_data[3].replace(',','')
+                    selling_price = product_data[4].replace(',', '')
+                    price = product_data[7].replace(',', '')
+                    price_tax = round(float(price)/ 10)
                     if tax:
-                        try:
-                            price_tax = float(product_data[6]) / 10
-                        except:
-                            price_tax = 0
+                        selling_price_tax = round(float(selling_price) / 10)
                     else:
-                        price_tax = 0
+                        selling_price_tax = 0
+
                     design_models.OrderList(
                         order_info_id=order_info.id,
-                        list_sort=list_sort,
-                        num=today_num,
-                        code=product_data[0],
+                        list_sort= int(list_sort),
+                        num= int(today_num),
+                        code= int(product_data[0]),
                         name=product_data[1],
-                        standard=product_data[2],
-                        quantity=product_data[3],
-                        selling_price=product_data[4],
-                        selling_price_tax=product_data[5],
-                        price=product_data[6],
+                        standard = product_data[2],
+                        quantity = float(quantity),
+                        selling_price=float(selling_price),
+                        selling_price_tax=float(selling_price_tax),
+                        price=float(price),
                         price_tax=price_tax,
-                        group_manage=product_data[7],
-                        gram=product_data[8],
-                        etc=product_data[9],
-                        memo=product_data[10],
+                        group_manage=product_data[8],
+                        gram=product_data[9],
+                        etc=product_data[10],
+                        memo=product_data[11],
                     ).save()
-
                     list_sort += 1
-                list_sort = 1
-            json_pre = 0
-            json_next = json_tr_long
 
         if self.request.is_ajax():
             self.success_url = self.request.META.get('HTTP_REFERER')
@@ -618,10 +644,270 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     login_url = clovi_login_url
 
 
+class OrdersUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    form_class = managing_forms.OrderForm
+    model = design_models.OrderInfo
+    success_url = "/clovi/order/0/"
+    success_message = '%(company)s 수정 되었습니다.'
+
+    def get_form(self, form_class=None):
+        url_pk = self.kwargs['pk']
+        self.queryset = design_models.OrderInfo.objects.select_related('user').prefetch_related('order_list','user__profile').filter(
+            id=url_pk)
+        form = super(OrdersUpdateView, self).get_form(form_class)
+        for i in self.queryset:
+            form.fields['joo_date'].widget.attrs.update({'value': i.joo_date})
+            if i.order_date:
+                form.fields['order_date'].widget.attrs.update({'value': i.order_date})
+            if i.company:
+                form.fields['company'].widget.attrs.update({'value': i.company})
+            if i.company_keyword:
+                form.fields['company_keyword'].widget.attrs.update({'value': i.company_keyword})
+            if i.address:
+                form.fields['address'].widget.attrs.update({'value': i.address})
+            if i.tell:
+                form.fields['tell'].widget.attrs.update({'value': i.tell})
+            try:
+                if i.user.profile.code:
+                    form.fields['code'].widget.attrs.update({'value': i.user.profile.code})
+            except:
+                pass
+            if i.fix_manager:
+                form.fields['fix_manager'].widget.attrs.update({'value': i.fix_manager})
+            if i.checker:
+                form.fields['confirm'].widget.attrs.update({'value': i.checker})
+            if i.options:
+                form.fields['option'].widget.attrs.update({'value': i.options})
+            if i.keywords:
+                form.fields['memo'].initial = i.keywords
+            if i.employees:
+                form.fields['manager'].initial = i.employees
+            if i.state:
+                form.fields['state'].initial = i.state
+            if i.in_memo:
+                form.fields['in_memo'].widget.attrs.update({'value': i.in_memo})
+            if i.out_memo:
+                form.fields['out_memo'].widget.attrs.update({'value': i.out_memo})
+
+            form.fields['tax'].widget.attrs.update({'value': i.tax})
+        return form
+
+    def get_context_data(self, **kwargs):
+        context = super(OrdersUpdateView, self).get_context_data(**kwargs)
+        for i in self.queryset:
+            context['order_list'] = i.order_list.all()
+            context['put_employees'] = i.employees
+            context['tax'] = i.tax
+            context['put_today_num'] = i.today_num
+            context['put_joo_date'] = i.joo_date
+            try:
+                context['put_code'] = i.user.profile.code
+                context['put_company'] = i.user.profile.company.strip()
+                context['put_company_keyword'] = i.user.profile.company_keyword.strip()
+                context['put_address'] = i.user.profile.address.strip()
+                context['put_tax_bill_mail'] = i.user.profile.tax_bill_mail.strip()
+                context['put_tell'] = i.user.profile.tell.strip()
+                context['put_phone'] = i.user.profile.phone.strip()
+                context['put_keywords'] = i.user.profile.keywords.strip()
+                context['put_memo'] = i.user.profile.memo.strip()
+                context['put_options'] = i.user.profile.options.strip()
+                context['put_confirm'] = i.user.profile.confirm.strip()
+                context['put_manager'] = i.user.profile.manager.strip()
+            except:
+                pass
+
+        employees = User.objects.filter(is_staff=True, is_active=True).order_by('username')
+        data_manager = {}
+        for i in employees:
+            data_manager[i.username] = i.id
+        context['manager_ls'] = data_manager  # 직원이름 select
+        return context
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['managing/order_update_form_.html']
+        return ['managing/order_create.html']
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        json_data = form.cleaned_data['json_data'].split('#,,#')
+        json_all_num = len(json_data)
+        json_tr_long = 12  # 한 tr의 td 개수
+        json_pre = 0  # 인덱싱
+        json_next = json_tr_long  # 인덱싱
+        if json_all_num:
+            product_list = []
+            json_all_num = json_all_num / json_tr_long  # tr 수 찾기
+            try:
+                for i in range(0, int(json_all_num)):
+                    product_list.append(json_data[json_pre:json_next])
+                    json_pre += json_tr_long
+                    json_next += json_tr_long
+            except:
+                messages.error(self.request, '알수없는 에러가 발생하였습니다.')
+                urls = self.request.META.get('HTTP_REFERER')
+                return redirect(urls)
+
+            order_info_pk = self.kwargs['pk']
+            query_update =design_models.OrderInfo.objects.filter(id=order_info_pk)
+            if product_list:
+                state = form.cleaned_data['state']
+                tax = True if form.cleaned_data['tax'] == '0' else False
+                joo_date = form.cleaned_data['joo_date']
+                if str(context_data['put_joo_date']) == joo_date:
+                    today_num = context_data['put_today_num']
+                else:
+                    today_num = design_models.OrderInfo.objects.filter(joo_date=joo_date).aggregate(Max('today_num'))
+                    if not today_num['today_num__max']:  # 1번을 만들기 위함
+                        today_num['today_num__max'] = 0
+                    today_num = today_num['today_num__max'] + 1
+
+
+                if form.cleaned_data['order_date']:
+                    order_date = form.cleaned_data['order_date']
+                else:
+                    order_date = None
+
+                for query in query_update:
+                    if int(context_data['put_code']) != int(form.cleaned_data['code']):
+                        try:
+                            code = int(form.cleaned_data['code'])
+                            user = member_models.Profile.objects.select_related('user').get(code=code)
+                            user = user.user
+                        except:
+                            user = None
+                        query.user = user
+                    query.joo_date = joo_date
+                    query.order_date = order_date
+                    query.today_num = today_num
+                    query.company = form.cleaned_data['company']
+                    query.company_keyword = form.cleaned_data['company_keyword']
+                    query.employees = form.cleaned_data['manager']
+                    query.options = form.cleaned_data['option']
+                    query.address = form.cleaned_data['address']
+                    query.tell = form.cleaned_data['tell']
+                    query.checker = form.cleaned_data['confirm']
+                    query.keywords = form.cleaned_data['memo']
+                    query.in_memo = form.cleaned_data['in_memo']
+                    query.out_memo = form.cleaned_data['out_memo']
+                    query.fix_manager = form.cleaned_data['fix_manager']
+                    query.state = state
+                    query.tax = tax
+                    query.save()
+
+                #for product list below
+
+                list_sort = 1
+
+                order_lists = design_models.OrderList.objects.filter(order_info_id=order_info_pk)
+                pk_list = [k.id for k in order_lists]
+                pk_list_len = len(pk_list)
+                product_list_len = len(product_list)
+                update_count = 0
+                for product_data in product_list:
+                    quantity = product_data[3].replace(',', '')
+                    selling_price = product_data[4].replace(',', '')
+                    price = product_data[7].replace(',', '')
+                    price_tax = round(float(price) / 10)
+                    if tax:
+                        selling_price_tax = round(float(selling_price) / 10)
+                    else:
+                        selling_price_tax = 0
+                    try:
+                        code = int(product_data[0])
+                    except:
+                        code = None
+
+                    data = {
+                        'order_info_id': order_info_pk,
+                        'list_sort': int(list_sort),
+                        'num': int(today_num),
+                        'code': code,
+                        'name': product_data[1],
+                        'standard': product_data[2],
+                        'quantity': float(quantity),
+                        'selling_price': float(selling_price),
+                        'selling_price_tax': float(selling_price_tax),
+                        'price': float(price),
+                        'price_tax': price_tax,
+                        'group_manage': product_data[8],
+                        'gram': product_data[9],
+                        'etc': product_data[10],
+                        'memo': product_data[11],
+                    }
+                    if pk_list_len > product_list_len:  # 기존 > 신규
+                        # 이경우 0번째 id는 재사용 나머지는 삭제
+                        design_models.OrderList.objects.update_or_create(
+                            id=pk_list[0],
+                            defaults={**data},
+                        )
+                        num = pk_list[0]
+                        pk_list.remove(num)
+                        print(update_count ,pk_list_len, product_list_len)
+                        if update_count == product_list_len-1:
+                            del_data =design_models.OrderList.objects.filter(id__in=pk_list)
+                            del_data.delete()
+                    else: # 기존 <= 신규
+                        try: # 기존 id 덮어쓰기 + 신규 생성
+                            design_models.OrderList.objects.update_or_create(
+                                        id=pk_list[update_count],
+                                        defaults={**data},
+                                    )
+                        except:
+                            design_models.OrderList(**data).save()
+                    update_count += 1
+                    list_sort += 1
+
+
+        self.success_url = self.request.META.get('HTTP_REFERER')
+        response = super(OrdersUpdateView, self).form_valid(form)
+        return response
+
+    def form_invalid(self, form):
+        error_message = '[확인 해야할 오류 항목] \n'
+        if 'company' in form.errors:
+            error_message += '업체명\n'
+        if 'code' in form.errors:
+            error_message += '코드번호'
+        if 'manager' in form.errors:
+            error_message += '담당자'
+        if 'json_data' in form.errors:
+            error_message += '품목이 없거나 잘못되었습니다.'
+        messages.error(self.request, error_message)
+        urls = self.request.META.get('HTTP_REFERER')
+        return redirect(urls)
+
+    # optional
+    login_url = clovi_login_url
+
+
 class DemandView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     template_name = 'managing/demand_list.html'
     # optional
     login_url = clovi_login_url
+
+class BillView(generic.DetailView):
+    template_name = 'managing/bill.html'
+    model = design_models.OrderInfo
+
+    def get_queryset(self):
+        queryset = design_models.OrderInfo.objects.prefetch_related('order_list')
+        return queryset
+
+    def get_object(self, queryset=None):
+        obj = super(BillView, self).get_object(queryset=queryset)
+        all = obj.order_list.all()
+        sub = 0
+        tax = 0
+        total = 0
+        for i in all:
+            sub += round(i.selling_price)*i.quantity
+            tax += round(i.selling_price_tax)*i.quantity
+
+        obj.sub = round(sub)
+        obj.tax = round(tax)
+        obj.total =  round(sub)+round(tax)
+        return obj
 
 
 class SpecialPriceView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
@@ -719,6 +1005,7 @@ class SpecialPriceDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
     success_url = "/clovi/special_price"
 
 
+
 class EmployeesView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
                     generic.ListView):
     template_name = 'managing/employees.html'
@@ -785,6 +1072,41 @@ class EmployeesUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, gener
     login_url = clovi_login_url
 
 
+
+class ImageBoxView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+    template_name = 'managing/img_box.html'
+    context_object_name = 'image_list'
+    paginate_by = 10
+    model = managing_models.Sample
+    data_search_form = managing_forms.DataSearchForm
+    # optional
+    login_url = clovi_login_url
+
+    def get_queryset(self):
+        queryset = super().get_queryset().values_list('images','name','keyword','link','created')
+        queryset_order =design_models.OrderImg.objects.values_list('images','name','keyword','link','created')
+        queryset = queryset_order.union(queryset).order_by('-created')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            if q:
+                try:
+                    q = q.split()
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(name__icontains=i)
+                            | Q(keyword__icontains=i) | Q(link__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ImageBoxView, self).get_context_data(**kwargs)
+        return context
+
+
+
 class DepositView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
     template_name = 'managing/deposit.html'
     context_object_name = 'deposit_list'
@@ -813,6 +1135,22 @@ class DepositView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin
 
     def get_context_data(self, **kwargs):
         context = super(DepositView, self).get_context_data(**kwargs)
+
+        obj_id_list = [i.id for i in context['object_list']]
+        data = managing_models.OrderWithDeposit.objects.select_related('deposit_with','order_info_with').prefetch_related('order_info_with__order_list').filter(deposit_with_id__in=obj_id_list)
+        data_id_list = [i.deposit_with.id for i in data]
+
+        for i in context['object_list']:
+            if i.id in data_id_list:
+                data_list = []
+                for z in data:
+                    total = 0
+                    if i.id == z.deposit_with.id:
+                        for o in z.order_info_with.order_list.all():
+                            total += o.total
+                        joo =[z.order_info_with.joo_date.strftime('%Y-%m-%d'), z.order_info_with.company, total]
+                        data_list.append(joo)
+                i.data_list = data_list
         return context
 
 
@@ -872,6 +1210,159 @@ class DepositUpdateView(viewmixin.UserIsStaffMixin, generic.UpdateView):
 class DepositDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
     model = managing_models.Deposit
     success_url = '/clovi/deposit/'
+
+
+class OrderWithDepositCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    form_class = managing_forms.OrderWithDepositCreateForm
+    success_url = "/clovi/order/0/"
+    success_message = '입금이 연결 되었습니다.'
+    # optional
+    login_url = clovi_login_url
+
+    def get_context_data(self, **kwargs):
+        get_id = self.kwargs['pk']
+        context = super(OrderWithDepositCreateView, self).get_context_data(**kwargs)
+        context['deposit_list'] = managing_models.Deposit.objects.filter(state=False).order_by('-id')
+        data = design_models.OrderInfo.objects.filter(id=get_id).prefetch_related('order_list')
+        order_id = ''
+        for i in data:
+            order_id = i.id
+            selling_price = []
+            selling_price_tax = []
+            context['company'] = i.company
+            context['deposit_check'] = i.deposit_check
+            for z in i.order_list.all():
+                selling_price.append(round(z.selling_price*z.quantity))
+                selling_price_tax.append(round(z.selling_price_tax * z.quantity))
+
+            context['selling_price'] = sum(selling_price)
+            context['selling_price_tax'] = sum(selling_price_tax)
+            context['total'] = sum(selling_price) + sum(selling_price_tax)
+        context['order_deposit_list'] = managing_models.OrderWithDeposit.objects.filter(order_info_with_id = order_id).prefetch_related('deposit_with','order_info_with')
+        return context
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        self.success_url = self.request.META.get('HTTP_REFERER')
+        order_id = self.kwargs['pk']
+        balance = form.cleaned_data['balance']
+        deposit = form.cleaned_data['deposit']
+        delete = form.cleaned_data['delete']
+        division = form.cleaned_data['division']
+        order_with = managing_models.OrderWithDeposit
+
+        if ',' in deposit:
+            deposit = deposit.split(',')
+            for i in deposit:
+                data = order_with(order_info_with_id =order_id,deposit_with_id=i)
+                if balance == '0':
+                    depo_id = managing_models.Deposit.objects.get(id=i)
+                    depo_id.state = True
+                    depo_id.save()
+                data.save()
+        elif deposit != '':
+            data = order_with(order_info_with_id =order_id,deposit_with_id=deposit)
+            if balance == '0':
+                depo_id = managing_models.Deposit.objects.get(id=deposit)
+                depo_id.state = True
+                depo_id.save()
+            data.save()
+        update_mdel = managing_models.Deposit
+        if ',' in delete:
+            delete = delete.split(',')
+            dele_list = order_with.objects.filter(id__in=delete).prefetch_related('deposit_with')
+            for i in dele_list:
+                update_id = i.deposit_with.id
+                updata_data = update_mdel.objects.get(id=update_id)
+                updata_data.state = False
+                updata_data.save()
+            dele_list.delete()
+        elif delete != '':
+            dele_list = order_with.objects.filter(id=delete).prefetch_related('deposit_with')
+            for i in dele_list:
+                update_id = i.deposit_with.id
+                updata_data = update_mdel.objects.get(id=update_id)
+                updata_data.state = False
+                updata_data.save()
+            dele_list.delete()
+
+        data = design_models.OrderInfo.objects.filter(id=order_id)
+        for i in data:
+            i.deposit = balance
+            if balance == '0':
+                i.deposit_check = 0
+            elif balance != '':
+                i.deposit_check = balance
+            if division == '987654':
+                i.deposit_check = 987654
+            elif  division == '-1':
+                i.deposit_check = -1
+            i.save()
+
+
+        return super(OrderWithDepositCreateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse(dict(form.errors, is_success=False))
+        return redirect('/clovi/order/0/')
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['managing/order_deposit_create_form_.html']
+        return ['managing/order_deposit_create_form_.html']
+
+class OrderWithImagesCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    form_class = managing_forms.OrderWithImagesCreateForm
+    success_url = "/clovi/order/0/"
+    success_message = '이미지가 등록 되었습니다.'
+    # optional
+    login_url = clovi_login_url
+
+    def get_context_data(self, **kwargs):
+        get_id = self.kwargs['pk']
+        context = super(OrderWithImagesCreateView, self).get_context_data(**kwargs)
+        context['img_list'] = design_models.OrderImg.objects.filter(order_info_id=get_id)
+        return context
+
+    def form_valid(self, form):
+        files = self.request.FILES.getlist('pro_image')
+        self.success_url = self.request.META.get('HTTP_REFERER')
+        order_id = self.kwargs['pk']
+        for file in files:
+            img_model = design_models.OrderImg(order_info_id=order_id, images=file, name=file.name)
+            img_model.save()
+
+        return super(OrderWithImagesCreateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse(dict(form.errors, is_success=False))
+        return redirect('/clovi/order/0/')
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['managing/order_images_create_form_.html']
+        return ['managing/order_images_create_form_.html']
+
+
+class OrderWithImagesDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
+    model = design_models.OrderImg
+    success_url = "/clovi/order/0/"
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.is_ajax():
+            img_id = kwargs['pk']
+            path = self.request.POST['path']
+            i = int(re.findall('\d+', path)[-1])
+            try:
+                data = design_models.OrderImg.objects.get(id=img_id, order_info_id=i)
+                data.delete()
+            except:
+                raise ValueError
+        return redirect('/clovi/order/0/')
+
+
 
 
 class AskView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):

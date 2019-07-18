@@ -1,0 +1,123 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title %}이미지 박스{% endblock%}
+{% block modal_size %}30%;{% endblock %}
+
+{% block addcss%}
+    <style>
+      #columns{
+        column-width:200px;
+        column-gap: 15px;
+      }
+      #columns figure{
+        display: inline-block;
+        margin:0;
+        margin-bottom: 15px;
+        box-shadow: 5px 5px 8px rgba(0,0,0,0.5);
+      }
+      #columns figure img{
+        width:100%;
+      }
+      #columns figure figcaption{
+        padding:10px;
+        margin-top:11px;
+      }
+    </style>
+{% endblock%}
+{% block content%}
+
+
+<div class="container m-t-50 m-b-30" style="width:800px;">
+    <h2 align="center"><b>이미지 박스</b></h2>
+    <br/><br/>
+    <div align="center">
+        <form role="form" method="GET" autocomplete="off" class="has-customer">
+            <div class="form-group search-box">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <br/>
+</div>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-icon {% if message.tags == 'success' %}alert-success{%else%}alert-danger{% endif %} alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <i class="mdi mdi-check-all"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+
+{% endif %}
+
+
+<!-- end page title end breadcrumb -->
+       <div id="columns">
+           {% for i in object_list%}
+      <figure>
+        <img src="/media/{{i.0}}">
+        <figcaption>{{i.1 }}
+        <a href="file://nas2dual/Data/디자인 주문작업 시안/2018년 작업파일/더퀸필라테스 전단 80221-희.ai" type="button" class="btn btn-default" download="">
+                <span class="glyphicon glyphicon-save" aria-hidden="true" style="color:#ACACAC"></span></a>
+        </figcaption>
+      </figure>
+           {% endfor %}
+    </div>
+
+
+<div class="row m-t-30">
+    <div class="text-center m-t-30">
+        {% if not object_list %}
+        <h3>검색 된 데이터가 없습니다.</h3>
+        {% endif %}
+
+        {% if is_paginated %}
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                        <span>이전</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="disabled">
+                    <a href="#">
+                        <span><strike>시작</strike></span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for page in page_range %}
+                <li {% if page == page_obj.number %}class="active" {% endif %}>
+                    <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                        {{ page }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                        <span>다음</span>
+                    </a>
+                </li>
+                {% else %}
+                <li {% if not page_obj.has_next %}class="disabled" {% endif %}>
+                    <a href="#">
+                        <strike>끝</strike>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -111,20 +111,7 @@ $(document).ready(function(){
             onProgress: null,
             onComplete: null
         },
-		files: [
-			{
-				name: "1.jpg",
-				size: 145,
-				type: "image/jpg",
-				file: "assets/images/small/img-1.jpg"
-			},
-			{
-				name: "2.jpg",
-				size: 145,
-				type: "image/jpg",
-				file: "assets/images/small/img-2.jpg"
-			}
-		],
+		files: [],
         addMore: false,
         clipBoardPaste: true,
         excludeName: null,

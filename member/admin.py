@@ -5,7 +5,7 @@ from .models import (
 )
 
 class ProfileAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['company']
 
 class LoginLogAdmin(admin.ModelAdmin):
     pass

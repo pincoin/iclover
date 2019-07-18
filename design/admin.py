@@ -42,6 +42,7 @@ class EtcOptionAdmin(admin.ModelAdmin):
 
 class OrderInfoAdmin(admin.ModelAdmin):
     list_per_page = 10
+    search_fields = ['company','company_keyword']
 
 class OrderListAdmin(admin.ModelAdmin):
     list_per_page = 10

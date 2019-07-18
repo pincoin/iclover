@@ -143,6 +143,33 @@ class Deposit(TimeStampedModel, SoftDeletableModel):
     def __str__(self):
         return '{} {} {}'.format(self.name, self.amount, self.memo)
 
+class OrderWithDeposit(TimeStampedModel):
+    order_info_with = models.ForeignKey(
+        'design.OrderInfo',
+        on_delete=models.SET_NULL,
+        related_name='order_info_with',
+        null=True,
+        blank=True,
+    )
+    deposit_with = models.ForeignKey(
+        'managing.Deposit',
+        on_delete=models.SET_NULL,
+        related_name='deposit_with',
+        null=True,
+        blank=True,
+    )
+    division =models.IntegerField(
+        verbose_name='수동 확인',
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _('입금 연결')
+        verbose_name_plural = _('입금 연결')
+
+    def __str__(self):
+        return '{} {}'.format(self.order_info_with, self.deposit_with)
 
 class SpecialPrice(TimeStampedModel):
     product = models.ForeignKey(
@@ -373,12 +400,17 @@ class Sample(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('샘플 상태'),
         default=True,
     )
+    link = models.CharField(
+        verbose_name=_('링크 url'),
+        max_length=255,
+        blank=True,
+    )
 
     def upload_to_sample(instance, filename):
         now = datetime.now()
         nowDate = now.strftime('%Y')
         return 'sample/{}/{}/{}'.format(instance.category,nowDate, filename)
-    sample_img = models.ImageField(
+    images = models.ImageField(
         verbose_name=_('sample_img'),
         blank=True,
         upload_to=upload_to_sample,
