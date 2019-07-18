@@ -20,17 +20,17 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model= member_models.Profile
-        fields = ['id','code','company','company_keyword','address','tax_bill_mail','tell','keywords','memo',
-                  'phone','options','confirm','manager']
+        fields = ('id','code','company','company_keyword','address','tax_bill_mail','tell','keywords','memo',
+                  'phone','options','confirm','manager')
 
 class ProductTextSerializer(serializers.HyperlinkedModelSerializer):
     company_name = serializers.SerializerMethodField()
 
     class Meta:
         model= design_models.ProductText
-        fields = ['id','quantity','buy_price','sell_price','standard','paper','paper_option','product_version','title',
+        fields = ('id','quantity','buy_price','sell_price','standard','paper','paper_option','product_version','title',
                   'memo','gram','code','etc','horizontal','vertical','width','height','supplier','company_name',
-                  ]
+                  )
 
     def get_company_name(self, obj):
         company_name = ''
