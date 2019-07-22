@@ -70,10 +70,14 @@
                         {% for i in product_list %}
                         <tr>
                             <td>
-                               {% if i.category %}
+
+                                v.{{ i.product_version }}<br>
+                               {% if i.code %}
+                                {{ i.code }}<br>
+                                {% endif %}
+                                {% if i.category %}
                                 {{ i.category }}
-                                {% endif %}<br>
-                                v.{{ i.product_version }}
+                                {% endif %}
                             </td>
                             <td>
                                 {{ i.company }}

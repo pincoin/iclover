@@ -84,6 +84,17 @@
                         <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
                     </a>
                 </a>
+                    {% for i in object_list %}
+                    {% if i.level == 0 %}
+                    최상위 :
+                    {% endif %}
+{{i}} / {{i.level}} //{{i.parent}} //{{i.children}} <br>
+                    {% for z in i.children.all%}
+                    {{ z }}<br>
+                    {% endfor %}
+{% endfor %}
+
+
                     <ul>
                         <li><a href="" class="text-uppercase text-custom"><b>디자인</b>
                             <a href="#" class="table-action-btn" style="margin-left:0em;">

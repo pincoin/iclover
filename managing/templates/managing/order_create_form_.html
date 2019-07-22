@@ -302,6 +302,7 @@ input[type="number"]::-webkit-inner-spin-button {
         $.ajax({
             url: '/api/profile.json',
             dataType : 'json',
+            cache : false,
             contentType : 'application/json; charset=UTF-8',
             success: function (data, status, xhr) {
                 $id_company.keyup(delay(function (e) {
@@ -408,6 +409,7 @@ input[type="number"]::-webkit-inner-spin-button {
             url: '/api/special_price.json',
             dataType : 'json',
             data : {data:idx },
+             cache : false,
             contentType : 'application/json; charset=UTF-8',
             success: function (special_price_data, status, xhr) {
                 special_price = special_price_data;
@@ -416,9 +418,10 @@ input[type="number"]::-webkit-inner-spin-button {
         });
 
            $.ajax({
+           type : "GET",
             url: '/api/product.json',
             dataType : 'json',
-            contentType : 'application/json; charset=UTF-8',
+           cache : false,
             success: function (data, status, xhr) {
                 $product_search.keyup(delay(function (e) {
                     $product_result.html('');

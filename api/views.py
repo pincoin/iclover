@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAdminUser
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    import pdb;pdb.set_trace()
     permission_classes = (IsAdminUser,)
     queryset = get_user_model().objects.all().order_by('-date_joined')
     serializer_class = serializers.UserSerializer
@@ -22,7 +23,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = member_models.Profile.objects.filter(~Q(state_select=1)).order_by('company')
+    queryset = member_models.Profile.objects.all().prefetch_related('user').filter(~Q(state_select=1)).order_by('company')
     serializer_class = serializers.ProfileSerializer
     def get_queryset(self):
         queryset = self.queryset
@@ -32,7 +33,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class ProductTextViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = design_models.ProductText.objects.filter(Q(product_version=1)).order_by('-standard')
+    queryset = design_models.ProductText.objects.all().filter(Q(product_version=1)).order_by('-standard')
     serializer_class = serializers.ProductTextSerializer
 
     def get_queryset(self):

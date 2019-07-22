@@ -193,7 +193,7 @@ class CustomerView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixi
     login_url = clovi_login_url
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related('user').order_by('company')
+        queryset = super().get_queryset().select_related('user').order_by('-id')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -289,7 +289,7 @@ class ProductView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin
 
     def get_queryset(self):
         queryset = super().get_queryset().select_related('category').prefetch_related('supplier').order_by(
-            '-supplier')
+           '-id', '-supplier')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -414,10 +414,14 @@ class SampleUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
         return response
 
 
-class CategoryView(viewmixin.UserIsStaffMixin, generic.TemplateView):
+class CategoryView(viewmixin.UserIsStaffMixin, generic.ListView):
     template_name = 'managing/category.html'
     # optional
     login_url = clovi_login_url
+
+    def get_queryset(self):
+        queryset = design_models.Category.objects.prefetch_related('children').filter(level=0)
+        return queryset
 
 
 class DiscountView(viewmixin.UserIsStaffMixin, generic.TemplateView):

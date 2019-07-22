@@ -253,6 +253,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('가로'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -260,6 +261,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('세로'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -267,6 +269,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('넓이'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -274,6 +277,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('높이'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -360,6 +364,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('판매가'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -368,6 +373,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('매입가'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
@@ -376,6 +382,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name=_('메인 수량'),
         max_digits=11,
         decimal_places=4,
+        default=0,
         null=True,
         blank=True,
     )
