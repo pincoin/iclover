@@ -423,6 +423,84 @@ class CategoryView(viewmixin.UserIsStaffMixin, generic.ListView):
         queryset = design_models.Category.objects.prefetch_related('children').filter(level=0)
         return queryset
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        context['sector'] = design_models.SectorsCategory.objects.prefetch_related('children').filter(level=0)
+        return context
+
+class CategoryCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
+    # optional
+    login_url = clovi_login_url
+
+    form_class = managing_forms.CategoryCreateForm
+    success_url = "/clovi/category/"
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryCreateView, self).get_context_data(**kwargs)
+        context['title'] = self.request.GET['title']
+        return context
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['managing/category_create_form_.html']
+        return ['managing/category_create_form_.html']
+
+    def form_valid(self, form):
+        name = form.cleaned_data['name']
+        kind = self.kwargs['kind']
+        level = self.kwargs['level']
+        title = self.request.GET['title']
+        if kind == 0:
+            if level == 1:
+                parent = design_models.SectorsCategory.objects._mptt_filter(title=title)
+                for i in parent:
+                    parent = i.id
+            elif level == 0:
+                parent = None
+            sec_category = design_models.SectorsCategory(title=name, parent_id=parent)
+            sec_category.save()
+        elif kind == 1:
+            if level == 1:
+                parent = design_models.Category.objects._mptt_filter(title=title)
+                for i in parent:
+                    parent = i.id
+            elif level == 0:
+                parent = None
+            category = design_models.Category(title=name, parent_id=parent)
+            category.save()
+
+        response = super(CategoryCreateView, self).form_valid(form)
+        return response
+
+class CategoryDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
+    model = design_models.Category
+    success_url = "/clovi/category/"
+
+    def dispatch(self, request, *args, **kwargs):
+        kind = kwargs['kind']
+        level = kwargs['level']
+        pk = kwargs['pk']
+
+        def delete_f(model, pk, level):
+            data = model._mptt_filter(id=pk)
+            if level == 0:
+                for i in data:
+                    child = i.children.all()
+                    child.delete()
+                data.delete()
+            elif level == 1:
+                data.delete()
+
+        if kind == 0: #업종 카테고리
+            model = design_models.SectorsCategory.objects
+            delete_f(model, pk, level)
+        elif kind == 1: #품목 카테고리
+            model = design_models.Category.objects
+            delete_f(model, pk, level)
+
+
+        return redirect('/clovi/category/')
+
 
 class DiscountView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     template_name = 'managing/discount.html'

@@ -371,6 +371,17 @@ class OrderWithImagesCreateForm(forms.Form):
 
     pro_image = forms.FileInput()
 
+class CategoryCreateForm(forms.Form):
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'hidden',
+            }
+        ),
+        help_text='타이틀 :'
+    )
+
 class EmployeesCreateForm(forms.ModelForm):
     class Meta:
         model = managing_models.Employees

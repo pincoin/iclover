@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAdminUser
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
     permission_classes = (IsAdminUser,)
     queryset = get_user_model().objects.all().order_by('-date_joined')
     serializer_class = serializers.UserSerializer

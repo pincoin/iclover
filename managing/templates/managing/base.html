@@ -32,6 +32,7 @@
     <![endif]-->
 
     <script src="{% static 'managing/js/modernizr.min.js' %}"></script>
+    <script src="{% static 'managing/js/jquery.min.js' %}"></script>
     <style>
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
@@ -257,12 +258,11 @@
                                 <a href="{% url 'managing:sample' %}">샘플 관리</a>
                             </li>
                             <li>
-                                <a href="{% url 'managing:discount' %}">할인그룹 관리
-                                    <small class="text-danger">_(준비중)</small>
+                                <a href="{% url 'managing:category' %}">카테고리 관리
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'managing:category' %}">카테고리 관리
+                                <a href="{% url 'managing:discount' %}">할인그룹 관리
                                     <small class="text-danger">_(준비중)</small>
                                 </a>
                             </li>
@@ -408,7 +408,6 @@
 <!-- modal end -->
 
 <!-- jQuery  -->
-<script src="{% static 'managing/js/jquery.min.js' %}"></script>
 <script src="{% static 'managing/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'managing/js/detect.js' %}"></script>
 <script src="{% static 'managing/js/fastclick.js' %}"></script>

@@ -1,6 +1,7 @@
 {% extends 'managing/base.html'%}
 {% load static %}
 {% block title %}카테고리 관리{% endblock%}
+{% block modal_size %}40%;{% endblock %}
 
 {% block content%}
 <!-- Page-Title -->
@@ -17,160 +18,112 @@
     <div class="row">
         <div class="col-sm-5">
             <ul class="sitemap">
-                <li><a href="" class="text-uppercase text-warning"><b>업종 그룹</b>
-                    <a href="#" class="table-action-btn" style="margin-left:0em;">
+                <li><a class="text-uppercase text-warning"><b>업종 그룹</b>
+                    <a href="{%url 'managing:category_create' kind=0 level=0 %}?title=업종 그룹" class="table-action-btn content-modal-btn" style="margin-left:0em;">
                         <i class="mdi mdi-plus text-success mdi-18px"></i>
-                    </a>
-                    <a href="#" class="table-action-btn" style="margin-left:0em;">
-                        <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
                     </a>
                 </a>
+
+                    {% for i in sector %}
                     <ul>
-                        <li><a class="text-uppercase text-custom"><b>스포츠</b>
-                            <a href="#" class="table-action-btn" style="margin-left:0em;">
-                        <i class="mdi mdi-plus text-success mdi-18px"></i>
-                    </a>
-                    <a href="#" class="table-action-btn" style="margin-left:0em;">
-                        <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
-                    </a>
-                        </a>
+                        <li>
+                            <a class="text-uppercase text-custom"><b>{{i}}</b>
+                                 {% if '디자이너' not in user.first_name %}
+                                <a href="{%url 'managing:category_create' kind=0 level=1 %}?title={{i}}"class="table-action-btn content-modal-btn" style="margin-left:0em;">
+                                    <i class="mdi mdi-plus text-success mdi-18px"></i>
+                                </a>
+                                <a href="{% url 'managing:category_delete' kind=0 level=0 pk=i.id %}" class="table-action-btn delete_button delete_button" style="margin-left:0em;">
+                                    <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
+                                </a>
+                                {% endif %}
+                            </a>
                             <ul>
-                                <li><a href="" class="text-success">2015</a>
-                                    <ul>
-                                        <li><a href="">Company</a></li>
-                                        <li><a href="">Service</a></li>
-                                        <li><a href="">Contest</a></li>
-                                    </ul>
+                                {% for z in i.children.all%}
+                                <li>
+                                    <a class="text-success">{{z}}</a>
+                                    <a href="{% url 'managing:category_delete' kind=0 level=1 pk=z.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
+                                        <i class="mdi mdi-delete-forever"></i>
+                                    </a>
                                 </li>
-                                <li><a href="" class="text-success">2014</a>
-                                    <ul>
-                                        <li><a href="">Company</a></li>
-                                        <li><a href="">Service</a></li>
-                                        <li><a href="">Contest</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-success">2013</a>
-                                    <ul>
-                                        <li><a href="">Company</a></li>
-                                        <li><a href="">Service</a></li>
-                                        <li><a href="">Contest</a></li>
-                                    </ul>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </li>
-                        <li><a href="" class="text-uppercase text-custom"><b>분양/건설</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>병원</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>통신/IT</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>교육/학원</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>어린이집/유치원</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>식당/음식점</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>카페/베이커리</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>뷰티미용</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>쇼핑/마트</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>자동차</b></a></li>
-                        <li><a href="" class="text-uppercase text-custom"><b>기타</b></a></li>
                     </ul>
+                    {% endfor %}
+
                 </li>
             </ul>
         </div>
 
         <div class="col-sm-7">
             <ul class="sitemap">
-                <li><a href="" class="text-uppercase text-warning"><b>품목 그룹</b>
-                    <a href="#" class="table-action-btn" style="margin-left:0em;">
-                        <i class="mdi mdi-plus text-success mdi-18px"></i>
+                <li>
+                    <a class="text-uppercase text-warning"><b>품목 그룹</b>
+                        <a href="{%url 'managing:category_create' kind=1 level=0 %}?title=품목 그룹" class="table-action-btn content-modal-btn"  style="margin-left:0em;">
+                            <i class="mdi mdi-plus text-success mdi-18px"></i>
+                        </a>
                     </a>
-                    <a href="#" class="table-action-btn" style="margin-left:0em;">
-                        <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
-                    </a>
-                </a>
                     {% for i in object_list %}
-                    {% if i.level == 0 %}
-                    최상위 :
-                    {% endif %}
-{{i}} / {{i.level}} //{{i.parent}} //{{i.children}} <br>
-                    {% for z in i.children.all%}
-                    {{ z }}<br>
-                    {% endfor %}
-{% endfor %}
-
-
                     <ul>
-                        <li><a href="" class="text-uppercase text-custom"><b>디자인</b>
-                            <a href="#" class="table-action-btn" style="margin-left:0em;">
+                        <li><a class="text-uppercase text-custom"><b>{{i}}</b>
+                            <a  href="{%url 'managing:category_create' kind=1 level=1 %}?title={{i}}" class="table-action-btn content-modal-btn" style="margin-left:0em;">
                                 <i class="mdi mdi-plus text-success mdi-18px"></i>
                             </a>
-                            <a href="#" class="table-action-btn" style="margin-left:0em;">
+                            <a href="{% url 'managing:category_delete' kind=1 level=0 pk=i.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
                                 <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
                             </a>
                         </a>
                             <ul>
-                                <li><a href="" class="text-teal">전단지/족자</a>
-                                    <ul>
-                                        <li><a href="">A4</a></li>
-                                    </ul>
+                                {% for z in i.children.all%}
+                                <li><a class="text-teal">{{z}} {{z.id}}</a>
+                                    <a href="{% url 'managing:category_delete' kind=1 level=1 pk=z.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
+                                        <i class="mdi mdi-delete-forever"></i>
+                                    </a>
                                 </li>
-                                <li><a href="" class="text-teal">현수막</a>
-                                    <ul>
-                                        <li><a href="">Company</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-teal">명함</a>
-                                    <ul>
-                                        <li><a href="">Company</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-teal">배너</a>
-                                    <ul>
-                                        <li><a href="">Company</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-teal">봉투</a></li>
-                                <li><a href="" class="text-teal">스티커</a></li>
-                                <li><a href="" class="text-teal">양식지/NCR지</a></li>
-                                <li><a href="" class="text-teal">기타인쇄</a>
-                                    <ul>
-                                        <li><a href="">명찰</a></li>
-                                        <li><a href="">에어탑</a></li>
-                                        <li><a href="">부채</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="" class="text-uppercase text-custom"><b>비품</b></a>
-                            <ul>
-                                <li><a href="" class="text-teal">운동복</a>
-                                    <ul>
-                                        <li><a href="">운동복 상의</a></li>
-                                        <li><a href="">운동복 상의</a></li>
-                                        <li><a href="">맨투맨 후드</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-teal">수건</a>
-                                    <ul>
-                                        <li><a href="">업소용</a></li>
-                                        <li><a href="">답례품</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-teal">운영비품/뷰티</a>
-                                    <ul>
-                                        <li><a href="">청소 용품</a></li>
-                                        <li><a href="">샤워/뷰티 용품</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="" class="text-teal">기구/소도구</a>
-                                    <ul>
-                                        <li><a href="">요가매트</a></li>
-                                        <li><a href="">봉/링/폼/밴드</a></li>
-                                    </ul>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </li>
                     </ul>
+                    {% endfor %}
+
+
                 </li>
             </ul>
         </div>
     </div>
     <!-- end row -->
 </div>
+
+<script>
+    $(document).ready(function () {
+        console.log('log');
+    })
+</script>
+<script>
+    $('.delete_button').click(function () {
+        event.preventDefault();
+        var result = confirm('삭제되면 복구되지 않으며 하위 카테고리까지 모두 삭제됩니다. \n정말 삭제하시겠습니까?');
+        if (result) {
+            var $data_this = $(this);
+            var url = $(this).attr('href');
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: "POST",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                },
+                success: function (xhr) {
+                    console.log('성공');
+                    console.log($data_this.parent().remove());
+                },
+                error: function (xhr) {
+                    console.log('실패');
+                }
+            });
+        }
+
+    });
+</script>
+
 {% endblock %}

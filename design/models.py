@@ -10,7 +10,7 @@ from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
 
-class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
+class Category(TimeStampedModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
         verbose_name=_('parent'),
@@ -24,14 +24,6 @@ class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
     title = models.CharField(
         verbose_name=_('title'),
         max_length=128,
-    )
-
-    slug = models.SlugField(
-        verbose_name=_('slug'),
-        help_text=_('A short label containing only letters, numbers, underscores or hyphens for URL'),
-        max_length=255,
-        unique=True,
-        allow_unicode=True,
     )
 
     class MPTTMeta:
@@ -45,7 +37,7 @@ class Category(TimeStampedModel, SoftDeletableModel, MPTTModel):
         return self.title
 
 
-class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
+class SectorsCategory(TimeStampedModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
         verbose_name=_('parent'),
@@ -59,14 +51,6 @@ class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
     title = models.CharField(
         verbose_name=_('title'),
         max_length=128,
-    )
-
-    slug = models.SlugField(
-        verbose_name=_('slug'),
-        help_text=_('A short label containing only letters, numbers, underscores or hyphens for URL'),
-        max_length=255,
-        unique=True,
-        allow_unicode=True,
     )
 
     class MPTTMeta:

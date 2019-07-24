@@ -9,240 +9,6 @@ input[type="number"]::-webkit-inner-spin-button {
 </style>
 {% endblock%}
 {% load static %}
-<form id='form_id' method="post" text="견적서 생성" autocomplete="off"  action="">
-    {% csrf_token %}
-    {{ form.errors_from_post }}
-    {{ form.user }}
-    {{ errors_message }}
-    {{ form.user.errors }}
-    <div class="row">
-        <div class="col-sm-8">
-            <div class="card-box row">
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <span class="help-block"> 주문 일자</span>
-                        <div>
-                            <div class="input-group">
-                                {{form.joo_date}}
-                                <span class="input-group-addon bg-custom b-0">
-                                    <i class="mdi mdi-calendar text-white"></i>
-                                 </span>
-                            </div><!-- input-group -->
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9 has-sample">
-                    <span class="help-block"><b>{{ form.company.help_text}}</b></span>
-                    {{ form.company}}
-                     {{ form.code}}
-                     {{ form.fix_manager}}
-                    {{ form.tell}}
-                    <ul class="list-group" id="search_result"></ul>
-                    {% if form.errors.company %}
-                    <span style="color: #d33333"> {{form.errors.company.as_text}}</span>
-                    {% endif %}
-                </div>
-
-                <div class="col-lg-3"><span class="help-block"> {{ form.manager.help_text}}</span>
-                    <select name="manager" id="id_manager" class="form-control">
-                        <option value=""></option>
-                        {% for ma in manager_ls%}
-                        <option value="{{ma}}">{{ma}}</option>
-                        {% endfor%}
-                    </select>
-                </div>
-                 <div class="col-lg-6">
-                    <span class="help-block"> {{ form.company_keyword.help_text}}</span>
-                    {{ form.company_keyword}}
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <span class="help-block"> 발주 일자</span>
-                        <div>
-                            <div class="input-group">
-                                {{form.order_date}}
-                                <span class="input-group-addon bg-custom b-0">
-                                    <i class="mdi mdi-calendar text-white"></i>
-                                </span>
-                            </div><!-- input-group -->
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-10">
-                </div>
-                 <div class="col-lg-3">
-                    <span class="help-block"> {{ form.in_memo.help_text}}</span>
-                    {{ form.in_memo}}
-                </div>
-                <div class="col-lg-3">
-                    <span class="help-block"> {{ form.option.help_text}}</span>
-                    {{ form.option}}
-                </div>
-                <div class="col-lg-3">
-                    <span class="help-block"> {{ form.confirm.help_text}}</span>
-                    {{ form.confirm}}
-                </div>
-                 <div class="col-lg-3 has-error">
-                    <span class="help-block"> {{ form.out_memo.help_text}}</span>
-                    {{ form.out_memo}}
-                </div>
-                <div class="col-lg-12">
-                    <span class="help-block"> {{ form.address.help_text}}</span>
-                    {{ form.address}}
-                </div>
-                <div class="col-lg-12">
-                    <span class="help-block"> {{ form.memo.help_text}}</span>
-                    {{ form.memo}}
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="card-box" style="height: 500px;">
-                <div class="m-b-10">
-                    <a class="badge up bg-danger" id="control-info">&ensp;</a>
-                    <a class="badge up bg-custom" id="control-order">&ensp;</a></div>
-                <div id="informations">
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="card-box">
-            <div id="demo" class="row m-b-30 collapse">
-                <div class="col-lg-3 ">
-                    <div class="col-lg-12 has-sample">
-                        <span class="help-block"><b>품목 등록</b></span>
-                        <input type="text" id='product_search' class="form-control col-lg-2 m-5">
-                    </div>
-                    <div class="col-lg-6">
-                        <span class="help-block">부가세</span>
-                        <select class="form-control tax_select" name="tax">
-
-                            <option value="0" {% if tax == Ture %}selected{%endif %}>부가세 포함</option>
-                            <option value='1' {% if tax == False %}selected{%endif %}>부가세 미포함</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-6">
-                        <span class="help-block">배송비</span>
-                        <select class="form-control delivery_select">
-                            <option value="선불 택배" selected>선불 택배비</option>
-                            <option value='착불 택배'>착불 택배비</option>
-                            <option value='퀵'>퀵</option>
-                            <option value='방문 수령'>방문 수령</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-9 container-fluid">
-                    <ul class="list-group col-12 flex-wrap" id="product_result"></ul>
-                </div>
-
-            </div>
-
-<!--            <input type="checkbox" checked data-toggle="collapse" data-size="sm"  data-target="#demo">-->
-            <div class="table-responsive">
-            <input type="checkbox" id="switch1" data-toggle="collapse" switch="bool" data-target="#demo">
-            <label for="switch1" data-on-label="" data-off-label=""></label>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th width="20px;">No.</th>
-                        <th width="200px;">품목명</th>
-                        <th width="100px;">규격</th>
-                        <th width="80px;">수량</th>
-                        <th width="110px;">단가</th>
-                        <th width="110px;">판매가</th>
-                        <th width="110px;">판매 부가세</th>
-                        <th width="110px;">매입가</th>
-                        <th>기타</th>
-                        <th>적요</th>
-                        <th>품목정보</th>
-                        <th width="50px;">
-                                <div class="checkbox checkbox-danger h3">
-                                    <input id="delete_check" type="checkbox">
-                                    <label for="delete_check">
-                                       <i class="fa fa-trash-o text-danger"></i>
-                                    </label>
-                                </div>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody id="sortable">
-                    {% if order_list%}
-                        {% for order in order_list.all %}
-                      <tr>
-                          <td><span class="text_data"></span></td>
-                    <input class="form-control" type="hidden" name="text_data" value="{{order.code }}">
-                    <td><input class="form-control" type="text" name="text_data" value="{%if order.name %}{{order.name}}{% endif %}"></td>
-                    <td><input class="form-control" type="text" name="text_data" value="{%if order.standard %}{{order.standard}}{% endif %}"></td>
-                    <td><input class="form-control text-right quantity" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="{{order.quantity}}"></td>
-                    <td><input class="form-control text-right price_s" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
-                         value="{% if .0000 in order.selling_price %}{{order.selling_price|intcomma}}{% else %}{{order.selling_price|floatformat:'-4'|intcomma }}{% endif %}"></td>
-                    <td><input class="form-control text-right sell_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
-                    <td><input class="form-control text-right sell_tax" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
-                    <td class="has-ask">
-                        <input class="form-control text-right buy_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
-                       value="{% if '.0000' in order.price %}{{order.price|intcomma}}{% else %}{{order.price|floatformat:'-4'|intcomma}}{% endif %}"></td>
-                    <input class="form-control" type="hidden" name="text_data" value="{%if order.group_manage %}{{order.group_manage}}{%endif%}">
-                    <td><input class="form-control" type="text" name="text_data" value="{%if order.gram %}{{order.gram}}{% endif %}"></td>
-                    <td><input class="form-control" type="text" name="text_data" value="{%if order.etc %}{{order.etc}}{% endif %}"></td>
-                    <td><input class="form-control" type="text" name="text_data" value="{%if order.memo %}{{order.memo}}{% endif %}"></td>
-                    <td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;">
-                        <i class="mdi mdi-close-box-outline text-danger"></i></a></td>
-                    </tr>
-                        {% endfor %}
-                    {% endif%}
-
-                    <input type="hidden" id='id_json_data' name="json_data" />
-                    </tbody>
-                    <tfoot>
-                     <tr class="total-tr">
-                         <th></th>
-                        <th></th>
-                        <th class="text-right"></th>
-                         <th class="text-right h4" id="total_quantity"></th>
-                          <th></th>
-                        <th class="text-right h4" id="total_price"></th>
-                        <th class="text-right h4" id="total_tax"></th>
-                        <th colspan="2" class="text-center h4" id="total"></th>
-                         <th colspan="2" class="text-center text-danger h4" ></th>
-                           <th></th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-
-
-        </div>
-    </div>
-    <div class="modal-footer">
-        <table class="text-right" align="right">
-            <tr>
-                <td class="p-l-r-10 has-deposit" width="200px;">
-                    <select class="form-control" name="state" id="id_state">
-                        <option value="0" {%if form.state.value == 0%}selected{%endif%} >견적서</option>
-                        <option value="1" {%if form.state.value == 1%}selected{%endif%}>주문서</option>
-                        <option value="2" {%if form.state.value == 2%}selected{%endif%}>시안중</option>
-                        <option value="3" {%if form.state.value == 3%}selected{%endif%}>발주완료</option>
-                        <option value="4" {%if form.state.value == 4%}selected{%endif%}>완료</option>
-                        <option value="5" {%if form.state.value == 5%}selected{%endif%}>취소</option>
-                        <option value="6" {%if form.state.value == 6%}selected{%endif%}>보류</option>
-                        <option value="7" {%if form.state.value == 7%}selected{%endif%}>환불</option>
-                    </select>
-                </td>
-                <td class="p-l-r-10">
-                    <button type='submit' id='sub-btn' onclick="" class="btn btn-danger">저장</button>
-                </td>
-                <td class="p-l-r-10">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</form>
-
 
 <script>
     function delay(fn, ms) {
@@ -815,3 +581,238 @@ $(document).ready(function () {
 });
 </script>
 <script type="text/javascript"  src="{% static 'managing/pages/jquery.form-pickers.init.js'%}"></script>
+
+<form id='form_id' method="post" text="견적서 생성" autocomplete="off"  action="">
+    {% csrf_token %}
+    {{ form.errors_from_post }}
+    {{ form.user }}
+    {{ errors_message }}
+    {{ form.user.errors }}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card-box row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <span class="help-block"> 주문 일자</span>
+                        <div>
+                            <div class="input-group">
+                                {{form.joo_date}}
+                                <span class="input-group-addon bg-custom b-0">
+                                    <i class="mdi mdi-calendar text-white"></i>
+                                 </span>
+                            </div><!-- input-group -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 has-sample">
+                    <span class="help-block"><b>{{ form.company.help_text}}</b></span>
+                    {{ form.company}}
+                     {{ form.code}}
+                     {{ form.fix_manager}}
+                    {{ form.tell}}
+                    <ul class="list-group" id="search_result"></ul>
+                    {% if form.errors.company %}
+                    <span style="color: #d33333"> {{form.errors.company.as_text}}</span>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-3"><span class="help-block"> {{ form.manager.help_text}}</span>
+                    <select name="manager" id="id_manager" class="form-control">
+                        <option value=""></option>
+                        {% for ma in manager_ls%}
+                        <option value="{{ma}}">{{ma}}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+                 <div class="col-lg-6">
+                    <span class="help-block"> {{ form.company_keyword.help_text}}</span>
+                    {{ form.company_keyword}}
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <span class="help-block"> 발주 일자</span>
+                        <div>
+                            <div class="input-group">
+                                {{form.order_date}}
+                                <span class="input-group-addon bg-custom b-0">
+                                    <i class="mdi mdi-calendar text-white"></i>
+                                </span>
+                            </div><!-- input-group -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                </div>
+                 <div class="col-lg-3">
+                    <span class="help-block"> {{ form.in_memo.help_text}}</span>
+                    {{ form.in_memo}}
+                </div>
+                <div class="col-lg-3">
+                    <span class="help-block"> {{ form.option.help_text}}</span>
+                    {{ form.option}}
+                </div>
+                <div class="col-lg-3">
+                    <span class="help-block"> {{ form.confirm.help_text}}</span>
+                    {{ form.confirm}}
+                </div>
+                 <div class="col-lg-3 has-error">
+                    <span class="help-block"> {{ form.out_memo.help_text}}</span>
+                    {{ form.out_memo}}
+                </div>
+                <div class="col-lg-12">
+                    <span class="help-block"> {{ form.address.help_text}}</span>
+                    {{ form.address}}
+                </div>
+                <div class="col-lg-12">
+                    <span class="help-block"> {{ form.memo.help_text}}</span>
+                    {{ form.memo}}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card-box" style="height: 500px;">
+                <div class="m-b-10">
+                    <a class="badge up bg-danger" id="control-info">&ensp;</a>
+                    <a class="badge up bg-custom" id="control-order">&ensp;</a></div>
+                <div id="informations">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-box">
+            <div id="demo" class="row m-b-30 collapse">
+                <div class="col-lg-3 ">
+                    <div class="col-lg-12 has-sample">
+                        <span class="help-block"><b>품목 등록</b></span>
+                        <input type="text" id='product_search' class="form-control col-lg-2 m-5">
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="help-block">부가세</span>
+                        <select class="form-control tax_select" name="tax">
+
+                            <option value="0" {% if tax == Ture %}selected{%endif %}>부가세 포함</option>
+                            <option value='1' {% if tax == False %}selected{%endif %}>부가세 미포함</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="help-block">배송비</span>
+                        <select class="form-control delivery_select">
+                            <option value="선불 택배" selected>선불 택배비</option>
+                            <option value='착불 택배'>착불 택배비</option>
+                            <option value='퀵'>퀵</option>
+                            <option value='방문 수령'>방문 수령</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-9 container-fluid">
+                    <ul class="list-group col-12 flex-wrap" id="product_result"></ul>
+                </div>
+
+            </div>
+
+<!--            <input type="checkbox" checked data-toggle="collapse" data-size="sm"  data-target="#demo">-->
+            <div class="table-responsive">
+            <input type="checkbox" id="switch1" data-toggle="collapse" switch="bool" data-target="#demo">
+            <label for="switch1" data-on-label="" data-off-label=""></label>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th width="20px;">No.</th>
+                        <th width="200px;">품목명</th>
+                        <th width="100px;">규격</th>
+                        <th width="80px;">수량</th>
+                        <th width="110px;">단가</th>
+                        <th width="110px;">판매가</th>
+                        <th width="110px;">판매 부가세</th>
+                        <th width="110px;">매입가</th>
+                        <th>기타</th>
+                        <th>적요</th>
+                        <th>품목정보</th>
+                        <th width="50px;">
+                                <div class="checkbox checkbox-danger h3">
+                                    <input id="delete_check" type="checkbox">
+                                    <label for="delete_check">
+                                       <i class="fa fa-trash-o text-danger"></i>
+                                    </label>
+                                </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="sortable">
+                    {% if order_list%}
+                        {% for order in order_list.all %}
+                      <tr>
+                          <td><span class="text_data"></span></td>
+                    <input class="form-control" type="hidden" name="text_data" value="{{order.code }}">
+                    <td><input class="form-control" type="text" name="text_data" value="{%if order.name %}{{order.name}}{% endif %}"></td>
+                    <td><input class="form-control" type="text" name="text_data" value="{%if order.standard %}{{order.standard}}{% endif %}"></td>
+                    <td><input class="form-control text-right quantity" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="{{order.quantity}}"></td>
+                    <td><input class="form-control text-right price_s" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
+                         value="{% if .0000 in order.selling_price %}{{order.selling_price|intcomma}}{% else %}{{order.selling_price|floatformat:'-4'|intcomma }}{% endif %}"></td>
+                    <td><input class="form-control text-right sell_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
+                    <td><input class="form-control text-right sell_tax" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
+                    <td class="has-ask">
+                        <input class="form-control text-right buy_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
+                       value="{% if '.0000' in order.price %}{{order.price|intcomma}}{% else %}{{order.price|floatformat:'-4'|intcomma}}{% endif %}"></td>
+                    <input class="form-control" type="hidden" name="text_data" value="{%if order.group_manage %}{{order.group_manage}}{%endif%}">
+                    <td><input class="form-control" type="text" name="text_data" value="{%if order.gram %}{{order.gram}}{% endif %}"></td>
+                    <td><input class="form-control" type="text" name="text_data" value="{%if order.etc %}{{order.etc}}{% endif %}"></td>
+                    <td><input class="form-control" type="text" name="text_data" value="{%if order.memo %}{{order.memo}}{% endif %}"></td>
+                    <td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;">
+                        <i class="mdi mdi-close-box-outline text-danger"></i></a></td>
+                    </tr>
+                        {% endfor %}
+                    {% endif%}
+
+                    <input type="hidden" id='id_json_data' name="json_data" />
+                    </tbody>
+                    <tfoot>
+                     <tr class="total-tr">
+                         <th></th>
+                        <th></th>
+                        <th class="text-right"></th>
+                         <th class="text-right h4" id="total_quantity"></th>
+                          <th></th>
+                        <th class="text-right h4" id="total_price"></th>
+                        <th class="text-right h4" id="total_tax"></th>
+                        <th colspan="2" class="text-center h4" id="total"></th>
+                         <th colspan="2" class="text-center text-danger h4" ></th>
+                           <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <table class="text-right" align="right">
+            <tr>
+                <td class="p-l-r-10 has-deposit" width="200px;">
+                    <select class="form-control" name="state" id="id_state">
+                        <option value="0" {%if form.state.value == 0%}selected{%endif%} >견적서</option>
+                        <option value="1" {%if form.state.value == 1%}selected{%endif%}>주문서</option>
+                        <option value="2" {%if form.state.value == 2%}selected{%endif%}>시안중</option>
+                        <option value="3" {%if form.state.value == 3%}selected{%endif%}>발주완료</option>
+                        <option value="4" {%if form.state.value == 4%}selected{%endif%}>완료</option>
+                        <option value="5" {%if form.state.value == 5%}selected{%endif%}>취소</option>
+                        <option value="6" {%if form.state.value == 6%}selected{%endif%}>보류</option>
+                        <option value="7" {%if form.state.value == 7%}selected{%endif%}>환불</option>
+                    </select>
+                </td>
+                <td class="p-l-r-10">
+                    <button type='submit' id='sub-btn' onclick="" class="btn btn-danger">저장</button>
+                </td>
+                <td class="p-l-r-10">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+

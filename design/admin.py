@@ -3,16 +3,14 @@ from design import models
 from mptt.admin import DraggableMPTTAdmin
 
 class CategoryAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'indented_title', 'slug','is_removed')
+    list_display = ('tree_actions', 'indented_title')
     list_filter = ('parent','created')
-    prepopulated_fields = {'slug': ('title',)}
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
 class SectorsCategoryAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'indented_title', 'slug')
+    list_display = ('tree_actions', 'indented_title')
     list_filter = ('parent','created')
-    prepopulated_fields = {'slug': ('title',)}
     mptt_level_indent = 20
     ordering = ['tree_id', 'lft']
 
