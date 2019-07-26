@@ -23,10 +23,11 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = member_models.Profile.objects.all().prefetch_related('user').filter(~Q(state_select=1)).order_by('company')
+    queryset = member_models.Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
+
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = self.queryset.prefetch_related('user').filter(~Q(state_select=1)).order_by('company')
         for i in queryset:
             i.id = i.user.id
         return queryset
