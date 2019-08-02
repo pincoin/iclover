@@ -3,11 +3,36 @@
 {% block title %}관리자 페이지{% endblock%}
 
 {% block content%}
+
+<script>
+    $(document).ready(function () {
+       $('.count-btn').click(function () {
+       var clicked_state = $(this).data('showBtn');
+         var $tbody = $('tbody').children('tr');
+         $tbody.each(function () {
+             var state = $(this).data('show');
+             if(clicked_state == state){
+                 $(this).css('display','');
+             }else if(clicked_state == 'all'){
+                 $(this).css('display','');
+             }else{
+                 $(this).css('display','none');
+             }
+         })
+       })
+    })
+
+
+</script>
+<style>
+.count-btn {cursor: pointer;}
+</style>
+
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <h4 class="page-title">Dashboard</h4>
+            <h4 class="page-title count-btn" data-show-btn="all">나의 진행중인</h4>
         </div>
     </div>
 </div>
@@ -17,35 +42,35 @@
 <div class="row">
     <div class="col-lg-9">
         <div class="row">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 count-btn" data-show-btn="주문">
                 <div class="card-box tilebox-two tilebox-success">
                     <i class="mdi mdi-basket-unfill pull-right text-dark"></i>
-                    <h6 class="text-success m-b-15 m-t-10"><b>어제 나의 발주</b></h6>
-                    <h2 class="m-b-10"><span data-plugin="counterup">0</span> 건</h2>
+                    <h4 class="text-success m-b-15 m-t-10"><b>주문서</b></h4>
+                    <h2 class="m-b-10"><span>{{count.주문}}</span> 건</h2>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 count-btn" data-show-btn="시안">
                 <div class="card-box tilebox-two tilebox-primary">
                     <i class="mdi mdi-basket-fill pull-right text-dark"></i>
-                    <h6 class="text-primary text-uppercase m-b-15 m-t-10"><b>어제 나의 주문</b></h6>
-                    <h2 class="m-b-10"><span data-plugin="counterup">0</span> 건</h2>
+                    <h4 class="text-primary text-uppercase m-b-15 m-t-10"><b>시안중</b></h4>
+                    <h2 class="m-b-10"><span >{{count.시안}}</span> 건</h2>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 count-btn" data-show-btn="제작">
                 <div class="card-box tilebox-two tilebox-pink">
                     <i class="mdi mdi-burst-mode pull-right text-dark"></i>
-                    <h6 class="text-pink text-uppercase m-b-15 m-t-10"><b>미완료</b></h6>
-                    <h2 class="m-b-10"><span data-plugin="counterup">0</span> 건</h2>
+                    <h4 class="text-pink text-uppercase m-b-15 m-t-10"><b>제작중</b></h4>
+                    <h2 class="m-b-10"><span >{{count.제작}}</span> 건</h2>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 count-btn" data-show-btn="배송">
                 <div class="card-box tilebox-two tilebox-info">
                     <i class="mdi mdi-tooltip-image pull-right text-dark"></i>
-                    <h6 class="text-info text-uppercase m-b-15 m-t-10"><b>이달의 샘플 제출</b></h6>
-                    <h2 class="m-b-10"><span data-plugin="counterup">0</span> 개</h2>
+                    <h4 class="text-info text-uppercase m-b-15 m-t-10"><b>배송중</b></h4>
+                    <h2 class="m-b-10"><span>{{count.배송}}</span> 개</h2>
                 </div>
             </div>
 
@@ -56,80 +81,28 @@
             <div class="col-md-12">
                 <div class="card-box">
                     <h4 class="header-title m-t-0 m-b-20">미완료 리스트</h4>
-
                     <table class="table table-centered m-b-0">
                         <tbody>
-                        <tr>
-                            <td>
+                        {% for i in order_list%}
+                        <tr data-show="{{i.get_state_display }}">
+                            <td width="15%">
 
                                 <h3 class="m-0">
-                                    <small></small>
+                                    <small> {{i.get_state_display }}<br>{{i.joo_date|date:"Y-m-d"}}_{{i.today_num}}</small>
                                 </h3>
+                            </td>
+                            <td  width="30%">
+                                {{i.company}}
+                                <br>
+                                <small class="text-muted">{{ i.company_keyword}}</small>
                             </td>
                             <td>
-                                <h3 class="m-0">
-                                    <small></small>
-                                </h3>
-                            </td>
-                            <td class="hide-phone">
-                                <h3 class="m-0">
-                                    <small></small>
-                                </h3>
-                            </td>
-                            <td class="hide-phone">
-                                <h3 class="m-0">
-                                    <small>10</small>
-                                </h3>
-                            </td>
-                            <td class="hide-phone">
-                                <h3 class="m-0">
-                                    <small>0</small>
-                                </h3>
-                            </td>
-                            <td class="text-right">
-                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-primary">내역
-                                    보기</a>
-                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-danger">시안
-                                    등록</a>
-
+                                {% for z in i.order_list.all%}
+                                <small>{{z}}<br></small>
+                                {% endfor %}
                             </td>
                         </tr>
-
-                        <tr>
-                            <td>
-
-                                <h3 class="m-0">
-                                    <small>2</small>
-                                </h3>
-                            </td>
-                            <td>
-                                <h3 class="m-0">
-                                    <small>0</small>
-                                </h3>
-                            </td>
-                            <td class="hide-phone">
-                                <h3 class="m-0">
-                                    <small>0</small>
-                                </h3>
-                            </td>
-                            <td class="hide-phone">
-                                <h3 class="m-0">
-                                    <small>198,000</small>
-                                </h3>
-                            </td>
-                            <td class="hide-phone">
-                                <h3 class="m-0">
-                                    <small>19,800</small>
-                                </h3>
-                            </td>
-                            <td class="text-right">
-                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-primary">내역
-                                    보기</a>
-                                <a href="#" class="btn btn-sm btn-bordered waves-effect waves-light btn-danger">시안
-                                    등록</a>
-
-                            </td>
-                        </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

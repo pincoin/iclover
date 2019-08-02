@@ -3,11 +3,13 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from imagekit.models import ProcessedImageField
 from model_utils import Choices
 from model_utils.models import SoftDeletableModel, TimeStampedModel
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
+from pilkit.processors import ResizeToFit
 
 
 class Category(TimeStampedModel, MPTTModel):
@@ -387,6 +389,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
     )
     product_version = models.IntegerField(
         verbose_name=_('version'),
+        default=1,
         blank=True,
         null=True,
     )
@@ -667,6 +670,7 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         (6, '보류', _('보류')),
         (7, '환불', _('환불')),
         (8, '입금대기', _('입금대기')),
+        (9, '배송', _('배송')),
     )
 
     state = models.IntegerField(
@@ -945,8 +949,9 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         nowDate = now.strftime('%Y%m')
         return 'order/{}/{}/{}'.format(instance.order_info.user, nowDate, filename)
 
-    images = models.ImageField(
-        verbose_name=_('order_img'),
+    images = ProcessedImageField(
+        verbose_name=_('sample_img'),
+        processors=[ResizeToFit(600, 600)],
         blank=True,
         upload_to=upload_to_order,
     )

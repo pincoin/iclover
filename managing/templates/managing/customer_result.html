@@ -91,33 +91,23 @@
 
         </div>
         <div class="row">
-            <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="card-box widget-box-one">
                     <div class="wigdet-one-content">
-                        <p class="m-0 font-600 font-secondary text-overflow" >마지막 주문 <small class="text-danger">+ 100일</small></p>
-                        <h3 class="">2018-04-04</h3>
+                        <p class="m-0 font-600 font-secondary text-overflow" >최근 기록 <small class="text-danger"></small></p>
+                        <h3 class="">{{analysis.joo_date__max|date:"Y-m-d"}}</h3>
 
                     </div>
                 </div>
             </div><!-- end col -->
-            <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="card-box widget-box-one">
                     <div class="wigdet-one-content">
-                        <p class="m-0 font-600 font-secondary text-overflow" >마지막 견적</p>
-                        <h3 class="">2019-04-04</h3>
+                        <p class="m-0 font-600 font-secondary text-overflow" >최초 기록</p>
+                        <h3 class="">{{analysis.joo_date__min|date:"Y-m-d"}}</h3>
                     </div>
                 </div>
             </div><!-- end col -->
-            <div class="col-lg-2 col-md-4 col-sm-6">
-                <div class="card-box widget-box-one">
-                    <div class="wigdet-one-content">
-                        <p class="m-0 font-600 font-secondary text-overflow" >최초 주문일자</p>
-                        <h3 class="">2016-04-04</h3>
-                    </div>
-                </div>
-            </div><!-- end col -->
-
-
         </div>
     </div>
 <div class="card-box widget-box-one">
@@ -150,10 +140,9 @@
     </div>
     <br><br>
     <div class="row text-center p-6">
+        <h2>- 업체명 -</h2>
         <form method="GET" action="{% url 'managing:customer_result' %}">
-
         {% for i in object_list%}
-
         <button type="submit"  name='q'  value="{{i.user}} {{ i.code }}" class="btn btn-default waves-effect w-md waves-light" style="margin: 5px;">
             {% if i.state_select == 0 %}
             <span class="text-teal">{{ i.company }}</span>

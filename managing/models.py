@@ -1,5 +1,8 @@
 import re
 
+from django.core.files.uploadedfile import SimpleUploadedFile
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors import Thumbnail, ResizeToFit
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -410,11 +413,23 @@ class Sample(TimeStampedModel, SoftDeletableModel):
         now = datetime.now()
         nowDate = now.strftime('%Y')
         return 'sample/{}/{}/{}'.format(instance.category,nowDate, filename)
-    images = models.ImageField(
+
+    images = ProcessedImageField(
         verbose_name=_('sample_img'),
+        processors=[ResizeToFit(600, 600)],
         blank=True,
         upload_to=upload_to_sample,
     )
+
+    images_thumbnail = ProcessedImageField(
+        verbose_name=_('thumbnail'),
+        processors=[ResizeToFit(200, 200)],
+        blank=True,
+        upload_to= 'sample/thumbnail/',
+    )
+
+    def save(self, request=False, *args, **kwargs):
+        super(Sample, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _('샘플')

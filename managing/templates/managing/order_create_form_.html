@@ -101,6 +101,7 @@ input[type="number"]::-webkit-inner-spin-button {
             cache : false,
             contentType : 'application/json; charset=UTF-8',
             success: function (data, status, xhr) {
+                $('#loding').remove();
                 $id_company.keyup(delay(function (e) {
                     $product_result.html('');
                     $product_search.val('');
@@ -497,6 +498,9 @@ input[type="number"]::-webkit-inner-spin-button {
     {{ errors_message }}
     {{ form.user.errors }}
     <div class="row">
+        <div class="text-center" id="loding">
+         <h1 class="text-warning"><i class="fa fa-spin fa-refresh" style="width: auto;height: auto; line-height: 1px; margin-right: 10px;"></i> 데이터를 불러오는중입니다.</h1>
+        </div>
         <div class="col-sm-8">
             <div class="card-box row">
 

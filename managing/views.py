@@ -1,6 +1,11 @@
 import datetime
 import re
+
+from django.urls import reverse
+
+from managing import log_save
 from django.core import serializers as core_serializer
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login as django_login, logout as django_logout, authenticate, update_session_auth_hash
@@ -9,7 +14,7 @@ from django.contrib.auth.mixins import (UserPassesTestMixin,
                                         LoginRequiredMixin, PermissionRequiredMixin)
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Q, Max
+from django.db.models import Q, Max, Min, Avg
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views import generic
@@ -25,6 +30,7 @@ from . import forms as managing_forms
 from . import models as managing_models
 from . import viewmixin
 from . import serializers
+import PIL
 
 clovi_login_url = '/clovi/login/'
 
@@ -92,7 +98,20 @@ class Main(LoginRequiredMixin, viewmixin.PageableMixin, viewmixin.DataSearchForm
         return managing_models.Memo.objects.order_by('-importance', '-created').filter(confirm=False)
 
     def get_context_data(self, **kwargs):
+        state_list = [1,2,3,9] #[주문,시안,발주,배송]
         context = super(Main, self).get_context_data(**kwargs)
+        context['order_list'] = design_models.OrderInfo.objects.filter(
+            Q(state__in=state_list)&Q(employees=self.request.user)).select_related('user').prefetch_related('order_list')\
+            .order_by('state','-joo_date')
+        count = {}
+        for i in context['order_list']:
+            a = i.get_state_display()
+            if a not in count:
+                count[a] = 1
+            else:
+                count[a] += 1
+
+        context['count'] = count
         context['my_list'] = []
         context['common_list'] = []
         for i in context['memo_list']:
@@ -136,6 +155,7 @@ class MemoCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.Cr
         return context
 
 
+
 class MemoUpdateView(SuccessMessageMixin, generic.UpdateView):
     model = managing_models.Memo
     form_class = managing_forms.MemoUpdateForm
@@ -143,6 +163,13 @@ class MemoUpdateView(SuccessMessageMixin, generic.UpdateView):
     success_url = "/clovi/"
     # optional
     login_url = clovi_login_url
+
+    def form_valid(self, form):
+        response = super(MemoUpdateView, self).form_valid(form)
+        log_save.UserLogs(action='수정', url=self.request.path,
+                 model_id=self.kwargs['pk'], model_name=self.model.__name__
+                 )
+        return response
 
     def get_template_names(self):
         if self.request.is_ajax():
@@ -179,7 +206,10 @@ class CustomerResultView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, vi
 
     def get_context_data(self, **kwargs):
         context = super(CustomerResultView, self).get_context_data(**kwargs)
-
+        if len(context['object_list']) == 1:
+            user = ''.join([str(i.user.id) for i in context['object_list']])
+            data = design_models.OrderInfo.objects.select_related('user').filter(user_id=user)
+            context['analysis'] = data.aggregate(Max('joo_date'), Min('joo_date'))
         return context
 
 
@@ -381,7 +411,6 @@ class SampleView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.
         context = super(SampleView, self).get_context_data(**kwargs)
         return context
 
-
 class SampleCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.CreateView):
     form_class = managing_forms.SampleCreateForm
     template_name = 'managing/sample_create.html'
@@ -517,9 +546,17 @@ class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
 
     def get_queryset(self):
         state = int(self.kwargs['common'])
-        if state == 99:
+        if state == 99: #단독 검색시
             queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
                 'order_list','order_img').filter(~Q(state=state)).order_by('-joo_date', '-today_num')
+        elif state == 4:
+            state_list = [0,1,2,3,4,9]
+            queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
+                'order_list', 'order_img').filter(Q(state__in=state_list)).order_by('-joo_date', '-today_num')
+        elif state == 5:
+            state_list = [5,6,7]
+            queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
+                'order_list', 'order_img').filter(Q(state__in=state_list)).order_by('-joo_date', '-today_num')
         else:
             queryset = super(OrderListView, self).get_queryset().select_related('user').prefetch_related(
                 'order_list','order_img').filter(Q(state=state)).order_by('-joo_date', '-today_num')
@@ -585,6 +622,7 @@ class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
 
             # i.products = name+' 외 '+ str(data[check_date][0])+'건'
             i.img_bool = i.order_img.exists()
+        context['common'] = self.kwargs['common']
         return context
 
     # optional
@@ -706,6 +744,7 @@ class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
         if self.request.is_ajax():
             self.success_url = self.request.META.get('HTTP_REFERER')
         response = super(OrdersCreateView, self).form_valid(form)
+        log_save.UserLogs(user=self.request.user.username, model_id=order_info.id, model_name=self.model.__name__, action='생성')
         return response
 
     def form_invalid(self, form):
@@ -943,6 +982,7 @@ class OrdersUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
 
         self.success_url = self.request.META.get('HTTP_REFERER')
         response = super(OrdersUpdateView, self).form_valid(form)
+        log_save.UserLogs(user=self.request.user.username, model_id=self.kwargs['pk'], model_name=self.model.__name__, action='수정')
         return response
 
     def form_invalid(self, form):
@@ -1153,34 +1193,38 @@ class EmployeesUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, gener
     # optional
     login_url = clovi_login_url
 
-
-
 class ImageBoxView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
     template_name = 'managing/img_box.html'
     context_object_name = 'image_list'
-    paginate_by = 10
+    paginate_by = 20
     model = managing_models.Sample
     data_search_form = managing_forms.DataSearchForm
     # optional
     login_url = clovi_login_url
 
+
     def get_queryset(self):
-        queryset = super().get_queryset().values_list('images','name','keyword','link','created')
-        queryset_order =design_models.OrderImg.objects.values_list('images','name','keyword','link','created')
-        queryset = queryset_order.union(queryset).order_by('-created')
+        queryset_sample = super().get_queryset()
+        queryset_order =design_models.OrderImg.objects
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
+            def com(queryset, q):
+                queryset = queryset.filter( Q(name__icontains=q) | Q(keyword__icontains=q))
+                return queryset
             q = form.cleaned_data['q']
+            log_save.ImageSearchLogs(action='검색',user=self.request.user.username, q = q)
             if q:
                 try:
                     q = q.split()
                     for i in q:
-                        queryset = queryset.filter(
-                            Q(name__icontains=i)
-                            | Q(keyword__icontains=i) | Q(link__icontains=i)
-                        )
+                        queryset_sample= com(queryset_sample,i)
+                        queryset_order = com(queryset_order,i)
                 except:
                     pass
+
+        queryset_sample = queryset_sample.values_list('images', 'name', 'keyword', 'link', 'created')
+        queryset_order = queryset_order.values_list('images', 'name', 'keyword', 'link', 'created')
+        queryset = queryset_order.union(queryset_sample).order_by('-created')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -1217,11 +1261,9 @@ class DepositView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin
 
     def get_context_data(self, **kwargs):
         context = super(DepositView, self).get_context_data(**kwargs)
-
         obj_id_list = [i.id for i in context['object_list']]
         data = managing_models.OrderWithDeposit.objects.select_related('deposit_with','order_info_with').prefetch_related('order_info_with__order_list').filter(deposit_with_id__in=obj_id_list)
         data_id_list = [i.deposit_with.id for i in data]
-
         for i in context['object_list']:
             if i.id in data_id_list:
                 data_list = []

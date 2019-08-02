@@ -227,16 +227,19 @@ class SampleCreateForm(forms.ModelForm):
         super(SampleCreateForm, self).__init__(*args, **kwargs)
         self.fields['employees'].queryset = User.objects.filter(is_staff=True)
         self.fields['category'].queryset = design_models.Category.objects.filter(level=1)
+        self.fields['images_thumbnail'].required = False
+        self.fields['link'].required = False
 
     class Meta:
         model = managing_models.Sample
-        fields = ['category','sectors_category','employees','name','keyword','images']
+        fields = ['category','sectors_category','employees','name','keyword','images','images_thumbnail','link']
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control','required':'' }),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
             'employees': forms.Select(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
             'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
+            'link': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': "off"}),
             'images': forms.FileInput(attrs={'class':'form-control','required':'' })
         }
 
@@ -248,13 +251,14 @@ class SampleUpdateForm(forms.ModelForm):
 
     class Meta:
         model = managing_models.Sample
-        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'images','state']
+        fields = ['category', 'sectors_category', 'employees', 'name', 'keyword', 'images','state','link']
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control'}),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
             'employees': forms.Select(attrs={'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
-            'keyword': forms.TextInput(attrs={'class': 'form-control','autocomplete': "off"}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'keyword': forms.TextInput(attrs={'class': 'form-control'}),
+            'link': forms.TextInput(attrs={'class': 'form-control'}),
             'images': forms.FileInput(attrs={'class': 'form-control'}),
             'state':forms.CheckboxInput(attrs={ 'style':"width:50px;,height:50px;"})
         }

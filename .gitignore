@@ -130,3 +130,8 @@ media/
 conf/settings/secret.py
 conf/settings/production.py
 GeoLite2-Country.mmdb
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
