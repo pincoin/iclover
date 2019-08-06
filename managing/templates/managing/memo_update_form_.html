@@ -1,4 +1,11 @@
 {% load addattr %}
+<script>
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+</script>
 <form id="form_id" method="POST" text="메모 수정"  autocomplete="off">
     {% csrf_token %}
     <div class="row">

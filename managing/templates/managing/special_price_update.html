@@ -1,5 +1,12 @@
 {% load humanize %}
 {% block content%}
+<script>
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+</script>
 <form id='form_id' method="post" text="내역 생성" autocomplete="off"  action="">
     {% csrf_token %}
     {{ form.errors_from_post }}

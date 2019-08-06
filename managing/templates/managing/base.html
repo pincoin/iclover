@@ -203,8 +203,8 @@
 
                             </li>
                             {% if user.is_authenticated %}
-                            <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> 내 현황</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
+<!--                            <li><a href="{% url 'managing:my_page'%}"><i class="ti-user m-r-5"></i> 내 현황</a></li>-->
+<!--                            <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>-->
                             <li><a href="{% url 'managing:change_password'%}"><i class="ti-lock m-r-5"></i>
                             암호 변경</a></li>
                             <li><a href="{% url 'managing:logout'%}"><i class="ti-power-off m-r-5"></i> 로그아웃</a></li>
@@ -261,11 +261,11 @@
                                 <a href="{% url 'managing:category' %}">카테고리 관리
                                 </a>
                             </li>
-                            <li>
-                                <a href="{% url 'managing:discount' %}">할인그룹 관리
-                                    <small class="text-danger">_(준비중)</small>
-                                </a>
-                            </li>
+<!--                            <li>-->
+<!--                                <a href="{% url 'managing:discount' %}">할인그룹 관리-->
+<!--                                    <small class="text-danger">_(준비중)</small>-->
+<!--                                </a>-->
+<!--                            </li>-->
                         </ul>
                     </li>
 

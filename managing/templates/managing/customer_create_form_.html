@@ -1,3 +1,10 @@
+<script>
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+</script>
 <form id="form_id" method="POST" text="거래처 신규 등록"  autocomplete="off" class="has-customer">
     {% csrf_token %}
     {{ form.errors_from_post }}

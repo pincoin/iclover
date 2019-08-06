@@ -3,6 +3,13 @@
 {% block title %}품목 등록{% endblock%}
 
 {% block content%}
+<script>
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+</script>
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">

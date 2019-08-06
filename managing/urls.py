@@ -47,6 +47,7 @@ urlpatterns = [
     path('order_images/<int:pk>/delete/', views.OrderWithImagesDeleteView.as_view(), name='order_images_delete'),
     path('payments/', views.PaymentListView.as_view(), name='payment-list'),
     path('bill/<int:pk>/', views.BillView.as_view(), name='bill'),
+    path('my_page/', views.MyPageView.as_view(), name='my_page'),
     path('ask/', views.AskView.as_view(), name='ask'),
     path('ask/create/', views.AskCreateView.as_view(), name='ask_create'),
     path('ask/<int:pk>/update/', views.AskUpdateView.as_view(), name='ask_update'),

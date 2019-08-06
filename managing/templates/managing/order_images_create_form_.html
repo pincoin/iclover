@@ -27,6 +27,13 @@
     opacity: .5;
 }
 </style>
+<script>
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+</script>
 {% load static %}
     {{ form.errors_from_post }}
     {{ form.user }}

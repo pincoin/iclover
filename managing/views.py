@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import (UserPassesTestMixin,
                                         LoginRequiredMixin, PermissionRequiredMixin)
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Q, Max, Min, Avg
+from django.db.models import Q, Max, Min, Avg, Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views import generic
@@ -536,6 +536,31 @@ class DiscountView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     # optional
     login_url = clovi_login_url
 
+
+def analysis(model , date, user):
+    total = sum([i.selling_price * i.quantity for i in model])
+    month_total = model.filter(order_info__order_date__range=date,
+                                   order_info__employees=user)
+    return
+class MyPageView(viewmixin.UserIsStaffMixin, generic.TemplateView):
+    template_name = 'managing/my_page.html'
+    '''
+    labels: [1,2,3,4,5,6,7,8,9,10,11,12],
+    datasets: [{
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "Africa",
+        backgroundColor: "#3e95cd",
+        borderColor: "#3e95cd",
+        fill: false
+      }]
+    '''
+    # optional
+    login_url = clovi_login_url
+
+    def get_context_data(self, **kwargs):
+        user =self.request.user.username
+        context = super(MyPageView, self).get_context_data(**kwargs)
+        return context
 
 class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
                     generic.ListView):
@@ -1583,9 +1608,10 @@ class PaymentListView(APIView):
     def post(self, request, format=None):
         serializer = serializers.PaymentSerializer(data=request.data)
         if serializer.is_valid():
-            print('{} {} {} '.format(request.data['phone'],
-                                     request.data['tell'],
-                                     request.data['message'], ))
+            phone= request.data['phone']
+            tell = request.data['tell']
+            message = request.data['message']
+            print(f'{phone} {tell} {message}')
             save = True
 
             if save:

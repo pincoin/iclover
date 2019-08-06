@@ -1,0 +1,113 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% block title %}관리자 페이지{% endblock%}
+
+{% block content%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title count-btn" data-show-btn="all">내 현황</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card-box">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="text-center card-box">
+                        <div class="member-card">
+                            <div class="">
+                                <h4 class="m-b-5">유저 네임</h4>
+                            </div>
+                            <hr>
+                            <div class="text-left">
+                                <table class="table table-bordered hover m-0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>지난달</th>
+                                        <th>이번달</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>매출</td>
+                                        <td>17980000</td>
+                                        <td>17980000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>손실</td>
+                                        <td>80000</td>
+                                        <td>70000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>샘플</td>
+                                        <td>80000</td>
+                                        <td>70000</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+
+                            </div>
+                        </div> <!-- end member-card -->
+                    </div> <!-- end card-box -->
+                </div> <!-- end col -->
+
+                <div class="col-md-8 col-lg-8">
+                <canvas id="line-chart" width="800" height="450"></canvas>
+                </div>
+                <!-- end col -->
+                {% for i in object_list%}
+                {{i.order_info.order_date}} {{i.order_info}}<br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [1,2,3,4,5,6,7,8,9,10,11,12],
+    datasets: [{
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "Africa",
+        backgroundColor: "#3e95cd",
+        borderColor: "#3e95cd",
+        fill: false
+      }, {
+        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        label: "Asia",
+        backgroundColor: "#8e5ea2",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, {
+        data: [168,170,178,190,203,276,408,547,675,734],
+        label: "Europe",
+        backgroundColor: "#3cba9f",
+        borderColor: "#3cba9f",
+        fill: false
+      }, {
+        data: [40,20,10,16,24,38,74,167,508,784],
+        label: "Latin America",
+        backgroundColor: "#e8c3b9",
+        borderColor: "#e8c3b9",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: '매출 현황 백분위표'
+    }
+  }
+});
+</script>
+{% endblock %}
