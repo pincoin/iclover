@@ -22,6 +22,9 @@ class Category(TimeStampedModel,SoftDeletableModel, MPTTModel):
         db_index=True,
         on_delete=models.SET_NULL,
     )
+    slug = models.IntegerField(
+        default=0
+    )
 
     title = models.CharField(
         verbose_name=_('title'),
@@ -48,6 +51,10 @@ class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
         related_name='children',
         db_index=True,
         on_delete=models.SET_NULL,
+    )
+
+    slug = models.IntegerField(
+        default=0
     )
 
     title = models.CharField(
