@@ -421,13 +421,6 @@ class Sample(TimeStampedModel, SoftDeletableModel):
         upload_to=upload_to_sample,
     )
 
-    images_thumbnail = ProcessedImageField(
-        verbose_name=_('thumbnail'),
-        processors=[ResizeToFit(200, 200)],
-        blank=True,
-        upload_to= 'sample/thumbnail/',
-    )
-
     def save(self, request=False, *args, **kwargs):
         super(Sample, self).save(*args, **kwargs)
 

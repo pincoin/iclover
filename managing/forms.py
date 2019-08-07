@@ -227,12 +227,11 @@ class SampleCreateForm(forms.ModelForm):
         super(SampleCreateForm, self).__init__(*args, **kwargs)
         self.fields['employees'].queryset = User.objects.filter(is_staff=True)
         self.fields['category'].queryset = design_models.Category.objects.filter(level=1)
-        self.fields['images_thumbnail'].required = False
         self.fields['link'].required = False
 
     class Meta:
         model = managing_models.Sample
-        fields = ['category','sectors_category','employees','name','keyword','images','images_thumbnail','link']
+        fields = ['category','sectors_category','employees','name','keyword','images','link']
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control','required':'' }),
             'sectors_category': forms.Select(attrs={'class': 'form-control'}),
