@@ -490,7 +490,7 @@ class CategoryCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
             sec_category.save()
         elif kind == 1:
             if level == 1:
-                parent = design_models.Category.objects._mptt_filter(title=title)
+                parent = design_models.Category.objects.filter(title=title)
                 for i in parent:
                     parent = i.id
             elif level == 0:
@@ -511,7 +511,7 @@ class CategoryDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
         pk = kwargs['pk']
 
         def delete_f(model, pk, level):
-            data = model._mptt_filter(id=pk)
+            data = model.filter(id=pk)
             if level == 0:
                 for i in data:
                     child = i.children.all()
