@@ -526,8 +526,6 @@ class CategoryDeleteView(viewmixin.UserIsStaffMixin, generic.DeleteView):
         elif kind == 1: #품목 카테고리
             model = design_models.Category.objects
             delete_f(model, pk, level)
-
-
         return redirect('/clovi/category/')
 
 
@@ -560,6 +558,16 @@ class MyPageView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         user =self.request.user.username
         context = super(MyPageView, self).get_context_data(**kwargs)
+        today = datetime.date.today()
+        oder_list = design_models.OrderList.objects.prefetch_related('order_info').filter(Q(order_info__state=4),Q(order_info__employees=user))
+        data = oder_list.values('order_info__order_date','selling_price','quantity')
+        data.aggregate(total_price=Sum('selling_price'))
+        for i in data:
+            print(i)
+        # total = sum([i.selling_price * i.quantity for i in oder_list])
+        # print(total)
+        this_month = { 'year':today.year,'month':today.month}
+        print(this_month)
         return context
 
 class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,

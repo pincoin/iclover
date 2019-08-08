@@ -12,7 +12,7 @@ from mptt.models import MPTTModel
 from pilkit.processors import ResizeToFit
 
 
-class Category(TimeStampedModel,SoftDeletableModel, MPTTModel):
+class Category(TimeStampedModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
         verbose_name=_('parent'),
@@ -39,7 +39,7 @@ class Category(TimeStampedModel,SoftDeletableModel, MPTTModel):
         return self.title
 
 
-class SectorsCategory(TimeStampedModel, SoftDeletableModel, MPTTModel):
+class SectorsCategory(TimeStampedModel, MPTTModel):
     parent = TreeForeignKey(
         'self',
         verbose_name=_('parent'),

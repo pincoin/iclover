@@ -75,7 +75,7 @@
                         </a>
                             <ul>
                                 {% for z in i.children.all%}
-                                <li><a class="text-teal">{{z}} {{z.id}}</a>
+                                <li><a class="text-teal">{{z}}</a>
                                     <a href="{% url 'managing:category_delete' kind=1 level=1 pk=z.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
                                         <i class="mdi mdi-delete-forever"></i>
                                     </a>
