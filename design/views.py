@@ -62,8 +62,8 @@ class ProductView(ProfileMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
-        context['menu_slug']= self.kwargs['menu_slug']
-        context['sector_slug'] = self.kwargs['sector_slug']
+        # context['menu_slug']= self.kwargs['menu_slug']
+        # context['sector_slug'] = self.kwargs['sector_slug']
         return context
 
 class CartView(generic.TemplateView):

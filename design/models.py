@@ -902,6 +902,13 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         on_delete=models.SET_NULL,
     )
     # 업로드하는 시안과 추가 업로드하는 시안이 수정된 시안이라고 연결해주는 숫자
+    employees = models.CharField(
+        verbose_name=_('업로더'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
     order_img_num = models.IntegerField(
         verbose_name=_('이미지 넘버링'),
         null=True,

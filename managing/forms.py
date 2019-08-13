@@ -45,6 +45,8 @@ class DataSearchForm(forms.Form):
         self.fields['q'].required = False
 
 
+
+
 class CustomerCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomerCreateForm, self).__init__(*args, **kwargs)
@@ -55,7 +57,7 @@ class CustomerCreateForm(forms.ModelForm):
         model = member_models.Profile
         fields = [
             'code','company', 'company_keyword','ceo','tell','address','phone','confirm','manager',\
-            'options','keywords','memo','sectors','business','tax_bill_mail','address2'
+            'options','keywords','memo','sectors','business','tax_bill_mail','address2','sectors_category'
         ]
         widgets = {
             'code': forms.TextInput(attrs={'class': 'form-control','type':'number'}),
@@ -74,6 +76,7 @@ class CustomerCreateForm(forms.ModelForm):
             'sectors': forms.TextInput(attrs={'class': 'form-control'}),
             'business': forms.TextInput(attrs={'class': 'form-control'}),
             'tax_bill_mail': forms.TextInput(attrs={'class': 'form-control'}),
+            'sectors_category': forms.Select(attrs={'class': 'form-control'}),
         }
         help_texts = {
             'code':'사업자번호 -숫자만',
@@ -109,6 +112,7 @@ class CustomerUpdateForm(forms.ModelForm):
         model = member_models.Profile
         fields = ['company', 'company_keyword', 'ceo', 'tell', 'address', 'phone', 'confirm', 'manager','division',\
             'options', 'keywords', 'memo', 'sectors', 'business', 'tax_bill_mail', 'address2', 'state_select', 'state'
+                  ,'sectors_category'
         ]
         widgets = {
             'company': forms.TextInput(attrs={'class': 'form-control',}),
@@ -129,6 +133,7 @@ class CustomerUpdateForm(forms.ModelForm):
             'state_select': forms.Select(attrs={'class': 'form-control' }),
             'state': forms.TextInput(attrs={'class': 'form-control',  }),
             'division': forms.TextInput(attrs={'class': 'form-control', }),
+            'sectors_category': forms.Select(attrs={'class': 'form-control'}),
         }
         help_texts = {
             'code':'사업자번호 -숫자만',

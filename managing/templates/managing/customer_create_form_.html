@@ -40,18 +40,22 @@
             {{ form.business}}
         </div>
         <div class="col-sm-3">
-            <span class="help-block"> {{ form.tell.help_text}}</span>
-            {{ form.tell}}
+            <span class="help-block">분류 카테고리 </span>
+            {{ form.sectors_category}}
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <span class="help-block"> {{ form.address.help_text}}</span>
             {{ form.address}}
         </div>
-        <div class="col-sm-6">
-            <span class="help-block"> {{ form.address2.help_text}}</span>
-            {{ form.address2}}
+        <div class="col-sm-5">
+            <span class="help-block">{{ form.address2.help_text}}</span>
+            {{form.address2}}
+        </div>
+        <div class="col-sm-2">
+            <span class="help-block"> {{ form.tell.help_text}}</span>
+            {{ form.tell}}
         </div>
     </div>
     <br>

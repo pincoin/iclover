@@ -1,10 +1,15 @@
+from functools import reduce
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import viewsets
+from rest_framework.response import Response
+
 from member import models as member_models
 from design import models as design_models
 from managing import models as managing_models
 from . import serializers
+import operator
 from django.db.models import Q
 from rest_framework.permissions import IsAdminUser
 
@@ -21,14 +26,30 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.GroupSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAdminUser,)
     queryset = member_models.Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
     def get_queryset(self):
-        queryset = self.queryset.filter(~Q(state_select=1)).order_by('company')
-        for i in queryset:
-            i.id = i.user.id
+        queryset = self.queryset.filter(~Q(state_select=1))
         return queryset
+
+    def list(self, request, *args, **kwargs):
+        keyword = request.GET.get('keyword')
+        if keyword:
+            keyword = keyword.split()
+            query = reduce(operator.and_,(Q(company__icontains=item) for item in keyword))
+            query1 = reduce(operator.and_, (Q(company_keyword__icontains=item) for item in keyword))
+            queryset = self.filter_queryset(self.get_queryset()).filter(query|query1).order_by('company')
+        else:
+            queryset = self.filter_queryset(self.get_queryset()).order_by('company')[:1]
+        page = self.paginate_queryset(queryset)
+        for i in page:
+            i.id = i.user.id
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class ProductTextViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
@@ -66,7 +87,7 @@ class SpecialPriceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         get_data = self.request.GET
         try:
-            queryset = self.queryset.filter(customer_id =get_data['data'])
+            queryset = self.queryset.filter(customer_id =get_data['data']).order_by('product')
         except:
             return {}
         return queryset

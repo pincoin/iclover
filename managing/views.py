@@ -535,10 +535,8 @@ class DiscountView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     login_url = clovi_login_url
 
 
-def analysis(model , date, user):
-    total = sum([i.selling_price * i.quantity for i in model])
-    month_total = model.filter(order_info__order_date__range=date,
-                                   order_info__employees=user)
+def analysis(model , date):
+    print(model, date)
     return
 class MyPageView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     template_name = 'managing/my_page.html'
@@ -558,16 +556,21 @@ class MyPageView(viewmixin.UserIsStaffMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         user =self.request.user.username
         context = super(MyPageView, self).get_context_data(**kwargs)
-        today = datetime.date.today()
-        oder_list = design_models.OrderList.objects.prefetch_related('order_info').filter(Q(order_info__state=4),Q(order_info__employees=user))
+        today = datetime.date.today().strftime("%Y %m").split()
+        year = int( today[0])
+        month = int(today[1])
+        month = 1
+        date_list = {
+            'this_year':year, 'this_month': month,
+            'last_year' : year ,'last_month' :month-1 }
+        if date_list['last_month'] == 0:
+            date_list['last_year'] = date_list['last_year']-1
+            date_list['last_month'] = 12
+        oder_list = design_models.OrderList.objects.prefetch_related('order_info')\
+            .filter(Q(order_info__state=4),Q(order_info__employees=user))
         data = oder_list.values('order_info__order_date','selling_price','quantity')
-        data.aggregate(total_price=Sum('selling_price'))
-        for i in data:
-            print(i)
         # total = sum([i.selling_price * i.quantity for i in oder_list])
         # print(total)
-        this_month = { 'year':today.year,'month':today.month}
-        print(this_month)
         return context
 
 class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
@@ -1183,7 +1186,7 @@ class EmployeesView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
 class EmployeesCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.CreateView):
     form_class = managing_forms.EmployeesCreateForm
     success_url = "/clovi/employees"
-    success_message = '%(user)s 신규 등록 되었습니다.'
+    success_message = '신규 등록 되었습니다.'
     # optional
     login_url = clovi_login_url
 
@@ -1245,7 +1248,9 @@ class ImageBoxView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixi
                 queryset = queryset.filter( Q(name__icontains=q) | Q(keyword__icontains=q))
                 return queryset
             q = form.cleaned_data['q']
-            log_save.ImageSearchLogs(action='검색',user=self.request.user.username, q = q)
+            path = self.request.get_full_path()
+            if not 'page=' in path or 'page=1' in path:
+                log_save.ImageSearchLogs(action='imag_box',user=self.request.user.username, q = q)
             if q:
                 try:
                     q = q.split()
@@ -1483,11 +1488,15 @@ class OrderWithImagesCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin,
         return context
 
     def form_valid(self, form):
+        user = self.request.user.username
         files = self.request.FILES.getlist('pro_image')
         self.success_url = self.request.META.get('HTTP_REFERER')
         order_id = self.kwargs['pk']
+        category = design_models.OrderInfo.objects.select_related('user__profile').get(id=order_id)
+        sectors = category.user.profile.sectors_category
         for file in files:
-            img_model = design_models.OrderImg(order_info_id=order_id, images=file, name=file.name)
+            img_model = design_models.OrderImg(order_info_id=order_id, images=file, name=file.name,employees=user,
+                                               sectors_category=sectors)
             img_model.save()
 
         return super(OrderWithImagesCreateView, self).form_valid(form)

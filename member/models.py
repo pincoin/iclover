@@ -67,6 +67,16 @@ class Profile(TimeStampedModel):
         blank=True,
     )
 
+    sectors_category = models.ForeignKey(
+        'design.SectorsCategory',
+        blank=True,
+        null=True,
+        verbose_name=_('업종'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+
+
     tell = models.CharField(
         verbose_name=_('매장번호'),
         max_length=255,

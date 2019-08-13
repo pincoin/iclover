@@ -95,79 +95,47 @@ input[type="number"]::-webkit-inner-spin-button {
         $product_search = $("#product_search");
         $search_result = $("#search_result");
         $("#id_company :input:text:first").focus();
-        $.ajax({
-            url: '/api/profile.json',
-            dataType : 'json',
-            cache : false,
-            contentType : 'application/json; charset=UTF-8',
-            success: function (data, status, xhr) {
-                $('#loding').remove();
-                $id_company.keyup(delay(function (e) {
+        $id_company.keyup(delay(function (e) {
+            var search_val = $id_company.val();
+            $.ajax({
+                url: '/api/profile.json',
+                dataType: 'json',
+                cache: false,
+                data: {'keyword': search_val},
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data, status, xhr) {
+                    var count = data['count'];
                     $product_result.html('');
                     $product_search.val('');
                     $search_result.html('');
-                    var search_val = $id_company.val();
-                    var expression = new RegExp(search_val, "i");
-                    var expression_array = expression.source.split(' ');
                     var index_num = 0;
                     var max_num = 4;
                     data_list = {};
-                    if (search_val != '') {
-                        $.each(data, function (key, item) {
-                            var company = item.company;
-                            var company_keyword = item.company_keyword;
-                            if (expression_array.length == 1) {
-                                if (company.search(expression) != -1 || company_keyword.search(expression) != -1) {
-                                    if (index_num < max_num) {
-                                        $search_result.append(
-                                            '<li class="list-group-item link-class text-custom"  id="' + item.id +
-                                            '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
-                                        );
-                                        data_id = item.id;
-                                        data_list[data_id] = item;
-                                        index_num += 1;
-                                    } else {
-                                        $search_result.append(
-                                            '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
-                                        );
-                                        index_num = 0;
-                                        return false;
-
-                                    }
-                                }
+                    $.each(data['results'], function (key, item) {
+                        console.log(key, item);
+                        var company = item.company;
+                        var company_keyword = item.company_keyword;
+                        if (search_val != '') {
+                            if (index_num < max_num) {
+                                $search_result.append(
+                                    '<li class="list-group-item link-class text-custom"  id="' + item.id +
+                                    '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
+                                );
+                                data_id = item.id;
+                                data_list[data_id] = item;
+                                index_num += 1;
                             } else {
-                                var expression0 = new RegExp(expression_array[0], "i");
-                                var expression1 = new RegExp(expression_array[1], "i");
-                                var expression2 = new RegExp(expression_array[2], "i");
-                                if (company.search(expression0) != -1 || company_keyword.search(expression0) != -1) {
-                                    if (company.search(expression1) != -1 || company_keyword.search(expression1) != -1) {
-                                        if (company.search(expression2) != -1 || company_keyword.search(expression2) != -1) {
-                                            if (index_num < max_num) {
-                                                $search_result.append(
-                                                    '<li class="list-group-item link-class text-custom" id="' + item.id +
-                                                    '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
-                                                );
-                                                data_id = item.id;
-                                                data_list[data_id] = item;
-
-                                                index_num += 1;
-                                            } else {
-                                                $search_result.append(
-                                                    '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
-                                                );
-                                                index_num = 0;
-                                                return false;
-
-                                            }
-                                        }
-                                    }
-                                }
+                                $search_result.append(
+                                    '<li class="list-group-item link-class text-danger"><i class="mdi mdi-alert-octagon"></i><b> +' + count + '</b>...더 자세히 검색해주세요</li>'
+                                );
+                                index_num = 0;
+                                return false;
                             }
-                        })
-                    }
-                }, 400));
-            }
-        });
+                        }
+                    })
+                }
+            });
+        }, 300));
 
         $search_result.on('click', 'li', function () {
             var idx = $(this).attr('id');
@@ -480,6 +448,8 @@ input[type="number"]::-webkit-inner-spin-button {
         }
          SortableSpan();
     });
+
+
     setTimeout(function() { $('input[name="company"]').focus() }, 500);
 
 </script>
@@ -495,9 +465,6 @@ input[type="number"]::-webkit-inner-spin-button {
     {{ errors_message }}
     {{ form.user.errors }}
     <div class="row">
-        <div class="text-center" id="loding">
-         <h1 class="text-warning"><i class="fa fa-spin fa-refresh" style="width: auto;height: auto; line-height: 1px; margin-right: 10px;"></i> 데이터를 불러오는중입니다.</h1>
-        </div>
         <div class="col-sm-8">
             <div class="card-box row">
 
