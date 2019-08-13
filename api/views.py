@@ -58,26 +58,28 @@ class ProductTextViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset.filter(Q(product_version=1)).order_by('-standard')
-        for i in queryset:
-            if not i.horizontal:
-                i.horizontal = 0
-            if not i.vertical:
-                i.vertical = 0
-            if not i.sell_price:
-                i.sell_price = 0
-            if not i.buy_price:
-                i.buy_price = 0
-            try:
-                i.etc = i.etc.strip()
-            except:
-                pass
-            if i.etc == None:
-                i.etc = ''
-            if i.gram == None:
-                i.gram = ''
-            if i.memo == None:
-                i.memo = ''
         return queryset
+
+    def list(self, request, *args, **kwargs):
+        keyword = request.GET.get('keyword')
+        idx = request.GET.get('idx')
+        print(keyword, idx)
+        if keyword:
+            keyword = keyword.split()
+            query = reduce(operator.and_,(Q(company__icontains=item) for item in keyword))
+            query1 = reduce(operator.and_, (Q(company_keyword__icontains=item) for item in keyword))
+            queryset = self.filter_queryset(self.get_queryset()).filter(query|query1).order_by('company')
+        else:
+            queryset = self.filter_queryset(self.get_queryset()).order_by('-id')
+        page = self.paginate_queryset(queryset)
+        # for i in page:
+        #     i.id = i.user.id
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class SpecialPriceViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)

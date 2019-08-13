@@ -94,6 +94,8 @@ input[type="number"]::-webkit-inner-spin-button {
         $product_result = $("#product_result");
         $product_search = $("#product_search");
         $search_result = $("#search_result");
+        custromer ={};
+        custromer['id'] = null;
         $("#id_company :input:text:first").focus();
         $id_company.keyup(delay(function (e) {
             var search_val = $id_company.val();
@@ -112,7 +114,6 @@ input[type="number"]::-webkit-inner-spin-button {
                     var max_num = 4;
                     data_list = {};
                     $.each(data['results'], function (key, item) {
-                        console.log(key, item);
                         var company = item.company;
                         var company_keyword = item.company_keyword;
                         if (search_val != '') {
@@ -136,7 +137,6 @@ input[type="number"]::-webkit-inner-spin-button {
                 }
             });
         }, 300));
-
         $search_result.on('click', 'li', function () {
             var idx = $(this).attr('id');
             if (idx) {
@@ -170,123 +170,131 @@ input[type="number"]::-webkit-inner-spin-button {
                 $('input[id="product_search"]').focus();
                 data_list = {};
             }
-             $.ajax({
-            url: '/api/special_price.json',
-            dataType : 'json',
-            data : {data:idx },
-             cache : false,
-            contentType : 'application/json; charset=UTF-8',
-            success: function (special_price_data, status, xhr) {
-                special_price = special_price_data;
-             }});
-
         });
 
-           $.ajax({
-           type : "GET",
-            url: '/api/product.json',
-            dataType : 'json',
-           cache : false,
-            success: function (data, status, xhr) {
-                $product_search.keyup(delay(function (e) {
-                    $product_result.html('');
-                    var search_val = $product_search.val();
-                    var expression = new RegExp(search_val, "i");
-                    var expression_array = expression.source.split(' ');
-                    var index_num = 0;
-                    var max_num = 12;
-                    var max_text = 10;
-                    data_list = {};
-                    if (search_val != '') {
-                        $.each(data, function (key, item) {
-                            var company = item.title;
-                            var company_name = item.company_name;
-                            var horizontal = item.horizontal;
-                            var vertical = item.vertical;
-                            var etc = item.etc;
-                            var gram = item.gram;
-                            var memo = item.memo;
-                            var standard = item.standard;
-                            var sell_price = item.sell_price;
-                            if(typeof(special_price) != 'undefined'){
-                                $.each(special_price, function (keys, items) {
-                                    if (item['id'] == items['product']) {
-                                        sell_price = items['new_price'];
-                                    }
-                                });
-                            }
+        $product_search.keyup(delay(function (e) {
+            $product_result.html('');
+            var search_val = $product_search.val();
+            var index_num = 0;
+            var max_num = 12;
+            var max_text = 10;
+            data_list = {};
+            if (search_val != '') {
+                    $.ajax({
+                        type: "GET",
+                        url: '/api/product.json',
+                        dataType: 'json',
+                        data : {'idx' :custromer['id'],
+                                'keyword': search_val,
+                        },
+                        cache: false,
+                        success: function (data, status, xhr) {
+                            $.each(data, function (key, item) {
+                                console.log(item);
+                            })
+                        }
+                    });
 
-                            if (expression_array.length == 1) {
-                                if (company.search(expression) != -1 || standard.search(expression) != -1 || gram.search(expression) != -1
-                                       || etc.search(expression) != -1 || company_name.search(expression) != -1 || memo.search(expression) != -1)  {
-                                    if(etc.length > max_text){etc = etc.substr(0,max_text)+'...'}
-                                    if(gram.length > max_text){gram = gram.substr(0,max_text)+'...'}
-                                    if(memo.length > max_text){memo = memo.substr(0,max_text)+'...'}
+
+                    var company = item.title;
+                    var company_name = item.company_name;
+                    var horizontal = item.horizontal;
+                    var vertical = item.vertical;
+                    var etc = item.etc;
+                    var gram = item.gram;
+                    var memo = item.memo;
+                    var standard = item.standard;
+                    var sell_price = item.sell_price;
+                    if (typeof (special_price) != 'undefined') {
+                        $.each(special_price, function (keys, items) {
+                            if (item['id'] == items['product']) {
+                                sell_price = items['new_price'];
+                            }
+                        });
+                    }
+
+                    if (expression_array.length == 1) {
+                        if (company.search(expression) != -1 || standard.search(expression) != -1 || gram.search(expression) != -1
+                            || etc.search(expression) != -1 || company_name.search(expression) != -1 || memo.search(expression) != -1) {
+                            if (etc.length > max_text) {
+                                etc = etc.substr(0, max_text) + '...'
+                            }
+                            if (gram.length > max_text) {
+                                gram = gram.substr(0, max_text) + '...'
+                            }
+                            if (memo.length > max_text) {
+                                memo = memo.substr(0, max_text) + '...'
+                            }
+                            if (index_num < max_num) {
+                                $product_result.append(
+                                    '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
+                                    '' + item.id + '"><b>' + company + '&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
+                                    '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
+                                    '&nbsp<span class="text-muted">' + gram + '</span>' +
+                                    '<br> <span class="text-dark">' + comma(parseInt(sell_price)) + '</span>' +
+                                    '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
+                                    '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
+                                    '</div></a>'
+                                );
+                                Number(0, 0);
+                                data_id = item.id;
+                                data_list[data_id] = item;
+                                index_num += 1;
+                            } else {
+                                $product_result.append(
+                                    '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
+                                );
+                                index_num = 0;
+                                return false;
+                            }
+                        }
+                    } else {
+                        var expression0 = new RegExp(expression_array[0], "i");
+                        var expression1 = new RegExp(expression_array[1], "i");
+                        var expression2 = new RegExp(expression_array[2], "i");
+                        if (company.search(expression0) != -1 || standard.search(expression0) != -1 || gram.search(expression0) != -1
+                            || etc.search(expression0) != -1 || company_name.search(expression0) != -1 || memo.search(expression0) != -1) {
+                            if (company.search(expression1) != -1 || standard.search(expression1) != -1 || gram.search(expression1) != -1
+                                || etc.search(expression1) != -1 || company_name.search(expression1) != -1 || memo.search(expression1) != -1) {
+                                if (company.search(expression2) != -1 || standard.search(expression2) != -1 || gram.search(expression2) != -1
+                                    || etc.search(expression2) != -1 || company_name.search(expression2) != -1 || memo.search(expression2) != -1) {
+                                    if (etc.length > max_text) {
+                                        etc = etc.substr(0, max_text) + '...'
+                                    }
+                                    if (gram.length > max_text) {
+                                        gram = gram.substr(0, max_text) + '...'
+                                    }
+                                    if (memo.length > max_text) {
+                                        memo = memo.substr(0, max_text) + '...'
+                                    }
                                     if (index_num < max_num) {
                                         $product_result.append(
                                             '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
-                                            ''+item.id +'"><b>' + company+'&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
+                                            '' + item.id + '"><b>' + company + '&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
                                             '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
                                             '&nbsp<span class="text-muted">' + gram + '</span>' +
-                                            '<br> <span class="text-dark">' +  comma(parseInt(sell_price)) + '</span>' +
+                                            '<br> <span class="text-dark">' + comma(parseInt(sell_price)) + '</span>' +
                                             '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
                                             '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
                                             '</div></a>'
-                                                );Number(0,0);
+                                        );
                                         data_id = item.id;
                                         data_list[data_id] = item;
                                         index_num += 1;
-                                    }else{
-                                         $product_result.append(
-                                                    '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
-                                                );
-                                                index_num = 0;
-                                                return false;
-                                    }
-                                }
-                            }else{
-                                var expression0 = new RegExp(expression_array[0], "i");
-                                var expression1 = new RegExp(expression_array[1], "i");
-                                var expression2 = new RegExp(expression_array[2], "i");
-                                if (company.search(expression0) != -1 || standard.search(expression0) != -1 || gram.search(expression0) != -1
-                                    || etc.search(expression0) != -1 || company_name.search(expression0) != -1 || memo.search(expression0) != -1) {
-                                    if (company.search(expression1) != -1 || standard.search(expression1) != -1  || gram.search(expression1) != -1
-                                        || etc.search(expression1) != -1 || company_name.search(expression1) != -1 || memo.search(expression1) != -1) {
-                                        if (company.search(expression2) != -1 || standard.search(expression2) != -1  || gram.search(expression2) != -1
-                                            || etc.search(expression2) != -1 || company_name.search(expression2) != -1 || memo.search(expression2) != -1) {
-                                            if(etc.length > max_text){etc = etc.substr(0,max_text)+'...'}
-                                            if(gram.length > max_text){gram = gram.substr(0,max_text)+'...'}
-                                            if(memo.length > max_text){memo = memo.substr(0,max_text)+'...'}
-                                            if (index_num < max_num) {
-                                                $product_result.append(
-                                                    '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
-                                                    ''+item.id +'"><b>' + company+'&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
-                                                    '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
-                                                    '&nbsp<span class="text-muted">' + gram + '</span>' +
-                                                    '<br> <span class="text-dark">' +  comma(parseInt(sell_price)) + '</span>' +
-                                                    '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
-                                                    '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
-                                                    '</div></a>'
-                                                );
-                                                data_id = item.id;
-                                                data_list[data_id] = item;
-                                                index_num += 1;
-                                            } else {
-                                                $product_result.append(
-                                                    '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
-                                                );
-                                                index_num = 0;
-                                                return false;
+                                    } else {
+                                        $product_result.append(
+                                            '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
+                                        );
+                                        index_num = 0;
+                                        return false;
 
-                                            }
-                                        }
                                     }
                                 }
                             }
-                        })
+                        }
                     }
-                }, 400));
-           }});
+            }
+        }, 300));
 
 
             $product_result.on('click', 'div', function () {
