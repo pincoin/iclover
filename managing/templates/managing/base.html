@@ -10,9 +10,8 @@
 
     <link rel="shortcut icon" href="{% static 'managing/images/favicon.png' %}">
 
-    <title>{% block title %}{% endblock%}</title>
-    {% block addcss %}
-    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+
     <!-- App css -->
     <link href="{% static 'managing/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'managing/css/core.css' %}" rel="stylesheet" type="text/css"/>
@@ -40,7 +39,8 @@
             margin: 0;
         }
     </style>
-
+    {% block addcss %}
+    {% endblock %}
 </head>
 
 

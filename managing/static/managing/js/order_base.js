@@ -223,7 +223,7 @@
                             '<div class="m-t-5 m-r-15 panel panel-border '+color+'">' +
                             '<div class="panel-heading">' +
                             '<h3 class="panel-title">'+val.joo_date+'_'+val.today_num+ '<small> '+info_text +
-                              ' <a> <i class="fa fa-plus text-teal"></i></a></small></h3>' +
+                              ' <a class="id_info" id="'+ val.id+'"style="cursor:pointer"><i class="fa fa-plus text-teal"></i></a></small></h3>' +
                             '</div>' +
                             '<div class="panel-body">' +
                             val2_list
@@ -247,4 +247,7 @@
     });
     $load_btn.click(function () {
         call_load();
+    });
+     $(document).on("click",".id_info",function() {
+            console.log($(this).attr('id'));
     });

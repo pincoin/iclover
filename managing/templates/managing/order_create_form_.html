@@ -1,3 +1,4 @@
+{% load static %}
 {% block addcss %}
 <style>
 input[type="number"]::-webkit-outer-spin-button,
@@ -23,12 +24,465 @@ input[type="number"]::-webkit-inner-spin-button {
     background-color: #ffffff;
 }
 </style>
-{% endblock%}
-{% load static %}
-<script type="text/javascript"  src="{% static 'managing/js/order_base.js'%}"></script>
-<script type="text/javascript"  src="{% static 'managing/js/order.js'%}"></script>
-
 <script type="text/javascript"  src="{% static 'managing/pages/jquery.form-pickers.init.js'%}"></script>
+{% endblock%}
+<script>
+       function delay(fn, ms) {
+        let timer = 0;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(fn.bind(this, ...args), ms || 0)
+        }
+    }
+
+    function SortableSpan() {
+        $('#sortable span').each(function (i) {
+            var numbering = i + 1;
+            $(this).text(numbering + '.');
+        });
+    }
+
+    //콤마찍기
+    function comma(str) {
+        var parts = str.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if(parts[0].length >2 ){ parts[0] = parts[0].replace(/(^0+)/, "");}
+        return parts.join(".");
+    }
+
+    //콤마풀기
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[,]/g, "");
+    }
+
+    //값 입력시 콤마찍기 onkeyup="inputNumberFormat(this)"
+    function inputNumberFormat(obj) {
+        obj.value = comma(uncomma(obj.value));
+    }
+
+
+    function Total() {
+        var $total_quantity = $('#total_quantity');
+        var $total_price = $('#total_price');
+        var $total_tax = $('#total_tax');
+        var $total = $('#total');
+        var $total_tr = $('.total-tr');
+        var total_price = 0;
+        var total_tax = 0;
+        var total_quantity = 0;
+        var total_buy = 0;
+
+        $('#sortable tr').each(function () {
+            var eq4 = $(this).children().eq(4).children().val();
+            var eq5 = $(this).children().eq(6).children().val();
+            var eq6 = $(this).children().eq(7).children().val();
+            eq4 = uncomma(eq4); //수량
+            eq5 = uncomma(eq5); //판매가
+            eq6 = uncomma(eq6); //부가세
+            total_quantity += parseFloat(eq4);
+            total_price += parseFloat(eq5);
+            total_tax += parseFloat(eq6);
+        });
+        var total =  total_price + total_tax;
+        if(total_quantity != 0){
+            $total_quantity.text(comma(total_quantity.toFixed(0)));
+            $total_price.text(comma(total_price.toFixed(0)));
+            $total_tax.text(comma(total_tax.toFixed(0)));
+            $total.text('판매 합계 : '+comma(total.toFixed(0)));
+            $total_tr.attr('style','background-color: #f3f3f3');
+        }else{
+            $total_quantity.text('');
+            $total_price.text('');
+            $total_tax.text('');
+            $total.text('');
+            $('#compare_price').html('');
+            $total_tr.attr('style','background-color: #ffffff');
+        }
+    }
+
+ /*  ----------------------선언 함수 ------------------------      */
+
+
+     $(document).on("click",".delete-button",function() {
+            SortableSpan();
+            Total();
+    });
+      $(document).on("keyup",".sell_price",function() {
+            var pre = uncomma($(this).val());
+            pre = pre/10;
+            $(this).parent().next().children().val(comma(pre.toFixed(0)));
+            Total();
+    });
+
+
+    $("#sub-btn").click(function(e) {
+        var list = new Array();
+        $("input[name=text_data]").each(function (index, item) {
+            list.push($(item).val());
+        });
+        $('#id_json_data').val(list.join('#,,#'));
+    });
+
+     $(document).on("keyup",".text_num",function() {
+         if( !$(this).val()){
+             $(this).val(0);
+         }
+            Total();
+    });
+
+
+      $(document).on("keyup",".quantity",function() {
+            var quantity = uncomma($(this).val());
+            var sell_price= uncomma($(this).parent().parent().find('input.price_s').val());
+            var total = parseFloat(quantity)*parseFloat(sell_price);
+            $(this).parent().parent().find('input.sell_price').val(comma(total));
+             if ($select_tax_cla.val() == '0') {
+                 $(this).parent().parent().find('input.sell_tax').val(comma((total / 10).toFixed(0)));
+             }else{
+                 $(this).parent().parent().find('input.sell_tax').val(0);
+             }
+            Total();
+    });
+      $(document).on("keyup",".price_s",function() {
+            var price_s = uncomma($(this).val());
+            var quantity= uncomma($(this).parent().parent().find('input.quantity').val());
+            var buy_price= uncomma($(this).parent().parent().find('input.buy_price').val());
+            var total = parseFloat(quantity)*parseFloat(price_s);
+            var compare = parseFloat(price_s)-parseFloat(buy_price);
+
+           var $td = $(this).parent().parent().find('input.buy_price');
+
+            if(compare < 0){
+                $td.parent().attr('class','has-special');
+            }else{
+                $td.parent().attr('class','has-ask');
+            }
+            $(this).parent().next().children().val(comma(total));
+            if ($select_tax_cla.val() == '0') {
+                $(this).parent().parent().find('input.sell_tax').val(comma((total/10).toFixed(0)));
+            }else{
+                 $(this).parent().parent().find('input.sell_tax').val(0);
+             }
+            Total();
+    });
+
+      $(document).on("keyup",".buy_price",function() {
+          var $td = $(this).parent().parent().find('input.buy_price');
+          var buy_price = uncomma($(this).val());
+          var price_s= uncomma($(this).parent().parent().find('input.price_s').val());
+          var compare = parseFloat(price_s)-parseFloat(buy_price);
+            if(compare < 0){
+                $td.parent().attr('class','has-special');
+            }else{
+                $td.parent().attr('class','has-ask');
+            }
+      });
+
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+
+
+
+    $("#delete_check").click(function() {
+        if($('input:checkbox[id="delete_check"]').is(":checked") == true){
+             $(".delete-button").show();
+        }else{
+            $(".delete-button").hide();
+        }
+         SortableSpan();
+    });
+
+
+    /*  ---------- 지난 데이터 ------------ */
+    var $control_info = $('#control-info');
+    var $control_order = $('#control-order');
+    var $load_more = $('#load_more');
+    var $load_btn = $('#load_btn');
+    var $list_info = $('.list_info');
+    var $list_order = $('.list_order');
+    var order_cache = false;
+    $control_info.click(function () {
+        $list_info.show();
+        $list_order.hide();
+        $load_more.hide();
+         $load_btn.attr('href','');
+    });
+
+    function call_load(){
+        var url = $load_btn.attr('href');
+        if(!url){
+            url ='/api/order_info.json';
+            $list_order.text('');
+        }else{
+            url = url;
+        }
+        $list_order.show();
+        $list_info.hide();
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          data: {'keyword': custromer['id']},
+          contentType: 'application/json; charset=UTF-8',
+          success: function (data, status, xhr) {
+                order_cache =true;
+                if(data['count']==0){
+                    $list_order.text('지난 과거 데이터가 없습니다.');
+                }else{
+                    /* 'id','name','quantity','selling_price' */
+                        $.each(data['results'], function(index, val){
+                            var good = [5,6,7];
+                            var state = val.state;
+                            var color = '';
+                            if($.inArray(state, good)){
+                                color = 'panel-default';
+                                info_text = '정상';
+                            }else{
+                                color = 'panel-danger';
+                                info_text = '취소/보류/환불';
+                            }
+                            var val2_list = new(Array);
+                            $.each(val.order_list, function(ind, val2){
+                               val2_list += val2.name + ' / '+ comma(Math.round(val2.selling_price))+'<br>'
+                            });
+                          var json_data =
+                            '<div class="m-t-5 m-r-15 panel panel-border '+color+'">' +
+                            '<div class="panel-heading">' +
+                            '<h3 class="panel-title">'+val.joo_date+'_'+val.today_num+ '<small> '+info_text +
+                              ' <a class="id_info" id="'+ val.id+'"style="cursor:pointer"><i class="fa fa-plus text-teal"></i></a></small></h3>' +
+                            '</div>' +
+                            '<div class="panel-body">' +
+                            val2_list
+                             +'</div>' +
+                            '</div>';
+                            $list_order.append(json_data);
+                        });
+                        if(data['next']){
+                            $load_more.show();
+                             $load_btn.attr('href',data['next']);
+                        }else{
+                            $load_more.hide();
+                        }
+                }
+          }
+      });
+    }
+
+    $control_order.click(function () {
+        call_load();
+    });
+    $load_btn.click(function () {
+        call_load();
+    });
+     $(document).on("click",".id_info",function() {
+            console.log($(this).attr('id'));
+    });
+/* ----------------위에는 base 밑에는 order-----------*/
+
+      $(document).ready(function () {
+        $select_tax_cla = $(".tax_select");
+        var $id_company = $('#id_company');
+        $product_result = $("#product_result");
+        $product_search = $("#product_search");
+        $search_result = $("#search_result");
+        custromer ={};
+        custromer['id'] = null;
+        $("#id_company :input:text:first").focus();
+        $id_company.keyup(delay(function (e) {
+            var search_val = $id_company.val();
+            $.ajax({
+                url: '/api/profile.json',
+                dataType: 'json',
+                data: {'keyword': search_val},
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data, status, xhr) {
+                    $product_result.html('');
+                    $product_search.val('');
+                    $search_result.html('');
+                    var index_num = 0;
+                    var max_num = 4;
+                    var count = data['count']-max_num;
+                    data_list = {};
+                    $.each(data['results'], function (key, item) {
+                        var company = item.company;
+                        var company_keyword = item.company_keyword;
+                        if (search_val != '') {
+                            if (index_num < max_num) {
+                                $search_result.append(
+                                    '<li class="list-group-item link-class text-custom"  id="' + item.id +
+                                    '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
+                                );
+                                data_id = item.id;
+                                data_list[data_id] = item;
+                                index_num += 1;
+                            } else {
+                                $search_result.append(
+                                    '<li class="list-group-item link-class text-danger"><i class="mdi mdi-alert-octagon"></i><b> +'+ count+ '</b>...더 자세히 검색해주세요</li>'
+                                );
+                                index_num = 0;
+                                return false;
+                            }
+                        }
+                    })
+                }
+            });
+        }, 300));
+        $search_result.on('click', 'li', function () {
+            $('.data-buttons').attr('style','');
+            var idx = $(this).attr('id');
+            if (idx) {
+                custromer = data_list[idx];
+                var click_text = $(this).text().split('|');
+                $id_company.val($.trim(click_text[0]));
+                $('#id_code').val(custromer['code']);
+                $('#id_company_keyword').val(custromer['company_keyword']);
+                $('#id_option').val(custromer['options']);
+                $('#id_confirm').val(custromer['confirm']);
+                $('#id_address').val(custromer['address']);
+                $('#id_tell').val(custromer['tell']);
+                $('#id_fix_manager').val(custromer['manager']);
+                $('#id_memo').val(custromer['memo'].replace(/<br\s?\/?>/g,"\n"));
+                $('#id_manager').val(custromer['manager']).attr('selected','selected');
+                $search_result.html('');
+                informations_html =
+                    ('<b>'+custromer['company'] + '</b><br>' +
+                    custromer['company_keyword'] + '<br>' +
+                    custromer['code'] + '<br>' +
+                    custromer['address'] + '<br>' +
+                    custromer['tax_bill_mail'] + '<br>' +
+                    custromer['tell'] + '<br>' +
+                    custromer['phone'] + '<br>' +
+                    custromer['keywords'] + '<br>' +
+                    custromer['memo'] + '<br>' +
+                    custromer['options'] + '<br>' +
+                    custromer['confirm'] + '<br>' +
+                    custromer['manager']);
+                $("#informations").html(informations_html);
+                $('input[id="product_search"]').focus();
+                data_list = {};
+            }
+        });
+
+
+        $product_search.keyup(delay(function (e) {
+            $product_result.html('');
+            var search_val = $product_search.val();
+            var index_num = 0;
+            var max_num = 12;
+            var max_text = 10;
+            data_list = {};
+            if (search_val != '') {
+                    $.ajax({
+                        type: "GET",
+                        url: '/api/product.json',
+                        dataType: 'json',
+                        data : {'idx' :custromer['id'],
+                                'keyword': search_val,
+                        },
+                        success: function (data, status, xhr) {
+                            $.each(data, function (key, item) {
+                                var company = item.title;
+                                var company_name = item.company_name;
+                                var horizontal = item.horizontal;
+                                var vertical = item.vertical;
+                                var etc = item.etc;
+                                var gram = item.gram;
+                                var memo = item.memo;
+                                var standard = item.standard;
+                                var sell_price = item.sell_price;
+                                var buy_price = item.buy_price;
+                                if(horizontal && vertical){
+                                    var ho_ver = parseInt(horizontal) + 'x' + parseInt(vertical);
+                                }else{
+                                     var ho_ver = '';
+                                }
+                                $product_result.append(
+                                    '<a><span></span><div class="list-group-item link-class m-b-5 col-lg-12" style="height:80px;" id="' +
+                                    '' + item.id + '"><b>' + company + '&nbsp&nbsp' + ho_ver +
+                                    '</b>&nbsp&nbsp<b class="text-teal">' + company_name + '</b>' +
+                                    '&nbsp<span class="text-muted">' + gram + '</span>' +
+                                    '<br> <b class="text-dark" style="font-size: 18px;">' + comma(parseInt(sell_price)) + '</b>' +
+                                    '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
+                                    '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
+                                    '</div></a>'
+                                );
+                                data_id = item.id;
+                                data_list[data_id] = item;
+                            })
+                        }
+                    });
+            }
+        }, 300));
+
+            $product_result.on('click', 'div', function () {
+            var idx = $(this).attr('id');
+            if (idx) {
+                product = data_list[idx];
+                console.log(product);
+                if(product['buy_price'] % 1 !== 0){var buy_price = product['buy_price'].toFixed(4)}else{var buy_price = parseInt(product['buy_price'])}
+                if(product['sell_price'] % 1 !== 0){var sell_price = product['sell_price'].toFixed(4)}else{var sell_price = parseInt(product['sell_price'])}
+                if(product['sell_price'] % 1 !== 0){var price_s = product['sell_price'].toFixed(4)}else{var price_s = parseInt(product['sell_price'])}
+                if(product['buy_price'] % 1 !== 0){var buy_price = product['buy_price'].toFixed(4)}else{var buy_price = parseInt(product['buy_price'])}
+                if($select_tax_cla.val() == '0'){var sell_price_tax = comma((product['sell_price']/10).toFixed(0))}else{sell_price_tax = 0}
+                if (product['horizontal'] && product['vertical']) {
+                    var ho_ver = parseInt(product['horizontal'])+'*'+parseInt(product['vertical'])
+                } else {
+                    var ho_ver = '';
+                }
+                 $('#sortable').append(
+                    '<tr><td><span class="text_data"></span></td>' +
+                     '<input class="form-control" type="hidden" name="text_data" value="'+ parseInt(product['code'])+'">' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['standard']+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+ho_ver+'"></td>' +
+                     '<td><input class="form-control text-right quantity text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="'+ parseInt(product['quantity'])+'"></td>' +
+                     '<td><input class="form-control text-right price_s text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="'+  comma(price_s)+'"></td>' +
+                     '<td><input class="form-control text-right sell_price text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value="'+  comma(sell_price)+'"></td>' +
+                     '<td><input class="form-control text-right sell_tax text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value="'+ sell_price_tax+'"></td>' +
+                     '<td class="has-ask"><input class="form-control text-right buy_price text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="'+ comma(buy_price)+'"></td>' +
+                     '<input class="form-control" type="hidden" name="text_data" value="'+product['company_name']+'">' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['gram']+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['etc']+'"></td>' +
+                     '<td><input class="form-control" type="text" name="text_data" value="'+product['memo']+'"></td>' +
+                     '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
+                     '</tr>'
+                 ).ready(function () {
+                        SortableSpan();
+                         Total()
+                     })
+            }
+        });
+    });
+
+    $select_tax_cla.on("change", function () {
+        var $sell_tax = $('.sell_tax');
+        $sell_tax.each(function (key, data) {
+            if ($select_tax_cla.val() == '0') {
+                var sellprice = uncomma($(this).parent().parent().find('input.sell_price').val());
+                $(this).val(comma((sellprice / 10).toFixed(0)));
+            } else {
+                $(this).val(0);
+            }
+        });
+        $product_result.html('');
+        $product_search.val('');
+        Total();
+    });
+
+    $(function () {
+        $("#sortable").sortable({
+            update: function (event, ui) {
+                SortableSpan();
+                Total();
+            }
+        });
+    });
+
+    setTimeout(function() { $('input[name="company"]').focus() }, 500);
+
+</script>
 
 
 <form id='form_id' method="post" text="견적서 생성" autocomplete="off"  action="">

@@ -90,7 +90,7 @@ class OrderInfoViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         keyword = request.GET.get('keyword')
-        queryset = self.filter_queryset(self.get_queryset().prefetch_related('order_list').filter(user_id=keyword)).order_by('-id')
+        queryset = self.filter_queryset(self.get_queryset().prefetch_related('order_list').filter(user_id=keyword)).order_by('-joo_date','-today_num')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
