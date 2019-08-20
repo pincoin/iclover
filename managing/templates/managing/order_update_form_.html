@@ -6,535 +6,27 @@ input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+    #product_result {
+    top: 10px;
+    left: 10px;
+    width: 100%;
+    height: 300px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+    .list_order {
+    top: 10px;
+    left: 10px;
+    width: 100%;
+    height: 460px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
 </style>
 {% endblock%}
 {% load static %}
-
-<script>
-    function delay(fn, ms) {
-        let timer = 0;
-        return function (...args) {
-            clearTimeout(timer);
-            timer = setTimeout(fn.bind(this, ...args), ms || 0)
-        }
-    }
-
-    function SortableSpan() {
-        $('#sortable span').each(function (i) {
-            var numbering = i + 1;
-            $(this).text(numbering + '.');
-        });
-    }
-
-    //콤마찍기
-    function comma(str) {
-        var parts = str.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        if(parts[0].length >2 ){ parts[0] = parts[0].replace(/(^0+)/, "");}
-        return parts.join(".");
-    }
-
-    //콤마풀기
-    function uncomma(str) {
-        str = String(str);
-        return str.replace(/[,]/g, "");
-    }
-
-    //값 입력시 콤마찍기 onkeyup="inputNumberFormat(this)"
-    function inputNumberFormat(obj) {
-        obj.value = comma(uncomma(obj.value));
-    }
-
-
-    function Total() {
-        var $total_quantity = $('#total_quantity');
-        var $total_price = $('#total_price');
-        var $total_tax = $('#total_tax');
-        var $total = $('#total');
-        var $total_tr = $('.total-tr');
-        var total_price = 0;
-        var total_tax = 0;
-        var total_quantity = 0;
-        var total_buy = 0;
-
-        $('#sortable tr').each(function () {
-            var eq4 = $(this).children().eq(4).children().val();
-            var eq5 = $(this).children().eq(6).children().val();
-            var eq6 = $(this).children().eq(7).children().val();
-            eq4 = uncomma(eq4); //수량
-            eq5 = uncomma(eq5); //판매가
-            eq6 = uncomma(eq6); //부가세
-            total_quantity += parseFloat(eq4);
-            total_price += parseFloat(eq5);
-            total_tax += parseFloat(eq6);
-        });
-        var total =  total_price + total_tax;
-        if(total_quantity != 0){
-            $total_quantity.text(comma(total_quantity.toFixed(0)));
-            $total_price.text(comma(total_price.toFixed(0)));
-            $total_tax.text(comma(total_tax.toFixed(0)));
-            $total.text('판매 합계 : '+comma(total.toFixed(0)));
-            $total_tr.attr('style','background-color: #f3f3f3');
-        }else{
-            $total_quantity.text('');
-            $total_price.text('');
-            $total_tax.text('');
-            $total.text('');
-            $('#compare_price').html('');
-            $total_tr.attr('style','background-color: #ffffff');
-        }
-    }
-
-
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        Total();
-         SortableSpan();
-        $select_tax_cla = $(".tax_select");
-        var $id_company = $('#id_company');
-        $product_result = $("#product_result");
-        $product_search = $("#product_search");
-        $search_result = $("#search_result");
-        var profile_bool = false;
-        var product_bool = false;
-        var $loding = $('#loding');
-
-        $id_company.hover(function () {
-            if (profile_bool == false) {
-                $loding.css('display','');
-                profile_bool = true;
-                $.ajax({
-                    url: '/api/profile.json',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8',
-                    success: function (data, status, xhr) {
-                         $loding.css('display','none');
-                        $id_company.keyup(delay(function (e) {
-                            $product_result.html('');
-                            $product_search.val('');
-                            $search_result.html('');
-                            var search_val = $id_company.val();
-                            var expression = new RegExp(search_val, "i");
-                            var expression_array = expression.source.split(' ');
-                            var index_num = 0;
-                            var max_num = 4;
-                            data_list = {};
-                            if (search_val != '') {
-                                $.each(data, function (key, item) {
-                                    var company = item.company;
-                                    var company_keyword = item.company_keyword;
-                                    if (expression_array.length == 1) {
-                                        if (company.search(expression) != -1 || company_keyword.search(expression) != -1) {
-                                            if (index_num < max_num) {
-                                                $search_result.append(
-                                                    '<li class="list-group-item link-class text-custom"  id="' + item.id +
-                                                    '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
-                                                );
-                                                data_id = item.id;
-                                                data_list[data_id] = item;
-                                                index_num += 1;
-                                            } else {
-                                                $search_result.append(
-                                                    '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
-                                                );
-                                                index_num = 0;
-                                                return false;
-
-                                            }
-                                        }
-                                    } else {
-                                        var expression0 = new RegExp(expression_array[0], "i");
-                                        var expression1 = new RegExp(expression_array[1], "i");
-                                        var expression2 = new RegExp(expression_array[2], "i");
-                                        if (company.search(expression0) != -1 || company_keyword.search(expression0) != -1) {
-                                            if (company.search(expression1) != -1 || company_keyword.search(expression1) != -1) {
-                                                if (company.search(expression2) != -1 || company_keyword.search(expression2) != -1) {
-                                                    if (index_num < max_num) {
-                                                        $search_result.append(
-                                                            '<li class="list-group-item link-class text-custom" id="' + item.id +
-                                                            '">' + company + ' | <span class="text-muted">' + company_keyword + '</span></li>'
-                                                        );
-                                                        data_id = item.id;
-                                                        data_list[data_id] = item;
-
-                                                        index_num += 1;
-                                                    } else {
-                                                        $search_result.append(
-                                                            '<li class="list-group-item link-class text-danger">...... Data가 많으니 더 상세히 검색해주세요</li>'
-                                                        );
-                                                        index_num = 0;
-                                                        return false;
-
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                })
-                            }
-                        }, 400));
-                    }
-                });
-            }
-        });
-
-        $search_result.on('click', 'li', function () {
-            var idx = $(this).attr('id');
-            if (idx) {
-                custromer = data_list[idx];
-                var click_text = $(this).text().split('|');
-                $id_company.val($.trim(click_text[0]));
-                $('#id_code').val(custromer['code']);
-                $('#id_company_keyword').val(custromer['company_keyword']);
-                $('#id_option').val(custromer['options']);
-                $('#id_confirm').val(custromer['confirm']);
-                $('#id_address').val(custromer['address']);
-                $('#id_tell').val(custromer['tell']);
-                $('#id_fix_manager').val(custromer['manager']);
-                $('#id_memo').val(custromer['memo'].replace(/<br\s?\/?>/g, "\n"));
-                $('#id_manager').val(custromer['manager']).attr('selected', 'selected');
-                $search_result.html('');
-                informations_html =
-                    ('<b>' + custromer['company'] + '</b><br>' +
-                        custromer['company_keyword'] + '<br>' +
-                        custromer['code'] + '<br>' +
-                        custromer['address'] + '<br>' +
-                        custromer['tax_bill_mail'] + '<br>' +
-                        custromer['tell'] + '<br>' +
-                        custromer['phone'] + '<br>' +
-                        custromer['keywords'] + '<br>' +
-                        custromer['memo'] + '<br>' +
-                        custromer['options'] + '<br>' +
-                        custromer['confirm'] + '<br>' +
-                        custromer['manager']);
-                $("#informations").html(informations_html);
-                $('input[id="product_search"]').focus();
-                data_list = {};
-            }
-            $.ajax({
-                url: '/api/special_price.json',
-                dataType: 'json',
-                data: {data: idx},
-                contentType: 'application/json; charset=UTF-8',
-                success: function (special_price_data, status, xhr) {
-                    special_price = special_price_data;
-                }
-            });
-
-        });
-
-
-        $('#switch1').click(function () {
-            if (product_bool == false) {
-                product_bool = true;
-                $.ajax({
-                    url: '/api/product.json',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8',
-                    success: function (data, status, xhr) {
-                        $product_search.keyup(delay(function (e) {
-                            $product_result.html('');
-                            var search_val = $product_search.val();
-                            var expression = new RegExp(search_val, "i");
-                            var expression_array = expression.source.split(' ');
-                            var index_num = 0;
-                            var max_num = 12;
-                            var max_text = 10;
-                            data_list = {};
-                            if (search_val != '') {
-                                $.each(data, function (key, item) {
-                                    var company = item.title;
-                                    var company_name = item.company_name;
-                                    var horizontal = item.horizontal;
-                                    var vertical = item.vertical;
-                                    var etc = item.etc;
-                                    var gram = item.gram;
-                                    var memo = item.memo;
-                                    var standard = item.standard;
-                                    var sell_price = item.sell_price;
-                                    if (typeof (special_price) != 'undefined') {
-                                        $.each(special_price, function (keys, items) {
-                                            if (item['id'] == items['product']) {
-                                                sell_price = items['new_price'];
-                                            }
-                                        });
-                                    }
-
-                                    if (expression_array.length == 1) {
-                                        if (company.search(expression) != -1 || standard.search(expression) != -1 || gram.search(expression) != -1
-                                            || etc.search(expression) != -1 || company_name.search(expression) != -1 || memo.search(expression) != -1) {
-                                            if (etc.length > max_text) {
-                                                etc = etc.substr(0, max_text) + '...'
-                                            }
-                                            if (gram.length > max_text) {
-                                                gram = gram.substr(0, max_text) + '...'
-                                            }
-                                            if (memo.length > max_text) {
-                                                memo = memo.substr(0, max_text) + '...'
-                                            }
-                                            if (index_num < max_num) {
-                                                $product_result.append(
-                                                    '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
-                                                    '' + item.id + '"><b>' + company + '&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
-                                                    '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
-                                                    '&nbsp<span class="text-muted">' + gram + '</span>' +
-                                                    '<br> <span class="text-dark">' + comma(parseInt(sell_price)) + '</span>' +
-                                                    '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
-                                                    '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
-                                                    '</div></a>'
-                                                );
-                                                Number(0, 0);
-                                                data_id = item.id;
-                                                data_list[data_id] = item;
-                                                index_num += 1;
-                                            } else {
-                                                $product_result.append(
-                                                    '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
-                                                );
-                                                index_num = 0;
-                                                return false;
-                                            }
-                                        }
-                                    } else {
-                                        var expression0 = new RegExp(expression_array[0], "i");
-                                        var expression1 = new RegExp(expression_array[1], "i");
-                                        var expression2 = new RegExp(expression_array[2], "i");
-                                        if (company.search(expression0) != -1 || standard.search(expression0) != -1 || gram.search(expression0) != -1
-                                            || etc.search(expression0) != -1 || company_name.search(expression0) != -1 || memo.search(expression0) != -1) {
-                                            if (company.search(expression1) != -1 || standard.search(expression1) != -1 || gram.search(expression1) != -1
-                                                || etc.search(expression1) != -1 || company_name.search(expression1) != -1 || memo.search(expression1) != -1) {
-                                                if (company.search(expression2) != -1 || standard.search(expression2) != -1 || gram.search(expression2) != -1
-                                                    || etc.search(expression2) != -1 || company_name.search(expression2) != -1 || memo.search(expression2) != -1) {
-                                                    if (etc.length > max_text) {
-                                                        etc = etc.substr(0, max_text) + '...'
-                                                    }
-                                                    if (gram.length > max_text) {
-                                                        gram = gram.substr(0, max_text) + '...'
-                                                    }
-                                                    if (memo.length > max_text) {
-                                                        memo = memo.substr(0, max_text) + '...'
-                                                    }
-                                                    if (index_num < max_num) {
-                                                        $product_result.append(
-                                                            '<a><span></span><div class="list-group-item link-class col-lg-6" style="height:60px;" id="' +
-                                                            '' + item.id + '"><b>' + company + '&nbsp&nbsp' + parseInt(horizontal) + 'x' + parseInt(vertical) +
-                                                            '</b>&nbsp&nbsp<span class="text-muted">' + company_name + '</span>' +
-                                                            '&nbsp<span class="text-muted">' + gram + '</span>' +
-                                                            '<br> <span class="text-dark">' + comma(parseInt(sell_price)) + '</span>' +
-                                                            '&nbsp&nbsp<span class="text-muted">' + memo + '</span>' +
-                                                            '&nbsp&nbsp<span class="text-muted">' + etc + '</span>' +
-                                                            '</div></a>'
-                                                        );
-                                                        data_id = item.id;
-                                                        data_list[data_id] = item;
-                                                        index_num += 1;
-                                                    } else {
-                                                        $product_result.append(
-                                                            '<div class="list-group-item link-class text-danger col-lg-12">...... Data가 많으니 더 상세히 검색해주세요</div>'
-                                                        );
-                                                        index_num = 0;
-                                                        return false;
-
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                })
-                            }
-                        }, 400));
-                    }
-                });
-            }
-        });
-
-
-        $product_result.on('click', 'div', function () {
-            var idx = $(this).attr('id');
-            if (idx) {
-                product = data_list[idx];
-                price_check = false;
-                price_origin = '';
-                if (typeof (special_price) != 'undefined') {
-                    $.each(special_price, function (key, item) {
-                        if (product['id'] == item['product']) {
-                            price_origin = product['sell_price'];
-                            price_check = true;
-                            product['sell_price'] = item['new_price'];
-                        }
-                    });
-                }
-                if (product['buy_price'] % 1 != 0) {
-                    var buy_price = product['buy_price'].toFixed(4)
-                } else {
-                    var buy_price = parseInt(product['buy_price'])
-                }
-                if (product['sell_price'] % 1 != 0) {
-                    var sell_price = product['sell_price'].toFixed(4)
-                } else {
-                    var sell_price = parseInt(product['sell_price'])
-                }
-                if (product['sell_price'] % 1 != 0) {
-                    var price_s = product['sell_price'].toFixed(4)
-                } else {
-                    var price_s = parseInt(product['sell_price'])
-                }
-                if (product['buy_price'] % 1 != 0) {
-                    var buy_price = product['buy_price'].toFixed(4)
-                } else {
-                    var buy_price = parseInt(product['buy_price'])
-                }
-                if ($select_tax_cla.val() == '0') {
-                    var sell_price_tax = comma((product['sell_price'] / 10).toFixed(0))
-                } else {
-                    sell_price_tax = 0
-                }
-                $('#sortable').append(
-                    '<tr><td><span class="text_data"></span></td>' +
-                    '<input class="form-control" type="hidden" name="text_data" value="' + parseInt(product['code']) + '">' +
-                    '<td><input class="form-control" type="text" name="text_data" value="' + product['standard'] + '"></td>' +
-                    '<td><input class="form-control" type="text" name="text_data" value="' + parseInt(product['horizontal']) + '*' + parseInt(product['vertical']) + '"></td>' +
-                    '<td><input class="form-control text-right quantity" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="' + parseInt(product['quantity']) + '"></td>' +
-                    '<td><input class="form-control text-right price_s" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="' + comma(price_s) + '"></td>' +
-                    '<td><input class="form-control text-right sell_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value="' + comma(sell_price) + '"></td>' +
-                    '<td><input class="form-control text-right sell_tax" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value="' + sell_price_tax + '"></td>' +
-                    '<td class="has-ask"><input class="form-control text-right buy_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="' + comma(buy_price) + '"></td>' +
-                    '<input class="form-control" type="hidden" name="text_data" value="' + product['company_name'] + '">' +
-                    '<td><input class="form-control" type="text" name="text_data" value="' + product['gram'] + '"></td>' +
-                    '<td><input class="form-control" type="text" name="text_data" value="' + product['etc'] + '"></td>' +
-                    '<td><input class="form-control" type="text" name="text_data" value="' + product['memo'] + '"></td>' +
-                    '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>' +
-                    '</tr>'
-                ).ready(function () {
-                    if (price_check) {
-                        product['sell_price'] = price_origin
-                    }
-                    SortableSpan();
-                    Total()
-                })
-            }
-        });
-    });
-
-    $select_tax_cla.on("change", function () {
-        var $sell_tax = $('.sell_tax');
-        $sell_tax.each(function (key, data) {
-            if ($select_tax_cla.val() == '0') {
-                var sellprice = uncomma($(this).parent().parent().find('input.sell_price').val());
-                $(this).val(comma((sellprice / 10).toFixed(0)));
-            } else {
-                $(this).val(0);
-            }
-        });
-        $product_result.html('');
-        $product_search.val('');
-        Total();
-    });
-    $sortable = $("#sortable");
-
-    $(function () {
-        $sortable.sortable({
-            update: function (event, ui) {
-                SortableSpan();
-                Total();
-            }
-        });
-    });
-
-    $("#sub-btn").click(function(e) {
-        var list = new Array();
-        $("input[name=text_data]").each(function (index, item) {
-            list.push($(item).val());
-        });
-        $('#id_json_data').val(list.join('#,,#'));
-    });
-
-     $(document).on("keyup","input[name=text_data]",function() {
-         if( !$(this).val()){
-             $(this).val(0);
-         }
-            Total();
-    });
-
-     $(document).on("click",".delete-button",function() {
-            SortableSpan();
-            Total();
-    });
-      $(document).on("keyup",".sell_price",function() {
-            var pre = uncomma($(this).val());
-            pre = pre/10;
-            $(this).parent().next().children().val(comma(pre.toFixed(0)));
-            Total();
-    });
-      $(document).on("keyup",".quantity",function() {
-            var quantity = uncomma($(this).val());
-            var sell_price= uncomma($(this).parent().parent().find('input.price_s').val());
-            var total = parseFloat(quantity)*parseFloat(sell_price);
-            $(this).parent().parent().find('input.sell_price').val(comma(total));
-             if ($select_tax_cla.val() == '0') {
-                 $(this).parent().parent().find('input.sell_tax').val(comma((total / 10).toFixed(0)));
-             }else{
-                 $(this).parent().parent().find('input.sell_tax').val(0);
-             }
-            Total();
-    });
-      $(document).on("keyup",".price_s",function() {
-
-            var price_s = uncomma($(this).val());
-            var quantity= uncomma($(this).parent().parent().find('input.quantity').val());
-            var buy_price= uncomma($(this).parent().parent().find('input.buy_price').val());
-            var total = parseFloat(quantity)*parseFloat(price_s);
-            var compare = parseFloat(price_s)-parseFloat(buy_price);
-
-           var $td = $(this).parent().parent().find('input.buy_price');
-
-            if(compare < 0){
-                $td.parent().attr('class','has-special');
-            }else{
-                $td.parent().attr('class','has-ask');
-            }
-            $(this).parent().next().children().val(comma(total));
-            if ($select_tax_cla.val() == '0') {
-                $(this).parent().parent().find('input.sell_tax').val(comma((total/10).toFixed(0)));
-            }else{
-                 $(this).parent().parent().find('input.sell_tax').val(0);
-             }
-            Total();
-    });
-
-      $(document).on("keyup",".buy_price",function() {
-          var $td = $(this).parent().parent().find('input.buy_price');
-          var buy_price = uncomma($(this).val());
-          var price_s= uncomma($(this).parent().parent().find('input.price_s').val());
-          var compare = parseFloat(price_s)-parseFloat(buy_price);
-            if(compare < 0){
-                $td.parent().attr('class','has-special');
-            }else{
-                $td.parent().attr('class','has-ask');
-            }
-      });
-
-
-
-
-    $(document).on("keydown","input[type=text]",function() {
-        if (event.keyCode === 13) {
-        event.preventDefault();
-        }
-    });
-
-
-    $("#delete_check").click(function() {
-        if($('input:checkbox[id="delete_check"]').is(":checked") == true){
-             $(".delete-button").show();
-        }else{
-            $(".delete-button").hide();
-        }
-         SortableSpan();
-    });
-
-</script>
+<script type="text/javascript"  src="{% static 'managing/js/order_base.js'%}"></script>
+<script type="text/javascript"  src="{% static 'managing/js/order_up.js'%}"></script>
     {% if put_employees %}
 <script>
      $(document).ready(function () {
@@ -591,12 +83,11 @@ $(document).ready(function () {
     {{ form.user }}
     {{ errors_message }}
     {{ form.user.errors }}
+    <input type="hidden" id="idx" value="{{user_id}}">
     <div class="row">
-           <div class="text-center" id="loding" style="display: none">
-         <h1 class="text-warning"><i class="fa fa-spin fa-refresh" style="width: auto;height: auto; line-height: 1px; margin-right: 10px;"></i> 데이터를 불러오는중입니다.</h1>
-        </div>
         <div class="col-sm-8">
             <div class="card-box row">
+                <div class="list_info">
                 <div class="col-lg-3">
                     <div class="form-group">
                         <span class="help-block"> 주문 일자</span>
@@ -621,7 +112,6 @@ $(document).ready(function () {
                     <span style="color: #d33333"> {{form.errors.company.as_text}}</span>
                     {% endif %}
                 </div>
-
                 <div class="col-lg-3"><span class="help-block"> {{ form.manager.help_text}}</span>
                     <select name="manager" id="id_manager" class="form-control">
                         <option value=""></option>
@@ -673,13 +163,18 @@ $(document).ready(function () {
                     <span class="help-block"> {{ form.memo.help_text}}</span>
                     {{ form.memo}}
                 </div>
+                </div>
+                <div class="list_order" style="display: none;"> </div>
+                <div class="text-right m-t-40" id="load_more" style="display: none;">
+                    <small class="btn btn-danger" id="load_btn" href="">더 불러오기</small>
+                </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="card-box" style="height: 500px;">
-                <div class="m-b-10">
-                    <a class="badge up bg-danger" id="control-info">&ensp;</a>
-                    <a class="badge up bg-custom" id="control-order">&ensp;</a></div>
+                <div class="m-b-10 data-buttons">
+                     <a class="text-lowercase badge bg-danger " id="control-info"><i class="mdi mdi-account"></i></a>
+                    <a class="text-lowercase badge bg-custom" id="control-order"><i class="mdi mdi-comment-text"></i></a></div>
                 <div id="informations">
 
                 </div>
@@ -689,7 +184,7 @@ $(document).ready(function () {
     </div>
     <div class="row">
         <div class="card-box">
-            <div id="demo" class="row m-b-30 collapse">
+            <div id="demo" class="row collapse">
                 <div class="col-lg-3 ">
                     <div class="col-lg-12 has-sample">
                         <span class="help-block"><b>품목 등록</b></span>
@@ -755,13 +250,13 @@ $(document).ready(function () {
                     <input class="form-control" type="hidden" name="text_data" value="{{order.code }}">
                     <td><input class="form-control" type="text" name="text_data" value="{%if order.name %}{{order.name}}{% endif %}"></td>
                     <td><input class="form-control" type="text" name="text_data" value="{%if order.standard %}{{order.standard}}{% endif %}"></td>
-                    <td><input class="form-control text-right quantity" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="{{order.quantity}}"></td>
-                    <td><input class="form-control text-right price_s" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
+                    <td><input class="form-control text-right quantity text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="{{order.quantity}}"></td>
+                    <td><input class="form-control text-right price_s text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
                          value="{% if .0000 in order.selling_price %}{{order.selling_price|intcomma}}{% else %}{{order.selling_price|floatformat:'-4'|intcomma }}{% endif %}"></td>
-                    <td><input class="form-control text-right sell_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
-                    <td><input class="form-control text-right sell_tax" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
+                    <td><input class="form-control text-right sell_price text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
+                    <td><input class="form-control text-right sell_tax text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" disabled value=""></td>
                     <td class="has-ask">
-                        <input class="form-control text-right buy_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
+                        <input class="form-control text-right buy_price text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data"
                        value="{% if '.0000' in order.price %}{{order.price|intcomma}}{% else %}{{order.price|floatformat:'-4'|intcomma}}{% endif %}"></td>
                     <input class="form-control" type="hidden" name="text_data" value="{%if order.group_manage %}{{order.group_manage}}{%endif%}">
                     <td><input class="form-control" type="text" name="text_data" value="{%if order.gram %}{{order.gram}}{% endif %}"></td>

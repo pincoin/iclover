@@ -852,6 +852,7 @@ class OrdersUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
     def get_context_data(self, **kwargs):
         context = super(OrdersUpdateView, self).get_context_data(**kwargs)
         for i in self.queryset:
+            context['user_id'] = i.user_id
             context['order_list'] = i.order_list.all()
             context['put_employees'] = i.employees
             context['tax'] = i.tax

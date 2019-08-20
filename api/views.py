@@ -63,33 +63,37 @@ class ProductTextViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         keyword = request.GET.get('keyword')
         idx = request.GET.get('idx')
-        print(keyword, idx)
         if keyword:
             keyword = keyword.split()
-            query = reduce(operator.and_,(Q(company__icontains=item) for item in keyword))
-            query1 = reduce(operator.and_, (Q(company_keyword__icontains=item) for item in keyword))
-            queryset = self.filter_queryset(self.get_queryset()).filter(query|query1).order_by('company')
+            query0 = reduce(operator.and_,(Q(standard__icontains=item) for item in keyword))
+            query1 = reduce(operator.and_, (Q(gram__icontains=item) for item in keyword))
+            query2 = reduce(operator.and_, (Q(memo__icontains=item) for item in keyword))
+            query3 = reduce(operator.and_, (Q(etc__icontains=item) for item in keyword))
+            queryset = self.filter_queryset(self.get_queryset()).filter(query0|query1|query2|query3).order_by('supplier','-standard')
         else:
-            queryset = self.filter_queryset(self.get_queryset()).order_by('-id')
+            queryset = self.filter_queryset(self.get_queryset()).order_by('supplier','-standard')
+        serializer = self.get_serializer(queryset, many=True)
+        if idx:
+            id_check = managing_models.SpecialPrice.objects.filter(customer_id=idx)
+            if id_check.exists():
+                has_list = id_check.values_list('product', flat=TabError)
+                has_dic = id_check.values('product','new_price')
+                for i in serializer.data:
+                    if i['id'] in has_list:
+                        i['sell_price'] = has_dic.get(product=i['id'])['new_price']
+        return Response(serializer.data)
+
+class OrderInfoViewSet(viewsets.ModelViewSet):
+    # import pdb;pdb.set_trace()
+    queryset = design_models.OrderInfo.objects.all()
+    serializer_class = serializers.OrderInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        keyword = request.GET.get('keyword')
+        queryset = self.filter_queryset(self.get_queryset().prefetch_related('order_list').filter(user_id=keyword)).order_by('-id')
         page = self.paginate_queryset(queryset)
-        # for i in page:
-        #     i.id = i.user.id
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
-
-class SpecialPriceViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAdminUser,)
-    queryset = managing_models.SpecialPrice.objects.all()
-    serializer_class = serializers.SpecialPriceSerializer
-
-    def get_queryset(self):
-        get_data = self.request.GET
-        try:
-            queryset = self.queryset.filter(customer_id =get_data['data']).order_by('product')
-        except:
-            return {}
-        return queryset

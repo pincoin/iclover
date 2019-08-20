@@ -38,9 +38,14 @@ class ProductTextSerializer(serializers.ModelSerializer):
             company_name = obj.supplier.username.split('_')[-2]
         return company_name
 
-class SpecialPriceSerializer(serializers.ModelSerializer):
+class OrderListSerializer(serializers.ModelSerializer):
     class Meta:
-        model= managing_models.SpecialPrice
-        fields = '__all__'
+        model = design_models.OrderList
+        fields = ('id','name','quantity','selling_price')
 
+class OrderInfoSerializer(serializers.ModelSerializer):
+    order_list = OrderListSerializer(many=True,read_only=True)
+    class Meta:
+        model = design_models.OrderInfo
+        fields = ('id','user', 'state','company','joo_date','today_num','order_list')
 
