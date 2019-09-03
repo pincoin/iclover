@@ -36,6 +36,8 @@
           integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css"
           integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- jQuery-->
+<script src="{% static 'design/vendor/jquery/jquery.min.js' %}"></script>
 </head>
 <body>
 <header class="header">
@@ -186,12 +188,12 @@
                                             <h6 class="text-uppercase">인쇄</h6>
                                             <ul class="megamenu-list list-unstyled">
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}" class="megamenu-list-link">전단지/포스터
+                                                    <a href="{% url 'design:product' %}?item=flyer" class="megamenu-list-link">전단지/포스터
                                                         <span class="badge badge-warning ml-1">인기</span>
                                                     </a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}" class="megamenu-list-link">명함</a>
+                                                    <a href="{% url 'design:product' %}?item=card" class="megamenu-list-link">명함</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
                                                     <a href="{% url 'design:product' %}" class="megamenu-list-link">봉투</a>
@@ -717,8 +719,7 @@
     injectSvgSprite('https://demo.bootstrapious.com/sell/1-2-0/icons/orion-svg-sprite.svg');
 
 </script>
-<!-- jQuery-->
-<script src="{% static 'design/vendor/jquery/jquery.min.js' %}"></script>
+
 <!-- Bootstrap JavaScript Bundle (Popper.js included)-->
 <script src="{% static 'design/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- Owl Carousel-->

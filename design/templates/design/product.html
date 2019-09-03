@@ -11,15 +11,15 @@
             <div style="top: 60px; " class="sticky-top mb-2">
                 <div class="sidebar-block ">
                     <nav class="nav nav-pills flex-column text-center">
-                        <a href="../docs/docs-introduction.html" class="nav-link mb-2" style="background-color: #343a40; color:white;">전단지<br>&족자</a>
-                        <a href="../docs/docs-directory-structure.html" class="nav-link mb-2 text-white">명함</a>
-                        <a href="../docs/docs-gulp.html" class="nav-link mb-2 text-white">현수막</a>
-                        <a href="../docs/docs-customizing-css.html" class="nav-link mb-2 text-white">배너</a>
-                        <a href="../docs/docs-credits.html" class="nav-link mb-2 text-white">봉투</a>
-                        <a href="../docs/docs-changelog.html" class="nav-link mb-2 text-white">문어발</a>
-                        <a href="../docs/docs-changelog.html" class="nav-link mb-2 text-white">문고리</a>
-                        <a href="../docs/docs-changelog.html" class="nav-link mb-2 text-white">양식지</a>
-                        <a href="../docs/docs-changelog.html" class="nav-link mb-2 text-white">종이자석</a>
+                        <a href="{% url 'design:product' %}?item=flyer" class="nav-link mb-2" style="background-color: #343a40; color:white;">전단지<br>&족자</a>
+                        <a href="{% url 'design:product' %}?item=card" class="nav-link mb-2 text-white">명함</a>
+                        <a href="{% url 'design:product' %}?item=현수막" class="nav-link mb-2 text-white">현수막</a>
+                        <a href="{% url 'design:product' %}?item=배너" class="nav-link mb-2 text-white">배너</a>
+                        <a href="{% url 'design:product' %}?item=봉투" class="nav-link mb-2 text-white">봉투</a>
+                        <a href="{% url 'design:product' %}?item=문어발" class="nav-link mb-2 text-white">문어발</a>
+                        <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">문고리</a>
+                        <a href="{% url 'design:product' %}?item=양식지" class="nav-link mb-2 text-white">양식지</a>
+                        <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">종이자석</a>
 
                     </nav>
                 </div>
@@ -29,24 +29,31 @@
             <div class="row m-0">
                 <div class="card col-lg-4 mb-4 p-0">
                     <div class="row m-1">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <button type="button" class="btn btn-info col-md-6" ><i class="fas fa-lock" ></i>파일로 접수</button>
+                                <button type="button" class="btn btn-secondary col-md-6">지난시안</button>
+                            </div>
+                        </div>
+<!--                        <div class="col-12 mt-3 mb-3">-->
+<!--                            {% sample sector_slug as samples %}-->
+<!--                            <h4>샘플리스트 {% for z in samples %}<p>{{z}}</p>{% endfor %}</h4>-->
+<!--                        </div>-->
                         <div class="col-12 mt-3 mb-3">
-                            {% sample_list sector_slug as samples %}
-                            <h4>샘플리스트 {% for z in samples %}<p>{{z}}</p>{% endfor %}</h4>
+                                <input type="search" placeholder="Search" aria-label="Search"
+                                       class="form-control mr-sm-2">
+
                         </div>
                         <div class="col-12 mt-3 mb-3">
                         <div class="form-group align-content-center">
                       <select class="custom-select col-12">
-                        <option selected="">스포츠</option>
-                        <option value="1">피트니스</option>
+                          {% for i in form.sector %}
+                          {% if i %}
+                         {{i}}
+                          {% endif %}
+                          {% endfor %}
                       </select>
                     </div>
-                        </div>
-
-                        <div class="col-6 mt-3 mb-3">
-                       <button type="button" class="btn btn-secondary">손그림 올리기</button>
-                        </div>
-                        <div class="col-6 mt-3 mb-3">
-                       <button type="button" class="btn btn-dark">지난 시안 재주문</button>
                         </div>
                         <!-- product-->
                         {% for i in sample_list %}
@@ -59,10 +66,16 @@
                                         <a href="detail.html"class="product-hover-overlay-link"></a>
                                         <div class="product-hover-overlay-buttons">
                                             <a href="detail.html" class="btn btn-dark btn-buy">
-                                                <span class="btn-buy-label ml-2">선택</span>
+                                                <span class="btn-buy-label ml-2">앞</span>
+                                            </a>
+                                        </div>
+                                        <div class="product-hover-overlay-buttons">
+                                            <a href="detail.html" class="btn btn-dark btn-buy">
+                                                <span class="btn-buy-label ml-2">뒤</span>
                                             </a>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="py-2">
                                     <h3 class="h6 mb-1 text-center">{{ i.name }}</h3>
@@ -75,10 +88,10 @@
                     </div>
                          <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 ">
                             <ul class="pagination">
-                              <li class="page-item active"><a href="#" class="page-link">1       </a></li>
-                              <li class="page-item"><a href="#" class="page-link">2       </a></li>
-                              <li class="page-item"><a href="#" class="page-link">3       </a></li>
-                              <li class="page-item"><a href="#" class="page-link">4       </a></li>
+                              <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                              <li class="page-item"><a href="#" class="page-link">2</a></li>
+                              <li class="page-item"><a href="#" class="page-link">3 </a></li>
+                              <li class="page-item"><a href="#" class="page-link">4</a></li>
                               <li class="page-item"><a href="#" class="page-link">5 </a></li>
                             </ul>
                           </nav>
@@ -86,22 +99,19 @@
 
                 <div class="col-lg-8">
                     <br>
-                    <h4>전단지 & 족자 {{ menu_slug }} {{ sector_slug }}</h4>
+                    <h4>품목 정보</h4>
                     <br>
                     <div class="row align-content-center">
                         <div class="col-md-auto pr-0 mb-3 ">
-                              <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">
+<!--                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>-->
                             <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">
-
 
                         </div>
                         <div class="col">
 
                             <div class="form-group align-content-center">
                         <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">종류</b></label>
-                      <select class="custom-select col-xl-8 col-lg-8 col-md-8 col-sm-8 col-9">
-                        <option selected="">전단지</option>
-                        <option value="1">족자</option>
+                      <select class="custom-select col-xl-8 col-lg-8 col-md-8 col-sm-8 col-9" id="size_book" name="size_book">
                       </select>
                     </div>
                            <div class="form-group align-content-center">
@@ -278,4 +288,54 @@
         </div>
     </div>
 </section>
+
+<style>
+    /* page-loading */
+#page-loading {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: table;
+    background-color: #fff;
+    z-index: 9999;
+    text-align: center;
+}
+
+#page-loading i{
+    vertical-align: middle;
+    text-align: center;
+    display: table-cell;
+    font-size: 60px;
+}
+
+</style>
+<script>
+    $(document).ready(function() {
+        var searchParams = new URLSearchParams(window.location.search);
+        var param_item = searchParams.get('item');
+        var param_sector = searchParams.get('sector');
+        console.log(param_item, param_sector);
+
+        var $size_book = $('#size_book');
+
+        var url = '/assets/design/json/'+param_item+'.json';
+         $.getJSON(url, function(data) {
+            var main_list = Object.keys(data[param_item]);
+            $.each(main_list, function(index, item){
+                    var title_option = data[param_item][item]['title'];
+                    $size_book.append(
+                        '<option value="'+item+'">'+title_option+'</option>'
+                   );
+            });
+            console.log($size_book.val());
+
+         });
+
+
+
+    })
+
+</script>
 {% endblock %}

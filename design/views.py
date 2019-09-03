@@ -53,18 +53,29 @@ class HomeView(ProfileMixin, generic.ListView):
         context = super(HomeView, self).get_context_data(**kwargs)
         return context
 
-class ProductView(ProfileMixin, generic.ListView):
+class ProductView(ProfileMixin, generic.FormView, generic.ListView):
     template_name = 'design/product.html'
     context_object_name = 'sample_list'
+    form_class = forms.ProductForm
 
     def get_queryset(self):
-        return managing_model.Sample.objects.select_related( 'sectors_category__parent')
+        product_category = self.request.GET.get('item')
+        sector_category = self.request.GET.get('sector')
+        return managing_model.Sample.objects.select_related( 'sectors_category__parent').filter(state=True)
 
     def get_context_data(self, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
+        product_category = self.request.GET.get('item')
+        sector_category = self.request.GET.get('sector')
+        context['item'] = product_category
         # context['menu_slug']= self.kwargs['menu_slug']
         # context['sector_slug'] = self.kwargs['sector_slug']
         return context
+
+    def form_valid(self, form):
+        print('forms',form)
+        return self
+
 
 class CartView(generic.TemplateView):
     template_name = 'design/cart.html'
