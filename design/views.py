@@ -5,11 +5,17 @@ from django.http import HttpResponse
 from mptt.querysets import TreeQuerySet
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from rest_framework import status
+
+from design import serializers
 from . import models as design_model
 from member import models as member_model
 from managing import models as managing_model
 import logging
 from . import forms
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # class PageableMixin(object):
 #     logger = logging.getLogger(__name__)
@@ -67,7 +73,9 @@ class ProductView(ProfileMixin, generic.FormView, generic.ListView):
         context = super(ProductView, self).get_context_data(**kwargs)
         product_category = self.request.GET.get('item')
         sector_category = self.request.GET.get('sector')
-        context['item'] = product_category
+        dic_name = {"flyer":"전단지/족자","card":"명함","envelope":"봉투","banner":"배너"}
+        if product_category in dic_name:
+            context['item'] = dic_name[product_category]
         # context['menu_slug']= self.kwargs['menu_slug']
         # context['sector_slug'] = self.kwargs['sector_slug']
         return context
@@ -76,6 +84,29 @@ class ProductView(ProfileMixin, generic.FormView, generic.ListView):
         print('forms',form)
         return self
 
+
+class ProductSampleView(ProfileMixin, generic.FormView, generic.ListView):
+    template_name = 'design/product_sample.html'
+    context_object_name = 'sample_list'
+    form_class = forms.ProductForm
+
+    def get_queryset(self):
+        product_category = self.request.GET.get('item')
+        sector_category = self.request.GET.get('sector')
+        return managing_model.Sample.objects.select_related( 'sectors_category__parent').filter(state=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductSampleView, self).get_context_data(**kwargs)
+        product_category = self.request.GET.get('item')
+        sector_category = self.request.GET.get('sector')
+        context['item'] = product_category
+        # context['menu_slug']= self.kwargs['menu_slug']
+        # context['sector_slug'] = self.kwargs['sector_slug']
+        return context
+
+    def form_valid(self, form):
+        print('forms',form)
+        return self
 
 class CartView(generic.TemplateView):
     template_name = 'design/cart.html'
@@ -139,3 +170,25 @@ class MyPageView(ProfileMixin, generic.TemplateView):
         context['form'] = form
         return context
 
+class AjaxPriceView(APIView):
+    def get(self, request, format=None):
+        payments = {}
+        return Response(payments)
+
+    def post(self, request, format=None):
+        serializer = serializers.PaymentSerializer(data=request.data)
+        if serializer.is_valid():
+            size= request.data['size']
+            paper = request.data['paper']
+            side = request.data['side']
+            deal = request.data['deal']
+            print(f'{size} {paper} {deal}')
+            print(serializer.data)
+            back_dic = {
+                'sell':'50,000',
+                'size_img':'https://tshop.r10s.jp/gold/auc-paper31/images/drawing/a3.jpg?fitin=330:330',
+                'paper_img':'http://www.aceprinting.co.kr/skin/guide/images/goods/Goods_04_01_03.jpg'
+            }
+            return Response(back_dic, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

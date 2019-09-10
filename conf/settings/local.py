@@ -29,3 +29,4 @@ INSTALLED_APPS += [
     'imagekit',
     'mathfilters',
 ]
+

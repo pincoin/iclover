@@ -3,24 +3,25 @@
 {% load design_tags %}
 {% block title%}위믹스 품목{% endblock %}
 {% block content%}
-<hr>
 <!-- Hero Section-->
 <section class="hero">
+        <hr>
     <div class="row pr-0 m-0">
-        <div class="col-lg-1" style="background-color: #343a40; color:white;">
+        <div class="col-lg-1 d-none d-xl-block" style="background-color: #343a40; color:white;">
             <div style="top: 60px; " class="sticky-top mb-2">
                 <div class="sidebar-block ">
                     <nav class="nav nav-pills flex-column text-center">
-                        <a href="{% url 'design:product' %}?item=flyer" class="nav-link mb-2" style="background-color: #343a40; color:white;">전단지<br>&족자</a>
+                        <a href="{% url 'design:product' %}?item=flyer" class="nav-link mb-2"
+                           style="background-color: #343a40; color:white;">전단지<br>&족자</a>
                         <a href="{% url 'design:product' %}?item=card" class="nav-link mb-2 text-white">명함</a>
                         <a href="{% url 'design:product' %}?item=현수막" class="nav-link mb-2 text-white">현수막</a>
-                        <a href="{% url 'design:product' %}?item=배너" class="nav-link mb-2 text-white">배너</a>
-                        <a href="{% url 'design:product' %}?item=봉투" class="nav-link mb-2 text-white">봉투</a>
+                        <a href="{% url 'design:product' %}?item=banner" class="nav-link mb-2 text-white">배너</a>
+                        <a href="{% url 'design:product' %}?item=envelope" class="nav-link mb-2 text-white">봉투</a>
                         <a href="{% url 'design:product' %}?item=문어발" class="nav-link mb-2 text-white">문어발</a>
                         <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">문고리</a>
+                        <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">스티커</a>
                         <a href="{% url 'design:product' %}?item=양식지" class="nav-link mb-2 text-white">양식지</a>
                         <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">종이자석</a>
-
                     </nav>
                 </div>
             </div>
@@ -28,203 +29,140 @@
         <div class="col-lg-9 col-xl-9 docs-content position-relative">
             <div class="row m-0">
                 <div class="card col-lg-4 mb-4 p-0">
+                    <div role="alert" class="alert alert-danger m-10px">
+                        <small class="card-text">※ 이미지가 아닌  <b>원본은 제공되지 않습니다</b> </small><br>
+                        <small class="card-text">※ <b>화면(RGB)</b>색상과 <b>출력물(CMYK)</b>의 색상은 다릅니다.</small><br>
+                        <small class="card-text">※ <b>배송 및 사용기간</b>에 대한 보장을 해드리지 못합니다.</small><br>
+                    </div>
                     <div class="row m-1">
                         <div class="col-md-12">
-                            <div class="row">
-                                <button type="button" class="btn btn-info col-md-6" ><i class="fas fa-lock" ></i>파일로 접수</button>
-                                <button type="button" class="btn btn-secondary col-md-6">지난시안</button>
+                            <div>
+                                <img src="{% static 'design/img/product/a4.jpg'%}" alt="Card image" class="card-img"
+                                id="size_img">
                             </div>
-                        </div>
-<!--                        <div class="col-12 mt-3 mb-3">-->
-<!--                            {% sample sector_slug as samples %}-->
-<!--                            <h4>샘플리스트 {% for z in samples %}<p>{{z}}</p>{% endfor %}</h4>-->
-<!--                        </div>-->
-                        <div class="col-12 mt-3 mb-3">
-                                <input type="search" placeholder="Search" aria-label="Search"
-                                       class="form-control mr-sm-2">
+                            <div>
+                                <img src="{% static 'design/img/product/art_paper.jpg'%}" alt="Card image"
+                                       id="paper_img" class="card-img"></div>
 
                         </div>
-                        <div class="col-12 mt-3 mb-3">
-                        <div class="form-group align-content-center">
-                      <select class="custom-select col-12">
-                          {% for i in form.sector %}
-                          {% if i %}
-                         {{i}}
-                          {% endif %}
-                          {% endfor %}
-                      </select>
                     </div>
-                        </div>
-                        <!-- product-->
-                        {% for i in sample_list %}
-                        <div class="col-6 ">
-                            <div class="product">
-                                <div class="product-image">
-                                    <img src="/media/{{ i.images }}"
-                                         alt="product" class="img-fluid">
-                                    <div class="product-hover-overlay">
-                                        <a href="detail.html"class="product-hover-overlay-link"></a>
-                                        <div class="product-hover-overlay-buttons">
-                                            <a href="detail.html" class="btn btn-dark btn-buy">
-                                                <span class="btn-buy-label ml-2">앞</span>
-                                            </a>
-                                        </div>
-                                        <div class="product-hover-overlay-buttons">
-                                            <a href="detail.html" class="btn btn-dark btn-buy">
-                                                <span class="btn-buy-label ml-2">뒤</span>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="py-2">
-                                    <h3 class="h6 mb-1 text-center">{{ i.name }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /product-->
-                        {% endfor %}
-
-                    </div>
-                         <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 ">
-                            <ul class="pagination">
-                              <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                              <li class="page-item"><a href="#" class="page-link">2</a></li>
-                              <li class="page-item"><a href="#" class="page-link">3 </a></li>
-                              <li class="page-item"><a href="#" class="page-link">4</a></li>
-                              <li class="page-item"><a href="#" class="page-link">5 </a></li>
-                            </ul>
-                          </nav>
                 </div>
 
                 <div class="col-lg-8">
-                    <br>
-                    <h4>품목 정보</h4>
-                    <br>
-                    <div class="row align-content-center">
+
+
+    <div class="row d-none d-xl-block text-center" style="margin: 10px">
+        <div class="row">
+            <div class="col-md-4 card border-success bg-light text-success p-3 my-card ">
+                <span class="fas fa-shopping-cart" aria-hidden="true"> 1. 품목 선택</span></div>
+            <div class="col-md-4 card text-secondary p-3 my-card">
+                <span class="far fa-images" aria-hidden="true"> 2. 디자인 선택</span>
+            </div>
+            <div class="col-md-4 card  text-secondary p-3 my-card">
+                <span class="fas fa-bars" aria-hidden="true"> 3. 주문 확인</span>
+            </div>
+        </div>
+    </div>
+
+                    <div class="row align-content-center loading-option" style="display: none;">
                         <div class="col-md-auto pr-0 mb-3 ">
-<!--                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>-->
-                            <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">
-
-                        </div>
-                        <div class="col">
-
-                            <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">종류</b></label>
-                      <select class="custom-select col-xl-8 col-lg-8 col-md-8 col-sm-8 col-9" id="size_book" name="size_book">
-                      </select>
-                    </div>
-                           <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">면</b></label>
-                            <label for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-4 col-lg-4 col-md-3 col-4">
-                              단면
-                              <input type="radio" name="size" value="value_0" id="size_0" required="" class="input-invisible">
-                            </label>
-                            <label for="size_1" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-4 col-lg-4 col-md-3 col-4">
-
-                              양면
-                              <input type="radio" name="size" value="value_1" id="size_1" required="" class="input-invisible">
-                            </label>
-                    </div>
-                            <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">크기</b></label>
-                      <select class="custom-select col-xl-8 col-lg-8 col-md-8 col-sm-8 col-9">
-                        <option selected="">전단지 A4(국8절) 210*297 </option>
-                        <option value="1">전단지 B5 210*297 </option>
-                      </select>
-                    </div>
-
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                            <!--                            <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">-->
                         </div>
                     </div>
-                    <hr style="opacity: 0.7">
-                    <h5 class="text-black-50">인쇄 옵션</h5>
+                    <!--                    <hr style="opacity: 0.7">-->
+                    <h3 class="text-black-50">
+                        {% if item %}
+                        {{item}}
+                        {% else %}
+                        품목 정보
+                        {% endif %}
+
+                    </h3>
+                    <br>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">규격</b></label>
+                        <select class="custom-select col-sm-7 product-select"
+                                id="size" name="size">
+                        </select>
+                    </div>
                     <div class="form-group align-content-center">
                         <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">용지</b></label>
-                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
-                        <option selected="">90 아트지</option>
-                        <option value="1">80 모조</option>
-                      </select>
-                        <button type="button" class="btn btn-primary btn-md ml-2"><b>!</b></button>
+                        <select class="custom-select col-sm-7 product-select"
+                                id="paper" name="paper">
+
+                        </select>
+                    </div>
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">인쇄</b></label>
+                        <select class="custom-select col-sm-7 product-select"
+                                id="side" name="side">
+                        </select>
                     </div>
                     <div class="form-group align-content-center">
                         <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">수량</b></label>
-                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
-                        <option selected="">1연 4000장</option>
-                        <option value="1">2연 4000장</option>
-                        <option value="2">3연 4000장</option>
-                        <option value="3">4연 4000장</option>
-                      </select>
-                        <button type="button" class="btn btn-primary btn-md ml-2"><b>!</b></button>
-                    </div>
-                    <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">인쇄방식</b></label>
-                                    <label for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
-                                       합판 인쇄
-                                      <input type="radio" name="size" value="value_0" id="size_0" required="" class="input-invisible">
-                                    </label>
-                                    <label for="size_1" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
-
-                                      독판 인쇄
-                                      <input type="radio" name="size" value="value_1" id="size_1" required="" class="input-invisible">
-                                    </label>
-                    </div>
-                    <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">포장선택</b></label>
-                            <label for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
-                               종이 포장
-                              <input type="radio" name="size" value="value_0" id="size_0" required="" class="input-invisible">
-                            </label>
-                            <label for="size_1" class="btn btn-sm btn-outline-secondary detail-option-btn-label col-xl-2 col-lg-3 col-md-3 col-4">
-
-                              박스 포장
-                              <input type="radio" name="size" value="value_1" id="size_1" required="" class="input-invisible">
-                            </label>
-                    </div>
-                    <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">배송 선택</b></label>
-                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
-                        <option selected="">선불 택배</option>
-                        <option value="1">착불 택배</option>
-                        <option value="2">퀵 배송</option>
-                        <option value="3">방문 수령</option>
-                      </select>
-                    </div>
-                    <div class="form-group align-content-center">
-                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">배송 선택</b></label>
-                      <select class="custom-select col-xl-5 col-lg-7 col-md-7 col-sm-7 col-9">
-                        <option selected="">선불 택배</option>
-                        <option value="1">착불 택배</option>
-                        <option value="2">퀵 배송</option>
-                        <option value="3">방문 수령</option>
-                      </select>
-                        <button type="button" class="btn btn-primary btn-md ml-2"><b>!</b></button>
+                        <select class="custom-select col-sm-7 product-select"
+                                id="deal" name="deal">
+                        </select>
                     </div>
                     <hr>
                     <div class="card">
-                <div class="card-body bg-gray-100 p-4 text-sm">
-                    <p class="card-text">- 화면(RGB)색상과 출력물(CMYK)의 색상은 다릅니다.</p>
-                    <p class="card-text">- 배송 및 기간에 대한 확답을 드리지 않습니다.</p>
-                    <p class="card-text">- 다양한 변수를 위해 넉넉한 기간을 두고 구매하여주세요.</p>
-                    <p class="card-text">- 재인쇄의 경우 주문하셨던 배송 방법으로 발송됩니다.</p>
-                </div>
-              </div>
-                                      <hr>
-                   <div class="row">
+                        <div class="card-body bg-gray-100 p-4 text-sm">
+                            <h5 class="text-muted text-center">추천 알고리즘 List~!</h5>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">기준1</th>
+                                    <th scope="col">기준2</th>
+                                    <th scope="col">가격</th>
+                                    <th scope="col">가격</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th>1</th>
+                                    <td>명함</td>
+                                    <td>n. 아트지 300g (무광코팅)</td>
+                                    <td>n. 아트지 300g (무광코팅)</td>
+                                </tr>
+                                <tr>
+                                    <th>2</th>
+                                    <td>명함</td>
+                                    <td>n. 아트지 300g (유광코팅)</td>
+                                    <td>n. 아트지 300g (무광코팅)</td>
+                                </tr>
+                                <tr>
+                                    <th>명함</th>
+                                    <td>s. 스타드림 (샤인스타) 240g</td>
+                                    <td>@twitter</td>
+                                    <td>n. 아트지 300g (무광코팅)</td>
+                                </tr>
+                                </tbody>
+                            </table>
 
-                       <div class="col-sm-7">
-                           <p>공급가격: <b>300,000원</b> + 부가세(VAT) : <b>30,000원</b></p>
-                       </div>
-                       <div class="col-sm-5 text-right">
-                           <p>인쇄비 : <b class="text-danger " style="font-size:20px;">330,000원</b></p>
-                       </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
 
-                   </div>
-                      <div class="row">
-                           <div class="col-sm-9 text-danger mb-2">작업비, 배송비는 미포함 된 금액입니다.</div>
-                    <div class="col-sm-3 text-danger"><button type="button" class="btn btn-outline-dark btn-block">장바구니 담기</button></div>
-                   </div>
+                        <div class="col-sm-7">
+                            <p>공급가격: <b>300,000원</b> + 부가세(VAT) : <b>30,000원</b></p>
+                        </div>
+                        <div class="col-sm-5 text-right">
+                            <p>인쇄비 : <b class="text-danger " style="font-size:20px;">
+                                <span id="sell_price">330,000</span>원
+                            </b></p>
+                        </div>
 
-                                      <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 text-danger mb-2">작업비, 배송비는 미포함 된 금액입니다.</div>
+                        <div class="col-sm-3 text-danger">
+                            <button type="button" class="btn btn-outline-dark btn-block">장바구니 담기</button>
+                        </div>
+                    </div>
+
+                    <hr>
 
                 </div>
             </div>
@@ -232,57 +170,67 @@
         <div class="col-lg-2">
             <div style="top: 80px; " class="position-sticky mb-2">
                 <div class="sidebar-block ">
-                     <nav id="components-nav" style="top: 105px;"
-                 class="nav nav-pills flex-column ml-1 p-3 mb-5 text-center bg-gray-300">
-                <h4 class="sidebar">장바구니</h4>
-                <p></p>
-                <div class="customer-sidebar card border-0">
-                    <nav class="list-group customer-nav ">
-                        <div class="list-group-item flex-column justify-content-between align-items-center">
-                        <a href="#">
-                            <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>
+                    <nav id="components-nav" style="top: 105px;"
+                         class="nav nav-pills flex-column ml-1 p-3 mb-5 text-center bg-gray-300">
+                        <h4 class="sidebar">장바구니</h4>
+                        <p></p>
 
-                        </a>
-                            <a href="#2"><button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </a>
-                        </div>
-                        <div class="list-group-item flex-column justify-content-between align-items-center">
-                        <a href="#">
-                            <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>
+                        <div class="customer-sidebar card border-0">
+                            <i class="fas fa-lock m-30px" style="font-size: 48px;"></i>
+                            <p><b>로그인시</b> <br>기능이 활성화 됩니다.</p>
+                            <nav class="list-group customer-nav ">
+<!--                                <div class="list-group-item flex-column justify-content-between align-items-center">-->
+<!--                                    <a href="#">-->
+<!--                                        <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>-->
 
-                        </a>
-                            <a href="#2"><button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </a>
-                        </div>
-                        <div class="list-group-item flex-column justify-content-between align-items-center">
-                        <a href="#">
-                            <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>
+<!--                                    </a>-->
+<!--                                    <a href="#2">-->
+<!--                                        <button type="button" class="close text-danger" data-dismiss="modal"-->
+<!--                                                aria-label="Close"><span aria-hidden="true">×</span></button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                                <div class="list-group-item flex-column justify-content-between align-items-center">-->
+<!--                                    <a href="#">-->
+<!--                                        <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>-->
 
-                        </a>
-                            <a href="#2"><button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </a>
-                        </div>
+<!--                                    </a>-->
+<!--                                    <a href="#2">-->
+<!--                                        <button type="button" class="close text-danger" data-dismiss="modal"-->
+<!--                                                aria-label="Close"><span aria-hidden="true">×</span></button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                                <div class="list-group-item flex-column justify-content-between align-items-center">-->
+<!--                                    <a href="#">-->
+<!--                                        <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>-->
 
-                        <a href="../customer-account.html"
-                           class="list-group-item d-flex justify-content-between align-items-center"><b>
-                            <svg class="svg-icon svg-icon-heavy mr-2">
-                                <use xlink:href="#male-user-1"></use>
-                            </svg>
-                            인쇄비 : <b class="text-danger">180,000</b></b></a>
-                        <a href="../customer-addresses.html"
-                           class="list-group-item d-flex justify-content-between align-items-center"
-                           style="background-color: #B9B8B8; color: #fff;"><span>
+<!--                                    </a>-->
+<!--                                    <a href="#2">-->
+<!--                                        <button type="button" class="close text-danger" data-dismiss="modal"-->
+<!--                                                aria-label="Close"><span aria-hidden="true">×</span></button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+
+<!--                                <a href="../customer-account.html"-->
+<!--                                   class="list-group-item d-flex justify-content-between align-items-center"><b>-->
+<!--                                    <svg class="svg-icon svg-icon-heavy mr-2">-->
+<!--                                        <use xlink:href="#male-user-1"></use>-->
+<!--                                    </svg>-->
+<!--                                    인쇄비 : <b class="text-danger">180,000</b></b></a>-->
+                                <a href="../customer-addresses.html"
+                                   class="list-group-item d-flex justify-content-between align-items-center"
+                                   style="background-color: #B9B8B8; color: #fff;"><span>
                           <svg class="svg-icon svg-icon-heavy mr-2">
                             <use xlink:href="#navigation-map-1"> </use>
-                          </svg>견적서 요청</span></a><a href="../customer-login.html"
-                                                   class="list-group-item d-flex justify-content-between align-items-center"
-                                                   style="background-color: #E45A5A; color: #fff;"><span>
+                          </svg>견적서 요청</span></a>
+                                <a href="{% url 'design:product_sample'%}"
+                                                    class="list-group-item d-flex justify-content-between align-items-center"
+                                                    style="background-color: #E45A5A; color: #fff;"><span>
                           <svg class="svg-icon svg-icon-heavy mr-2">
                             <use xlink:href="#exit-1"> </use>
                           </svg>주문접수</span></a>
+                            </nav>
+                        </div>
                     </nav>
-                </div>
-            </nav>
                 </div>
             </div>
         </div>
@@ -291,51 +239,271 @@
 
 <style>
     /* page-loading */
-#page-loading {
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    position: fixed;
-    display: table;
-    background-color: #fff;
-    z-index: 9999;
-    text-align: center;
-}
+    #page-loading {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        display: table;
+        background-color: #fff;
+        z-index: 9999;
+        text-align: center;
+    }
 
-#page-loading i{
-    vertical-align: middle;
-    text-align: center;
-    display: table-cell;
-    font-size: 60px;
-}
+    #page-loading i {
+        vertical-align: middle;
+        text-align: center;
+        display: table-cell;
+        font-size: 60px;
+    }
 
 </style>
 <script>
-    $(document).ready(function() {
-        var searchParams = new URLSearchParams(window.location.search);
-        var param_item = searchParams.get('item');
-        var param_sector = searchParams.get('sector');
-        console.log(param_item, param_sector);
+    size_default = null;
+    paper_default = null;
+    side_default = null;
+    deal_default = null;
 
-        var $size_book = $('#size_book');
+    function cleanSelect(text) {
+        switch (text) {
+            case "size" :
+                $($size, $paper, $side, $deal).text('');
+                break;
+            case "paper" :
+                $($paper, $side, $deal).text('');
+                break;
+            case "side" :
+                $($side, $deal).text('');
+                break;
+            case "deal" :
+                $deal.text('');
+                break;
+        }
+    }
 
-        var url = '/assets/design/json/'+param_item+'.json';
-         $.getJSON(url, function(data) {
-            var main_list = Object.keys(data[param_item]);
-            $.each(main_list, function(index, item){
-                    var title_option = data[param_item][item]['title'];
-                    $size_book.append(
-                        '<option value="'+item+'">'+title_option+'</option>'
-                   );
-            });
-            console.log($size_book.val());
+    function reSelect(text_val, default_val, list_array) {
 
-         });
+        if (list_array.indexOf(default_val) !== -1) {
+            switch (text_val) {
+                case "size":
+                    $size.val(default_val);
+                    break;
+                case "paper":
+                    $paper.val(default_val);
+                    break;
+                case "side":
+                    $side.val(default_val);
+                    break;
+                case "deal":
+                    $deal.val(default_val);
+                    break;
+            }
+        } else {
+            $("#" + text_val + " option:eq(0)").prop("selected", true);
+            switch (text_val) {
+                case "size":
+                    size_default = $size.val();
+                    break;
+                case "paper":
+                    paper_default = $paper.val();
+                    break;
+                case "side":
+                    side_default = $side.val();
+                    break;
+                case "deal":
+                    deal_default = $deal.val();
+                    break;
+            }
+        }
+    }
 
 
+    function eachList(title, list) {
+        switch (title) {
+            case "size":
+                $select_name = $size;
+                break;
+            case "paper":
+                $select_name = $paper;
+                break;
+            case "side":
+                $select_name = $side;
+                break;
+            case "deal":
+                $select_name = $deal;
+        }
 
-    })
+        $.each(list, function (index, val) {
+            if (val !== 'default' && val !== 'title') {
+                switch (title) {
+                    case "size":
+                        option_name = global_data[param_item][val]['title'];
+                        break;
+                    case "paper":
+                        option_name = global_data[param_item][size_default][val]['title'];
+                        break;
+                    case "side":
+                        option_name = val;
+                        break;
+                    case "deal":
+                        option_name = val;
+                        break;
+                }
+                $select_name.append(
+                    '<option value="' + val + '">' + option_name + '</option>'
+                );
+            }
+        });
+    }
+
+    function sizeFor(size_default) {
+        var size = Object.keys(global_data[param_item]);
+        cleanSelect('size');
+        eachList('size', size);
+        reSelect('size', size_default, size);
+    }
+
+    function paperFor(size_default, paper_default) {
+        var paper = Object.keys(global_data[param_item][size_default]);
+        cleanSelect('paper');
+        eachList('paper', paper);
+        reSelect('paper', paper_default, paper);
+
+    }
+
+    function sideFor(size_default, paper_default, side_default) {
+        var side = Object.keys(global_data[param_item][size_default][paper_default]);
+        cleanSelect('side');
+        eachList('side', side);
+        reSelect('side', side_default, side);
+    }
+
+    function dealFor(size_default, paper_default, side_default, deal_default) {
+        var deal = global_data[param_item][size_default][paper_default][side_default];
+        cleanSelect('deal');
+        eachList('deal', deal);
+        reSelect('deal', deal_default, deal);
+    }
+
+    function getJson(url, size) {
+        $.getJSON(url, function (data) {
+            global_data = data;
+            if (size) {
+                size_default = $size.val();
+                paper_default = $paper.val();
+                side_default = $side.val();
+                deal_default = $deal.val();
+            } else {
+                size_default = data[param_item]['default']['size'];
+                paper_default = data[param_item]['default']['paper'];
+                side_default = data[param_item]['default']['side'];
+                deal_default = data[param_item]['default']['deal'];
+            }
+            sizeFor(size_default);
+            paperFor(size_default, paper_default);
+            sideFor(size_default, paper_default, side_default);
+            dealFor(size_default, paper_default, side_default, deal_default);
+        });
+    }
+
+
+    $(document).ready(function () {
+        var browse = navigator.userAgent.toLowerCase();
+        if ((browse.indexOf('trident') !== -1) || (browse.indexOf("msie") !== -1)) {
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results == null) {
+                    return null;
+                } else {
+                    return decodeURI(results[1]) || 0;
+                }
+            };
+            param_item = $.urlParam('item');
+        } else {
+            var searchParams = new URLSearchParams(window.location.search);
+            param_item = searchParams.get('item');
+            param_sector = searchParams.get('sector');
+        }
+
+        $size = $('#size');
+        $paper = $('#paper');
+        $side = $('#side');
+        $deal = $('#deal');
+        url = '/assets/design/json/' + param_item + '.json';
+        var size_default = null;
+        getJson(url, size_default);
+    });
+
+
+    $('.product-select').change(function () {
+        size_default = $size.val();
+        paper_default = $paper.val();
+        side_default = $side.val();
+        deal_default = $deal.val();
+        now_id = $(this).attr('id');
+        switch (now_id) {
+            case "size":
+                $paper.slideUp();
+                $side.slideUp();
+                $deal.slideUp();
+                getJson(url, size_default, paper_default, side_default, deal_default);
+                $paper.slideDown();
+                $side.slideDown();
+                $deal.slideDown();
+                break;
+            case "paper":
+                $side.slideUp();
+                $deal.slideUp();
+                paperFor(size_default, paper_default);
+                sideFor(size_default, paper_default, side_default);
+                dealFor(size_default, paper_default, side_default, deal_default);
+                $side.slideDown();
+                $deal.slideDown();
+                break;
+            case "side":
+                $deal.slideUp();
+                sideFor(size_default, paper_default, side_default);
+                dealFor(size_default, paper_default, side_default, deal_default);
+                $deal.slideDown();
+                break;
+            case "deal":
+                dealFor(size_default, paper_default, side_default, deal_default);
+                break;
+
+        }
+        callre();
+
+    });
+    function callre() {
+        console.log(size_default, paper_default, side_default, deal_default);
+        getPrice();
+    }
+
+    function getPrice() {
+        var $sell_price = $('#sell_price');
+        var $size_img = $('#size_img');
+        var $paper_img = $('#paper_img');
+        $.ajax({
+        type:"POST",
+        url:"get_price/",
+        data : {
+            'size' : size_default,
+            'paper' : paper_default,
+            'side' : side_default,
+            'deal' : deal_default,
+        },
+        dataType : "json",
+        success: function(xml){
+            $sell_price.text(xml.sell);
+            $size_img.attr('src',xml.size_img);
+        },
+        error: function(xhr, status, error) {
+            alert(error);
+        }
+    });
+    }
 
 </script>
+
 {% endblock %}
