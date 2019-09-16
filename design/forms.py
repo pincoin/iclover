@@ -3,14 +3,8 @@ from design import models as design_model
 from member import models as member_model
 from managing import models as managing_model
 from allauth.account.forms import LoginForm
-
-class MyCustomLoginForm(LoginForm):
-    def login(self, *args, **kwargs):
-
-        # Add your own processing here.
-
-        # You must return the original result.
-        return super(MyCustomLoginForm, self).login(*args, **kwargs)
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -24,3 +18,14 @@ class ProductForm(forms.Form):
 
     sector =  forms.ModelChoiceField(queryset=design_model.SectorsCategory.objects.all())
 
+
+class CreateUserForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = User
+        fields = ["username", "password1", "password2"]

@@ -11,7 +11,7 @@ class LoginForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder':'이름',
+                'placeholder':'ID',
             }
         ),
         help_text='ID :'

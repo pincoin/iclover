@@ -51,6 +51,10 @@ class OrderImgAdmin(admin.ModelAdmin):
 class OrderMemoAdmin(admin.ModelAdmin):
     list_per_page = 10
 
+class ProductImgAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(models.ProductBase, ProductBaseAdmin)
@@ -65,3 +69,4 @@ admin.site.register(models.OrderInfo, OrderInfoAdmin)
 admin.site.register(models.OrderList, OrderListAdmin)
 admin.site.register(models.OrderImg, OrderImgAdmin)
 admin.site.register(models.OrderMemo, OrderMemoAdmin)
+admin.site.register(models.ProductImg, ProductImgAdmin)

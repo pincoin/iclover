@@ -1,0 +1,66 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% block content%}
+
+<section>
+    <div class="container-fluid">
+        <div class="row my-lg-3">
+            <div class="col-lg-6 order-lg-2 mb-3 mb-lg-0">
+                <div class="d-flex align-items-center p-xl-1 h-100">
+                    <form method="post" autocomplete="off">
+                        {% csrf_token%}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h2 class="text-muted">회원가입</h2>
+                                <hr>
+                                <div class="form-group">
+                                    <label for="username" class="form-label">ID : *</label>
+                                    {{ form.username }}
+                                    <p class="text-muted"><small>{{ form.username.help_text }}</small></p>
+                                    {% if form.errors.username %}
+                                    {% for i in form.errors.username %}
+                                    <p><small class="text-danger">{{i}}</small></p>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="password1" class="form-label">암호 : *</label>
+                                    {{ form.password1 }}
+                                    {% if form.errors.password1 %}
+                                    {% for i in form.errors.password1 %}
+                                    <p><small class="text-danger">{{i}}</small></p>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="password2" class="form-label">암호 확인: *</label>
+                                    {{ form.password2 }}
+                                    {% if form.errors.password2 %}
+                                    {% for i in form.errors.password2 %}
+                                    <p><small class="text-danger">{{i}}</small></p>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <button type="submit" class="form-control btn btn-warning">회원 가입</button>
+                                <hr>
+                                <h5>암호 설정 Tip</h5>
+                                <p class="text-muted"><small>{{ form.password1.help_text }}</small></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 pr-lg-0 order-lg-1">
+                <div class="mh-full-screen-with-header h-100">
+                    <img src="{% static 'design/img/banner/join_banner.jpg' %}" alt="" class="bg-image">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

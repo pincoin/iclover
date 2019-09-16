@@ -1,11 +1,8 @@
 import datetime
 import re
-
 from django.urls import reverse
-
 from managing import log_save
 from django.core import serializers as core_serializer
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login as django_login, logout as django_logout, authenticate, update_session_auth_hash

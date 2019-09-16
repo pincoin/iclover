@@ -37,7 +37,7 @@
                     <div class="row m-1">
                         <div class="col-md-12">
                             <div>
-                                <img src="{% static 'design/img/product/a4.jpg'%}" alt="Card image" class="card-img"
+                                <img src="{% static 'design/img/product/feature/86x52.jpg'%}" alt="Card image" class="card-img"
                                 id="size_img">
                             </div>
                             <div>
@@ -380,31 +380,33 @@
     }
 
     function dealFor(size_default, paper_default, side_default, deal_default) {
-        var deal = global_data[param_item][size_default][paper_default][side_default];
-        cleanSelect('deal');
-        eachList('deal', deal);
-        reSelect('deal', deal_default, deal);
+        return new Promise(function (resolve, reject) {
+            var deal = global_data[param_item][size_default][paper_default][side_default];
+            cleanSelect('deal');
+            eachList('deal', deal);
+            reSelect('deal', deal_default, deal);
+        });
     }
 
     function getJson(url, size) {
-        $.getJSON(url, function (data) {
-            global_data = data;
-            if (size) {
-                size_default = $size.val();
-                paper_default = $paper.val();
-                side_default = $side.val();
-                deal_default = $deal.val();
-            } else {
-                size_default = data[param_item]['default']['size'];
-                paper_default = data[param_item]['default']['paper'];
-                side_default = data[param_item]['default']['side'];
-                deal_default = data[param_item]['default']['deal'];
-            }
-            sizeFor(size_default);
-            paperFor(size_default, paper_default);
-            sideFor(size_default, paper_default, side_default);
-            dealFor(size_default, paper_default, side_default, deal_default);
-        });
+            $.getJSON(url, function (data) {
+                global_data = data;
+                if (size) {
+                    size_default = $size.val();
+                    paper_default = $paper.val();
+                    side_default = $side.val();
+                    deal_default = $deal.val();
+                } else {
+                    size_default = data[param_item]['default']['size'];
+                    paper_default = data[param_item]['default']['paper'];
+                    side_default = data[param_item]['default']['side'];
+                    deal_default = data[param_item]['default']['deal'];
+                }
+                sizeFor(size_default);
+                paperFor(size_default, paper_default);
+                sideFor(size_default, paper_default, side_default);
+                dealFor(size_default, paper_default, side_default, deal_default).then(callre());
+            });
     }
 
 
@@ -458,6 +460,7 @@
                 paperFor(size_default, paper_default);
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default);
+                callre();
                 $side.slideDown();
                 $deal.slideDown();
                 break;
@@ -465,14 +468,16 @@
                 $deal.slideUp();
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default);
+                callre();
                 $deal.slideDown();
                 break;
             case "deal":
                 dealFor(size_default, paper_default, side_default, deal_default);
+                callre();
                 break;
 
         }
-        callre();
+
 
     });
     function callre() {

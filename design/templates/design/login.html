@@ -1,0 +1,91 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% block content%}
+<style>
+.login-card-purple {
+    background: linear-gradient(145deg, #673AB7, #9C27B0);
+}
+.login-card-yellow {
+    background: linear-gradient(145deg, #FFC107, #FFEB3B);
+}
+.login-card-light {
+    background: linear-gradient(145deg, #eef0f2, #fff);
+}
+.login-dark {
+    background: linear-gradient(145deg, #575b5d, #252b2d);
+}
+.login-blue {
+    background: linear-gradient(145deg, #2196F3, #3F51B5);
+}
+.login-purple-pink {
+    background: linear-gradient(145deg, #3F51B5, #E91E63);
+}
+</style>
+<section>
+    <div class="row p-30px">
+        <div class="col-xl-12 text-center" align="center">
+                   {% if messages %}
+                    {% for message in messages %}
+            <div role="alert" class="alert alert-danger"> <b>{{message}}</b></div>
+
+                    {% endfor %}
+                    {% endif %}
+        </div>
+        <div class="col-xl-4"></div>
+        <div class="col-xl-4 m-30px">
+            <div class="login-card-light p-3 shadow-lg rounded">
+                <div class="pt-3">
+                    <h2 class="text-muted ">로그인 | <small>Wemix & Iclover</small></h2>
+                </div>
+                   <form method="post" autocomplete="off"  class="mt-5">
+                    {% csrf_token%}
+
+
+                    <div class="input-group">
+                      <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text">
+                          <i class="fas fa-user"></i>
+                      </span></div>
+                        {{ form.username }}
+                    </div>
+                       <br>
+                   {% if form.errors.username %}
+                    {% for i in form.errors.username %}
+                    <p><small class="text-success">{{i}}</small></p>
+                    {% endfor %}
+                    {% endif %}
+
+                        <div class="input-group">
+                      <div class="input-group-prepend"><span id="basic-addon2" class="input-group-text">
+                         <i class="fas fa-key"></i>
+                      </span></div>
+                               {{ form.password }}
+                    </div>
+                   {% if form.errors.password %}
+                     {% for i in form.errors.password %}
+                    <p><small class="text-success">{{i}}</small></p>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="mt-5">
+                        <button class="btn col btn-outline-success">
+                            로그인
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <a href="#" class="text-success">Forgot Password?</a>
+                    </div>
+
+                    <div class="mt-5">
+                        <p class="text-muted text-center">
+                           아직 회원이 아니신가요?
+                            <a href="{% url 'design:join'%}" class="text-success">Go 회원가입</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-xl-4"></div>
+    </div>
+</section>
+
+{% endblock %}

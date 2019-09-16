@@ -1009,3 +1009,40 @@ class OrderMemo(TimeStampedModel, SoftDeletableModel):
 
     def __str__(self):
         return '{} {} {}'.format(self.order_img, self.check, self.memo, )
+
+
+class ProductImg(TimeStampedModel):
+    name = models.CharField(
+        verbose_name=_('slug'),
+        max_length=255,
+        blank=True,
+    )
+
+    keyword = models.CharField(
+        verbose_name=_('키워드'),
+        max_length=255,
+        blank=True,
+    )
+
+    def upload_to_product_default_img(instance, filename):
+        now = datetime.datetime.now()
+        nowDate = now.strftime('%Y')
+        return f'product_default_img/{nowDate}/{filename}'
+
+    images = models.ImageField(
+        verbose_name=_('product_default_img'),
+        null=True,
+        blank=True,
+        upload_to=upload_to_product_default_img,
+    )
+
+    def save(self, request=False, *args, **kwargs):
+        super(ProductImg, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('기본 이미지')
+        verbose_name_plural = _('기본 이미지')
+
+    def __str__(self):
+        return f'{self.name}'
+
