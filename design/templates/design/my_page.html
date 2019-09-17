@@ -6,6 +6,8 @@
 {% block sidebar_active3 %}style="font-weight: bold;"{% endblock %}
 
 {% block sidebar_content%}
+
+ {% if user.is_authenticated %}
 <div id="pagesfolder" class="docs-item">
 <section>
   <div class="container">
@@ -268,4 +270,42 @@
         }).open();
     }
 </script>
+{%else%}
+<div class="row">
+  <div class="col-lg-3"></div>
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h6 class="text-uppercase mb-4 text-center">로그인 후 이용하실 수 있습니다</h6>
+        <form method="post" action="{% url 'design:login'%}" autocomplete="off">
+          {% csrf_token %}
+          <div class="input-group">
+            <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text"><i
+                    class="fas fa-user"></i></span></div>
+            <input type="text" name="username" placeholder="Username" aria-label="Username"
+                   aria-describedby="basic-addon1"
+                   class="form-control" required>
+          </div>
+          <br>
+          <div class="input-group">
+            <div class="input-group-prepend"><span id="basic-addon2" class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="password" name="password" placeholder="password" aria-label="password"
+                   aria-describedby="basic-addon2"
+                   class="form-control" required>
+          </div>
+          <br>
+          <button type="submit" class="form-control btn btn-dark">로그인</button>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="col-lg-3"></div>
+
+</div>
+
+{% endif %}
+
 {% endblock %}

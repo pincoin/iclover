@@ -9,7 +9,7 @@
     background: linear-gradient(145deg, #FFC107, #FFEB3B);
 }
 .login-card-light {
-    background: linear-gradient(145deg, #eef0f2, #fff);
+    background: linear-gradient(145deg, #fff, #fff);
 }
 .login-dark {
     background: linear-gradient(145deg, #575b5d, #252b2d);
@@ -42,17 +42,20 @@
 
 
                     <div class="input-group">
-                      <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text">
+                      <div class="input-group-prepend">
+                          <span id="basic-addon1" class="input-group-text">
                           <i class="fas fa-user"></i>
-                      </span></div>
+                      </span>
+                      </div>
                         {{ form.username }}
                     </div>
+                       {% if form.errors.username %}
+                       {% for i in form.errors.username %}
+                       <p><small class="text-danger">{{i}}</small></p>
+                       {% endfor %}
+                       {% endif %}
                        <br>
-                   {% if form.errors.username %}
-                    {% for i in form.errors.username %}
-                    <p><small class="text-success">{{i}}</small></p>
-                    {% endfor %}
-                    {% endif %}
+
 
                         <div class="input-group">
                       <div class="input-group-prepend"><span id="basic-addon2" class="input-group-text">
@@ -62,7 +65,7 @@
                     </div>
                    {% if form.errors.password %}
                      {% for i in form.errors.password %}
-                    <p><small class="text-success">{{i}}</small></p>
+                    <p><small class="text-danger">{{i}}</small></p>
                     {% endfor %}
                     {% endif %}
                     <div class="mt-5">

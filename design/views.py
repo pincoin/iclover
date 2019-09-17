@@ -29,7 +29,7 @@ class Login(generic.FormView):
     def form_valid(self, form):
         redirect_to = self.request.GET.get('next', '')
         if not redirect_to:
-            redirect_to = 'design:home'
+            redirect_to = self.request.META.get('HTTP_REFERER')
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
