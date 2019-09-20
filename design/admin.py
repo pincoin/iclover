@@ -54,19 +54,29 @@ class OrderMemoAdmin(admin.ModelAdmin):
 class ProductImgAdmin(admin.ModelAdmin):
     pass
 
+class CartProductAdmin(admin.ModelAdmin):
+    pass
+
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(models.ProductBase, ProductBaseAdmin)
 admin.site.register(models.ProductText, ProductTextAdmin)
+
+admin.site.register(models.OrderInfo, OrderInfoAdmin)
+admin.site.register(models.OrderList, OrderListAdmin)
+admin.site.register(models.OrderImg, OrderImgAdmin)
+admin.site.register(models.OrderMemo, OrderMemoAdmin)
+
+admin.site.register(models.ProductImg, ProductImgAdmin)
+admin.site.register(models.CartProduct, CartProductAdmin)
+
+
 admin.site.register(models.PaperOption, PaperOptionAdmin)
 admin.site.register(models.StandardOption, StandardOptionAdmin)
 admin.site.register(models.SideOption, SideOptionAdmin)
 admin.site.register(models.HooOption, HooOptionAdmin)
 admin.site.register(models.DeliveryOption, DeliveryOptionAdmin)
 admin.site.register(models.EtcOption, EtcOptionAdmin)
-admin.site.register(models.OrderInfo, OrderInfoAdmin)
-admin.site.register(models.OrderList, OrderListAdmin)
-admin.site.register(models.OrderImg, OrderImgAdmin)
-admin.site.register(models.OrderMemo, OrderMemoAdmin)
-admin.site.register(models.ProductImg, ProductImgAdmin)
+
+

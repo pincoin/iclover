@@ -7,26 +7,28 @@
 <section class="hero">
         <hr>
     <div class="row pr-0 m-0">
-        <div class="col-lg-1 d-none d-xl-block" style="background-color: #343a40; color:white;">
+        <div class="col-xl-1 d-none d-xl-block" style="background-color: #343a40; color:white;">
             <div style="top: 60px; " class="sticky-top mb-2">
                 <div class="sidebar-block ">
                     <nav class="nav nav-pills flex-column text-center">
                         <a href="{% url 'design:product' %}?item=flyer" class="nav-link mb-2"
-                           style="background-color: #343a40; color:white;">전단지<br>&족자</a>
+                           style="background-color: #343a40; color:white;">전단지</a>
                         <a href="{% url 'design:product' %}?item=card" class="nav-link mb-2 text-white">명함</a>
-                        <a href="{% url 'design:product' %}?item=현수막" class="nav-link mb-2 text-white">현수막</a>
+                        <a href="{% url 'design:product' %}?item=현수막" class="nav-link mb-2 text-white">현수막<br>&족자</a>
                         <a href="{% url 'design:product' %}?item=banner" class="nav-link mb-2 text-white">배너</a>
                         <a href="{% url 'design:product' %}?item=envelope" class="nav-link mb-2 text-white">봉투</a>
                         <a href="{% url 'design:product' %}?item=문어발" class="nav-link mb-2 text-white">문어발</a>
                         <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">문고리</a>
                         <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">스티커</a>
-                        <a href="{% url 'design:product' %}?item=양식지" class="nav-link mb-2 text-white">양식지</a>
+                        <a href="{% url 'design:product' %}?item=양식지" class="nav-link mb-2 text-white">양식지<br>NCR지</a>
                         <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">종이자석</a>
+                        <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">판촉/홍보</a>
+                         <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">(비품)</a>
                     </nav>
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 col-xl-9 docs-content position-relative">
+        <div class="col-xl-9 docs-content position-relative">
             <div class="row m-0">
                 <div class="card col-lg-4 mb-4 p-0">
                     <div role="alert" class="alert alert-danger m-10px">
@@ -64,14 +66,9 @@
         </div>
     </div>
 
-                    <div class="row align-content-center loading-option" style="display: none;">
-                        <div class="col-md-auto pr-0 mb-3 ">
-                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
-                            <!--                            <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">-->
-                        </div>
-                    </div>
+
                     <!--                    <hr style="opacity: 0.7">-->
-                    <h3 class="text-black-50">
+                    <h3 class="text-black-50" id="title_name">
                         {% if item %}
                         {{item}}
                         {% else %}
@@ -106,59 +103,69 @@
                         </select>
                     </div>
                     <hr>
-                    <div class="card">
-                        <div class="card-body bg-gray-100 p-4 text-sm">
-                            <h5 class="text-muted text-center">추천 알고리즘 List~!</h5>
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th scope="col">기준1</th>
-                                    <th scope="col">기준2</th>
-                                    <th scope="col">가격</th>
-                                    <th scope="col">가격</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th>1</th>
-                                    <td>명함</td>
-                                    <td>n. 아트지 300g (무광코팅)</td>
-                                    <td>n. 아트지 300g (무광코팅)</td>
-                                </tr>
-                                <tr>
-                                    <th>2</th>
-                                    <td>명함</td>
-                                    <td>n. 아트지 300g (유광코팅)</td>
-                                    <td>n. 아트지 300g (무광코팅)</td>
-                                </tr>
-                                <tr>
-                                    <th>명함</th>
-                                    <td>s. 스타드림 (샤인스타) 240g</td>
-                                    <td>@twitter</td>
-                                    <td>n. 아트지 300g (무광코팅)</td>
-                                </tr>
-                                </tbody>
-                            </table>
+<!--                    <div class="card">-->
+<!--                        <div class="card-body bg-gray-100 p-4 text-sm">-->
+<!--                            <h5 class="text-muted text-center">추천 알고리즘 List~!</h5>-->
+<!--                            <table class="table table-hover">-->
+<!--                                <thead>-->
+<!--                                <tr>-->
+<!--                                    <th scope="col">기준1</th>-->
+<!--                                    <th scope="col">기준2</th>-->
+<!--                                    <th scope="col">가격</th>-->
+<!--                                    <th scope="col">가격</th>-->
+<!--                                </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                <tr>-->
+<!--                                    <th>1</th>-->
+<!--                                    <td>명함</td>-->
+<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
+<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <th>2</th>-->
+<!--                                    <td>명함</td>-->
+<!--                                    <td>n. 아트지 300g (유광코팅)</td>-->
+<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <th>명함</th>-->
+<!--                                    <td>s. 스타드림 (샤인스타) 240g</td>-->
+<!--                                    <td>@twitter</td>-->
+<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
 
-                        </div>
-                    </div>
-                    <hr>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <hr>-->
                     <div class="row">
 
-                        <div class="col-sm-7">
-                            <p>공급가격: <b>300,000원</b> + 부가세(VAT) : <b>30,000원</b></p>
+                        <div class="col-sm-7 text-danger mb-3">
+                            <span>* 디자인 작업 비용, 배송비는 미포함 된 금액입니다.</span>
+                            <br><span>* 작업 비용은 요청사항에 따라 변동 될 수 있습니다</span>
                         </div>
-                        <div class="col-sm-5 text-right">
-                            <p>인쇄비 : <b class="text-danger " style="font-size:20px;">
-                                <span id="sell_price">330,000</span>원
-                            </b></p>
+                        <div class="col-sm-5 text-right mb-3">
+                            <span>인쇄비 : <b class="text-danger " style="font-size:24px;">
+                                <span id="sell_price">0</span>원
+                            </b></span><br>
+                            <span>부가세:  <span id="sell_tax"  style="font-size:18px;">0</span> 원</span>
+                            <br>
+                            <span>합계 금액:  <span id="sell_total" style="font-size:18px;">0</span> 원</span>
                         </div>
 
                     </div>
                     <div class="row">
-                        <div class="col-sm-9 text-danger mb-2">작업비, 배송비는 미포함 된 금액입니다.</div>
+                        <div class="col-sm-9 ">
+                        </div>
                         <div class="col-sm-3 text-danger">
-                            <button type="button" class="btn btn-outline-dark btn-block">장바구니 담기</button>
+                               {% if user.is_anonymous %}
+                             <button type="button" class="btn btn-outline-secondary btn-block" disabled="disabled">
+                                 <i class="fas fa-lock"></i> 장바구니 담기</button>
+                            {% else %}
+                            <button type="button" class="btn btn-dark btn-block" id="add_cart">장바구니 담기</button>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -167,7 +174,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-xl-2">
             <div style="top: 80px; " class="position-sticky mb-2">
                 <div class="sidebar-block ">
                     <nav id="components-nav" style="top: 105px;"
@@ -176,59 +183,47 @@
                         <p></p>
 
                         <div class="customer-sidebar card border-0">
+                              {% if user.is_anonymous %}
                             <i class="fas fa-lock m-30px" style="font-size: 48px;"></i>
                             <p><b>로그인시</b> <br>기능이 활성화 됩니다.</p>
-                            <nav class="list-group customer-nav ">
-<!--                                <div class="list-group-item flex-column justify-content-between align-items-center">-->
-<!--                                    <a href="#">-->
-<!--                                        <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>-->
-
-<!--                                    </a>-->
-<!--                                    <a href="#2">-->
-<!--                                        <button type="button" class="close text-danger" data-dismiss="modal"-->
-<!--                                                aria-label="Close"><span aria-hidden="true">×</span></button>-->
-<!--                                    </a>-->
-<!--                                </div>-->
-<!--                                <div class="list-group-item flex-column justify-content-between align-items-center">-->
-<!--                                    <a href="#">-->
-<!--                                        <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>-->
-
-<!--                                    </a>-->
-<!--                                    <a href="#2">-->
-<!--                                        <button type="button" class="close text-danger" data-dismiss="modal"-->
-<!--                                                aria-label="Close"><span aria-hidden="true">×</span></button>-->
-<!--                                    </a>-->
-<!--                                </div>-->
-<!--                                <div class="list-group-item flex-column justify-content-between align-items-center">-->
-<!--                                    <a href="#">-->
-<!--                                        <span class="text-black-50" style="font-size:12px;">현수막 사방타공 <br>끈고리 3m 10장 <b>80,000원</b> </span>-->
-
-<!--                                    </a>-->
-<!--                                    <a href="#2">-->
-<!--                                        <button type="button" class="close text-danger" data-dismiss="modal"-->
-<!--                                                aria-label="Close"><span aria-hidden="true">×</span></button>-->
-<!--                                    </a>-->
-<!--                                </div>-->
-
-<!--                                <a href="../customer-account.html"-->
-<!--                                   class="list-group-item d-flex justify-content-between align-items-center"><b>-->
-<!--                                    <svg class="svg-icon svg-icon-heavy mr-2">-->
-<!--                                        <use xlink:href="#male-user-1"></use>-->
-<!--                                    </svg>-->
-<!--                                    인쇄비 : <b class="text-danger">180,000</b></b></a>-->
-                                <a href="../customer-addresses.html"
+                                  <br>
+                              <a href="{% url 'design:product_sample'%}"
                                    class="list-group-item d-flex justify-content-between align-items-center"
-                                   style="background-color: #B9B8B8; color: #fff;"><span>
-                          <svg class="svg-icon svg-icon-heavy mr-2">
-                            <use xlink:href="#navigation-map-1"> </use>
-                          </svg>견적서 요청</span></a>
+                                   style="background-color: #E45A5A; color: #fff;">
+                                  <span>디자인 선택 둘러보기 ></span>
+                              </a>
+
+
+                            {% else %}
+                            <nav class="list-group customer-nav" >
+                                <div id="cart_body" class="text-center">
+                                    <div class="cart_empty_message" style="">
+                                        <div class="col-md-auto pr-0 mb-3 p-5">
+                                            <p>장바구니가<br>비어 있습니다.</p>
+                                        </div>
+                                    </div>
+                                    <div class="loading-option" style="display: none">
+                                        <div class="col-md-auto pr-0 mb-3 p-5">
+                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom text-secondary"></i>
+                                            <!--                            <img src="{% static 'design/img/product/1.42.jpg'%}" class="p-0" width="115px;">-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="list-group-item d-flex justify-content-between align-items-center">
+                                    <b>
+                                    <svg class="svg-icon svg-icon-heavy mr-2">
+                                        <use xlink:href="#male-user-1"></use>
+                                    </svg>
+                                    합계 : <b class="text-danger" id="total_price_in_cart">0</b></b>
+                                </a>
                                 <a href="{% url 'design:product_sample'%}"
-                                                    class="list-group-item d-flex justify-content-between align-items-center"
-                                                    style="background-color: #E45A5A; color: #fff;"><span>
+                                   class="list-group-item d-flex justify-content-between align-items-center"
+                                   style="background-color: #E45A5A; color: #fff;"><span>
                           <svg class="svg-icon svg-icon-heavy mr-2">
                             <use xlink:href="#exit-1"> </use>
                           </svg>주문접수</span></a>
                             </nav>
+                            {% endif %}
                         </div>
                     </nav>
                 </div>
@@ -236,7 +231,6 @@
         </div>
     </div>
 </section>
-
 <style>
     /* page-loading */
     #page-loading {
@@ -435,6 +429,7 @@
         url = '/assets/design/json/' + param_item + '.json';
         var size_default = null;
         getJson(url, size_default);
+
     });
 
 
@@ -487,6 +482,8 @@
 
     function getPrice() {
         var $sell_price = $('#sell_price');
+        var $sell_tax = $('#sell_tax');
+        var $sell_total = $('#sell_total');
         var $size_img = $('#size_img');
         var $paper_img = $('#paper_img');
         $.ajax({
@@ -499,9 +496,11 @@
             'deal' : deal_default,
         },
         dataType : "json",
-        success: function(xml){
-            $sell_price.text(xml.sell);
-            $size_img.attr('src',xml.size_img);
+        success: function(data){
+            $sell_price.text(data.sell_price);
+            $sell_tax.text(data.sell_tax);
+            $sell_total.text(data.sell_total);
+            $size_img.attr('src',data.size_img);
         },
         error: function(xhr, status, error) {
             alert(error);
@@ -510,5 +509,112 @@
     }
 
 </script>
+
+ {% if user.is_authenticated %}
+<script>
+    var $cart_body = $('#cart_body');
+    function cartList(data){
+        var new_json = JSON.parse(data['json_text']);
+                $cart_body.append(
+                        '<div class="list-group-item flex-column justify-content-between align-items-center">'+
+                        '<button type="button" class="close text-danger cart_delete_btn" data-dismiss="modal"'+
+                        'aria-label="Close" name="'+data['id'] +'" onclick="cart_delete($(this));"><span aria-hidden="true">×</span></button>'+
+                        '<span class="text-black-50" style="font-size:12px;">'+
+                    new_json.title+' '+new_json.size+' '+new_json.side+'<br>'+new_json.paper+' '+new_json.deal+'<br>'+
+                    '<b class="total_in_cart">'+new_json.price+'</b>원 </span></div>'
+                );
+    }
+
+
+    $(document).ready(function () {
+        var $loading_option = $('.loading-option');
+        var $cart_empty_message = $('.cart_empty_message');
+        var $add_cart = $('#add_cart');
+
+        $.ajax({
+        type:"GET",
+        url:"cart/",
+        dataType : "json",
+        success: function(data){
+            $.each(data, function (index, item) {
+                cartList(item);
+                sum_total();
+                $cart_empty_message.hide();
+                $loading_option.show();
+            });
+             $loading_option.hide();
+        }
+        });
+
+        $add_cart.click(function () {
+            $add_cart.attr("disabled",true);
+            setTimeout(function() {$add_cart.attr("disabled",false);}, 3000);
+            $cart_empty_message.hide();
+            var price = $('#sell_total').text();
+            var title = $('#title_name').text();
+            var json_text = {
+                    'title':title,
+                    'size': size_default,
+                    'paper': paper_default,
+                    'side': side_default,
+                    'deal': deal_default,
+                    'price':price,
+                };
+            $.ajax({
+                type: "POST",
+                url: "cart/",
+                dataType: "json",
+                data: json_text,
+                success: function (data) {
+                    cartList(data);
+                    sum_total();
+                }
+            });
+        });
+    });
+
+     function cart_delete(obj) {
+         var result = confirm('정말 삭제하시겠습니까?');
+         if(result) {
+             var num = obj.attr('name');
+             $.ajax({
+                type: "delete",
+                url: "cart/",
+                dataType: "json",
+                data: {'num':num},
+                success: function (data) {
+                    obj.parent().remove();
+                    sum_total();
+                }
+            });
+         }
+     }
+
+     function sum_total() {
+        var $total_in_cart = $('.total_in_cart');
+         var temp = 0;
+         $total_in_cart.each(function () {
+             var tdTxt = $(this).text().replace(",", "");
+             temp += parseFloat(tdTxt);
+
+         });
+         $('#total_price_in_cart').text(comma(temp));
+     }
+
+         //콤마찍기
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+
+    //콤마풀기
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[^\d]+/g, '');
+    }
+
+</script>
+
+{% endif %}
 
 {% endblock %}

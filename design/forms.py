@@ -18,7 +18,6 @@ class ProductForm(forms.Form):
 
     sector =  forms.ModelChoiceField(queryset=design_model.SectorsCategory.objects.all())
 
-
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -277,7 +277,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <h6 class="text-uppercase mb-4 text-center">로그인 후 이용하실 수 있습니다</h6>
-        <form method="post" action="{% url 'design:login'%}" autocomplete="off">
+        <form method="post" action="{% url 'design:login'%}?next={{request.get_full_path }}" autocomplete="off">
           {% csrf_token %}
           <div class="input-group">
             <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text"><i

@@ -407,7 +407,7 @@
                         <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">검색</span>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="{% url 'design:my_page' %}" class="navbar-icon-link d-lg-none">
+                        <a href="{% url 'design:login'%}?next={{request.get_full_path }}" class="navbar-icon-link d-lg-none">
                             <svg class="svg-icon">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
@@ -419,7 +419,7 @@
                                <svg class="svg-icon">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
-                                <div class="navbar-icon-link-badge">3</div>
+<!--                                <div class="navbar-icon-link-badge">3</div>-->
                             </a>
                             <div aria-labelledby="cartdetails" class="dropdown-menu dropdown-menu-right p-4">
 
@@ -437,11 +437,25 @@
                                     </div>
                                 {% else %}
                                     <div class="navbar-cart-product-wrapper">
-                                        <p class="text-muted"><i class="fas fa-lock"></i> 주문 리스트</p>
-                                        <p class="text-muted"><i class="fas fa-lock"></i> 내 정보 수정</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="{%url 'design:login'%}?next={{request.get_full_path }}" class="btn btn-outline-dark col" >로그인</a>
+                                        <p class="text-muted ml-2"><i class="fas fa-lock mr-1"></i>주문 리스트</p>
+                                        <p class="text-muted ml-2"><i class="fas fa-lock mr-1"></i>내 정보 수정</p>
+
+                                         <form method="post" action="{% url 'design:login'%}" autocomplete="off">
+                                        {% csrf_token %}
+                                        <div class="input-group mb-1">
+                                            <input type="text" name="username" placeholder="Username"
+                                                   aria-label="Username"
+                                                   aria-describedby="basic-addon1"
+                                                   class="form-control" required>
+                                        </div>
+                                        <div class="input-group mb-1">
+                                            <input type="password" name="password" placeholder="password"
+                                                   aria-label="password"
+                                                   aria-describedby="basic-addon2"
+                                                   class="form-control" required>
+                                        </div>
+                                        <button type="submit" class="form-control btn btn-dark">로그인</button>
+                                    </form>
                                     </div>
                                 {% endif %}
                             </div>

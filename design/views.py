@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
@@ -35,6 +37,8 @@ class Login(generic.FormView):
         user = authenticate(username=username, password=password)
         if user:
             django_login(self.request, user)
+            if 'design/login/' in redirect_to:
+                return redirect('design:home')
             return redirect(redirect_to)
         else:
             messages.error(self.request, 'ID 또는 암호를 다시 확인해주세요')
@@ -48,7 +52,8 @@ class Login(generic.FormView):
 
 def logout(request):
     django_logout(request)
-    return redirect('design:home')
+    redirect_to = request.META.get('HTTP_REFERER')
+    return redirect(redirect_to)
 
 
 def change_password(request):
@@ -125,7 +130,8 @@ class ProductView(ProfileMixin, generic.FormView, generic.ListView):
         context = super(ProductView, self).get_context_data(**kwargs)
         product_category = self.request.GET.get('item')
         sector_category = self.request.GET.get('sector')
-        dic_name = {"flyer":"전단지/족자","card":"명함","envelope":"봉투","banner":"배너"}
+        dic_name = {"flyer":"전단지","card":"명함","envelope":"봉투","banner":"배너",
+                    }
         if product_category in dic_name:
             context['item'] = dic_name[product_category]
         # context['menu_slug']= self.kwargs['menu_slug']
@@ -178,10 +184,6 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
         # context['menu_slug']= self.kwargs['menu_slug']
         # context['sector_slug'] = self.kwargs['sector_slug']
         return context
-
-    def form_valid(self, form):
-        print('forms',form)
-        return self
 
 
 class ProfileView(ProfileMixin,generic.TemplateView):
@@ -242,10 +244,43 @@ class AjaxPriceView(APIView):
                 size_img = "default"
 
             back_dic = {
-                'sell':'50,000',
+                'sell_price':'50,000',
+                'sell_tax': '5,000',
+                'sell_total': '55,000',
                 'size_img':size_img,
                 'paper_img':'http://www.aceprinting.co.kr/skin/guide/images/goods/Goods_04_01_03.jpg'
             }
             return Response(back_dic)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CartProductView(APIView):
+    def get(self, request, format=None):
+        back_dic = design_model.CartProduct.objects.filter(user_id=self.request.user.id).values('id','json_text')
+        if back_dic:
+            return Response(back_dic)
+        else:
+            return Response()
+
+    def post(self, request, format=None):
+        serializer = serializers.CartProductSerializer(data=request.data)
+        if serializer.is_valid():
+            text = str(json.dumps(serializer.data, ensure_ascii=False))
+            new = design_model.CartProduct.objects.create(user_id=self.request.user.id, json_text=text)
+            new_dic ={
+                'id':new.id,
+                'json_text':text
+            }
+            return Response(new_dic)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, format=None):
+        data_id = request.data['num']
+        query = design_model.CartProduct.objects.get(id=data_id, user=request.user)
+        if query:
+            query.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)

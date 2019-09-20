@@ -1046,3 +1046,24 @@ class ProductImg(TimeStampedModel):
     def __str__(self):
         return f'{self.name}'
 
+class CartProduct(TimeStampedModel):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name=_('고객'),
+        blank=True,
+        null=True,
+    )
+    json_text = models.CharField(
+        verbose_name=_('json data'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = _('json 텍스트')
+        verbose_name_plural = _('json 텍스트')
+
+    def __str__(self):
+        return f'{self.user}'

@@ -8,3 +8,12 @@ class PaymentSerializer(serializers.Serializer):
     paper = serializers.CharField()
     side = serializers.CharField()
     deal = serializers.CharField()
+
+
+class CartProductSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    size = serializers.CharField()
+    paper = serializers.CharField()
+    side = serializers.CharField()
+    deal = serializers.CharField()
+    price = serializers.CharField()
