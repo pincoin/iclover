@@ -1,0 +1,190 @@
+{% extends 'design/base.html'%}
+{% load static %}
+{% load design_tags %}
+{% block title%}위믹스 품목{% endblock %}
+{% block styles %}
+<style>
+    .gal {
+        -webkit-column-count: 3; /* Chrome, Safari, Opera */
+        -moz-column-count: 3; /* Firefox */
+        column-count: 3;
+    }
+
+    .gal img {
+        width: 100%;
+    }
+
+    @media (max-width: 500px) {
+        .gal {
+            -webkit-column-count: 1; /* Chrome, Safari, Opera */
+            -moz-column-count: 1; /* Firefox */
+            column-count: 1;
+        }
+    }
+
+
+    /*search box css start here*/
+    .search-sec {
+        padding: 0.5rem;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .search-slt {
+        display: block;
+        width: 100%;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: #55595c;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        height: calc(3rem + 2px) !important;
+        border-radius: 0;
+    }
+
+    .wrn-btn {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 400;
+        text-transform: capitalize;
+        height: calc(3rem + 2px) !important;
+        border-radius: 0;
+    }
+</style>
+{% endblock%}
+{% block content%}
+
+
+<section class="position-relative dark-overlay py-3 py-lg-5">
+    <img src="{% static 'design/img/photo/bg-masthead.jpg' %}" alt="" class="bg-image" style="opacity: 0.8;">
+
+      <div class="container overlay-content hero hero-page p-5">
+         <form action="#" method="post" novalidate="novalidate">
+                    <div class="row search-sec">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                        <option>업종</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    <select class="form-control search-slt" id="">
+                                        <option>품목</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                        <option>Example one</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    <input type="text" class="form-control search-slt" placeholder="검색어">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    <button type="button" class="btn btn-dark wrn-btn"><i class="fas fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+      </div>
+    </section>
+
+
+<div class="container">
+      <div class="row">
+        <!-- Grid -->
+        <div class="products-grid col-xl-12">
+            <hr>
+          <div class="card-columns product-columns">
+            <!-- product masonry-->
+               {% for i in sample_list %}
+              <div class="product card">
+                  <div class="">
+                      <img src="/media/{{i.images}}" alt="White Tee" class="img-fluid" width="100%">
+                      <div class="card-body text-center shadow">
+                              <a class="btn btn-outline-dark sample_cart"
+                                 role="button" data-url="/media/{{i.images}}" href="{% url 'design:product'%}?item=card" >
+
+
+                           <i class="fas fa-shopping-cart" ></i>
+                                  {{i.name}} 담기
+                              </a>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+            <!-- /product masonry-->
+          </div>
+
+            <!-- bootstrap style을 적용한다. -->
+            {% if is_paginated %}
+            <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 mt-3">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
+                        class="page-link">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="disabled">
+                        <a href="#" class="page-link">
+                            <span><strike>시작</strike></span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for page in page_range %}
+                    <li class="page-item {% if page == page_obj.number %}active{% endif %}">
+                        <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
+                        class="page-link">
+                            {{ page }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
+                        class="page-link">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                    {% else %}
+                      <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+                        <a href="#" class="page-link">
+                            <span><strike>끝</strike></span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+        <!-- / Grid End-->
+      </div>
+    </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.sample_cart').click(function () {
+            var url = $(this).data('url');
+             $.cookie('sample_cart_url' , url, { path : '/' });
+        })
+    })
+</script>
+{% endblock %}

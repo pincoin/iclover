@@ -15,6 +15,7 @@ urlpatterns = [
     path('product_confirm/', views.ProductConfirmView.as_view(), name='product_confirm'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('join/', views.JoinView.as_view(), name='join'),
+    path('sample/', views.SampleListView.as_view(), name='sample'),
     path('faq/', views.FaqView.as_view(), name='faq'),
     path('notice/', views.NewsView.as_view(), name='news'),
     path('my_page/', views.MyPageView.as_view(), name='my_page'),

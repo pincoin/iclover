@@ -11,6 +11,27 @@ class ProfileForm(forms.ModelForm):
         model = member_model.Profile
         fields = ['code','company','address','business','sectors','tell','tax_bill_mail','phone']
 
+class CustomerProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['code'].widget.attrs.update({'class': 'form-control'})
+        self.fields['company'].widget.attrs.update({'class': 'form-control'})
+        self.fields['address'].widget.attrs.update({'class': 'form-control' ,'readonly':'readonly'})
+        self.fields['address2'].widget.attrs.update({'class': 'form-control' ,'readonly':'readonly'})
+        self.fields['address_detail'].widget.attrs.update({'class': 'form-control'})
+        self.fields['address_option'].widget.attrs.update({'class': 'form-control'})
+        self.fields['business'].widget.attrs.update({'class': 'form-control'})
+        self.fields['sectors'].widget.attrs.update({'class': 'form-control'})
+        self.fields['tell'].widget.attrs.update({'class': 'form-control'})
+        self.fields['phone'].widget.attrs.update({'class': 'form-control'})
+        self.fields['tax_bill_mail'].widget.attrs.update({'class': 'form-control'})
+        self.fields['ceo'].widget.attrs.update({'class': 'form-control'})
+        self.fields['bill_select'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = member_model.CustomerProfile
+        fields = ['code','company','address','address2','address_detail','address_option','business','sectors',
+                  'tell','tax_bill_mail','phone','ceo','bill_select']
 
 class ProductForm(forms.Form):
     def __init__(self, *args, **kwargs):

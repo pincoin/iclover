@@ -38,6 +38,13 @@
           integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
     <!-- jQuery-->
 <script src="{% static 'design/vendor/jquery/jquery.min.js' %}"></script>
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
     {% block styles %}{% endblock%}
 </head>
 <body>
@@ -69,15 +76,7 @@
                     <!-- Language Dropdown-->
                     {% if user.is_staff %}
                     <!-- if  관리자 -->
-                    <div class="dropdown border-right px-3">
-                        <a href="{% url 'managing:main' %}">
-                            <svg class="svg-icon megamenu-services-icon">
-                                <use xlink:href="#secure-payment-1"></use>
-                            </svg>
-                            관리자 페이지
-                        </a>
-                    </div>
-                    <!-- endif  관리자 -->
+                    <span class="badge badge-primary">wemix & iclover staff</span>
                     {% endif%}
                     <div class="dropdown border-right px-3">
                         <a id="langsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -91,9 +90,15 @@
                         </div>
                     </div>
                     <div class="dropdown pl-3 ml-0">
-                        <a href="{% url 'design:join'%}" class="text-dark">
-                            회원가입
+                        {% if user.is_authenticated %}
+                        <a href="{%url 'design:logout'%}" class="text-dark" >
+                            로그아웃 <i class="fas fa-sign-out-alt" ></i>
                         </a>
+                        {% else %}
+                        <a href="{% url 'design:join'%}" class="text-dark">
+                            <i class="fas fa-sign-in-alt" ></i> 회원가입
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -173,7 +178,7 @@
             <div id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="navbar-nav mx-auto">
                     <!-- Megamenu-->
-                    <li class="nav-item dropdown position-static">
+                    <li class="nav-item dropdown position-static text-center">
                         <a href="#" data-toggle="dropdown" class="nav-link"><b style="font-size:18px;">전체 메뉴</b>
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -400,18 +405,34 @@
                 <!-- 우측상단 -->
                 <div class="d-flex align-items-center justify-content-between justify-content-lg-end mt-1 mb-2 my-lg-0">
                     <!-- Search Button-->
-                    <div data-toggle="search" class="nav-item navbar-icon-link">
-                        <svg class="svg-icon">
-                            <use xlink:href="#search-1"></use>
-                        </svg>
-                        <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">검색</span>
+<!--                    <div data-toggle="search" class="nav-item navbar-icon-link">-->
+<!--                        <svg class="svg-icon">-->
+<!--                            <use xlink:href="#search-1"></use>-->
+<!--                        </svg>-->
+<!--                        <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">검색</span>-->
+<!--                    </div>-->
+                    <div data-toggle="sample" class="nav-item navbar-icon-link">
+                         <a href="{% url 'design:sample'%}" class="navbar-icon-link">
+                        <i class="far fa-images"></i>
+                        <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">샘플</span>
+                         </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="{% url 'design:product'%}?item=card" class="navbar-icon-link">
+                        <svg class="svg-icon"><use xlink:href="#add-to-cart-1"></use></svg>
+                        <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">주문</span>
+                            </a>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="{% url 'design:login'%}?next={{request.get_full_path }}" class="navbar-icon-link d-lg-none">
+                        <a href="{% url 'design:my_page'%}?next={{request.get_full_path }}" class="navbar-icon-link d-lg-none">
                             <svg class="svg-icon">
                                 <use xlink:href="#male-user-1"></use>
                             </svg>
-                            <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">장바구니</span>
+                            {% if user.is_authenticated %}
+                            <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">마이 페이지</span>
+                            {% else %}
+                            <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">로그인</span>
+                            {% endif %}
                         </a>
                         <div class="d-none d-lg-block">
                             <a id="cartdetails" href="" data-target="#" data-toggle="dropdown"
@@ -439,23 +460,8 @@
                                     <div class="navbar-cart-product-wrapper">
                                         <p class="text-muted ml-2"><i class="fas fa-lock mr-1"></i>주문 리스트</p>
                                         <p class="text-muted ml-2"><i class="fas fa-lock mr-1"></i>내 정보 수정</p>
+                                    {% include 'design/login_form_.html'%}
 
-                                         <form method="post" action="{% url 'design:login'%}" autocomplete="off">
-                                        {% csrf_token %}
-                                        <div class="input-group mb-1">
-                                            <input type="text" name="username" placeholder="Username"
-                                                   aria-label="Username"
-                                                   aria-describedby="basic-addon1"
-                                                   class="form-control" required>
-                                        </div>
-                                        <div class="input-group mb-1">
-                                            <input type="password" name="password" placeholder="password"
-                                                   aria-label="password"
-                                                   aria-describedby="basic-addon2"
-                                                   class="form-control" required>
-                                        </div>
-                                        <button type="submit" class="form-control btn btn-dark">로그인</button>
-                                    </form>
                                     </div>
                                 {% endif %}
                             </div>
@@ -484,7 +490,7 @@
             </div>
             <form action="#" class="search-area-form">
                 <div class="form-group position-relative">
-                    <input type="search" name="search" id="search" placeholder="검색어를 입력해주세요"
+                    <input type="search" name="search" id="search" placeholder="[샘플 조회] 검색어를 입력해주세요"
                            class="search-area-input">
                     <button type="submit" class="search-area-button">
                         <svg class="svg-icon">
@@ -678,9 +684,10 @@
 </script>
 <script src="{% static 'design/js/theme.js' %}"></script>
 <script src="{% static 'design/js/jquery_ajax.js' %}"></script>
+<script src="{% static 'design/js/jquery.cookie.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
 
-
+{% block add_js %}{% endblock%}
 
 <script language="javascript">
 

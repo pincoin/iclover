@@ -15,7 +15,7 @@ from rest_framework import status
 from design import serializers
 from . import models as design_model
 from member import models as member_model
-from managing import models as managing_model
+from managing import models as managing_model, viewmixin
 import logging
 from . import forms
 from managing import forms as managing_forms
@@ -134,8 +134,7 @@ class ProductView(ProfileMixin, generic.FormView, generic.ListView):
                     }
         if product_category in dic_name:
             context['item'] = dic_name[product_category]
-        # context['menu_slug']= self.kwargs['menu_slug']
-        # context['sector_slug'] = self.kwargs['sector_slug']
+
         return context
 
     def form_valid(self, form):
@@ -205,28 +204,33 @@ class JoinView(ProfileMixin, generic.FormView):
         response = super(JoinView, self).form_valid(form)
         return response
 
-class MyPageView(ProfileMixin, generic.TemplateView):
+class MyPageView(ProfileMixin, generic.FormView):
     template_name = 'design/my_page.html'
     context_object_name = 'my_list'
-    form_class = forms.ProfileForm
-
-    def get_queryset(self):
-        user = self.request.user.id
-        return design_model.OrderList.objects.filter(order_info__user__id= user)\
-            .select_related('order_info__user','order_info__user').order_by('-created')
+    form_class = forms.CustomerProfileForm
 
     def get_context_data(self, **kwargs):
         context = super(MyPageView, self).get_context_data(**kwargs)
-        pk = self.request.user.id
-        form = forms.ProfileForm()
-        if self.request.user:
+        user = self.request.user.id
+        if user:
+            customer_profile = member_model.CustomerProfile.objects.get_or_create(user=self.request.user)
+            form = self.form_class(instance=customer_profile[0]) # get_or_create 는 신규 생성인지 boolean 튜플 제공
+            context['form'] = form
             password_form = PasswordChangeForm(self.request.user)
             password_form.fields['old_password'].widget.attrs['class'] = 'form-control'
             password_form.fields['new_password1'].widget.attrs['class'] = 'form-control'
             password_form.fields['new_password2'].widget.attrs['class'] = 'form-control'
             context['password_form'] = password_form
-        context['form'] = form
         return context
+
+    def form_valid(self, form):
+        redirect_to = self.request.META.get('HTTP_REFERER')
+        data = form.cleaned_data
+        data_model = member_model.CustomerProfile.objects.get(user=self.request.user)
+        for attr, value in data.items():
+            setattr(data_model, attr, value)
+        data_model.save()
+        return redirect(redirect_to)
 
 class AjaxPriceView(APIView):
     def post(self, request, format=None):
@@ -257,7 +261,7 @@ class AjaxPriceView(APIView):
 
 class CartProductView(APIView):
     def get(self, request, format=None):
-        back_dic = design_model.CartProduct.objects.filter(user_id=self.request.user.id).values('id','json_text')
+        back_dic = design_model.CartProduct.objects.filter(user=self.request.user).values('id','json_text')
         if back_dic:
             return Response(back_dic)
         else:
@@ -284,3 +288,35 @@ class CartProductView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SampleListView(viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                       generic.ListView):
+    template_name = 'design/sample_list.html'
+    paginate_by = 1
+    model = managing_model.Sample
+    data_search_form = managing_forms.DataSearchForm
+    context_object_name = 'sample_list'
+
+    def get_queryset(self):
+        queryset = super().get_queryset().order_by( '-created')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            if q:
+                try:
+                    q = q.split()
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(name__icontains=i) | Q(keyword__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(SampleListView, self).get_context_data(**kwargs)
+        if self.request.COOKIES:
+            print(self.request.COOKIES)
+
+        return context

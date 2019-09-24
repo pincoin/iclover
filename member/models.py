@@ -347,3 +347,145 @@ class PhoneVerificationLog(models.Model):
     def __str__(self):
         return '{} {}'.format(self.fullname, self.cellphone)
 
+
+class CustomerProfile(TimeStampedModel):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    managing_pk = models.IntegerField(
+        verbose_name=_('managing id'),
+        null=True,
+        blank=True,
+    )
+
+    code = models.IntegerField(
+        verbose_name=_('사업자번호'),
+        null=True,
+        blank=True,
+    )
+
+    company = models.CharField(
+        verbose_name=_('업체명'),
+        max_length=255,
+        blank=True,
+    )
+
+    ceo = models.CharField(
+        verbose_name=_('대표자명'),
+        max_length=255,
+        blank=True,
+    )
+
+    tax_bill_mail = models.CharField(
+        verbose_name=_('이메일'),
+        max_length=255,
+        blank=True,
+    )
+
+    sectors = models.CharField(
+        verbose_name=_('업종'),
+        max_length=255,
+        blank=True,
+    )
+
+    business = models.CharField(
+        verbose_name=_('업태'),
+        max_length=255,
+        blank=True,
+    )
+
+    sectors_category = models.ForeignKey(
+        'design.SectorsCategory',
+        blank=True,
+        null=True,
+        verbose_name=_('업종'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+
+    tell = models.CharField(
+        verbose_name=_('매장번호'),
+        max_length=255,
+        blank=True,
+    )
+
+    phone = models.CharField(
+        verbose_name=_('phone number'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    memo = models.CharField(
+        verbose_name=_('메모'),
+        max_length=255,
+        blank=True,
+    )
+
+    address = models.CharField(
+        verbose_name=_('주소'),
+        max_length=255,
+        blank=True,
+    )
+
+    address2 = models.CharField(
+        verbose_name=_('주소2'),
+        max_length=255,
+        blank=True,
+    )
+
+    address_detail = models.CharField(
+        verbose_name=_('상세주소'),
+        max_length=255,
+        blank=True,
+    )
+
+    address_option = models.CharField(
+        verbose_name=_('주소 참고'),
+        max_length=255,
+        blank=True,
+    )
+
+    state = models.CharField(
+        verbose_name=_('사업자 상태'),
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+
+    STATE_SELECT = Choices(
+        (0, '정상', _('정상')),
+        (1, '폐업', _('폐업')),
+    )
+
+    state_select = models.IntegerField(
+        verbose_name=_('사업자 상태'),
+        choices= STATE_SELECT,
+        default=0,
+        null=True,
+        blank=True,
+    )
+
+    BILL_SELECT = Choices(
+        (0, '세금계산서', _('세금계산서')),
+        (1, '사업자 지출증빙', _('사업자 지출증빙')),
+        (2, '현금 영수증', _('현금 영수증')),
+        (3, '미발행', _('미발행')),
+    )
+    bill_select = models.IntegerField(
+        verbose_name=_('사업자 상태'),
+        choices=BILL_SELECT,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _('고객이 입력한 프로필')
+        verbose_name_plural = _('고객이 입력한 프로필')
+
+    def __str__(self):
+        return f'{self.company} ( {self.user} )'

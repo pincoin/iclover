@@ -105,7 +105,12 @@
                         </div>
                     <div>
                     <div class="col-xl-12 pt-2">
-                        <h5 class="text-black-50">품목에 시안을 연결하시고 수정사항을 입력해주세요</h5>
+                        <h5 class="text-black-50">▽ 품목마다 시안 선택과 수정사항을 입력해주세요
+                            <p>
+                                <br><small>샘플 미선택시, 추가 작업비용이 발생됩니다.</small>
+                            </p>
+
+                        </h5>
                     </div>
                     <br>
                      <div class="col-xl-12">
@@ -120,10 +125,16 @@
                           <div>
                             <img src="/media/sample/전단지/2019/2.12.jpg" alt="product" class="img-fluid p-xl-5" width="100%">
                           </div>
-                          <div class="p-3">
+                          <div class="p-2">
+                              <p class="text-danger">
+                                  <br><small>* 다른 시안 선택시 입력하신 정보는 초기화 됩니다.</small>
+                                  <br><small>* 수정은 3회까지 가능합니다. (디자인 변경은 별도)</small>
+                                  <br><small>* 주문 완료 후, 작업 중 시안 변경시 추가 작업비용이 발생될 수 있습니다<br>충분한 검토 부탁드립니다~!</small>
+                              </p>  <br>
                                <button type="button" class="btn btn-warning">< 다른 시안 선택</button>
                                <a  href="{% url 'design:product_confirm'%}"><button type="button" class="btn btn-dark"> 주문 진행 > </button></a>
-                          <p class="text-danger">입력하신 정보는 초기화 됩니다.</p>
+
+
                           </div>
 
                     </div>

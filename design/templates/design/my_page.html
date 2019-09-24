@@ -51,47 +51,52 @@
             </form>
           </div>
         </div>
+        <form method="POST" autocomplete="off">
+          {% csrf_token %}
         <div class="block mb-5">
           <div class="block-header"><strong class="text-uppercase">상세 정보</strong><p class="text-muted">자세히 적어주세요</p></div>
           <div class="block-body">
             <form>
               <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <div class="form-group">
-                    <label for="firstname" class="form-label">상호명</label>
-                    <input id="firstname" type="text" class="form-control" placeholder="">
+                    <label for="id_company" class="form-label">상호명</label>
+                    {{form.company}}
                   </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <div class="form-group">
-                    <label for="lastname" class="form-label">전화번호</label>
-                    <input id="lastname" type="text" class="form-control">
+                    <label for="id_tell" class="form-label">전화번호</label>
+                    {{form.tell}}
                   </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <div class="form-group">
-                    <label for="lastname1" class="form-label">핸드폰</label>
-                    <input id="lastname1" type="text" class="form-control">
+                    <label for="id_phone" class="form-label">핸드폰</label>
+                     {{form.phone}}
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="id_tax_bill_mail" class="form-label">E-mail</label>
+                    {{form.tax_bill_mail}}
                   </div>
                 </div>
               </div>
-
-
-
               <div class="row">
                 <div class="col-sm-5">
-                  <div class="form-group">
-                    <label for="firstname" class="form-label">우편번호</label>
-                     <div class="input-group mb-3">
-                      <input type="text" class="form-control" id="sample4_postcode" readonly>
-                      <div class="input-group-append">
-<!--                        <span class="input-group-text" >-->
-                          <button class="btn btn-outline-success" onclick="sample4_execDaumPostcode(); return false; ">
+                   <button class="btn btn-outline-success btn-block" onclick="sample4_execDaumPostcode(); return false; ">
                             <i class="fas fa-map-marker-alt"></i> 주소 검색하기</button>
-<!--                        </span>-->
-                      </div>
-                    </div>
-                  </div>
+<!--                  <div class="form-group">-->
+<!--                    <label for="firstname" class="form-label">주소 검색하기</label>-->
+<!--                     <div class="input-group mb-3">-->
+<!--                      <div class="input-group-append">-->
+<!--&lt;!&ndash;                        <span class="input-group-text" >&ndash;&gt;-->
+<!--                         -->
+<!--&lt;!&ndash;                        </span>&ndash;&gt;-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
@@ -100,10 +105,7 @@
                 </div>
 
                 <div class="col-sm-4">
-                  <div class="form-group">
-                    <label for="company" class="form-label">E-mail</label>
-                    <input id="company" type="text" class="form-control">
-                  </div>
+
                 </div>
               </div>
               <div class="row">
@@ -114,13 +116,13 @@
                 <div class="col-sm-8">
                   <div class="form-group">
                     <label for="sample4_roadAddress" class="form-label">도로명 주소</label>
-                    <input id="sample4_roadAddress" type="text" class="form-control" readonly >
+                    {{form.address}}
                   </div>
                 </div>
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="sample4_detailAddress" class="form-label">상세 주소</label>
-                    <input id="sample4_detailAddress" type="text" class="form-control">
+                    {{form.address_detail}}
                   </div>
                 </div>
               </div>
@@ -128,14 +130,14 @@
                 <div class="col-sm-8">
                   <div class="form-group">
                     <label for="sample4_jibunAddress" class="form-label">지번 주소</label>
-                    <input id="sample4_jibunAddress" type="text" class="form-control" readonly>
+                    {{form.address2}}
                     <span id="guide" style="color:#999;display:none"></span>
                   </div>
                 </div>
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="sample4_extraAddress" class="form-label">주소 참고항목</label>
-                    <input id="sample4_extraAddress" type="text" class="form-control">
+                    {{form.address_option}}
                   </div>
                 </div>
               </div>
@@ -143,68 +145,63 @@
               <div class="row">
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group">
-                    <label for="city" class="form-label">사업자 번호</label>
-                    <input id="city" type="text" class="form-control">
+                    <label for="id_code" class="form-label">사업자 번호</label>
+                    {{form.code}}
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group">
                     <label for="zip" class="form-label">대표자명</label>
-                    <input id="zip" type="text" class="form-control">
+                     {{form.ceo}}
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group">
                     <label for="state" class="form-label">업종</label>
-                    <input id="state" type="text" class="form-control">
+                    {{form.sectors}}
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group">
                     <label for="country" class="form-label">업태</label>
-                    <input id="country" type="text" class="form-control">
+                    {{form.business}}
                   </div>
                 </div>
-
                 <div class="col-sm-12">
-                  <p class="form-label">*받으시려는 영수증의 정보를 정확하게 입력해주시기 바랍니다</p>
-                  <div class="row">
-                    <div class="form-group col-md-6 d-flex align-items-center">
-                      <input type="radio" name="shippping" id="option0">
+                <p class="form-label text-center mt-5 mb-5">* 신용카드 결제가 아닌 경우 받으시려는 영수증의 정보를 정확하게 입력해주시기 바랍니다</p>
+                </div>
+                <div class="col-sm-12" align="center">
+                  <div class="row m-2">
+                    <div class="form-group col-md-3 d-flex align-items-center">
+                      <input type="radio" name="bill_select" id="option0" value="0"
+                      {% if form.bill_select.value == 0 %}checked="checked"{% endif %}>
                       <label for="option0" class="ml-3"><strong class="form-label">세금계산서</strong></label>
                     </div>
-                    <div class="form-group col-md-6 d-flex align-items-center">
-                      <input type="radio" name="shippping" id="option1">
+                    <div class="form-group col-md-3 d-flex align-items-center">
+                      <input type="radio" name="bill_select" id="option1" value="1"
+                             {% if form.bill_select.value == 1 %}checked="checked"{% endif %}>
                       <label for="option1" class="ml-3"><strong class="form-label">사업자 지출증빙</strong></label>
                     </div>
-                    <div class="form-group col-md-6 d-flex align-items-center">
-                      <input type="radio" name="shippping" id="option2">
+                    <div class="form-group col-md-3 d-flex align-items-center">
+                      <input type="radio" name="bill_select" id="option2" value="2"
+                             {% if form.bill_select.value == 2 %}checked="checked"{% endif %}>
                       <label for="option2" class="ml-3"><strong class="form-label">현금 영수증</strong></label>
                     </div>
-                    <div class="form-group col-md-6 d-flex align-items-center">
-                      <input type="radio" name="shippping" id="option3">
+                    <div class="form-group col-md-3 d-flex align-items-center">
+                      <input type="radio" name="bill_select" id="option3" value="3"
+                             {% if form.bill_select.value == 3 %}checked="checked"{% endif %}>
                       <label for="option3" class="ml-3"><strong class="form-label">미발행</strong></label>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="phone" class="form-label">사업자 등록증</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="validatedCustomFile">
-                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                    <div class="invalid-feedback">Example invalid custom file feedback</div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.row-->
               <div class="text-center mt-4">
                 <button type="submit" class="btn btn-outline-dark"><i class="far fa-save mr-2"></i>저장하기</button>
               </div>
             </form>
           </div>
         </div>
+        </form>
       </div>
     </div>
   </div>
@@ -240,15 +237,14 @@
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('sample4_postcode').value = data.zonecode;
-                document.getElementById("sample4_roadAddress").value = roadAddr;
-                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                document.getElementById("id_address").value = roadAddr;
+                document.getElementById("id_address2").value = data.jibunAddress;
 
                 // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
                 if(roadAddr !== ''){
-                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                    document.getElementById("id_address_option").value = extraRoadAddr;
                 } else {
-                    document.getElementById("sample4_extraAddress").value = '';
+                    document.getElementById("id_address_option").value = '';
                 }
 
                 var guideTextBox = document.getElementById("guide");
