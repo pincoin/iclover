@@ -1,6 +1,5 @@
 {% extends 'design/base.html'%}
 {% load static %}
-{% load design_tags %}
 {% block title%}위믹스 품목{% endblock %}
 {% block styles %}
 <style>
@@ -96,10 +95,6 @@
                                 <button type="button" class="btn btn-secondary col-md-6">지난시안</button>
                             </div>
                         </div>
-                        <!--                        <div class="col-12 mt-3 mb-3">-->
-                        <!--                            {% sample sector_slug as samples %}-->
-                        <!--                            <h4>샘플리스트 {% for z in samples %}<p>{{z}}</p>{% endfor %}</h4>-->
-                        <!--                        </div>-->
                         <div class="col-12 mt-3 mb-3">
                             <input type="search" placeholder="Search" aria-label="Search"
                                    class="form-control mr-sm-2">

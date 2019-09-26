@@ -23,6 +23,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+product_json_dic = {
+    "flyer":"합판 전단지","card":"명함","envelope":"봉투","banner":"배너","ticket":"상품권","roll":"현수막/족자",
+    "real":"실사 출력","octopus":"합판 문어발","moon":"문고리","sticker":"스티커", "ncr":"양식지/NCR지",
+    "magnet":"종이자석","catalog":"카달로그/브로셔","postit":"포스트잇/떡메모지","advertising":"판촉/홍보","bee":"비품"
+ }
 
 class Login(generic.FormView):
     template_name = 'design/login.html'
@@ -130,10 +135,9 @@ class ProductView(ProfileMixin, generic.FormView, generic.ListView):
         context = super(ProductView, self).get_context_data(**kwargs)
         product_category = self.request.GET.get('item')
         sector_category = self.request.GET.get('sector')
-        dic_name = {"flyer":"전단지","card":"명함","envelope":"봉투","banner":"배너",
-                    }
-        if product_category in dic_name:
-            context['item'] = dic_name[product_category]
+
+        if product_category in product_json_dic:
+            context['item'] = product_json_dic[product_category]
 
         return context
 
@@ -293,7 +297,7 @@ class CartProductView(APIView):
 class SampleListView(viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
                        generic.ListView):
     template_name = 'design/sample_list.html'
-    paginate_by = 1
+    paginate_by = 10
     model = managing_model.Sample
     data_search_form = managing_forms.DataSearchForm
     context_object_name = 'sample_list'
@@ -316,7 +320,7 @@ class SampleListView(viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
 
     def get_context_data(self, **kwargs):
         context = super(SampleListView, self).get_context_data(**kwargs)
-        if self.request.COOKIES:
-            print(self.request.COOKIES)
+        # if self.request.COOKIES:
+        #     print(self.request.COOKIES)
 
         return context

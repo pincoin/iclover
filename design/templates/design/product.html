@@ -1,6 +1,5 @@
 {% extends 'design/base.html'%}
 {% load static %}
-{% load design_tags %}
 {% block title%}위믹스 품목{% endblock %}
 {% block content%}
 <!-- Hero Section-->
@@ -14,16 +13,18 @@
                         <a href="{% url 'design:product' %}?item=flyer" class="nav-link mb-2"
                            style="background-color: #343a40; color:white;">전단지</a>
                         <a href="{% url 'design:product' %}?item=card" class="nav-link mb-2 text-white">명함</a>
-                        <a href="{% url 'design:product' %}?item=현수막" class="nav-link mb-2 text-white">현수막<br>&족자</a>
+                        <a href="{% url 'design:product' %}?item=roll" class="nav-link mb-2 text-white">현수막<br>&족자</a>
                         <a href="{% url 'design:product' %}?item=banner" class="nav-link mb-2 text-white">배너</a>
                         <a href="{% url 'design:product' %}?item=envelope" class="nav-link mb-2 text-white">봉투</a>
-                        <a href="{% url 'design:product' %}?item=문어발" class="nav-link mb-2 text-white">문어발</a>
-                        <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">문고리</a>
-                        <a href="{% url 'design:product' %}?item=문고리" class="nav-link mb-2 text-white">스티커</a>
-                        <a href="{% url 'design:product' %}?item=양식지" class="nav-link mb-2 text-white">양식지<br>NCR지</a>
-                        <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">종이자석</a>
-                        <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">판촉/홍보</a>
-                         <a href="{% url 'design:product' %}?item=종이자석" class="nav-link mb-2 text-white">(비품)</a>
+                        <a href="{% url 'design:product' %}?item=sticker" class="nav-link mb-2 text-white">스티커</a>
+                        <a href="{% url 'design:product' %}?item=ncr" class="nav-link mb-2 text-white">양식지<br>NCR지</a>
+                        <a href="{% url 'design:product' %}?item=octopus" class="nav-link mb-2 text-white">문어발</a>
+                        <a href="{% url 'design:product' %}?item=moon" class="nav-link mb-2 text-white">문고리</a>
+                        <a href="{% url 'design:product' %}?item=ticket" class="nav-link mb-2 text-white">상품권</a>
+                        <a href="{% url 'design:product' %}?item=magnet" class="nav-link mb-2 text-white">종이자석</a>
+                        <a href="{% url 'design:product' %}?item=catalog" class="nav-link mb-2 text-white">카달로그<br>&브로셔</a>
+                        <a href="{% url 'design:product' %}?item=advertising" class="nav-link mb-2 text-white">판촉/홍보</a>
+                         <a href="{% url 'design:product' %}?item=bee" class="nav-link mb-2 text-white">(비품)</a>
                     </nav>
                 </div>
             </div>
@@ -143,9 +144,9 @@
                     <div class="row">
 
                         <div class="col-sm-8 text-danger mb-3">
-                            <span>* 디자인 <b>작업 비용, 배송비는 미포함</b>된 금액입니다.</span>
-                            <br><span>* 작업 비용은 요청사항에 따라 변동 될 수 있습니다</span>
-                            <br><span>* 다음 단계에서 내용을 입력해주시면 최종 견적을 확인하실 수 있습니다.</span>
+                            <span>* 디자인 <b>작업비, 배송비는 미포함</b>된 금액입니다.</span>
+                            <br><span>* 작업 비용은 요청 항목에 따라 변동 될 수 있습니다</span>
+                            <br><span>* 주문을 완료해주시면 확인 후 최종 견적을 안내 드리고 있습니다.</span>
                         </div>
                         <div class="col-sm-4 text-right mb-3">
                             <span>인쇄비 : <b class="text-danger " style="font-size:24px;">
@@ -512,15 +513,26 @@
     });
     }
 
-    $(document).ready(function () {
+    $(document).ready(function (){
         var sample_url = $.cookie('sample_cart_url');
         var $sample_cart_url = $('.sample_cart_url');
+
         if(sample_url){
             $sample_cart_url.html(
-                '<img class="m-2" width="70%" style="opacity: 0.8;" src="'+sample_url+'"><br>'
+                '<img class="m-2" width="70%" style="opacity: 0.8;" src="'+sample_url+'"><br>' +
+                '<span class="badge badge-danger" id="sample_cart_delete" style="opacity: 0.8;">삭제 X</span>'
             )
         }
-    })
+        var $sample_cart_delete = $('#sample_cart_delete');
+        $sample_cart_delete.click(function () {
+            var bool = confirm('정말 삭제하시겠습니까?');
+            if(bool){
+                  $.removeCookie('sample_cart_url', { path: '/' });
+                $(this).parent().remove();
+            }
+            });
+    });
+
 </script>
 
 
