@@ -111,106 +111,6 @@ class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
     def __str__(self):
         return self.title
 
-class ProductBase(TimeStampedModel, SoftDeletableModel):
-    category = models.ForeignKey(
-        'design.Category',
-        verbose_name=_('카테고리'),
-        related_name='product_base_category',
-        null=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
-
-    supplier = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name=_('매입처'),
-        blank= True,
-    )
-
-    standard = models.ManyToManyField(
-        'design.StandardOption',
-        related_name='product_base_standard',
-        blank=True,
-    )
-
-    paper = models.ManyToManyField(
-        'design.PaperOption',
-        related_name='product_base_paper',
-        blank=True,
-    )
-
-    side = models.ManyToManyField(
-        'SideOption',
-        related_name='product_base_side',
-        blank=True,
-    )
-
-    etc = models.ManyToManyField(
-        'design.EtcOption',
-        related_name='product_base_etc',
-        blank=True,
-    )
-
-    code = models.IntegerField(
-        verbose_name=_('품목코드'),
-        null=True,
-        blank=True,
-    )
-
-    title = models.CharField(
-        verbose_name=_('품목명'),
-        null=True,
-        blank=True,
-        max_length=128,
-    )
-
-    slug = models.SlugField(
-        verbose_name=_('slug'),
-        max_length=255,
-        null=True,
-        blank=True,
-        unique=True,
-        allow_unicode=True,
-    )
-
-    sell_price = models.DecimalField(
-        verbose_name=_('판매가'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-
-    buy_price = models.DecimalField(
-        verbose_name=_('매입가'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-
-    main_quantity = models.BooleanField(
-        verbose_name=_('메인 수량'),
-        default = False,
-    )
-
-    ecount = models.BooleanField(
-        verbose_name=_('이카운트 전송'),
-        default=False,
-    )
-
-    product_active = models.BooleanField(
-        verbose_name=_('활성화'),
-        default = False,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션_통합')
-        verbose_name_plural = _('상품옵션_통합')
-
-    def __str__(self):
-        return self.title
-
 class ProductText(TimeStampedModel, SoftDeletableModel):
     category = models.ForeignKey(
         'design.Category',
@@ -416,196 +316,6 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
 
     def __str__(self):
         return self.title
-
-
-class StandardOption(TimeStampedModel, SoftDeletableModel):
-    title = models.CharField(
-        verbose_name=_('품목명'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-    horizontal = models.DecimalField(
-        verbose_name=_('가로'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-    vertical = models.DecimalField(
-        verbose_name=_('세로'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-    width = models.DecimalField(
-        verbose_name=_('넓이'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-    height = models.DecimalField(
-        verbose_name=_('높이'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션 _기본 규격')
-        verbose_name_plural = _('상품옵션 _기본 규격')
-
-    def __str__(self):
-        return self.title
-
-class PaperOption(TimeStampedModel, SoftDeletableModel):
-    title = models.CharField(
-        verbose_name=_('용지 이름'),
-        blank = True,
-        null = True,
-        max_length=100,
-    )
-
-    gram = models.CharField(
-        verbose_name=_('그람수'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-
-    color = models.CharField(
-        verbose_name=_('색상'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-
-    option = models.CharField(
-        verbose_name=_('옵션 코팅/유무'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션 _용지옵션')
-        verbose_name_plural = _('상품옵션 _용지옵션')
-
-    def __str__(self):
-        return self.title
-
-
-class SideOption(TimeStampedModel, SoftDeletableModel):
-    title = models.CharField(
-        verbose_name=_('양면 / 단면'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션 _양면/단면')
-        verbose_name_plural = _('상품옵션 _양면/단면')
-
-    def __str__(self):
-        return self.title
-
-class HooOption(TimeStampedModel, SoftDeletableModel):
-    title = models.CharField(
-        verbose_name=_('후가공명'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-    option = models.CharField(
-        verbose_name=_('상위 품목'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-
-    price = models.DecimalField(
-        verbose_name=_('후가공 가격'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션 _후가공')
-        verbose_name_plural = _('상품옵션 _후가공')
-
-    def __str__(self):
-        return self.title
-
-class DeliveryOption(TimeStampedModel, SoftDeletableModel):
-    title = models.CharField(
-        verbose_name=_('배송 방법'),
-        blank=True,
-        null=True,
-        max_length=100,
-    )
-
-    price = models.DecimalField(
-        verbose_name=_('배송 비용'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-
-    tax = models.BooleanField(
-        verbose_name=_('부가세 포함여부'),
-        default = False,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션 _배송비')
-        verbose_name_plural = _('상품옵션 _배송비')
-
-    def __str__(self):
-        return self.title
-
-class EtcOption(TimeStampedModel, SoftDeletableModel):
-    title = models.CharField(
-        verbose_name=_('기타 옵션'),
-        blank=True,
-        null=True,
-        max_length=255,
-    )
-    option = models.CharField(
-        verbose_name=_('기타 옵션 상세'),
-        blank=True,
-        null=True,
-        max_length=255,
-    )
-
-    memo = models.CharField(
-        verbose_name=_('기타 옵션 메모'),
-        blank=True,
-        null=True,
-        max_length=255,
-    )
-
-    price = models.DecimalField(
-        verbose_name=_('기타 옵션 가격'),
-        max_digits=11,
-        decimal_places=4,
-        null=True,
-        blank=True,
-    )
-
-    class Meta:
-        verbose_name = _('상품옵션 _기타옵션')
-        verbose_name_plural = _('상품옵션 _기타옵션')
-
-    def __str__(self):
-        return self.title
-
 
 class OrderInfo(TimeStampedModel, SoftDeletableModel):
     user = models.ForeignKey(
@@ -1067,3 +777,349 @@ class CartProduct(TimeStampedModel):
 
     def __str__(self):
         return f'{self.user}'
+
+class CartPriceProblem(TimeStampedModel):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name=_('고객'),
+        blank=True,
+        null=True,
+    )
+    json_text = models.CharField(
+        verbose_name=_('json data'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = _('카트 가격 변동 json 텍스트')
+        verbose_name_plural = _('카트 가격 변동 json 텍스트')
+
+    def __str__(self):
+        return f'{self.user}'
+
+class ProductPriceAPI(TimeStampedModel):
+    kind = models.CharField(
+        verbose_name=_('품목 종류'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    size = models.CharField(
+        verbose_name=_('규격 size'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    size_text = models.CharField(
+        verbose_name=_('규격 size text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    paper = models.CharField(
+        verbose_name=_('용지 paper'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    paper_text = models.CharField(
+        verbose_name=_('용지 paper text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    side = models.CharField(
+        verbose_name=_('인쇄 side'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    side_text = models.CharField(
+        verbose_name=_('인쇄 side text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    deal = models.CharField(
+        verbose_name=_('수량 deal'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    deal_text = models.CharField(
+        verbose_name=_('수량 deal text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option1 = models.CharField(
+        verbose_name=_('옵션1 option1'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option1_text = models.CharField(
+        verbose_name=_('옵션1 option1 text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option2 = models.CharField(
+        verbose_name=_('옵션1 option2'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option2_text = models.CharField(
+        verbose_name=_('옵션1 option2 text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    sell = models.DecimalField(
+        verbose_name=_('sell'),
+        blank=True,
+        default=0,
+        decimal_places=4,
+        max_digits=11,
+    )
+
+    class Meta:
+        verbose_name = _('가격 리턴 api')
+        verbose_name_plural = _('가격 리턴 api')
+
+    def __str__(self):
+        return f'{self.size}'
+
+
+class ProductPriceInsideAPI(TimeStampedModel):
+    price_api = models.ForeignKey(
+        'design.ProductPriceAPI',
+        verbose_name=_('product api pk'),
+        related_name='price_api_inside',
+        null=True,
+        blank=True,
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+    supplier = models.CharField(
+        verbose_name=_('매입'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    memo = models.CharField(
+        verbose_name=_('메모 memo'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    buy = models.DecimalField(
+        verbose_name=_('buy'),
+        blank=True,
+        default=0,
+        decimal_places=4,
+        max_digits=11,
+    )
+
+    class Meta:
+        verbose_name = _('가격 내부 api')
+        verbose_name_plural = _('가격 내부 api')
+
+    def __str__(self):
+        return f'{self.price_api}'
+
+class CustomerOrderInfo(TimeStampedModel):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name=_('고객'),
+        blank=True,
+        null=True,
+    )
+    company = models.CharField(
+        verbose_name=_('회사명'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    uuid = models.CharField(
+        verbose_name=_('uuid'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    code = models.IntegerField(
+        verbose_name=_('사업자번호'),
+        null=True,
+        blank=True,
+    )
+    phone = models.CharField(
+        verbose_name=_('폰 번호'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    address_confirm = models.BooleanField(
+        default=True
+    )
+
+    address = models.CharField(
+        verbose_name=_('주소'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    address2 = models.CharField(
+        verbose_name=_('주소2'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    address_detail = models.CharField(
+        verbose_name=_('상세주소'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    address_option = models.CharField(
+        verbose_name=_('주소 참고'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    BILL_SELECT = Choices(
+        (0, '세금계산서', _('세금계산서')),
+        (1, '사업자 지출증빙', _('사업자 지출증빙')),
+        (2, '현금 영수증', _('현금 영수증')),
+        (3, '미발행', _('미발행')),
+    )
+    bill_select = models.IntegerField(
+        verbose_name=_('사업자 상태'),
+        choices=BILL_SELECT,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _('고객 주문 기본 정보')
+        verbose_name_plural = _('고객 주문 기본 정보')
+
+    def __str__(self):
+        return f'{self.uuid}'
+
+class CustomerOrderProduct(TimeStampedModel):
+    customer_order_info = models.ForeignKey(
+        'design.CustomerOrderInfo',
+        blank=True,
+        null=True,
+        related_name='customer_order_product',
+        verbose_name=_('고객 주문 정보'),
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+    kind = models.CharField(
+        verbose_name=_('품목 종류 kind'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    title = models.CharField(
+        verbose_name=_('품목 종류 title'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    size = models.CharField(
+        verbose_name=_('규격 size'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    size_text = models.CharField(
+        verbose_name=_('규격 size text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    paper = models.CharField(
+        verbose_name=_('용지 paper'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    paper_text = models.CharField(
+        verbose_name=_('용지 paper text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    side = models.CharField(
+        verbose_name=_('인쇄 side'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    side_text = models.CharField(
+        verbose_name=_('인쇄 side text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    deal = models.CharField(
+        verbose_name=_('수량 deal'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    deal_text = models.CharField(
+        verbose_name=_('수량 deal text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option1 = models.CharField(
+        verbose_name=_('옵션1 option1'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option1_text = models.CharField(
+        verbose_name=_('옵션1 option1 text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option2 = models.CharField(
+        verbose_name=_('옵션1 option2'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    option2_text = models.CharField(
+        verbose_name=_('옵션1 option2 text'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    sell = models.DecimalField(
+        verbose_name=_('sell'),
+        blank=True,
+        default=0,
+        decimal_places=4,
+        max_digits=11,
+    )
+    class Meta:
+        verbose_name = _('고객 주문 품목')
+        verbose_name_plural = _('고객 주문 품목')
+
+    def __str__(self):
+        return f'{self.size}'

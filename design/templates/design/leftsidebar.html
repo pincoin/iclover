@@ -17,9 +17,8 @@
             <div style="top: 120px;" class="sticky-top mb-5">
                 <div class="sidebar-block">
                     <nav class="nav nav-pills flex-column">
-                        <a href="{% url 'design:news' %}" class="nav-link mb-2" {% block sidebar_active0 %}{%endblock%}>공지사항</a>
                         <a href="{% url 'design:faq' %}" class="nav-link mb-2" {% block sidebar_active1 %}{%endblock%}>자주 묻는 질문 (F.A.Q)</a>
-                        <a href="" class="nav-link mb-2" {% block sidebar_active2 %}{%endblock%}>
+                        <a href="{% url 'design:order_list' %}" class="nav-link mb-2" {% block sidebar_active2 %}{%endblock%}>
                             {%if user.is_anonymous%}<i class="fas fa-lock text-muted"></i>{% endif %} 주문 리스트
                         </a>
                         <a href="{% url 'design:my_page' %}" class="nav-link mb-2" {% block sidebar_active3 %}{%endblock%}>

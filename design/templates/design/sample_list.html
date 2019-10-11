@@ -60,37 +60,53 @@
     <img src="{% static 'design/img/photo/bg-masthead.jpg' %}" alt="" class="bg-image" style="opacity: 0.8;">
 
       <div class="container overlay-content hero hero-page p-5">
-         <form action="#" method="post" novalidate="novalidate">
+         <form novalidate="novalidate" autocomplete="off">
                     <div class="row search-sec">
                         <div class="col-lg-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                    <select class="form-control search-slt" id="exampleFormControlSelect1">
-                                        <option>업종</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
+                                    <select class="form-control search-slt" name="sector_category">
+                                        <option value="">업종</option>
+                                        <option value="피트니스">피트니스</option>
+                                        <option value="요가/필라테스">요가/필라테스</option>
+                                        <option value="스포츠/체육관">스포츠/체육관</option>
+                                        <option value="뷰티/미용">뷰티/미용</option>
+                                        <option value="분양/건설">분양/건설</option>
+                                        <option value="카페/빵집">카페/빵집</option>
+                                        <option value="쇼핑/마트">쇼핑/마트</option>
+                                        <option value="자동차">자동차</option>
+                                        <option value="병원">병원</option>
+                                        <option value="통신/IT">통신/IT</option>
+                                        <option value="교회/종교">교회/종교</option>
+                                        <option value="학원/교육">학원/교육</option>
+                                        <option value="통신/IT">식당/음식점</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                    <select class="form-control search-slt" id="">
-                                        <option>품목</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
-                                        <option>Example one</option>
+                                    <select class="form-control search-slt" name="prodcut_category">
+                                        <option value="">품목</option>
+                                            <option value="전단지/족자">전단지/족자</option>
+                                            <option value="현수막">현수막</option>
+                                            <option value="배너">배너</option>
+                                            <option value="명함">명함</option>
+                                            <option value="스티커">스티커</option>
+                                            <option value="봉투">봉투</option>
+                                            <option value="NCR/양식지">NCR/양식지</option>
+                                            <option value="카다로그/리플릿">카다로그/리플릿</option>
+                                            <option value="상품권/복권">상품권/복권</option>
+                                            <option value="문어발">문어발</option>
+                                            <option value="명찰/사원증">명찰/사원증</option>
+                                            <option value="종이족자">종이족자</option>
+                                            <option value="후가공">후가공</option>
+                                            <option value="기타 디자인">기타 디자인</option>
+                                            <option value="에어탑">에어탑</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                    <input type="text" class="form-control search-slt" placeholder="검색어">
+                                    <input type="text" class="form-control search-slt" name="q" value="{{q}}" placeholder="검색어">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                    <button type="button" class="btn btn-dark wrn-btn"><i class="fas fa-search"></i>
+                                    <button type="submit" class="btn btn-dark wrn-btn"><i class="fas fa-search"></i>
                                         Search
                                     </button>
                                 </div>
@@ -105,14 +121,15 @@
 <div class="container">
       <div class="row">
         <!-- Grid -->
-        <div class="products-grid col-xl-12">
+        <div class="products-grid col-xl-12 text-center">
             <hr>
+            {% if sample_list%}
           <div class="card-columns product-columns">
             <!-- product masonry-->
                {% for i in sample_list %}
-              <div class="product card">
+              <div class="product card border-0">
                   <div class="">
-                      <img src="/media/{{i.images}}" alt="White Tee" class="img-fluid" width="100%">
+                      <img src="/media/{{i.images}}" alt="White Tee" class="img-fluid shadow-sm m-b-15" style="max-height: 450px;">
                       <div class="card-body text-center shadow">
                               <a class="btn btn-outline-dark sample_cart"
                                  role="button" data-url="/media/{{i.images}}" href="{% url 'design:product'%}?item=card" >
@@ -126,6 +143,23 @@
               </div>
               {% endfor %}
             <!-- /product masonry-->
+              {% else %}
+                        <div align="center">
+                            <h1 class="text-muted">검색 된 결과가 없습니다.</h1>
+                        </div>
+
+            <object id="svgObject" type="image/svg+xml" data="{% static 'design/img/svg/empty.svg' %}" width="100%">
+                검색 내용이 없습니다. 새로운 검색어를 입력해주세요
+                <br>현재 브라우저는 iframe을 지원하지 않습니다.</object>
+              <script>
+                  window.onload = function () {
+                      var a = document.getElementById("svgObject");
+                      var svgDoc = a.contentDocument;
+                      var svgItem = svgDoc.getElementById("put_tag");
+                      svgItem.textContent = 'hi';
+                  };
+              </script>
+              {% endif %}
           </div>
 
             <!-- bootstrap style을 적용한다. -->
@@ -185,6 +219,8 @@
             var url = $(this).data('url');
              $.cookie('sample_cart_url' , url, { path : '/' });
         })
-    })
+    });
+
 </script>
+
 {% endblock %}

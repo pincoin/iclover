@@ -371,30 +371,35 @@ class CustomerProfile(TimeStampedModel):
     company = models.CharField(
         verbose_name=_('업체명'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     ceo = models.CharField(
         verbose_name=_('대표자명'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     tax_bill_mail = models.CharField(
         verbose_name=_('이메일'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     sectors = models.CharField(
         verbose_name=_('업종'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     business = models.CharField(
         verbose_name=_('업태'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
@@ -410,6 +415,7 @@ class CustomerProfile(TimeStampedModel):
     tell = models.CharField(
         verbose_name=_('매장번호'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
@@ -423,30 +429,35 @@ class CustomerProfile(TimeStampedModel):
     memo = models.CharField(
         verbose_name=_('메모'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     address = models.CharField(
         verbose_name=_('주소'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     address2 = models.CharField(
         verbose_name=_('주소2'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     address_detail = models.CharField(
         verbose_name=_('상세주소'),
         max_length=255,
+        null=True,
         blank=True,
     )
 
     address_option = models.CharField(
         verbose_name=_('주소 참고'),
         max_length=255,
+        null=True,
         blank=True,
     )
 

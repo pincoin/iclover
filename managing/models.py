@@ -479,3 +479,54 @@ class Memo(TimeStampedModel, SoftDeletableModel):
         verbose_name = _('할일 to_do')
         verbose_name_plural = _('할일 to_do')
 
+
+
+class CustomerMemo(TimeStampedModel):
+    customer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name= 'customer_memo',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    keyword = models.CharField(
+        verbose_name=_('키워드'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    manager = models.CharField(
+        verbose_name=_('담당자'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    memo = models.CharField(
+        verbose_name=_('메모'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    confirm = models.CharField(
+        verbose_name=_('시안 확인'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    hoo = models.CharField(
+        verbose_name=_('후가공'),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        return f"{self.customer}"
+
+    class Meta:
+        verbose_name = _('고객 프로필 추가정보 using inside')
+        verbose_name_plural = _('고객 프로필 추가정보 using inside')

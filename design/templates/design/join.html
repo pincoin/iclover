@@ -14,7 +14,7 @@
                                 <h2 class="text-muted">회원가입</h2>
                                 <hr>
                                 <div class="form-group">
-                                    <label for="username" class="form-label">ID : *</label>
+                                    <label for="{{form.username.auto_id}}" class="form-label">ID :*</label>
                                     {{ form.username }}
                                     <p class="text-muted"><small>{{ form.username.help_text }}</small></p>
                                     {% if form.errors.username %}
@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="password1" class="form-label">암호 : *</label>
+                                    <label for="{{form.password1.auto_id}}" class="form-label">암호 : *</label>
                                     {{ form.password1 }}
                                     {% if form.errors.password1 %}
                                     {% for i in form.errors.password1 %}
@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="password2" class="form-label">암호 확인: *</label>
+                                    <label for="{{form.password2.auto_id}}" class="form-label">암호 확인: *</label>
                                     {{ form.password2 }}
                                     {% if form.errors.password2 %}
                                     {% for i in form.errors.password2 %}
@@ -45,7 +45,7 @@
                                     {% endfor %}
                                     {% endif %}
                                 </div>
-                                <button type="submit" class="form-control btn btn-warning">회원 가입</button>
+                                <button type="submit" class="form-control btn btn-success">회원 가입</button>
                                 <hr>
                                 <h5>암호 설정 Tip</h5>
                                 <p class="text-muted"><small>{{ form.password1.help_text }}</small></p>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="col-lg-6 pr-lg-0 order-lg-1">
-                <div class="mh-full-screen-with-header h-100">
+                <div class="">
                     <img src="{% static 'design/img/banner/join_banner.jpg' %}" alt="" class="bg-image">
                 </div>
             </div>

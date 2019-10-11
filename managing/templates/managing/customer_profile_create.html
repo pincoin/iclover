@@ -1,0 +1,162 @@
+{% load static %}
+
+<form id="form_id" method="POST" text="고객 정보"  autocomplete="off" class="has-customer">
+    <h3 class="text-center"><b class="card-body text-danger">▽ 고객님이 입력하고 보는 마이페이지 정보</b></h3>
+    {% csrf_token %}
+    <div class="row p-b-10">
+        <div class="col-sm-3">
+              <span class="help-block">사업자 상태 :</span>
+            <select name="state_select" class="form-control">
+                <option></option>
+                <option class="text-success" value="0" {% if state_select == 0 %}selected="selected"{% endif %}>정상</option>
+                <option class="text-danger" value="1" {% if state_select == 1 %}selected="selected"{% endif %}>폐업</option>
+            </select>
+        </div>
+          <div class="col-sm-3">
+                <span class="help-block">영수증 :</span>
+            <select name="bill_select" class="form-control">
+                <option></option>
+                <option value="0" {% if bill_select == 0 %}selected="selected"{% endif %} >세금계산서</option>
+                <option value="1" {% if bill_select == 1 %}selected="selected"{% endif %} >사업자 지출증빙</option>
+                <option value="2" {% if bill_select == 2 %}selected="selected"{% endif %} >현금 영수증</option>
+                <option value="3" {% if bill_select == 3 %}selected="selected"{% endif %} >미발행</option>
+            </select>
+        </div>
+          <div class="col-sm-3">
+              <span class="help-block">* 폐업시 폐업일 등록 :</span>
+               <input type="text" name="state" class="form-control" {% if state %}value="{{state}}"{% endif %} />
+        </div>
+         <div class="col-sm-3">
+<!--                <span class="help-block">업종 :</span>-->
+<!--            <select name="category" class="form-control">-->
+<!--                <option></option>-->
+<!--                <option value="0">세금계산서</option>-->
+<!--                <option value="1">사업자 지출증빙</option>-->
+<!--                <option value="2">현금 영수증</option>-->
+<!--                <option value="3">미발행</option>-->
+<!--            </select>-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <span class="help-block">* 사업자 번호 :</span>
+            <input type="number" name="code" id="id_code" class="form-control" {% if code %}value="{{code}}"{%endif%} placeholder="숫자만 (삭제불가)">
+        </div>
+        <div class="col-sm-3">
+            <span class="help-block">상호명 :</span>
+            <input type="text" name="company" id="id_company"  value="{{company}}" class="form-control">
+        </div>
+
+        <div class="col-sm-2">
+            <span class="help-block">전화번호 :</span>
+            <input type="text" name="tell"  {% if tell %}value="{{tell}}"{%endif%} class="form-control">
+        </div>
+        <div class="col-sm-2">
+            <span class="help-block">핸드폰번호 :</span>
+            <input type="text" name="phone"  {% if phone %}value="{{phone}}"{%endif%} class="form-control">
+        </div>
+           <div class="col-sm-2">
+            <span class="help-block">이메일 :</span>
+            <input type="text" name="tax_bill_mail"  value="{{tax_bill_mail}}" class="form-control">
+        </div>
+        <div class="col-sm-1">
+            <span class="help-block">대표자명 :</span>
+            <input type="text" name="ceo"  value="{{ceo}}" class="form-control">
+        </div>
+    </div>
+    <div class="row m-t-20">
+        <div class="col-sm-2 ">
+               <button class="btn btn-success btn-block" onclick="sample4_execDaumPostcode(); return false; ">
+                            <i class="fas fa-map-marker-alt"></i> 주소 검색하기</button>
+        </div>
+        <div class="col-sm-3">
+             <input type="text" name="address" class="form-control" placeholder="도로명주소"  value="{{address}}" id="id_address" readonly/>
+        </div>
+       <div class="col-sm-3">
+             <input type="text" name="address2" class="form-control" placeholder="지번 주소"  value="{{address2}}" id="id_address2" readonly />
+             <span id="guide" style="color:#999;display:none"></span>
+        </div>
+                <div class="col-sm-2">
+             <input type="text" name="address_detail" class="form-control"  value="{{address_detail}}" id="id_address_detail" placeholder="상세주소" >
+        </div>
+          <div class="col-sm-2">
+             <input type="text" name="address_option" class="form-control"  value="{{address_option}}" id="id_address_option" placeholder="주소 참고 자료" >
+        </div>
+
+    </div>
+      <div class="row">
+
+
+    </div>
+
+     <div class="row has-sample">
+         <br><hr>
+         <h4 class="text-center"><b class="card-body">▽ 관리자 내부에서만 사용 되는 정보</b></h4>
+         <br>
+         <div class="col-sm-6">
+            <span class="help-block">키워드 :</span>
+             <input type="text" name="keyword" {% if keyword %}value="{{keyword}}"{% endif %}  class="form-control" placeholder="검색 될 정보" />
+        </div>
+            <div class="col-sm-6">
+            <span class="help-block">메모 :</span>
+             <input type="text" name="memo" {% if memo %}value="{{memo}}"{% endif %}  class="form-control" placeholder="주소 참고 자료" >
+        </div>
+
+       <div class="col-sm-4">
+            <span class="help-block">시안확인 :</span>
+             <input type="text" name="confirm" {% if confirm %}value="{{confirm}}"{% endif %}  class="form-control" placeholder="시안 확인" />
+
+        </div>
+        <div class="col-sm-4">
+            <span class="help-block">후가공 :</span>
+             <input type="text" name="hoo" {% if hoo %}value="{{hoo}}"{% endif %}  class="form-control" placeholder="상세주소" >
+        </div>
+          <div class="col-sm-4">
+            <span class="help-block">담당자 :</span>
+             <input type="text" name="manager" {% if manager %}value="{{manager}}"{% endif %}  class="form-control" />
+        </div>
+    </div>
+
+</form>
+
+<div class="modal-footer m-t-50">
+    <button id='sub-btn' class="btn btn-danger">저장하기</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var $sub_btn = $('#sub-btn');
+        var url = "{% url 'managing:customer_profile_create' %}" ;
+        var username = "{{ request.GET.name }}";
+
+        $sub_btn.click(function () {
+            var params = $("form[id=form_id]").serialize();
+            if(username){
+               params = params+'&username='+username;
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: params,
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(status, error);
+                }
+            });
+
+        });
+    });
+
+</script>
+<script>
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+</script>

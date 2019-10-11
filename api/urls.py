@@ -1,5 +1,6 @@
 from django.urls import include, path
 from rest_framework import routers
+from django.conf import settings
 
 from . import views
 
@@ -15,5 +16,8 @@ router.register(r'order_info', views.OrderInfoViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+# if settings.DEBUG:
+#     urlpatterns += [
+#         path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+#     ]

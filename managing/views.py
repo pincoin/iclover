@@ -1,6 +1,9 @@
 import datetime
 import re
+import uuid as uuid_id
 from django.urls import reverse
+from rest_framework.renderers import TemplateHTMLRenderer
+
 from managing import log_save
 from django.core import serializers as core_serializer
 from django.conf import settings
@@ -17,7 +20,7 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from rest_framework import status, viewsets
 from rest_framework import generics as api_generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -35,6 +38,7 @@ clovi_login_url = '/clovi/login/'
 class Login(generic.FormView):
     template_name = 'managing/login.html'
     form_class = managing_forms.LoginForm
+
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
@@ -64,6 +68,9 @@ def logout(request):
 
 
 def change_password(request):
+    if not request.user.is_staff:
+        return redirect('design:home')
+
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = PasswordChangeForm(request.user, request.POST)
@@ -244,6 +251,7 @@ class CustomerView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixi
         return ['managing/customer.html']
 
 
+# 이카운트 기준
 class CustomerCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.CreateView):
     form_class = managing_forms.CustomerCreateForm
     success_url = "/clovi/customer"
@@ -305,6 +313,72 @@ class CustomerUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generi
         return ['managing/customer_update.html']
 
 
+class CustomerWriteProfileView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                   generic.ListView):
+    context_object_name = 'customer_list'
+    paginate_by = 10
+    model = member_models.CustomerProfile
+    data_search_form = managing_forms.DataSearchForm
+    # optional
+    login_url = clovi_login_url
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('user').prefetch_related('user__customer_memo').order_by('-id')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            if q:
+                try:
+                    q = q.split()
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(code__icontains=i)|Q(company__icontains=i)|Q(address__icontains=i)|Q(address2__icontains=i)
+                            | Q(user__customer_memo__manager__icontains=i)| Q(user__customer_memo__keyword__icontains=i)
+                            | Q(user__customer_memo__memo__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(CustomerWriteProfileView, self).get_context_data(**kwargs)
+        return context
+
+    def get_template_names(self):
+        return ['managing/customer_profile.html']
+
+class ProductListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
+    template_name = 'managing/product_list.html'
+    context_object_name = 'product_list'
+    paginate_by = 10
+    model = design_models.ProductPriceAPI
+    data_search_form = managing_forms.DataSearchForm
+    # optional
+    login_url = clovi_login_url
+
+    def get_queryset(self):
+        queryset = super().get_queryset().prefetch_related('price_api_inside').order_by('-id')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            if q:
+                try:
+                    q = q.split()
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(kind__icontains=i)|Q(size__icontains=i)|Q(size_text__icontains=i)|Q(paper__icontains=i)
+                            | Q(paper_text__icontains=i)| Q(side__icontains=i)| Q(deal__icontains=i)
+                            |Q(price_api_inside__buy__icontains=i)|Q(price_api_inside__supplier__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        return context
+
+
 class ProductView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin, generic.ListView):
     template_name = 'managing/product.html'
     context_object_name = 'product_list'
@@ -344,6 +418,8 @@ class ProductView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin
         except:
             pass
         return context
+
+
 
 
 class ProdcutCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.CreateView):
@@ -576,6 +652,9 @@ class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
     paginate_by = 10
     model = design_models.OrderInfo
     data_search_form = managing_forms.DataSearchForm
+    # optional
+    login_url = clovi_login_url
+
 
     def get_queryset(self):
         state = int(self.kwargs['common'])
@@ -657,9 +736,6 @@ class OrderListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmix
             i.img_bool = i.order_img.exists()
         context['common'] = self.kwargs['common']
         return context
-
-    # optional
-    login_url = clovi_login_url
 
 
 class OrdersCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.FormView):
@@ -1635,3 +1711,180 @@ class PaymentListView(APIView):
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomerProfileView(APIView):
+    permission_classes = (IsAdminUser,)
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'managing/customer_profile_create.html'
+
+    def get(self, request, format=None):
+        data = request.GET
+        if 'name' in data:
+            dic_list = {}
+            user_id = data['name']
+            user = member_models.CustomerProfile.objects.filter(user__username=user_id)
+            for i in user:
+                dic_list['code'] = i.code
+                dic_list['company'] = i.company
+                dic_list['tell'] = i.tell
+                dic_list['phone'] = i.phone
+                dic_list['tax_bill_mail'] = i.tax_bill_mail
+                dic_list['ceo'] = i.ceo
+                dic_list['address'] = i.address
+                dic_list['address2'] = i.address2
+                dic_list['address_detail'] = i.address_detail
+                dic_list['address_option'] = i.address_option
+                dic_list['state_select'] = i.state_select
+                dic_list['bill_select'] = i.bill_select
+                dic_list['state'] = i.state
+
+            memo_list = managing_models.CustomerMemo.objects.filter(customer__username=user_id)
+            for i in memo_list:
+                dic_list['keyword'] = i.keyword
+                dic_list['manager'] = i.manager
+                dic_list['confirm'] = i.confirm
+                dic_list['hoo'] = i.hoo
+                dic_list['memo'] = i.memo
+
+            return Response(dic_list, status=status.HTTP_202_ACCEPTED)
+
+            # state
+            # state_select =
+            # bill_select =
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+    def post(self, request, format=None):
+        serializer = serializers.CustomerProfileSerializer(data=request.data)
+        profile_list = ['company','tell','phone','tax_bill_mail','ceo','address',
+                        'address2','address_detail','address_option','state']
+        profile_memo_list = ['keyword', 'manager', 'confirm', 'hoo', 'memo']
+
+        profile_dic = {} # profile 담기
+        profile_memo_dic = {}  # profile_memo 담기
+
+        for i, val in request.data.items():
+            if i in profile_list: # key가 리스트에 있으면
+                profile_dic[i] = val
+            if i in profile_memo_list:
+                profile_memo_dic[i] = val
+
+        num_list = ['code','bill_select','state_select'] # type number 있으면 dict 추가
+        for i in num_list:
+            if request.data[i]:
+                profile_dic[i] = request.data[i]
+
+        if serializer.is_valid():
+            if "username" in request.data:
+                username = request.data['username']
+                user = member_models.CustomerProfile.objects.filter(user__username=username)
+                memo_list = managing_models.CustomerMemo.objects.filter(customer__username=username)
+
+                for i in user: #기존에 있지만 삭제된 데이터 업데이트
+                    if i.code and not request.data['code']:
+                        profile_dic['code'] = None
+                    if i.bill_select and not request.data['bill_select']:
+                        profile_dic['bill_select'] = None
+                    if i.state_select and not request.data['state_select']:
+                        profile_dic['state_select'] = None
+
+                user.update(**profile_dic)
+                memo_list.update(**profile_memo_dic)
+            else:
+                uuid = uuid_id.uuid4().hex[:10]
+                name = '[임시계정]'+uuid
+                check_is = User.objects.filter(username=name).exists()
+                if check_is:
+                    return redirect('/clovi/customer_profile/')
+                else:
+                    try:
+                        account = User.objects.create_user(username=name, password='iclover77', is_active=False)
+                        member_models.CustomerProfile.objects.get_or_create(user=account)
+                        managing_models.CustomerMemo.objects.get_or_create(customer=account)
+
+                        user = member_models.CustomerProfile.objects.filter(user__username=name)
+                        memo_list = managing_models.CustomerMemo.objects.filter(customer__username=name)
+                        user.update(**profile_dic)
+                        memo_list.update(**profile_memo_dic)
+                    except:
+                        pass
+
+            return JsonResponse({"data":"끝"},status=status.HTTP_202_ACCEPTED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
+                    generic.ListView):
+    template_name = 'managing/order_view.html'
+    paginate_by = 10
+    model = design_models.CustomerOrderInfo
+    data_search_form = managing_forms.DataSearchForm
+    # optional
+    login_url = clovi_login_url
+
+
+    def get_queryset(self):
+        queryset = super(OrderView, self).get_queryset().select_related('user').prefetch_related('customer_order_product','user__customer_memo').order_by('-created')
+        form = self.data_search_form(self.request.GET)
+        if form.is_valid() and form.cleaned_data['q']:
+            q = form.cleaned_data['q']
+            match_term = re.search(r'\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}', q)
+            match = re.search(r'\d{4}-\d{2}-\d{2}', q)
+            if q:
+                try:
+                    q = q.split()
+                    if match_term:
+                        term_date = match_term.group()
+                        q.remove(term_date)
+                        term_date = term_date.split('~')
+                        start_date = list(map(int, term_date[0].split('-')))
+                        end_date = list(map(int, term_date[1].split('-')))
+                        start_date = datetime.date(start_date[0], start_date[1], start_date[2])
+                        end_date = datetime.date(end_date[0], end_date[1], end_date[2])
+                        queryset = queryset.filter(created__range=[start_date, end_date])
+
+                    elif match:
+                        single_date = match.group()
+                        q.remove(single_date)
+                        single_date = list(map(int, single_date.split('-')))
+                        start_date = datetime.date(single_date[0], single_date[1], single_date[2])
+                        queryset = queryset.filter(joo_date=start_date)
+                    for i in q:
+                        queryset = queryset.filter(
+                            Q(employees__icontains=i) | Q(company__icontains=i) | Q(company_keyword__icontains=i)
+                            | Q(company_keyword__icontains=i)
+                        )
+                except:
+                    pass
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(OrderView, self).get_context_data(**kwargs)
+        for data in context['object_list']:
+            order = data.customer_order_product.all()
+            memos = data.user.customer_memo.all()
+            name = ''
+            total_price = 0
+            count = 0
+            for z in order:
+                if count == 0:
+                    name = ' '.join([str(z.size),str(z.paper),str(z.side),str(z.deal)])
+                total_price += z.sell
+                count += 1
+            if count == 0:
+                name = '데이터가 없습니다.'
+            elif count > 1:
+                name = name+' 외 ' + str(count-1) +' 건'
+            data.product_list_state = name
+            data.total_price = total_price
+            data.total_tax = round(total_price/10, 2)
+            data.total = data.total_price + data.total_tax
+            for z in memos:
+                if z.keyword:
+                    data.memo_keyword = z.keyword
+                if z.manager:
+                    data.memo_manager = z.manager
+        return context
+

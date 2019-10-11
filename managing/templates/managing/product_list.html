@@ -1,0 +1,209 @@
+{% extends 'managing/base.html'%}
+{% load static %}
+{% load humanize %}
+{% block title %}품목 관리{% endblock%}
+{% block content%}
+
+<div class="container m-t-50 m-b-30" style="width:800px;">
+    <h2 align="center"><b>품목 관리</b>
+        {% if group_name != '디자이너'%}
+        <a href="{% url 'managing:product_create' %}">
+            <i class="ti-plus text-success"></i>
+        </a>
+        {% endif %}
+    </h2>
+
+    <div align="center">
+           {% if group_name != '디자이너'%}
+        <a href="{% url 'managing:special_price' %}">
+            <button type="button" class="btn btn-teal waves-effect w-md waves-light m-b-5">* 특별단가 *</button>
+        </a>
+    {% endif %}
+            <br/>
+    <br/>
+        <form role="form" method="GET" autocomplete="off">
+            <div class="form-group search-box has-product">
+                {{ data_search_form.q }}
+                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <br/>
+</div>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-icon {% if message.tags == 'success' %}alert-success{%else%}alert-danger{% endif %} alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <i class="mdi mdi-check-all"></i>
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+{% endif %}
+<!-- end page title end breadcrumb -->
+<div class="card-box">
+    <div class="">
+        <!-- 판매처  -->
+        <div class="tab-pane active" id="home-b1">
+            <div class="table-responsive">
+                <div class="table-responsive">
+                    <table class="table table-hover mails m-0 table table-actions-bar">
+                        <thead>
+                        <tr>
+                            <th>종류</th>
+                            <th>규격</th>
+                            <th>재질/사이즈</th>
+                            <th>양/단면</th>
+                            <th>수량</th>
+                            <th>옵션 1</th>
+                            <th>옵션 2</th>
+                            <th width="250px;">금액</th>
+                            {% if group_name != '디자이너'%}
+                            <th>수정</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for i in product_list %}
+                        <tr>
+                           <td>
+                               {% if i.kind %}
+                                {{ i.kind }}<br>
+                                {% endif %}
+                            </td>
+                            <td>
+                               {% if i.size %}
+                                {{ i.size }}<br>
+                                {% endif %}
+                                {% if i.size_text %}
+                                <small>{{ i.size_text }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                  {% if i.paper %}
+                                {{ i.paper }}<br>
+                                {% endif %}
+                                {% if i.paper_text %}
+                                <small>{{ i.paper_text }}</small>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if i.side %}
+                                {{ i.side }}<br>
+                                {% endif %}
+                                {% if i.side_text %}
+                                <small>{{ i.side_text }}</small>
+                                {% endif %}
+                            </td>
+                              <td>
+                                   {% if i.deal %}
+                                {{ i.deal }}<br>
+                                {% endif %}
+                                {% if i.deal_text %}
+                                <small>{{ i.deal_text }}</small>
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                               {% if i.option1 %}
+                                {{ i.option1 }}<br>
+                                {% endif %}
+                                {% if i.option1_text %}
+                                <small>{{ i.option1_text }}</small>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                 {{z.buy }}
+                                   {% if i.option2 %}
+                                {{ i.option2 }}<br>
+                                {% endif %}
+                                {% if i.option2_text %}
+                                <small>{{ i.option2_text }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if i.sell %}
+                                <b class="text-teal" style="font-size: 18px;">{{ i.sell|floatformat:'0'|intcomma }}</b>
+                                {% endif %}
+                                <br>
+                                {% if i.price_api_inside %}
+                                {% for z in i.price_api_inside.all%}
+                                <b class="text-pink" style="font-size: 18px;">{{z.buy|floatformat:'0'|intcomma }}</b>
+                                {% endfor %}
+                                {% endif %}
+
+                            </td>
+                             {% if group_name != '디자이너'%}
+                            <td>
+                                <a href="{% url 'managing:product_update' i.pk %}" class="table-action-btn h2"><i
+                                        class="mdi mdi-pencil-box-outline text-success"></i></a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- end table responsive -->
+            <div class="row m-t-30">
+                <div class="text-center m-t-30">
+
+                    {% if not product_list %}
+                    <h3>검색 된 데이터가 없습니다.</h3>
+                    {% endif %}
+
+                    {% if is_paginated %}
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li>
+                                <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    <span>이전</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="disabled">
+                                <a href="#">
+                                    <span><strike>시작</strike></span>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for page in page_range %}
+                            <li {% if page == page_obj.number %}class="active" {% endif %}>
+                                <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    {{ page }}</a>
+                            </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}">
+                                    <span>다음</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li {% if not page_obj.has_next %}class="disabled" {% endif %}>
+                                <a href="#">
+                                    <strike>끝</strike>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {{page_obj}}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

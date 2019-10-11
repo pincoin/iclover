@@ -26,6 +26,9 @@ class MemoAdmin(admin.ModelAdmin):
 class OrderWithDepositAdmin(admin.ModelAdmin):
     pass
 
+class CustomerMemoAdmin(admin.ModelAdmin):
+    pass
+
 
 
 admin.site.register(models.SpecialPrice, SpecialPriceAdmin)
@@ -36,3 +39,4 @@ admin.site.register(models.Employees, EmployeesAdmin)
 admin.site.register(models.Ask, AskAdmin)
 admin.site.register(models.Sample, SampleAdmin)
 admin.site.register(models.Memo,MemoAdmin)
+admin.site.register(models.CustomerMemo,CustomerMemoAdmin)

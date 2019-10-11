@@ -1,49 +1,83 @@
 {% extends 'design/leftsidebar.html'%}
 {% load static %}
+{% load humanize %}
 {% block title%}주문리스트{% endblock %}
 {% block sidebar_title%}주문리스트{% endblock %}
-{% block sidebar_subtitle%}{% if not company %}로그인 후 사용하실 수 있습니다.{% endif %}{% endblock %}
+{% block sidebar_subtitle%}시안 / 내역등 확인하실 수 있습니다.{% endblock %}
 {% block sidebar_active2 %}style="font-weight: bold;"{% endblock %}
 
 {% block sidebar_content%}
 {% if user.is_authenticated %}
 
+{% if object_list %}
+
 <div id="pagesfolder" class="docs-item">
 
 	<div class="table-responsive">
-	  <table class="table">
-	    <thead>
-	      <tr>
-		<th>#</th>
-		<th>Table heading</th>
-		<th>Table heading</th>
-		<th>Table heading</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	   {% for i in order_list %}
-	    <tr>
-    <td>{{i.created}} </td>
-			<td>{{i.name}} </td>
-			<td>{{i.price}} </td>
-			<td>{{i.selling_price}} </td>
-				<td>{{i.quantity}} </td>
-
-		</tr>
-    {% endfor %}
-
-	    </tbody>
-	  </table>
+        <table class="table table-borderless table-hover table-responsive-md">
+              <thead class="bg-light">
+                <tr class="text-center">
+                  <th width="20%;" class="py-4 text-uppercase text-sm">주문날짜</th>
+                  <th class="py-4 text-uppercase text-sm">품목</th>
+                  <th class="py-4 text-uppercase text-sm">Total</th>
+                  <th class="py-4 text-uppercase text-sm">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+               {% for i in object_list %}
+                <tr class="text-center">
+                  <th class="py-4 align-middle"><small>{{i.created|date:'Y.m.d D'}}</small></th>
+                  <td class="py-4 align-middle">{{i.product}}</td>
+                  <td class="py-4 align-middle text-right"><small>￦</small> {{i.total|floatformat:'0'|intcomma}}</td>
+                  <td class="py-4 align-middle"><a href="customer-order.html" class="btn btn-outline-dark btn-sm">View</a></td>
+                </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
 	</div>
 </div>
+{% else %}
+<div class="text-center mb-7 mt-4">
+   <h1><i class="fas fa-broadcast-tower"></i></h1>
+    <br>
+<h3 class="text-danger"> 주문 내역이 없습니다</h3>
+
+</div>
+
+{% endif %}
 
 {% else %}
-	<form method="POST" action="">
-		{%csrf_token%}
-	id {{ form.login }}
-	pw {{ form.password }}
-		{{ form.remember }}
-	<input type="submit" value="전송">
-		</form>
+<div class="row pt-2 mb-7 ">
+  <div class="col-lg-3"></div>
+  <div class="col-lg-6 ">
+    <div class="card mb-3">
+      <div class="card-body bg-gray-100">
+        <h6 class="text-uppercase mb-4 text-center">로그인 후 이용하실 수 있습니다</h6>
+        <form method="post" action="{% url 'design:login'%}?next={{request.get_full_path }}" autocomplete="off">
+          {% csrf_token %}
+          <div class="input-group">
+            <div class="input-group-prepend"><span id="basic-addon1" class="input-group-text"><i
+                    class="fas fa-user"></i></span></div>
+            <input type="text" name="username" placeholder="Username" aria-label="Username"
+                   aria-describedby="basic-addon1"
+                   class="form-control" required>
+          </div>
+          <br>
+          <div class="input-group">
+            <div class="input-group-prepend"><span id="basic-addon2" class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="password" name="password" placeholder="password" aria-label="password"
+                   aria-describedby="basic-addon2"
+                   class="form-control" required>
+          </div>
+          <br>
+          <button type="submit" class="form-control btn btn-dark">로그인</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3"></div>
+</div>
+
 {% endif %}
 {% endblock %}

@@ -217,18 +217,21 @@
                                                     <a href="{% url 'design:product' %}?item=magnet" class="megamenu-list-link">종이자석</a>
                                                 </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=ncr" class="megamenu-list-link">양식지
-                                                        NCR지</a></li>
+                                                    <a href="{% url 'design:product' %}?item=ncr2" class="megamenu-list-link">양식지</a>
+                                                </li>
+                                                 <li class="megamenu-list-item">
+                                                    <a href="{% url 'design:product' %}?item=ncr" class="megamenu-list-link">NCR지</a>
+                                                </li>
                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=catalog" class="megamenu-list-link">카다로그/브로셔
+                                                    <a href="{% url 'design:product'  %}?item=etc" class="megamenu-list-link">기타 인쇄
                                                         <span class="badge badge-warning ml-1">인기</span></a>
                                                 </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=postit" class="megamenu-list-link">포스트잇</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=postit" class="megamenu-list-link">떡메모지</a>
-                                                </li>
+<!--                                                <li class="megamenu-list-item">-->
+<!--                                                    <a href="{% url 'design:product' %}?item=postit" class="megamenu-list-link">포스트잇</a>-->
+<!--                                                </li>-->
+<!--                                                <li class="megamenu-list-item">-->
+<!--                                                    <a href="{% url 'design:product' %}?item=postit" class="megamenu-list-link">떡메모지</a>-->
+<!--                                                </li>-->
                                             </ul>
                                         </div>
                                         <div class="col-lg-3">
@@ -393,7 +396,9 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3 d-none d-lg-block">
-                                    <img src="{% static 'design/img/megamenu.jpg' %}" alt="" class="bg-image"></div>
+                                     <img src="{% static 'design/img/banner/all_banner.jpg' %}" alt="" class="bg-image"
+                                     width="100%">
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -409,7 +414,7 @@
 <!--                        </svg>-->
 <!--                        <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">검색</span>-->
 <!--                    </div>-->
-                    <div data-toggle="sample" class="nav-item navbar-icon-link">
+                    <div class="nav-item">
                          <a href="{% url 'design:sample'%}" class="navbar-icon-link">
                         <i class="far fa-images"></i>
                         <span class="text-sm ml-2 ml-lg-0 text-uppercase text-sm font-weight-bold d-none d-sm-inline d-lg-none">샘플</span>
@@ -444,7 +449,7 @@
 
                                  {% if user.is_authenticated %}
                                     <div class="navbar-cart-product-wrapper">
-                                        <a href="{% url 'design:my_page' %}" class="text-gray-700">
+                                        <a href="{% url 'design:order_list' %}" class="text-gray-700">
                                             <p><i class="far fa-list-alt"></i> 주문 리스트</p>
                                         </a>
                                         <a href="{% url 'design:my_page' %}" class="text-gray-700">
@@ -467,7 +472,7 @@
                     </div>
                     <!-- 카카오 icon -->
                     <div class="nav-item">
-                        <a href="https://pf.kakao.com/_xkStxdV" class="navbar-icon-link">
+                        <a href="http://pf.kakao.com/_xkStxdV/chat" class="navbar-icon-link">
                             <img style="-webkit-user-select: none;" src="{% static 'design/img/kakao.png' %}"
                                  width="30px;">
                         </a>

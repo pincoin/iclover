@@ -17,12 +17,13 @@
                         <a href="{% url 'design:product' %}?item=banner" class="nav-link mb-2 text-white">배너</a>
                         <a href="{% url 'design:product' %}?item=envelope" class="nav-link mb-2 text-white">봉투</a>
                         <a href="{% url 'design:product' %}?item=sticker" class="nav-link mb-2 text-white">스티커</a>
-                        <a href="{% url 'design:product' %}?item=ncr" class="nav-link mb-2 text-white">양식지<br>NCR지</a>
+                        <a href="{% url 'design:product' %}?item=ncr2" class="nav-link mb-2 text-white">양식지</a>
+                        <a href="{% url 'design:product' %}?item=ncr" class="nav-link mb-2 text-white">NCR지</a>
                         <a href="{% url 'design:product' %}?item=octopus" class="nav-link mb-2 text-white">문어발</a>
-                        <a href="{% url 'design:product' %}?item=moon" class="nav-link mb-2 text-white">문고리</a>
                         <a href="{% url 'design:product' %}?item=ticket" class="nav-link mb-2 text-white">상품권</a>
                         <a href="{% url 'design:product' %}?item=magnet" class="nav-link mb-2 text-white">종이자석</a>
-                        <a href="{% url 'design:product' %}?item=catalog" class="nav-link mb-2 text-white">카달로그<br>&브로셔</a>
+                        <a href="{% url 'design:product' %}?item=moon" class="nav-link mb-2 text-white">문고리</a>
+                        <a href="{% url 'design:product' %}?item=etc" class="nav-link mb-2 text-white">기타 인쇄</a>
                         <a href="{% url 'design:product' %}?item=advertising" class="nav-link mb-2 text-white">판촉/홍보</a>
                          <a href="{% url 'design:product' %}?item=bee" class="nav-link mb-2 text-white">(비품)</a>
                     </nav>
@@ -40,12 +41,10 @@
                     <div class="row m-1">
                         <div class="col-md-12">
                             <div>
-                                <img src="{% static 'design/img/product/feature/86x52.jpg'%}" alt="Card image" class="card-img"
-                                id="size_img">
+                                <img class="card-img" id="size_img">
                             </div>
                             <div>
-                                <img src="{% static 'design/img/product/art_paper.jpg'%}" alt="Card image"
-                                       id="paper_img" class="card-img"></div>
+                                <img id="paper_img" class="card-img"></div>
 
                         </div>
                     </div>
@@ -69,14 +68,14 @@
 
 
                     <!--                    <hr style="opacity: 0.7">-->
-                    <h3 class="text-black-50" id="title_name">
+                    <h2 class="text-dark" id="title_name">
                         {% if item %}
                         {{item}}
                         {% else %}
                         품목 정보
                         {% endif %}
 
-                    </h3>
+                    </h2>
                     <br>
                     <div class="form-group align-content-center">
                         <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">규격</b></label>
@@ -223,7 +222,7 @@
                                    style="background-color: #E45A5A; color: #fff;"><span>
                           <svg class="svg-icon svg-icon-heavy mr-2">
                             <use xlink:href="#exit-1"> </use>
-                          </svg>주문접수</span></a>
+                          </svg>디자인 등록</span></a>
                             </nav>
                             {% endif %}
 
@@ -264,6 +263,18 @@
     paper_default = null;
     side_default = null;
     deal_default = null;
+
+          //콤마찍기
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+
+    //콤마풀기
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[^\d]+/g, '');
+    }
 
     function cleanSelect(text) {
         switch (text) {
@@ -432,7 +443,7 @@
         $paper = $('#paper');
         $side = $('#side');
         $deal = $('#deal');
-        url = '/assets/design/json/' + param_item + '.json';
+        url = '/assets/design/json/v_0_0_0/' + param_item + '.json';
         var size_default = null;
         getJson(url, size_default);
 
@@ -502,13 +513,17 @@
         },
         dataType : "json",
         success: function(data){
-            $sell_price.text(data.sell_price);
-            $sell_tax.text(data.sell_tax);
-            $sell_total.text(data.sell_total);
+            var price = parseFloat(data.sell_price);
+            var tax = price/10;
+            var total = (price/10) + price;
+            $sell_price.text(comma(data.sell_price));
+            $sell_tax.text(comma(tax));
+            $sell_total.text(comma(total));
             $size_img.attr('src',data.size_img);
+            $paper_img.attr('src',data.paper_img);
         },
         error: function(xhr, status, error) {
-            alert(error);
+
         }
     });
     }
@@ -547,8 +562,8 @@
                         '<button type="button" class="close text-danger cart_delete_btn" data-dismiss="modal"'+
                         'aria-label="Close" name="'+data['id'] +'" onclick="cart_delete($(this));"><span aria-hidden="true">×</span></button>'+
                         '<span class="text-black-50" style="font-size:12px;">'+
-                    new_json.title+' '+new_json.size+' '+new_json.side+'<br>'+new_json.paper+' '+new_json.deal+'<br>'+
-                    '<b class="total_in_cart">'+new_json.price+'</b>원 </span></div>'
+                    new_json.title+'<br>'+' '+new_json.size_text+' '+new_json.side_text+'<br>'+new_json.paper_text+' '+new_json.deal_text+'<br>'+
+                    '<b class="total_in_cart">'+comma(parseInt(parseInt(new_json.price)+parseInt(new_json.price*0.1)))+'</b>원 </span></div>'
                 );
     }
 
@@ -577,16 +592,27 @@
             $add_cart.attr("disabled",true);
             setTimeout(function() {$add_cart.attr("disabled",false);}, 3000);
             $cart_empty_message.hide();
-            var price = $('#sell_total').text();
-            var title = $('#title_name').text();
+            var price = uncomma($('#sell_price').text());
+            var title =  $.trim($('#title_name').text());
+            var kind =  $.urlParam('item');
+            var size_text = $("#size option:selected").text();
+            var paper_text = $("#paper option:selected").text();
+            var side_text = $("#side option:selected").text();
+            var deal_text = $("#deal option:selected").text();
             var json_text = {
                     'title':title,
+                    'kind':kind,
                     'size': size_default,
+                    'size_text':size_text,
                     'paper': paper_default,
+                    'paper_text':paper_text,
                     'side': side_default,
+                    'side_text':side_text,
                     'deal': deal_default,
+                    'deal_text':deal_text,
                     'price':price,
                 };
+            console.log(json_text);
             $.ajax({
                 type: "POST",
                 url: "cart/",
@@ -628,22 +654,14 @@
          $('#total_price_in_cart').text(comma(temp));
      }
 
-         //콤마찍기
-    function comma(str) {
-        str = String(str);
-        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+     $.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null) {
+       return null;
     }
-
-    //콤마풀기
-    function uncomma(str) {
-        str = String(str);
-        return str.replace(/[^\d]+/g, '');
-    }
-
-
+    return decodeURI(results[1]) || 0;
+}
 </script>
-
-
 {% endif %}
 
 {% endblock %}

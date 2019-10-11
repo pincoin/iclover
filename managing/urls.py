@@ -10,12 +10,21 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('password/', views.change_password, name='change_password'),
     path('', views.Main.as_view(), name='main'),
+
+    path('customer_profile/', views.CustomerWriteProfileView.as_view(), name='customer_profile'),
+    path('customer_profile/create/', views.CustomerProfileView.as_view(), name='customer_profile_create'),
+    path('product_list/', views.ProductListView.as_view(), name='product_list'),
+
     path('memo/create/<slug:common>/', views.MemoCreateView.as_view(), name='memo_create'),
     path('memo/<int:pk>/update/', views.MemoUpdateView.as_view(), name='memo_update'),
+    path('customer_result/', views.CustomerResultView.as_view(), name='customer_result'),
+
     path('customer/', views.CustomerView.as_view(), name='customer'),
     path('customer/create/', views.CustomerCreateView.as_view(), name='customer_create'),
     path('customer/<int:pk>/update/', views.CustomerUpdateView.as_view(), name='customer_update'),
-    path('customer_result/', views.CustomerResultView.as_view(), name='customer_result'),
+    path('order_view/', views.OrderView.as_view(), name='order_view'),
+
+
     path('product/', views.ProductView.as_view(), name='product'),
     path('product/create/', views.ProdcutCreateView.as_view(), name='product_create'),
     path('product/<int:pk>/update/', views.ProductUpdateView.as_view(), name='product_update'),

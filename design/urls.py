@@ -18,6 +18,7 @@ urlpatterns = [
     path('sample/', views.SampleListView.as_view(), name='sample'),
     path('faq/', views.FaqView.as_view(), name='faq'),
     path('notice/', views.NewsView.as_view(), name='news'),
+    path('order_list/', views.OrderListView.as_view(), name='order_list'),
     path('my_page/', views.MyPageView.as_view(), name='my_page'),
 
 ]
