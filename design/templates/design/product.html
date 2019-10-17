@@ -406,7 +406,9 @@
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default).then(callre());
                 delivery();
+                $.ajaxSetup({cache:true});
             });
+
     }
     function delivery(){
         var size_default = $size.val();
