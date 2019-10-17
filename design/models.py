@@ -807,6 +807,12 @@ class ProductPriceAPI(TimeStampedModel):
         blank=True,
         null=True
     )
+    title = models.CharField(
+        verbose_name=_('품목 종류 한글'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
     size = models.CharField(
         verbose_name=_('규격 size'),
         max_length=255,
@@ -887,25 +893,6 @@ class ProductPriceAPI(TimeStampedModel):
         decimal_places=4,
         max_digits=11,
     )
-
-    class Meta:
-        verbose_name = _('가격 리턴 api')
-        verbose_name_plural = _('가격 리턴 api')
-
-    def __str__(self):
-        return f'{self.size}'
-
-
-class ProductPriceInsideAPI(TimeStampedModel):
-    price_api = models.ForeignKey(
-        'design.ProductPriceAPI',
-        verbose_name=_('product api pk'),
-        related_name='price_api_inside',
-        null=True,
-        blank=True,
-        db_index=True,
-        on_delete=models.SET_NULL,
-    )
     supplier = models.CharField(
         verbose_name=_('매입'),
         max_length=255,
@@ -918,7 +905,7 @@ class ProductPriceInsideAPI(TimeStampedModel):
         blank=True,
         null=True
     )
-    buy = models.DecimalField(
+    buy_price = models.DecimalField(
         verbose_name=_('buy'),
         blank=True,
         default=0,
@@ -927,11 +914,11 @@ class ProductPriceInsideAPI(TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _('가격 내부 api')
-        verbose_name_plural = _('가격 내부 api')
+        verbose_name = _('가격 리턴 api')
+        verbose_name_plural = _('가격 리턴 api')
 
     def __str__(self):
-        return f'{self.price_api}'
+        return f'{self.size}'
 
 class CustomerOrderInfo(TimeStampedModel):
     user = models.ForeignKey(
@@ -940,6 +927,16 @@ class CustomerOrderInfo(TimeStampedModel):
         verbose_name=_('고객'),
         blank=True,
         null=True,
+    )
+    joo_date = models.DateField(
+        verbose_name=_('주문일'),
+        null=True,
+        blank=True,
+    )
+    order_date = models.DateField(
+        verbose_name=_('발주일'),
+        null=True,
+        blank=True,
     )
     company = models.CharField(
         verbose_name=_('회사명'),
@@ -996,12 +993,14 @@ class CustomerOrderInfo(TimeStampedModel):
         null=True,
         blank=True,
     )
+
     BILL_SELECT = Choices(
         (0, '세금계산서', _('세금계산서')),
         (1, '사업자 지출증빙', _('사업자 지출증빙')),
         (2, '현금 영수증', _('현금 영수증')),
         (3, '미발행', _('미발행')),
     )
+
     bill_select = models.IntegerField(
         verbose_name=_('사업자 상태'),
         choices=BILL_SELECT,
@@ -1009,12 +1008,75 @@ class CustomerOrderInfo(TimeStampedModel):
         blank=True,
     )
 
+    STATE_SELECT = Choices(
+        (0, '주문 확인중', _('주문 확인중')),
+        (1, '입금대기', _('입금대기')),
+        (2, '시안 중', _('시안 중')),
+        (3, '제작 중', _('제작 중')),
+        (4, '배송 중', _('배송 중')),
+        (5, '완료', _('완료')),
+        (6, '취소', _('취소')),
+        (7, '보류', _('보류')),
+        (8, '재인쇄', _('재인쇄')),
+    )
+    state = models.IntegerField(
+        verbose_name=_('주문서 상태'),
+        choices=STATE_SELECT,
+        default=0,
+        null=True,
+        blank=True,
+    )
+    num = models.IntegerField(
+        verbose_name=_('하루 주문 카운트'),
+        default=1,
+    )
+    show_memo = models.CharField(
+        verbose_name=_('고객 노출 메모'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    inside_memo = models.CharField(
+        verbose_name=_('내부 메모'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    manager = models.CharField(
+        verbose_name=_('작업자'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    fix_manager = models.CharField(
+        verbose_name=_('고정 담당자'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    confirm = models.CharField(
+        verbose_name=_('시안 확인'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    hoo = models.CharField(
+        verbose_name=_('기타 정보'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    tax_bool = models.BooleanField(
+        default=True
+    )
+
     class Meta:
         verbose_name = _('고객 주문 기본 정보')
         verbose_name_plural = _('고객 주문 기본 정보')
 
     def __str__(self):
-        return f'{self.uuid}'
+        return f'{self.uuid} {self.company}'
 
 class CustomerOrderProduct(TimeStampedModel):
     customer_order_info = models.ForeignKey(
@@ -1026,6 +1088,18 @@ class CustomerOrderProduct(TimeStampedModel):
         db_index=True,
         on_delete=models.SET_NULL,
     )
+
+    name = models.CharField(
+        verbose_name=_('보여질 품목명'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    ordering = models.IntegerField(
+        default=1
+    )
+
     kind = models.CharField(
         verbose_name=_('품목 종류 kind'),
         max_length=255,
@@ -1117,6 +1191,37 @@ class CustomerOrderProduct(TimeStampedModel):
         decimal_places=4,
         max_digits=11,
     )
+    buy_price = models.DecimalField(
+        verbose_name=_('buy'),
+        blank=True,
+        default=0,
+        decimal_places=4,
+        max_digits=11,
+    )
+    amount = models.IntegerField(
+        verbose_name=_('건수'),
+        default=1,
+        blank=True,
+    )
+    supplier = models.CharField(
+        verbose_name=_('supplier'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    memo = models.CharField(
+        verbose_name=_('memo'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    etc = models.CharField(
+        verbose_name=_('etc'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
     class Meta:
         verbose_name = _('고객 주문 품목')
         verbose_name_plural = _('고객 주문 품목')

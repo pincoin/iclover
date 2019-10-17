@@ -102,44 +102,24 @@
                                 id="deal" name="deal">
                         </select>
                     </div>
-                    <hr>
-<!--                    <div class="card">-->
-<!--                        <div class="card-body bg-gray-100 p-4 text-sm">-->
-<!--                            <h5 class="text-muted text-center">추천 알고리즘 List~!</h5>-->
-<!--                            <table class="table table-hover">-->
-<!--                                <thead>-->
-<!--                                <tr>-->
-<!--                                    <th scope="col">기준1</th>-->
-<!--                                    <th scope="col">기준2</th>-->
-<!--                                    <th scope="col">가격</th>-->
-<!--                                    <th scope="col">가격</th>-->
-<!--                                </tr>-->
-<!--                                </thead>-->
-<!--                                <tbody>-->
-<!--                                <tr>-->
-<!--                                    <th>1</th>-->
-<!--                                    <td>명함</td>-->
-<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
-<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <th>2</th>-->
-<!--                                    <td>명함</td>-->
-<!--                                    <td>n. 아트지 300g (유광코팅)</td>-->
-<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <th>명함</th>-->
-<!--                                    <td>s. 스타드림 (샤인스타) 240g</td>-->
-<!--                                    <td>@twitter</td>-->
-<!--                                    <td>n. 아트지 300g (무광코팅)</td>-->
-<!--                                </tr>-->
-<!--                                </tbody>-->
-<!--                            </table>-->
+                    <div class="form-group align-content-center">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600">건수</b></label>
+                        <select class="custom-select col-sm-7 product-select"
+                                id="amount" name="amount">
+                            <option value="1">1 건</option>
+                            <option value="2">2 건</option>
+                            <option value="3">3 건</option>
+                            <option value="4">4 건</option>
+                            <option value="5">5 건</option>
+                            <option value="6">6 건</option>
+                            <option value="7">7 건</option>
+                            <option value="8">8 건</option>
+                            <option value="9">9 건</option>
+                            <option value="10">10 건</option>
 
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr>-->
+                        </select>
+                    </div>
+                    <hr>
                     <div class="row">
 
                         <div class="col-sm-8 text-danger mb-3">
@@ -443,6 +423,7 @@
         $paper = $('#paper');
         $side = $('#side');
         $deal = $('#deal');
+        $amount = $('#amount');
         url = '/assets/design/json/v_0_0_0/' + param_item + '.json';
         var size_default = null;
         getJson(url, size_default);
@@ -462,6 +443,7 @@
                 $side.slideUp();
                 $deal.slideUp();
                 getJson(url, size_default, paper_default, side_default, deal_default);
+                $amount.val('1');
                 $paper.slideDown();
                 $side.slideDown();
                 $deal.slideDown();
@@ -472,6 +454,7 @@
                 paperFor(size_default, paper_default);
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default);
+                $amount.val('1');
                 callre();
                 $side.slideDown();
                 $deal.slideDown();
@@ -480,18 +463,23 @@
                 $deal.slideUp();
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default);
+                $amount.val('1');
                 callre();
                 $deal.slideDown();
                 break;
             case "deal":
                 dealFor(size_default, paper_default, side_default, deal_default);
+                $amount.val('1');
+                callre();
+                break;
+             case "amount":
                 callre();
                 break;
 
         }
-
-
     });
+
+
     function callre() {
         getPrice();
     }
@@ -502,6 +490,8 @@
         var $sell_total = $('#sell_total');
         var $size_img = $('#size_img');
         var $paper_img = $('#paper_img');
+        var amount = $('#amount').val();
+        console.log(amount);
         $.ajax({
         type:"POST",
         url:"get_price/",
@@ -513,10 +503,10 @@
         },
         dataType : "json",
         success: function(data){
-            var price = parseFloat(data.sell_price);
+            var price = parseFloat(data.sell_price*amount);
             var tax = price/10;
             var total = (price/10) + price;
-            $sell_price.text(comma(data.sell_price));
+            $sell_price.text(comma(price));
             $sell_tax.text(comma(tax));
             $sell_total.text(comma(total));
             $size_img.attr('src',data.size_img);
@@ -562,8 +552,8 @@
                         '<button type="button" class="close text-danger cart_delete_btn" data-dismiss="modal"'+
                         'aria-label="Close" name="'+data['id'] +'" onclick="cart_delete($(this));"><span aria-hidden="true">×</span></button>'+
                         '<span class="text-black-50" style="font-size:12px;">'+
-                    new_json.title+'<br>'+' '+new_json.size_text+' '+new_json.side_text+'<br>'+new_json.paper_text+' '+new_json.deal_text+'<br>'+
-                    '<b class="total_in_cart">'+comma(parseInt(parseInt(new_json.price)+parseInt(new_json.price*0.1)))+'</b>원 </span></div>'
+                    new_json.title+'<br>'+' '+new_json.size_text+' '+new_json.side_text+' <br>'+new_json.paper_text+'<br>'+new_json.deal_text+' '+new_json.amount+'건'+
+                    '<br><b class="total_in_cart">'+comma(parseInt(parseInt(new_json.price)+parseInt(new_json.price*0.1)))+'</b>원 </span></div>'
                 );
     }
 
@@ -599,6 +589,7 @@
             var paper_text = $("#paper option:selected").text();
             var side_text = $("#side option:selected").text();
             var deal_text = $("#deal option:selected").text();
+            var amount_text = $("#amount option:selected").val();
             var json_text = {
                     'title':title,
                     'kind':kind,
@@ -610,6 +601,7 @@
                     'side_text':side_text,
                     'deal': deal_default,
                     'deal_text':deal_text,
+                    'amount':amount_text,
                     'price':price,
                 };
             console.log(json_text);

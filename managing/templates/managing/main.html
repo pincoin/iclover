@@ -4,6 +4,7 @@
 
 {% block content%}
 
+{% if user.is_staff%}
 <script>
     $(document).ready(function () {
        $('.count-btn').click(function () {
@@ -156,5 +157,5 @@
         </div>
     </div>
 </div>
-
+{% endif %}
 {% endblock %}

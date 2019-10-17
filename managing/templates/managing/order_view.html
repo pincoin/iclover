@@ -20,7 +20,7 @@
 {% block content%}
 <div class="container m-t-50 m-b-30" style="width:800px;">
     <h2 align="center"><b>거래 내역 관리</b>
-        <a href="{% url 'managing:orders_create' %}" class="content-modal-btn">
+        <a href="{% url 'managing:order_view_create' %}" class="content-modal-btn2">
             <i class="ti-plus text-orange"></i>
         </a>
     </h2>
@@ -50,54 +50,60 @@ alert-dismissible fade in" role="alert">
 {% endif %}
 <!-- end page title end breadcrumb -->
 <div class="card-box">
-    <ul class="nav nav-pills m-b-30 pull-left" style="font-weight:900">
-        <li
-        {% if common == 0 %}class="active"{% endif %}
-        >
-        <a href="{% url 'managing:order' common=0%}">
-            <span class="visible-xs"><i class="fa fa-home"></i></span>
-            <span class="hidden-xs">견적서</span>
-
-        </a>
+    <div class="row">
+        <ul class="nav nav-tabs tabs-bordered">
+        <li {% if request.GET.state == '0' %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}?state=0" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-home"></i></span>
+                <span class="hidden-xs"><b>견적/문의</b> </span>
+            </a>
         </li>
-        <li {% if common == 1 %}class="active"{% endif %}>
-        <a href="{% url 'managing:order' common=1 %}">
-            <span class="visible-xs"><i class="fa fa-user"></i></span>
-            <span class="hidden-xs">주문서</span>
-        </a>
+        <li {% if request.GET.state == "1" %}class="active"{% endif %}>
+           <a href="{% url 'managing:order_view'%}?state=1" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>입금/시안 대기</b></span>
+            </a>
         </li>
-        <li {% if common == 2 %}class="active"{% endif %}>
-        <a href="{% url 'managing:order' common=2 %}">
-            <span class="visible-xs"><i class="fa fa-user"></i></span>
-            <span class="hidden-xs">시안 확인중</span>
-        </a>
+        <li {% if request.GET.state == "2" %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}?state=2" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>시안 중</b></span>
+            </a>
         </li>
-        <li {% if common == 3 %}class="active"{% endif %}>
-        <a href="{% url 'managing:order' common=3 %}">
-            <span class="visible-xs"><i class="fa fa-user"></i></span>
-            <span class="hidden-xs">발주 / 제작</span>
-        </a>
+        <li {% if request.GET.state == "3" %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}?state=3" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>제작 중</b></span>
+            </a>
         </li>
-       <li {% if common == 9 %}class="active"{% endif %}>
-        <a href="{% url 'managing:order' common=9 %}">
-            <span class="visible-xs"><i class="fa fa-user"></i></span>
-            <span class="hidden-xs">배송중</span>
-        </a>
+       <li {% if request.GET.state == "4" %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}?state=4" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>배송 중</b></span>
+            </a>
         </li>
-        <li {% if common == 4 %}class="active"{% endif %}>
-        <a href="{% url 'managing:order' common=4 %}">
-            <span class="visible-xs"><i class="fa fa-user"></i></span>
-            <span class="hidden-xs">전체</span>
-        </a>
+        <li {% if not request.GET.state %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>전체</b></span>
+            </a>
         </li>
-        <li {% if common == 5 %}class="active"{% endif %}>
-        <a href="{% url 'managing:order' common=5 %}">
-            <span class="visible-xs"><i class="fa fa-user"></i></span>
-            <span class="hidden-xs">취소/보류/환불</span>
-        </a>
+       <li {% if request.GET.state == "6" %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}?state=6" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>취소/보류</b></span>
+            </a>
         </li>
-
+        <li {% if request.GET.state == "8" %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view'%}?state=8" style="cursor:pointer">
+                <span class="visible-xs"><i class="fa fa-user"></i></span>
+                <span class="hidden-xs"><b>재인쇄</b></span>
+            </a>
+        </li>
     </ul>
+        <br> <br>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -123,8 +129,8 @@ alert-dismissible fade in" role="alert">
                     {% for data in object_list%}
                     <tr>
                         <td>
-                            <span class="text-brown">{{data.created|date:"Y-m-d"}}<br>
-                                <span class="text-muted">{{data.created|date:"a h:i"}}<small> ({{data.created|date:"D"}})</small>
+                            <span class="text-brown">{{data.joo_date|date:"Y-m-d"}}<br>
+                                <span class="text-muted"><small> ({{data.joo_date|date:"D"}})</small>
                                 </span>
                             </span>
                             <br>
@@ -132,14 +138,15 @@ alert-dismissible fade in" role="alert">
 
                         </td>
                         <td>
-
-
-
+                            {% if data.manager %}
+                                {{data.manager}}
+                            {% endif %}
                         </td>
                         <td>
                             <span class="m-t-15">
                                 <a href="{% url 'managing:bill' data.id %}" onclick="window.open(this.href, '', 'width=1000, height=700')" target="_blank">
                                 <b class="text-custom" data-toggle="tooltip" data-placement="top" data-original-title="{{ data.user }}">{{data.company}} <i class="ion-ios7-paper-outline "></i></b>
+                                    {% if '임시계정' in data.user.username %}<i class="mdi mdi-account-off text-warning"></i>{% endif %}
                                 </a>
                             </span>
                             <small>
@@ -205,26 +212,25 @@ alert-dismissible fade in" role="alert">
                         </td>
                         <td>
                             {% if data.get_bill_select_display %}
-                            {{ data.get_bill_select_display}}
+                            <span class="text-custom">{{ data.get_bill_select_display}}</span>
                             {% endif %}
                             <br>
 
                             {% if data.hoo %}
-                            <span class="text-purple">{{data.hoo}}</span>
+                            <small class="text-purple">{{data.hoo}}</small>
                             <br>
                             {% endif %}
-
                             {% if data.confirm %}
-                            {{data.confirm}}
+                             <small>{{data.confirm}}</small>
                             <br>
                             {% endif %}
-                            {% if data.in_memo %}
-                            <b class="text-purple">{{data.in_memo}}</b>
+                            {% if data.inside_memo %}
+                            <b class="text-purple">{{data.inside_memo}}</b>
                             <br>
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'managing:order_update' data.pk %}" class="table-action-btn h3 content-modal-btn">
+                            <a href="{% url 'managing:order_view_create'%}?num= {{data.pk}}" class="table-action-btn h3 content-modal-btn">
                                 <i class="mdi mdi-pencil-box-outline text-success"></i></a>
 
                         </td>
@@ -286,6 +292,41 @@ alert-dismissible fade in" role="alert">
         </div>
     </div>
 </div>
+
+
+
+
+
+<script>
+   function getAction(action_url){
+       $.get(action_url)
+           .done(function (form_html) {
+               $modal.find('.modal-body').html(form_html);
+               $form = $modal.find('.modal-body form');
+               var title = $form.attr('text');
+               $modal.find('.modal-title').text(title);
+               $form.attr('action', action_url);
+               $modal.modal();
+           })
+           .fail(function (xhr, textStatus, error) {
+               console.log(error)
+           });
+   }
+
+    $(document).ready(function () {
+        $modal = $('.content-modal');
+        $('.content-modal-btn2').click(function (e) {
+        e.preventDefault();
+        var action_url = $(this).attr("href");
+        getAction(action_url);
+        });
+    });
+
+</script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="{% static 'design/js/daummap.js'%}"></script>
+
+
 {% endblock %}
 
 
@@ -299,16 +340,5 @@ alert-dismissible fade in" role="alert">
 <script src="{% static 'managing/plugins/clockpicker/js/bootstrap-clockpicker.min.js'%}"></script>
 <script src="{% static 'managing/plugins/bootstrap-daterangepicker/daterangepicker.js'%}"></script>
 
-<!-- Bx slider js -->
-<script src="{% static 'managing/plugins/bx-slider/jquery.bxslider.min.js'%} "></script>
-
-
-<script>
-    $(document).ready(function () {
-        $('.property-slider').bxSlider({
-            pagerCustom: '#bx-pager'
-        });
-    });
-</script>
 
 {% endblock %}

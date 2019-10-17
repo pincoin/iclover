@@ -40,12 +40,31 @@ class ProductTextSerializer(serializers.ModelSerializer):
 
 class OrderListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = design_models.OrderList
-        fields = ('id','name','quantity','selling_price')
+        model = design_models.CustomerOrderProduct
+        fields = ('id','size','paper','side','deal','amount','sell')
 
 class OrderInfoSerializer(serializers.ModelSerializer):
     order_list = OrderListSerializer(many=True,read_only=True)
     class Meta:
-        model = design_models.OrderInfo
-        fields = ('id','user', 'state','company','joo_date','today_num','order_list')
+        model = design_models.CustomerOrderInfo
+        fields = ('id','user', 'state','company','joo_date','order_list')
 
+
+class CustomerMemoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= managing_models.CustomerMemo
+        fields = ('keyword','memo','manager','confirm','hoo')
+
+class CustomerProfileSerializer(serializers.ModelSerializer):
+    customer_memo = CustomerMemoSerializer(many=True,read_only=True)
+    user = serializers.CharField()
+    class Meta:
+        model= member_models.CustomerProfile
+        fields = ('id','code','company','ceo','address','tax_bill_mail','tell','memo','bill_select','user',
+                  'phone','address2','manager','address_detail','address_option','customer_memo')
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= design_models.ProductPriceAPI
+        fields = ('id','kind', 'title', 'size', 'paper', 'side','deal','option1','option2','supplier','memo','buy_price',
+                  'size_text', 'paper_text', 'side_text', 'deal_text', 'option1_text', 'option2_text','sell')

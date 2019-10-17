@@ -74,6 +74,9 @@
                                {% if i.kind %}
                                 {{ i.kind }}<br>
                                 {% endif %}
+                             {% if i.title %}
+                                {{ i.title }}<br>
+                                {% endif %}
                             </td>
                             <td>
                                {% if i.size %}
@@ -133,10 +136,8 @@
                                 <b class="text-teal" style="font-size: 18px;">{{ i.sell|floatformat:'0'|intcomma }}</b>
                                 {% endif %}
                                 <br>
-                                {% if i.price_api_inside %}
-                                {% for z in i.price_api_inside.all%}
-                                <b class="text-pink" style="font-size: 18px;">{{z.buy|floatformat:'0'|intcomma }}</b>
-                                {% endfor %}
+                                {% if i.buy_price %}
+                                <b class="text-pink" style="font-size: 18px;">{{i.buy_price|floatformat:'0'|intcomma }}</b>
                                 {% endif %}
 
                             </td>

@@ -76,7 +76,10 @@
                     <!-- Language Dropdown-->
                     {% if user.is_staff %}
                     <!-- if  관리자 -->
-                    <span class="badge badge-primary">wemix & iclover staff</span>
+                    <a href="{% url 'managing:main'%}">
+                         <span class="badge badge-primary">wemix & iclover staff</span>
+                    </a>
+
                     {% endif%}
                     <div class="dropdown border-right px-3">
                         <a id="langsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -179,228 +182,311 @@
                 <ul class="navbar-nav mx-auto">
                     <!-- Megamenu-->
                     <li class="nav-item dropdown position-static text-center">
-                        <a href="#" data-toggle="dropdown" class="nav-link"><b style="font-size:18px;">전체 메뉴</b>
+                        <a href="#" data-toggle="dropdown" class="nav-link text-gray-600" style="border-bottom: 1px solid; font-size:16px;"><b style="font-size:18px;">전체 메뉴</b>
                             <i class="fa fa-angle-down"></i>
                         </a>
-                        <div class="dropdown-menu megamenu py-lg-0">
-                            <div class="row">
-                                <div class="col-lg-9">
-                                    <div class="row p-3 pr-lg-0 pl-lg-5 pt-lg-5">
-                                        <div class="col-lg-3">
-                                            <!-- Megamenu list-->
-                                            <h6 class="text-uppercase">인쇄</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=flyer" class="megamenu-list-link">전단지/포스터
-                                                        <span class="badge badge-warning ml-1">인기</span>
-                                                    </a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=card" class="megamenu-list-link">명함</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=envelope" class="megamenu-list-link">봉투</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=card" class="megamenu-list-link">복권</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=ticket" class="megamenu-list-link">상품권</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=sticker" class="megamenu-list-link">스티커</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=octopus" class="megamenu-list-link">문어발</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=magnet" class="megamenu-list-link">종이자석</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=ncr2" class="megamenu-list-link">양식지</a>
-                                                </li>
-                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=ncr" class="megamenu-list-link">NCR지</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=etc" class="megamenu-list-link">기타 인쇄
-                                                        <span class="badge badge-warning ml-1">인기</span></a>
-                                                </li>
-<!--                                                <li class="megamenu-list-item">-->
-<!--                                                    <a href="{% url 'design:product' %}?item=postit" class="megamenu-list-link">포스트잇</a>-->
-<!--                                                </li>-->
-<!--                                                <li class="megamenu-list-item">-->
-<!--                                                    <a href="{% url 'design:product' %}?item=postit" class="megamenu-list-link">떡메모지</a>-->
-<!--                                                </li>-->
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <h6 class="text-uppercase">현수막</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=roll" class="megamenu-list-link">현수막
-                                                        <span class="badge badge-warning ml-1">인기</span></a>
-                                                </li>
-                                                 <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=roll" class="megamenu-list-link">족자
-                                                        <span class="badge badge-warning ml-1">인기</span></a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=roll" class="megamenu-list-link">게시대 현수막</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=real" class="megamenu-list-link">실사 출력</a>
-                                                </li>
-                                            </ul>
-                                            <h6 class="text-uppercase">배너</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=banner" class="megamenu-list-link">실내용 배너</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=banner" class="megamenu-list-link">실외용 배너</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=banner" class="megamenu-list-link">미니 배너</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=banner" class="megamenu-list-link">대형 배너</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=banner" class="megamenu-list-link">가방 배너</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=banner" class="megamenu-list-link">배너 부속품</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <!-- Megamenu list-->
-                                            <h6 class="text-uppercase">판촉/홍보</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=advertising" class="megamenu-list-link">명찰/사원증</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=advertising" class="megamenu-list-link">부채</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'%}?item=advertising" class="megamenu-list-link">물티슈</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=advertising" class="megamenu-list-link">에어탑</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=advertising" class="megamenu-list-link">어깨띠</a>
-                                                </li>
-                                            </ul>
+                          <div class="dropdown-menu megamenu py-lg-0">
+                                <div class="row">
+                                    <div class="col-lg-9">
+                                        <div class="row p-3 pr-lg-0 pl-lg-5 pt-lg-5">
 
                                             <!-- Megamenu list-->
-                                            <h6 class="text-uppercase">비품</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'%}?item=bee" class="megamenu-list-link">대여복
-                                                        <span class="badge badge-warning ml-1">인기</span></a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'%}?item=bee" class="megamenu-list-link">수건
-                                                        <span class="badge badge-warning ml-1">인기</span></a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product' %}?item=bee" class="megamenu-list-link">샤워용품</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=bee" class="megamenu-list-link">청소용품</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'  %}?item=bee" class="megamenu-list-link">평상/원목</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-3">
+                                            <div class="col-lg-1"></div>
                                             <!-- Megamenu list-->
-                                            <h6 class="text-uppercase">주문</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:sample' %}" class="megamenu-list-link">샘플 보기</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'%}?item=card" class="megamenu-list-link">견적 & 주문
-                                                        요청하기</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:product'%}" class="megamenu-list-link">마케팅 콘텐츠</a>
-                                                </li>
-                                            </ul>
 
-                                            <!-- Megamenu list-->
-                                            <h6 class="text-uppercase">Company</h6>
-                                            <ul class="megamenu-list list-unstyled">
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:news' %}" class="megamenu-list-link">공지사항</a>
-                                                </li>
-                                                <li class="megamenu-list-item">
-                                                    <a href="{% url 'design:faq' %}" class="megamenu-list-link">자주묻는 질문</a>
-                                                </li>
-                                            </ul>
+                                            <div class="col-lg-2">
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">종이인쇄</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="C:\Users\sec\Desktop\홈페이지개발\test-main-test-33333.html" class="megamenu-list-link">
+                                                            · 전단지/포스터
+                                                            <span class="badge badge-info ml-1">인기</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="C:\Users\USER\Desktop\홈페이지개발\test-main.html" class="megamenu-list-link">
+                                                            · 소량인쇄 <small>(전단지/포스터)</small>
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="C:\Users\USER\Desktop\홈페이지개발\test-main-card.html" class="megamenu-list-link">· 명함</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="C:\Users\USER\Desktop\홈페이지개발\test-main-sticker.html" class="megamenu-list-link">· 스티커</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 봉투</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 티켓/상품권</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 종이자석</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 문어발전단</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 문고리전단</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 도장쿠폰</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 복권</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 양식지 NCR지</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 리플릿(접지)</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 카다로그/브로셔</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <h6 class="text-uppercase">현수막</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">
+                                                            · 일반 현수막
+                                                            <span class="badge badge-info ml-1">인기</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 대형 현수막</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 천족자</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 종이족자</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 게시대 현수막</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 실사출력</a>
+                                                    </li>
+                                                </ul>
+                                                <h6 class="text-uppercase">배너</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 실내용 배너</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 실외용 배너</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 미니 배너<small> (탁상용)</small></a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 대형 배너</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 가방 배너</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 배너 부속</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">기타인쇄</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 명찰/사원증</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 포스트잇</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 떡메모지</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 물티슈</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 에어탑간판</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 계단시트지</a>
+                                                        <span class="badge badge-danger ml-1">New</span>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 어깨띠</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 부채</a>
+                                                        <span class="badge badge-warning ml-1">시즌</span>
+                                                    </li>
+                                                </ul>
+
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">도소매</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">
+                                                            · 대여용 수건/타월
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">
+                                                            · 회원대여복
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 뷰티/욕실</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 비품/청소</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-3 text-secondary">
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">브랜딩/테마<small class="text-danger">(준비중)</small></h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a  class="megamenu-list-link">· 헬스 / P.T</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 크로스핏</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 요가 / 필라테스</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 복싱 / 격투기</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 프로포즈</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 회갑 / 고희연</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 강연회</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 콘서트</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 댄스학원</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 볼링동호회</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a class="megamenu-list-link">· 팬클럽</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">마이페이지</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 주문내역</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="1_cart.html" class="megamenu-list-link">
+                                                            · 배송조회
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 회원정보</a>
+                                                    </li>
+                                                </ul>
+
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">이용안내</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="#" class="megamenu-list-link">· 자주묻는 질문</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="1_cart.html" class="megamenu-list-link">
+                                                            · 작업가이드
+                                                        </a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="/design/product/" class="megamenu-list-link">· 인쇄정보</a>
+                                                    </li>
+                                                </ul>
+
+                                                <!-- Megamenu list-->
+                                                <h6 class="text-uppercase">Company</h6>
+                                                <ul class="megamenu-list list-unstyled">
+                                                    <li class="megamenu-list-item">
+                                                        <a href="#" class="megamenu-list-link">· 공지사항</a>
+                                                    </li>
+                                                    <li class="megamenu-list-item">
+                                                        <a href="#" class="megamenu-list-link">· 오시는길</a>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- 전체보기 하단 -->
+                                        <div class="row megamenu-services d-none d-lg-flex">
+                                            <div class="col-xl-3 col-lg-6 d-flex">
+                                                <div class="megamenu-services-item">
+                                                    <svg class="svg-icon megamenu-services-icon">
+                                                        <use xlink:href="#delivery-time-1"></use>
+                                                    </svg>
+                                                    <div>
+                                                        <h6 class="text-uppercase">쉽고 간편한 주문</h6>
+                                                        <p class="mb-0 text-muted text-sm">배송은 배송사 사정에 따라 변경될 수 있습니다</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-6 d-flex">
+                                                <div class="megamenu-services-item">
+                                                    <svg class="svg-icon megamenu-services-icon">
+                                                        <use xlink:href="#money-1"></use>
+                                                    </svg>
+                                                    <div>
+                                                        <h6 class="text-uppercase">합리적인 가격</h6>
+                                                        <p class="mb-0 text-muted text-sm">합리적인 가격으로 만나보세요</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-6 d-flex">
+                                                <div class="megamenu-services-item">
+                                                    <svg class="svg-icon megamenu-services-icon">
+                                                        <use xlink:href="#customer-support-1"></use>
+                                                    </svg>
+                                                    <div>
+                                                        <h6 class="text-uppercase">02-824-7177</h6>
+                                                        <p class="mb-0 text-muted text-sm">Kakao : <b>아이클로버</b></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-6 d-flex">
+                                                <div class="megamenu-services-item">
+                                                    <svg class="svg-icon megamenu-services-icon">
+                                                        <use xlink:href="#shopping-cart-1"></use>
+                                                    </svg>
+                                                    <div>
+                                                        <h6 class="text-uppercase">운영시간</h6>
+                                                        <p class="mb-0 text-muted text-sm">평일 09:00~18:00</p>
+                                                        <p class="mb-0 text-muted text-sm">주말/공휴일 휴무</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <!-- 전체보기 하단 -->
-                                    <div class="row megamenu-services d-none d-lg-flex">
-                                        <div class="col-xl-3 col-lg-6 d-flex">
-                                            <div class="megamenu-services-item">
-                                                <svg class="svg-icon megamenu-services-icon">
-                                                    <use xlink:href="#delivery-time-1"></use>
-                                                </svg>
-                                                <div>
-                                                    <h6 class="text-uppercase">쉽고 간편한 주문</h6>
-                                                    <p class="mb-0 text-muted text-sm">배송은 배송사 사정에 따라 변경될 수 있습니다</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 d-flex">
-                                            <div class="megamenu-services-item">
-                                                <svg class="svg-icon megamenu-services-icon">
-                                                    <use xlink:href="#money-1"></use>
-                                                </svg>
-                                                <div>
-                                                    <h6 class="text-uppercase">합리적인 가격</h6>
-                                                    <p class="mb-0 text-muted text-sm">합리적인 가격으로 만나보세요</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 d-flex">
-                                            <div class="megamenu-services-item">
-                                                <svg class="svg-icon megamenu-services-icon">
-                                                    <use xlink:href="#customer-support-1"></use>
-                                                </svg>
-                                                <div>
-                                                    <h6 class="text-uppercase">02-824-7177</h6>
-                                                    <p class="mb-0 text-muted text-sm">Kakao : <b>아이클로버</b></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 d-flex">
-                                            <div class="megamenu-services-item">
-                                                <svg class="svg-icon megamenu-services-icon">
-                                                    <use xlink:href="#shopping-cart-1"></use>
-                                                </svg>
-                                                <div>
-                                                    <h6 class="text-uppercase">운영시간</h6>
-                                                    <p class="mb-0 text-muted text-sm">평일 09:00~18:00</p>
-                                                    <p class="mb-0 text-muted text-sm">주말/공휴일 휴무</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-3 d-none d-lg-block">
+                                        <img src="https://image.freepik.com/free-photo/designers-working-house-interior_1163-5379.jpg" alt="" class="bg-image">
                                     </div>
-                                </div>
-                                <div class="col-lg-3 d-none d-lg-block">
-                                     <img src="{% static 'design/img/banner/all_banner.jpg' %}" alt="" class="bg-image"
-                                     width="100%">
                                 </div>
                             </div>
-                        </div>
                     </li>
                 </ul>
                 <!-- end 카테고리 -->

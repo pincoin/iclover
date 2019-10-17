@@ -66,7 +66,7 @@
 
                 <ul class="nav navbar-nav navbar-right pull-right">
                     <li class="navbar-c-items">
-                        {% if user.is_authenticated %}
+                        {% if user.is_staff %}
                         <form method="GET" role="search" class="navbar-left app-search pull-left hidden-xs"
                               action="{% url 'managing:customer_result'%}">
                             <input type="text" name='q' placeholder="거래처 검색" class="form-control" autocomplete="off">
@@ -84,7 +84,7 @@
                         <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi mdi-web"></i>
                         </a>
-                        {% if user.is_authenticated %}
+                        {% if user.is_staff  %}
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
                             <li class="text-center">
                                 <h5>사이트 바로가기</h5>
@@ -202,7 +202,7 @@
                                 <h5>{{ user.first_name }}</h5>
 
                             </li>
-                            {% if user.is_authenticated %}
+                            {% if user.is_staff %}
                             <li><a href="{% url 'managing:my_page'%}"><i class="ti-user m-r-5"></i> 내 현황</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
                             <li><a href="{% url 'managing:change_password'%}"><i class="ti-lock m-r-5"></i>
@@ -238,7 +238,7 @@
         </div> <!-- end container -->
     </div>
     <!-- end topbar-main -->
-    {% if user.is_authenticated %}
+    {% if user.is_staff %}
     <div class="navbar-custom">
         <div class="container">
             <div id="navigation">
@@ -380,7 +380,11 @@
     <div class="navbar-custom">
         <div class="container">
             <div class="text-center">
-                <h3><i class="ti-lock"></i> 메뉴 잠금</h3>
+                <h4>
+                      <i class="ti-lock" style="font-size: 40px;"></i>
+                    보안을 위해 모든 메뉴는 잠겼습니다
+                    정상적인 로그인을 하여주시기 바랍니다.
+                </h4>
             </div>
         </div> <!-- end container -->
     </div> <!-- end navbar-custom -->
@@ -391,7 +395,6 @@
 
 <div class="wrapper">
     <div class="container">
-
         {% block content%}
 
         {% endblock %}

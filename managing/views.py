@@ -1,3 +1,4 @@
+import json
 import datetime
 import re
 import uuid as uuid_id
@@ -323,7 +324,7 @@ class CustomerWriteProfileView(viewmixin.UserIsStaffMixin, viewmixin.PageableMix
     login_url = clovi_login_url
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related('user').prefetch_related('user__customer_memo').order_by('-id')
+        queryset = super().get_queryset().select_related('user').prefetch_related('user__customer_memo').order_by('-user__last_login')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -357,7 +358,7 @@ class ProductListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewm
     login_url = clovi_login_url
 
     def get_queryset(self):
-        queryset = super().get_queryset().prefetch_related('price_api_inside').order_by('-id')
+        queryset = super().get_queryset().order_by('-id')
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -368,7 +369,6 @@ class ProductListView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewm
                         queryset = queryset.filter(
                             Q(kind__icontains=i)|Q(size__icontains=i)|Q(size_text__icontains=i)|Q(paper__icontains=i)
                             | Q(paper_text__icontains=i)| Q(side__icontains=i)| Q(deal__icontains=i)
-                            |Q(price_api_inside__buy__icontains=i)|Q(price_api_inside__supplier__icontains=i)
                         )
                 except:
                     pass
@@ -1120,25 +1120,25 @@ class DemandView(viewmixin.UserIsStaffMixin, generic.TemplateView):
 
 class BillView(generic.DetailView):
     template_name = 'managing/bill.html'
-    model = design_models.OrderInfo
+    model = design_models.CustomerOrderInfo
 
     def get_queryset(self):
-        queryset = design_models.OrderInfo.objects.prefetch_related('order_list')
+        queryset = super().get_queryset()
         return queryset
 
     def get_object(self, queryset=None):
         obj = super(BillView, self).get_object(queryset=queryset)
-        all = obj.order_list.all()
-        sub = 0
-        tax = 0
-        total = 0
-        for i in all:
-            sub += round(i.selling_price)*i.quantity
-            tax += round(i.selling_price_tax)*i.quantity
-
-        obj.sub = round(sub)
-        obj.tax = round(tax)
-        obj.total =  round(sub)+round(tax)
+        # all = obj.order_list.all()
+        # sub = 0
+        # tax = 0
+        # total = 0
+        # for i in all:
+        #     sub += round(i.selling_price)*i.quantity
+        #     tax += round(i.selling_price_tax)*i.quantity
+        #
+        # obj.sub = round(sub)
+        # obj.tax = round(tax)
+        # obj.total =  round(sub)+round(tax)
         return obj
 
 
@@ -1826,7 +1826,14 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
 
 
     def get_queryset(self):
-        queryset = super(OrderView, self).get_queryset().select_related('user').prefetch_related('customer_order_product','user__customer_memo').order_by('-created')
+        queryset = super(OrderView, self).get_queryset().select_related('user').prefetch_related('customer_order_product','user__customer_memo').order_by('-joo_date','-num')
+        if 'state' in self.request.GET:
+            state = self.request.GET['state']
+            false_list = ['6','7']
+            if state in false_list:
+                queryset = queryset.filter(state__in=false_list)
+            else:
+                queryset = queryset.filter(state=state)
         form = self.data_search_form(self.request.GET)
         if form.is_valid() and form.cleaned_data['q']:
             q = form.cleaned_data['q']
@@ -1844,17 +1851,16 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
                         start_date = datetime.date(start_date[0], start_date[1], start_date[2])
                         end_date = datetime.date(end_date[0], end_date[1], end_date[2])
                         queryset = queryset.filter(created__range=[start_date, end_date])
-
                     elif match:
                         single_date = match.group()
                         q.remove(single_date)
                         single_date = list(map(int, single_date.split('-')))
                         start_date = datetime.date(single_date[0], single_date[1], single_date[2])
-                        queryset = queryset.filter(joo_date=start_date)
+                        queryset = queryset.filter(created=start_date)
                     for i in q:
                         queryset = queryset.filter(
-                            Q(employees__icontains=i) | Q(company__icontains=i) | Q(company_keyword__icontains=i)
-                            | Q(company_keyword__icontains=i)
+                            Q(company__icontains=i) | Q(user__username__icontains=i)
+                            | Q(user__customer_memo__keyword__icontains=i)
                         )
                 except:
                     pass
@@ -1862,6 +1868,7 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(OrderView, self).get_context_data(**kwargs)
+
         for data in context['object_list']:
             order = data.customer_order_product.all()
             memos = data.user.customer_memo.all()
@@ -1870,21 +1877,116 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
             count = 0
             for z in order:
                 if count == 0:
-                    name = ' '.join([str(z.size),str(z.paper),str(z.side),str(z.deal)])
-                total_price += z.sell
+                    name = z.name # 데이터 1개일때
+                total_price += z.sell * z.amount
                 count += 1
             if count == 0:
-                name = '데이터가 없습니다.'
+                name = '데이터가 없습니다.' # 데이터없을때
             elif count > 1:
-                name = name+' 외 ' + str(count-1) +' 건'
+                if not name:
+                    name = '임시'
+                name = name+' 외 ' + str(count-1) +' 건' #데이터 1 초과일때
             data.product_list_state = name
             data.total_price = total_price
-            data.total_tax = round(total_price/10, 2)
-            data.total = data.total_price + data.total_tax
+            if data.tax_bool:
+                data.total_tax = round(total_price / 10, 2)
+                data.total = data.total_price + data.total_tax
+            else:
+                data.total_tax = 0
+                data.total = data.total_price
             for z in memos:
                 if z.keyword:
                     data.memo_keyword = z.keyword
                 if z.manager:
                     data.memo_manager = z.manager
         return context
+
+
+
+class OrderCreateAPIView(APIView):
+    permission_classes = (IsAdminUser,)
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'managing/order_view_create.html'
+
+    def get(self, request, format=None):
+        num = request.GET
+        employees = User.objects.filter(is_staff=True, is_active=True).order_by('username')
+        today = str(datetime.date.today())
+        if 'num' in num:
+            idx = num['num']
+            q_list = design_models.CustomerOrderInfo.objects.select_related('user').prefetch_related('customer_order_product').filter(id=idx)
+            for i in q_list:
+                if i.customer_order_product:
+                    que = i.customer_order_product.all()
+                    for z in que:
+                        z.total_price = round(z.sell*z.amount)
+                        if i.tax_bool:
+                            z.total_tax = round((z.sell*z.amount)/10)
+                        else:
+                            z.total_tax = 0
+            return Response({'employees': employees, 'today': today,'idx':q_list}, status=status.HTTP_202_ACCEPTED)
+        else:
+
+            return Response({'employees':employees,'today':today}, status=status.HTTP_202_ACCEPTED)
+
+    def post(self, request, format=None):
+        serializer = serializers.CustomerProfileSerializer(data=request.data)
+        urls = self.request.META.get('HTTP_REFERER')
+        num = request.GET
+        post_list = request.POST
+        lis = [i for i in post_list] # 필드 알아내기
+        remove_list = ['csrfmiddlewaretoken','json_data','text_data']
+        for z in remove_list:
+            if z in lis:
+                lis.remove(z)
+
+        if serializer.is_valid():
+            data = serializer.data
+            json_data = None
+            json_list = None
+            info_id = None
+            if 'json_data' in data:
+                json_data = data.pop('json_data')
+                json_data = json_data.replace('json_','')
+                json_list = json_data.split('#,,#')
+            info_data = json.dumps(data, ensure_ascii=False)
+            info_data = json.loads(info_data)
+
+            if 'num' in num:
+                num = num['num']
+                info = design_models.CustomerOrderInfo.objects.filter(id=num)
+                for i in info:
+                    info_id = i.id
+                for i in lis: # 없는 데이터 None 채우기
+                    if i not in info_data:
+                        info_data[i] = None
+                info.update(**info_data)
+
+            else:
+                uuid = uuid_id.uuid4().hex[:10]
+                info_data['uuid'] = uuid
+                info = design_models.CustomerOrderInfo.objects.create(**info_data)
+                info_id = info.id
+
+            if json_data and json_list:
+                count = 1
+                models = design_models.CustomerOrderProduct
+                for z in json_list:
+                    product_list = json.loads(z)
+                    product_id = product_list['id']
+                    product_list.pop('id')
+                    product_list['customer_order_info_id'] = info_id
+                    product_list['ordering'] = count
+                    if product_id:
+                        this_model = models.objects.filter(id=product_id)
+                        if this_model:
+                            print(product_list)
+                            this_model.update(**product_list)
+                    else:
+                        models.objects.create(**product_list)
+                    count += 1
+            return redirect(urls)
+            # return Response({"data":"끝"},status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

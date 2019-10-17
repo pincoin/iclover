@@ -230,7 +230,7 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
             price = ''
             for i in model_model:
                 price = i.sell
-            price2 = float(d['price'])
+            price2 = float(d['price'])/float(d['amount'])
             if price2 == price:
                 success_list.append(d)
             else:
@@ -259,7 +259,7 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
         data_model = design_model.CustomerOrderInfo.objects.create(**dic)
         # order_product
         for data in success_list:
-            data['sell'] = data.pop('price')
+            data['sell'] = float(data.pop('price'))/float(data['amount'])
             print(data)
             data['customer_order_info'] = data_model
             design_model.CustomerOrderProduct.objects.create(**data)
@@ -279,7 +279,7 @@ class FaqView(ProfileMixin,generic.TemplateView):
 class NewsView(ProfileMixin,generic.TemplateView):
     template_name = 'design/news.html'
 
-class OrderListView(ProfileMixin, generic.ListView):
+class OrderListView(viewmixin.PageableMixin,ProfileMixin, generic.ListView):
     template_name = 'design/order_list.html'
     model = design_model.CustomerOrderInfo
     context_object_name = 'order_list'
@@ -287,7 +287,7 @@ class OrderListView(ProfileMixin, generic.ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            queryset = super().get_queryset().prefetch_related('customer_order_product').filter(user=self.request.user).order_by('-created')
+            queryset = super().get_queryset().prefetch_related('customer_order_product').filter(user=self.request.user).order_by('-joo_date')
         else:
             queryset = ''
         return queryset
@@ -304,7 +304,11 @@ class OrderListView(ProfileMixin, generic.ListView):
                     if count == 0:
                         name = x.size
                         z.title = x.title
-                    total += x.sell
+                    pri =  x.sell * x.amount
+                    if z.tax_bool:
+                        total += pri + round(pri/10)
+                    else:
+                        total += pri
                     count += 1
                 z.total = total
                 if count == 0:
@@ -404,7 +408,7 @@ class CartProductView(APIView):
         serializer = serializers.CartProductSerializer(data=request.data)
         if serializer.is_valid():
             text = str(json.dumps(serializer.data, ensure_ascii=False))
-            new = design_model.CartProduct.objects.create(user_id=self.request.user.id, json_text=text)
+            new = design_model.CartProduct.objects.create(user=self.request.user, json_text=text)
             new_dic ={
                 'id':new.id,
                 'json_text':text

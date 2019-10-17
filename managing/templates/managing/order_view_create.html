@@ -1,0 +1,936 @@
+{% load static %}
+{% load humanize %}
+{% block addcss %}
+<style>
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#product_result {
+    top: 10px;
+    left: 10px;
+    width: 100%;
+    height: 300px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+.list_info {
+     height: 460px;
+}
+
+.list_order {
+    top: 10px;
+    left: 10px;
+    width: 100%;
+    height: 460px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+    #search_result li:hover {
+        background-color: #ffffcc;
+    }
+</style>
+{% endblock%}
+<script>
+       function delay(fn, ms) {
+        let timer = 0;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(fn.bind(this, ...args), ms || 0)
+        }
+    }
+
+    function SortableSpan() {
+        $('#sortable span').each(function (i) {
+            var numbering = i + 1;
+            $(this).text(numbering);
+        });
+    }
+
+    //콤마찍기
+    function comma(str) {
+        var parts = str.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if(parts[0].length >2 ){ parts[0] = parts[0].replace(/(^0+)/, "");}
+        return parts.join(".");
+    }
+
+    //콤마풀기
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[,]/g, "");
+    }
+
+    //값 입력시 콤마찍기 onkeyup="inputNumberFormat(this)"
+    function inputNumberFormat(obj) {
+        obj.value = comma(uncomma(obj.value));
+    }
+
+
+    function Total() {
+        var $total_quantity = $('#total_quantity');
+        var $total_price = $('#total_price');
+        var $total_tax = $('#total_tax');
+        var $total = $('#total');
+        var $buy_total = $('#buy_total');
+        var $total_tr = $('.total-tr');
+        var total_price = 0;
+        var total_tax = 0;
+        var total_quantity = 0;
+        var total_buy = 0;
+
+        $('#sortable tr').each(function () {
+            var eq4 = $(this).children().find('input.quantity').val();
+            var eq5 = $(this).children().find('input.sell_price').val();
+            var eq6 = $(this).children().find('input.sell_tax').val();
+            eq4 = uncomma(eq4); //수량
+            eq5 = uncomma(eq5); //판매가
+            eq6 = uncomma(eq6); //부가세
+            total_quantity += parseFloat(eq4);
+            total_price += parseFloat(eq5);
+            total_tax += parseFloat(eq6);
+        });
+        var total =  total_price + total_tax;
+        if(total_quantity != 0){
+            $total_quantity.text(comma(total_quantity.toFixed(0)));
+            $total_price.text(comma(total_price.toFixed(0)));
+            $total_tax.text(comma(total_tax.toFixed(0)));
+            $total.text('판매 합계 : '+comma(total.toFixed(0)));
+            $total_tr.attr('style','background-color: #f3f3f3');
+        }else{
+            $total_quantity.text('');
+            $total_price.text('');
+            $total_tax.text('');
+            $total.text('');
+            $buy_total.text('');
+            $('#compare_price').html('');
+            $total_tr.attr('style','background-color: #ffffff');
+        }
+    }
+
+ /*  ----------------------선언 함수 ------------------------      */
+
+
+     $(document).on("click",".delete-button",function() {
+            SortableSpan();
+            Total();
+    });
+      $(document).on("keyup",".sell_price",function() {
+            var pre = uncomma($(this).val());
+            pre = pre/10;
+            $(this).parent().next().children().val(comma(pre.toFixed(0)));
+            Total();
+    });
+
+
+    $("#sub-btn").click(function(e) {
+        var check = $('#id_user_id').val();
+        if(check){
+         var json_dic = {};
+        var json_list = new Array();
+        $(".text_tr").each(function (index, item) {
+            json_dic['json_ordering'] = ($(this).find('span.json_ordering').text());
+            json_dic['json_id'] = ($(this).find('input.json_id').val());
+            json_dic['json_name'] = ($(this).find('input.json_name').val());
+            json_dic['json_size'] = ($(this).find('input.json_size').val());
+            json_dic['json_paper'] = ($(this).find('input.json_paper').val());
+            json_dic['json_side'] = ($(this).find('input.json_side').val());
+            json_dic['json_deal'] = ($(this).find('input.json_deal').val());
+            json_dic['json_amount'] = ($(this).find('input.json_amount').val().replace(/,/gi, ""));
+            json_dic['json_sell'] = ($(this).find('input.json_sell').val().replace(/,/gi, ""));
+            json_dic['json_buy_price'] = ($(this).find('input.json_buy_price').val().replace(/,/gi, ""));
+            json_dic['json_supplier'] = ($(this).find('input.json_supplier').val());
+            json_dic['json_memo'] = ($(this).find('input.json_memo').val());
+            json_dic['json_etc'] = ($(this).find('input.json_etc').val());
+            json_list.push(JSON.stringify(json_dic));
+        });
+        json_list = json_list.join('#,,#');
+        var x = json_list.toString();
+        $('#id_json_data').val(x)
+        }else{
+            event.preventDefault();
+            alert('구매자가 선택되지 않았습니다. 구매자를 선택해주세요');
+        }
+    });
+
+     $(document).on("keyup",".text_num",function() {
+         if( !$(this).val()){
+             $(this).val(0);
+         }
+            Total();
+    });
+
+
+      $(document).on("keyup",".quantity",function() {
+            var quantity = uncomma($(this).val());
+            var sell_price= uncomma($(this).parent().parent().find('input.price_s').val());
+            var total = parseFloat(quantity)*parseFloat(sell_price);
+            $(this).parent().parent().find('input.sell_price').val(comma(total));
+             if ($select_tax_cla.val() === 'True') {
+                 $(this).parent().parent().find('input.sell_tax').val(comma((total / 10).toFixed(0)));
+             }else{
+                 $(this).parent().parent().find('input.sell_tax').val(0);
+             }
+            Total();
+    });
+      $(document).on("keyup",".price_s",function() {
+            var price_s = uncomma($(this).val());
+            var quantity= uncomma($(this).parent().parent().find('input.quantity').val());
+            var buy_price= uncomma($(this).parent().parent().find('input.buy_price').val());
+            var total = parseFloat(quantity)*parseFloat(price_s);
+            var compare = parseFloat(price_s)-parseFloat(buy_price);
+
+           var $td = $(this).parent().parent().find('input.buy_price');
+
+            if(compare < 0){
+                $td.parent().attr('class','has-special');
+            }else{
+                $td.parent().attr('class','has-ask');
+            }
+            $(this).parent().next().children().val(comma(total));
+            if ($select_tax_cla.val() === 'True') {
+                $(this).parent().parent().find('input.sell_tax').val(comma((total/10).toFixed(0)));
+            }else{
+                 $(this).parent().parent().find('input.sell_tax').val(0);
+             }
+            Total();
+    });
+
+      $(document).on("keyup",".buy_price",function() {
+          var $td = $(this).parent().parent().find('input.buy_price');
+          var buy_price = uncomma($(this).val());
+          var price_s= uncomma($(this).parent().parent().find('input.price_s').val());
+          var compare = parseFloat(price_s)-parseFloat(buy_price);
+            if(compare < 0){
+                $td.parent().attr('class','has-special');
+            }else{
+                $td.parent().attr('class','has-ask');
+            }
+      });
+
+    $(document).on("keydown","input[type=text]",function() {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        }
+    });
+
+
+
+    $("#delete_check").click(function() {
+        if($('input:checkbox[id="delete_check"]').is(":checked") == true){
+             $(".delete-button").show();
+        }else{
+            $(".delete-button").hide();
+        }
+         SortableSpan();
+    });
+
+
+    /*  ---------- 지난 데이터 ------------ */
+    var $control_info = $('#control-info');
+    var $control_order = $('#control-order');
+    var $load_more = $('#load_more');
+    var $load_btn = $('#load_btn');
+    var $list_info = $('.list_info');
+    var $list_order = $('.list_order');
+    var order_cache = false;
+    $control_info.click(function () {
+        $list_info.show();
+        $list_order.hide();
+        $load_more.hide();
+         $load_btn.attr('href','');
+    });
+
+    function call_load(){
+        var url = $load_btn.attr('href');
+        if(!url){
+            url ='/api/order_info.json';
+            $list_order.text('');
+        }else{
+            url = url;
+        }
+        $list_order.show();
+        $list_info.hide();
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          data: {'keyword': custromer['id']},
+          contentType: 'application/json; charset=UTF-8',
+          success: function (data, status, xhr) {
+                order_cache =true;
+                if(data['count']==0){
+                    $list_order.text('지난 과거 데이터가 없습니다.');
+                }else{
+                        $.each(data['results'], function(index, val){
+                            console.log(val);
+                            var not_good = [6,7,8];
+                            var state = val.state;
+                            var color = '';
+                            if($.inArray(state, not_good)){
+                                  color = 'panel-default';
+                                info_text = '정상';
+                            } else {
+                               color = 'panel-danger';
+                                info_text = '취소/보류/환불/재인쇄';
+                            }
+                            var val2_list = new(Array);
+                            $.each(val.order_list, function(ind, val2){
+                                val2_list += val2.size+' '+val2.paper+' '+val2.side+' '+val2.deal+'<br>';
+                            });
+                          var json_data =
+                            '<div class="m-t-5 m-r-15 panel panel-border '+color+'">' +
+                            '<div class="panel-heading">' +
+                            '<h3 class="panel-title">'+val.joo_date+'<small> '+info_text +
+                              ' <a class="id_info" id="'+ val.id+'"style="cursor:pointer"><i class="fa fa-plus text-teal"></i></a></small></h3>' +
+                            '</div>' +
+                            '<div class="panel-body">' +
+                           val2_list
+                             +'</div>' +
+                            '</div>';
+                            $list_order.append(json_data);
+                        });
+                        if(data['next']){
+                            $load_more.show();
+                             $load_btn.attr('href',data['next']);
+                        }else{
+                            $load_more.hide();
+                            $load_btn.attr('href','');
+                        }
+                }
+          }
+      });
+    }
+
+    $control_order.click(function () {
+        call_load();
+    });
+    $load_btn.click(function () {
+        call_load();
+    });
+     $(document).on("click",".id_info",function() {
+            console.log($(this).attr('id'));
+    });
+/* ----------------위에는 base 밑에는 order-----------*/
+
+      $(document).ready(function () {
+        $select_tax_cla = $(".tax_select");
+        var $id_company = $('#id_company');
+        $product_result = $("#product_result");
+        $product_search = $("#product_search");
+        $search_result = $("#search_result");
+        var $list_info = $('.list_info');
+        custromer ={};
+        custromer['id'] = null;
+        $("#id_company :input:text:first").focus();
+        $id_company.keyup(delay(function (e) {
+            var search_val = $id_company.val();
+            $.ajax({
+                url: '/api/customer_profile.json',
+                dataType: 'json',
+                data: {'keyword': search_val},
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data, status, xhr) {
+                    $list_info.show();
+                    $product_result.html('');
+                    $product_search.val('');
+                    $search_result.html('');
+                    var check = data.count;
+                    var index_num = 0;
+                    var max_num = 4;
+                    var count = data['count']-max_num;
+                    data_list = {};
+
+                    if(check === 0 ){
+                        $search_result.append(
+                            '<span class="list-group-item link-class text-danger"><i class="mdi mdi-alert-octagon"></i><b> 조건이 없습니다</b></span>'
+                        );
+                    }
+
+                    $.each(data['results'], function (key, item) {
+                        if (item.customer_memo[0]){
+                             var keyword = item.customer_memo[0].keyword;
+                        }
+                        var company = item.company;
+                        var user = item.user;
+
+                        if (search_val !== '') {
+                            if (index_num < max_num) {
+                                $search_result.append(
+                                    '<li class="list-group-item link-class text-custom"  id="' + item.id +
+                                    '">' + company + ' | <span class="text-muted">'+keyword +' <small>('+user + ')</small></span></li>'
+                                );
+                                data_id = item.id;
+                                data_list[data_id] = item;
+                                index_num += 1;
+                            } else {
+                                $search_result.append(
+                                    '<span class="list-group-item link-class text-danger"><i class="mdi mdi-alert-octagon"></i><b> +'+ count+ '</b>...더 자세히 검색해주세요</span>'
+                                );
+                                index_num = 0;
+                                return false;
+                            }
+                        }
+                    })
+                }
+            });
+        }, 300));
+        $search_result.on('click', 'li', function () {
+            $('.data-buttons').attr('style','');
+            var idx = $(this).attr('id');
+            if (idx) {
+                custromer = data_list[idx];
+                var click_text = $(this).text().split('|');
+                $id_company.val($.trim(click_text[0]));
+                $('.cls_username').text(' ('+custromer['user']+')','');
+                $('#id_user_id').val(custromer['id'],'');
+                $('#id_company_name').val(custromer['company'],'');
+                $('#id_address').val(custromer['address'],'');
+                $('#id_address2').val(custromer['address2'],'');
+                $('#id_address_detail').val(custromer['address_detail'],'');
+                $('#id_address_option').val(custromer['address_option'],'');
+                if (custromer['customer_memo'][0]){
+                    $('#id_manager').val(custromer['customer_memo'][0]['manager']).attr('selected','selected');
+                    $('#id_keyword').val(custromer['customer_memo'][0]['keyword']);
+                    $('#id_inside_memo').val(custromer['customer_memo'][0]['memo']);
+                    $('#id_confirm').val(custromer['customer_memo'][0]['confirm']);
+                    $('#id_hoo').val(custromer['customer_memo'][0]['hoo']);
+                    custromer['manager']=custromer['customer_memo'][0]['manager'];
+                    custromer['keyword']=custromer['customer_memo'][0]['keyword'];
+                    custromer['inside_memo']=custromer['customer_memo'][0]['memo'];
+                    custromer['confirm']=custromer['customer_memo'][0]['confirm'];
+                    custromer['hoo']=custromer['customer_memo'][0]['hoo'];
+                }else{
+                    custromer['manager']='';
+                    custromer['keyword']='';
+                    custromer['inside_memo']='';
+                    custromer['confirm']='';
+                    custromer['hoo']='';
+                }
+                $('#id_bill_select').val(custromer['bill_select']).attr('selected','selected');
+                if(!custromer['tax_bill_mail']){custromer['tax_bill_mail']=''}
+                if(!custromer['tell']){custromer['tell']=''}
+                if(!custromer['phone']){custromer['phone']=''}
+                if(!custromer['code']){custromer['code']=''}
+                $search_result.html('');
+                informations_html =
+                    (
+                    custromer['code'] + '<br>' +
+                    custromer['address']+' ' + custromer['address_detail']+ '<br>' +
+                    custromer['address2']+' '+ custromer['address_detail'] + '<br>' +
+                    custromer['tax_bill_mail'] + '<br>' +
+                    custromer['tell'] + '<br>' +
+                    custromer['phone'] + '<br>' +
+                    custromer['keyword'] + '<br>' +
+                    custromer['memo'] + '<br>' +
+                    custromer['manager']
+                    );
+                $("#informations").html(informations_html);
+                $('input[id="product_search"]').focus();
+                data_list = {};
+            }
+        });
+
+
+        $product_search.keyup(delay(function (e) {
+            $product_result.html('');
+            var search_val = $product_search.val();
+            var index_num = 0;
+            var max_num = 12;
+            var max_text = 10;
+            data_list = {};
+            if (search_val != '') {
+                    $.ajax({
+                        type: "GET",
+                        url: '/api/product_view.json',
+                        dataType: 'json',
+                        data : {'idx' :custromer['id'],
+                                'keyword': search_val,
+                        },
+                        success: function (data, status, xhr) {
+                            $.each(data['results'], function (key, item) {
+                                var memo = '';
+                                var company = item.title;
+                                var size = item.size;
+                                var paper = item.paper;
+                                var side = item.side;
+                                var deal = item.deal;
+                                var sell = item.sell;
+                                var buy = item.buy_price;
+                                var supplier = item.supplier;
+                                if(item.supplier){supplier = item.supplier;}else{supplier ='';}
+                                $product_result.append(
+                                    '<a><span></span><div class="list-group-item link-class m-b-5 col-lg-12" style="height:80px;" id="' +
+                                    '' + item.id + '"><b>' + company + '&nbsp&nbsp' + size +
+                                    '</b>&nbsp&nbsp<b class="text-teal">' + paper + '</b>' +
+                                    '&nbsp<span class="text-muted">' + side +' '+ deal + '</span>' +
+                                    '<br> <b class="text-dark" style="font-size: 18px;">' + comma(parseInt(sell)) + '원</b>' +
+                                    '&nbsp&nbsp<span class="text-muted">' + side + '</span>' +
+                                    '&nbsp&nbsp<span class="text-muted">' + comma(parseInt(buy)) +'원 '+ supplier+'</span>' +
+                                    '</div></a>'
+                                );
+                                data_id = item.id;
+                                data_list[data_id] = item;
+                            })
+                        }
+                    });
+            }
+        }, 300));
+
+            $product_result.on('click', 'div', function () {
+            var idx = $(this).attr('id');
+            if (idx) {
+                product = data_list[idx];
+                console.log(product);
+                var sells = parseInt(product['sell']);
+                var sell_all = sells*1;
+                var tax_bool = $(".tax_select").val();
+                var sell_tax = 0;
+                if(tax_bool === 'True'){
+                    sell_tax = sells/10;
+                }else if(tax_bool === 'False'){
+                    sell_tax = 0;
+                }
+
+                var buy = parseInt(product['buy_price']);
+                var supplier = '';
+                var memo  = '';
+                if(product['supplier']){supplier = product['supplier'];}else{supplier ='';}
+                if(product['memo']){memo = product['memo'];}else{memo ='';}
+                 $('#sortable').append(
+                    '<tr class="text_tr"><td><span class="text_data" name="json_ordering"></span></td>' +
+                     '<input class="form-control json_id" type="hidden" name="text_data" value="">' +
+                     '<input class="form-control json_size" type="hidden" name="text_data" value="'+product['size']+'">' +
+                     '<input class="form-control json_paper" type="hidden"  name="text_data" value="'+product['paper']+'">' +
+                     '<input class="form-control json_side" type="hidden" name="text_data" value="'+product['side']+'">' +
+                     '<input class="form-control json_deal" type="hidden"  name="text_data" value="'+product['deal']+'">' +
+                     '<input class="form-control json_kind" type="hidden"  name="text_data" value="'+product['kind']+'">' +
+                     '<input class="form-control json_title" type="hidden" name="text_data" value="'+product['title']+'">'+
+                     '<td><input class="form-control json_name" type="text"  name="text_data" value="'+product['title']+' '+product['paper']+' '+product['deal']+'"></td>' +
+                     '<td><input class="form-control json_size_text" type="text" name="text_data" value="'+product['size']+'"></td>' +
+                     '<td><input class="form-control text-right quantity text_num json_amount" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="1"></td>' +
+                     '<td><input class="form-control text-right price_s text_num json_sell" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="'+  comma(sells)+'"></td>' +
+                     '<td><input class="form-control text-right sell_price text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" readonly value="'+  comma(sell_all)+'"></td>' +
+                     '<td><input class="form-control text-right sell_tax text_num" onkeyup="inputNumberFormat(this)" type="text" name="text_data" readonly value="'+ comma(sell_tax)+'"></td>' +
+                     '<td class="has-ask"><input class="form-control text-right buy_price text_num json_buy_price" onkeyup="inputNumberFormat(this)" type="text" name="text_data" value="'+ comma(buy)+'"></td>' +
+                     '<input class="form-control" type="hidden" name="text_data" value="'+product['company_name']+'">' +
+                     '<td><input class="form-control json_supplier" type="text" name="text_data" value="'+supplier+'"></td>' +
+                     '<td><input class="form-control json_memo" type="text" name="text_data" value="'+memo+'"></td>' +
+                     '<td><input class="form-control json_etc" type="text" name="text_data" value=""></td>' +
+                     '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
+                     '</tr>'
+                 ).ready(function () {
+                        SortableSpan();
+                         Total()
+                     })
+            }
+        });
+    });
+
+    $select_tax_cla.on("change", function () {
+        var $sell_tax = $('.sell_tax');
+        $sell_tax.each(function (key, data) {
+            if ($select_tax_cla.val() === 'True') {
+                var sellprice = uncomma($(this).parent().parent().find('input.sell_price').val());
+                $(this).val(comma((sellprice / 10).toFixed(0)));
+            } else {
+                $(this).val(0);
+            }
+        });
+        $product_result.html('');
+        $product_search.val('');
+        Total();
+    });
+
+    $(function () {
+        $("#sortable").sortable({
+            update: function (event, ui) {
+                SortableSpan();
+                Total();
+            }
+        });
+    });
+
+    setTimeout(function() { $('input[id="id_company"]').focus() }, 500);
+
+</script>
+
+<form id='info_form' method="post" text="주문 관리" autocomplete="off"  action="">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card-box row" style="height: 500px;">
+                <div class="list_info" style="display: none;">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <span class="help-block"> 주문 일자</span>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="joo_date"
+                                               id="id_joo_date" value="{{today}}">
+                                        <span class="input-group-addon bg-custom b-0">
+                                        <i class="mdi mdi-calendar text-white"></i></span>
+                                    </div>
+                                </div><!-- input-group -->
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <span class="help-block"> 발주 일자</span>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="order_date"
+                                               id="id_order_date">
+                                        <span class="input-group-addon bg-info b-0">
+                                        <i class="mdi mdi-calendar text-white"></i></span>
+                                    </div>
+                                </div><!-- input-group -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6 has-sample">
+                            <span class="help-block ">상호명 : <span class="cls_username"></span></span>
+                            <input type="text" id="id_company_name" name="company" class="form-control">
+                            <input type="hidden" id="id_user_id" name="user_id">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><span class="help-block">담당자</span>
+                            <select name="manager" id="id_manager" class="form-control">
+                                <option></option>
+                                {% for ma in employees%}
+                                <option value="{{ma}}">{{ma}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <span class="help-block ">영수처리 : </span>
+                            <select class="form-control" name="bill_select" id="id_bill_select">
+                                <option></option>
+                                <option value="0">세금 계산서</option>
+                                <option value="1">사업자 지출증빙</option>
+                                <option value="2">현금 영수증</option>
+                                <option value="3">미발행</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-5">
+                              <span class="help-block text-danger">고객 노출 메모 : </span>
+                            <input type="text" class="form-control" name="show_memo" id="id_show_memo" style="border-color: #f2989f">
+                        </div>
+                    </div>
+                    <div class="row p-t-10">
+                        <div class="col-lg-4">
+                              <span class="help-block">내부 메모: </span>
+                            <input type="text" name="inside_memo" id="id_inside_memo" class="form-control">
+                        </div>
+                          <div class="col-lg-4">
+                              <span class="help-block">시안: </span>
+                            <input type="text" name="confirm" id="id_confirm" class="form-control">
+                        </div>
+                          <div class="col-lg-4">
+                              <span class="help-block">기타 적요: </span>
+                            <input type="text" name="hoo" id="id_hoo" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="row m-t-40">
+                        <div class="col-sm-2 ">
+                            <button class="btn btn-success btn-block"
+                                    onclick="sample4_execDaumPostcode(); return false; ">
+                                <i class="fas fa-map-marker-alt"></i> 주소 검색하기
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" name="address" class="form-control" placeholder="도로명주소"
+                                   value="{{address}}" id="id_address" readonly/>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" name="address2" class="form-control" placeholder="지번 주소"
+                                   value="{{address2}}" id="id_address2" readonly/>
+                            <span id="guide" style="color:#999;display:none"></span>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="address_detail" class="form-control" value="{{address_detail}}"
+                                   id="id_address_detail" placeholder="상세주소">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="address_option" class="form-control" value="{{address_option}}"
+                                   id="id_address_option" placeholder="주소 참고 자료">
+                        </div>
+                        <div class="p-t-10 col-sm-12 text-center text-danger" id="address_confirm"></div>
+                    </div>
+
+
+                </div>
+                <div class="list_order" style="display: none"></div>
+                <div class="text-right m-t-40" id="load_more" style="display: none;">
+                    <small class="btn btn-danger" id="load_btn" href="">더 불러오기</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+
+            <div class="card-box" style="height: 500px;">
+
+                <div class="m-b-10 data-buttons" style="display: none">
+                    <a class="text-lowercase badge bg-danger " id="control-info"><i class="mdi mdi-account"></i></a>
+                    <a class="text-lowercase badge bg-custom" id="control-order"><i class="mdi mdi-comment-text"></i></a></div>
+                <span class="help-block">상호명(검색) :</span>
+                <input id="id_company" type="text" class="form-control" style="border-color: #5cb85c">
+                <ul class="list-group" id="search_result" style="cursor:pointer"></ul>
+                <div id="informations">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-box">
+            <div id="demo" class="row collapse in">
+                <div class="col-lg-3 ">
+                    <div class="col-lg-12 has-sample">
+                        <span class="help-block"><b>품목 등록</b></span>
+                        <input type="text" id='product_search' class="form-control col-lg-2 m-5">
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="help-block">부가세</span>
+                        <select class="form-control tax_select" id="id_tax_bool" name="tax_bool">
+                            <option value="True" selected>부가세 포함</option>
+                            <option value="False">부가세 미포함</option>
+                        </select>
+                    </div>
+<!--                    <div class="col-lg-6">-->
+<!--                        <span class="help-block">배송비</span>-->
+<!--                        <select class="form-control delivery_select">-->
+<!--                            <option value="선불 택배" selected>선불 택배비</option>-->
+<!--                            <option value='착불 택배'>착불 택배비</option>-->
+<!--                            <option value='퀵'>퀵</option>-->
+<!--                            <option value='방문 수령'>방문 수령</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+                </div>
+                <div class="col-lg-9 container-fluid">
+                    <ul class="list-group col-12 flex-wrap" id="product_result"></ul>
+                </div>
+
+            </div>
+            <div class="table-responsive">
+            <input type="checkbox" id="switch1" checked="" data-toggle="collapse" switch="bool" data-target="#demo">
+            <label for="switch1" data-on-label="" data-off-label=""></label>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th width="20px;">No.</th>
+                        <th width="200px;">품목명</th>
+                        <th width="100px;">규격</th>
+                        <th width="80px;">수량</th>
+                        <th width="110px;">단가</th>
+                        <th width="110px;">판매가</th>
+                        <th width="110px;">판매 부가세</th>
+                        <th width="110px;">매입가</th>
+                        <th>매입처</th>
+                        <th>품목정보</th>
+                        <th>특이사항</th>
+                        <th width="50px;">
+                                <div class="checkbox checkbox-danger h3">
+                                    <input id="delete_check" type="checkbox">
+                                    <label for="delete_check">
+                                       <i class="fa fa-trash-o text-danger"></i>
+                                    </label>
+                                </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="sortable">
+
+                    {% if idx %}
+                    {% for z in idx %}
+                    {% for order in z.customer_order_product.all %}
+                    <tr class="text_tr">
+                        <td><span class="text_data json_ordering"></span></td>
+                        <input class="form-control json_id" type="hidden"  name="text_data" value="{{order.id }}">
+                         <input class="form-control json_size" type="hidden" name="text_data" value="{{order.size }}">
+                         <input class="form-control json_paper" type="hidden"  name="text_data" value="{{order.paper }}">
+                        <input class="form-control json_side" type="hidden" name="text_data" value="{{order.side }}">
+                        <input class="form-control json_deal" type="hidden"  name="text_data" value="{{order.deal }}">
+                        <input class="form-control json_kind" type="hidden"  name="text_data" value="{{order.kind }}">
+                        <input class="form-control json_title" type="hidden" name="text_data" value="{{order.title }}">
+                        <td>
+                            <input class="form-control json_name" type="text" name="text_data"
+                                   value="{%if order.name %}{{order.name}}{% endif %}">
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="text_data"
+                                   value="{%if order.size %}{{order.size}}{% endif %}">
+                        </td>
+                        <td>
+                            <input class="form-control text-right quantity text_num json_amount" onkeyup="inputNumberFormat(this)"
+                                   type="text" name="text_data" value="{{order.amount}}">
+                        </td>
+                        <td>
+                            <input class="form-control text-right price_s text_num json_sell" onkeyup="inputNumberFormat(this)"
+                                   type="text" name="text_data"
+                                   value="{% if .0000 in order.sell %}{{order.sell|intcomma}}{% else %}{{order.sell|floatformat:'-4'|intcomma }}{% endif %}">
+                        </td>
+                        <td>
+                            <input class="form-control text-right sell_price text_num" onkeyup="inputNumberFormat(this)"
+                                   type="text" name="text_data" value="{{ order.total_price|intcomma }}" readonly>
+                        </td>
+                        <td>
+                            <input class="form-control text-right sell_tax text_num" onkeyup="inputNumberFormat(this)"
+                                   type="text" name="text_data" value="{{ order.total_tax|intcomma }}" readonly>
+                        </td>
+                        <td class="has-ask">
+                            <input class="form-control text-right buy_price text_num json_buy_price" onkeyup="inputNumberFormat(this)"
+                                   type="text" name="text_data"
+                                   value="{% if '.0000' in order.buy_price %}{{order.buy_price|intcomma}}{% else %}{{order.buy_price|floatformat:'-4'|intcomma}}{% endif %}">
+                        </td>
+                        <input class="form-control" type="hidden" name="text_data"
+                               value="{%if order.group_manage %}{{order.group_manage}}{%endif%}">
+                        <td><input class="form-control json_supplier" type="text" name="text_data"
+                                   value="{%if order.supplier %}{{order.supplier}}{% endif %}">
+                        </td>
+                        <td><input class="form-control json_memo" type="text" name="text_data"
+                                   value="{%if order.memo %}{{order.memo}}{% endif %}">
+                        </td>
+                        <td><input class="form-control json_etc" type="text" name="text_data"
+                                   value="{%if order.etc %}{{order.etc}}{% endif %}">
+                        </td>
+                        <td><a href="" class="table-action-btn h3 delete-button" style="display: none;"
+                               onclick="$(this).parent().parent().remove();return false;">
+                            <i class="mdi mdi-close-box-outline text-danger"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endif%}
+
+                    <input type="hidden" id='id_json_data' name="json_data" />
+                    </tbody>
+                    <tfoot>
+                     <tr class="total-tr">
+                         <th></th>
+                        <th></th>
+                        <th class="text-right"></th>
+                         <th class="text-right h4" id="total_quantity"></th>
+                          <th></th>
+                        <th class="text-right h4" id="total_price"></th>
+                        <th class="text-right h4" id="total_tax"></th>
+                        <th colspan="2" class="text-center h4"><span id="total"></span><span id="buy_total"></span></th>
+                         <th colspan="2" class="text-center text-danger h4"></th>
+                           <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <table class="text-right" align="right">
+            <tr>
+                <td class="p-l-r-10 has-deposit" width="200px;">
+                    <select class="form-control" id="id_state" name="state">
+                        <option value="0">견적/문의</option>
+                        <option value="1">입금/시안 대기</option>
+                        <option value="2">시안 중</option>
+                        <option value="3">제작 중</option>
+                        <option value="4">배송 중</option>
+                        <option value="5">완료</option>
+                        <option value="6">취소</option>
+                        <option value="7">보류</option>
+                        <option value="8">재인쇄</option>
+                    </select>
+                </td>
+                <td class="p-l-r-10">
+                    <button type='submit' id='sub-btn' onclick="" class="btn btn-danger">저장</button>
+                </td>
+                <td class="p-l-r-10">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<script>
+jQuery(document).ready(function () {
+    // Date Picker
+    jQuery('#datepicker').datepicker();
+    jQuery('#datepicker-autoclose').datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayHighlight: true
+    });
+    jQuery('#id_joo_date').datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayHighlight: true
+    });
+    jQuery('#id_order_date').datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayHighlight: true
+    });
+});
+</script>
+{% if idx %}
+
+    {% for z in idx %}
+{% if not z.address_confirm%}
+<script>
+     $('#address_confirm').text('* 주소를 한번 더 확인해주세요 *');
+</script>
+{% endif %}
+<script>
+    var $list_info = $('.list_info');
+    $('#switch1').removeAttr('checked');
+    $('#demo').attr('class','row collapse');
+    $('.data-buttons').attr('style',''); //버튼 보이기
+    $list_info.show();
+    custromer = {};
+    custromer['id'] = '{{z.user.id}}';
+    $('.cls_username').text(' ({%if z.user %}{{z.user}}{% endif %})');
+    $('#id_user_id').val('{%if z.user.id %}{{z.user.id}}{% endif %}');
+    $('#id_company_name').val('{%if z.company %}{{z.company}}{% endif %}');
+    $('#id_joo_date').val('{%if z.joo_date %}{{z.joo_date|date:"Y-m-d"}}{% endif %}');
+    $('#id_order_date').val('{%if z.order_date %}{{z.order_date|date:"Y-m-d"}}{% endif %}');
+    $('#id_address').val('{%if z.address %}{{z.address}}{% endif %}');
+    $('#id_address2').val('{%if z.address2 %}{{z.address2}}{% endif %}');
+    $('#id_address_detail').val('{%if z.address_detail %}{{z.address_detail}}{% endif %}');
+    $('#id_address_option').val('{%if z.address_option %}{{z.address_option}}{% endif %}');
+    $('#id_manager').val('{{z.manager}}');
+    $('#id_state').val('{{z.state}}');
+    $('#id_bill_select').val('{{z.bill_select}}');
+    $('#id_keyword').val('{%if z.keyword %}{{z.keyword}}{% endif %}');
+    $('#id_show_memo').val('{%if z.show_memo %}{{z.show_memo }}{% endif %}');
+    $('#id_inside_memo').val('{%if z.inside_memo %}{{z.inside_memo}}{% endif %}');
+    $('#id_confirm').val('{%if z.confirm %}{{z.confirm}}{% endif %}');
+    $('#id_hoo').val('{%if z.hoo %}{{z.hoo}}{% endif %}');
+    $('#id_tax_bool').val('{%if z.tax_bool %}{{z.tax_bool}}{%else%}False{% endif %}');
+    SortableSpan();
+    Total();
+
+    // informations_html =
+    //     (
+    //         custromer['code'] + '<br>' +
+    //         custromer['address'] + ' ' + custromer['address_detail'] + '<br>' +
+    //         custromer['address2'] + ' ' + custromer['address_detail'] + '<br>' +
+    //         custromer['tax_bill_mail'] + '<br>' +
+    //         custromer['tell'] + '<br>' +
+    //         custromer['phone'] + '<br>' +
+    //         custromer['keyword'] + '<br>' +
+    //         custromer['memo'] + '<br>' +
+    //         custromer['manager']
+    //     );
+    // $("#informations").html(informations_html);
+
+
+</script>
+    {% endfor %}
+
+{% endif %}

@@ -3,11 +3,68 @@
 {% block content%}
 <!-- Hero Section-->
 <section class="position-relative dark-overlay py-5 py-lg-7">
-    <img src="{% static 'design/img/photo/bg-masthead.jpg' %}" alt="" class="bg-image">
+    <img src="{% static 'design/img/banner/main_banner_191001.jpg' %}" alt="" class="bg-image" style="filter: brightness(150%)">
     <div class="container overlay-content hero hero-page">
         <div class="hero-content pb-5 text-center text-white">
-            <h1 class="hero-heading">아이클로버</h1>
-            <p>아이클로버와 함께 쉽고 간편하게 디자인을 제작해보세요</p>
+           <h2 class="hero-heading">I-CLOVER DESIGN</h2>
+                <h6>아이클로버는 고객님을 주목받게 하려는 구체적이고 현실적인 디자인을 위해 노력합니다.</h6>
+                <h3>쉽고 간편하게 가장 적합한 디자인을 선택하실 수 있습니다.</h3>
+                <h4>·</h4>
+        </div>
+        <div class="row">
+            <div class="input-group">
+                <div class="col-sm-1"></div>
+                <div class="form-group col-sm-3">
+                    <select class="form-control" id="sel1" name="sel1">
+                        <option value="None">디자인</option>
+                        <option value="0">헬스ㅣ크로스핏</option>
+                        <option value="1">복싱ㅣ격투기</option>
+                        <option value="2">요가ㅣ필라테스</option>
+                        <option value="3">골프</option>
+                        <option value="4">교육ㅣ학원ㅣ어린이집</option>
+                        <option value="5">무도ㅣ태권도</option>
+                        <option value="6">댄스ㅣ발레ㅣ무용</option>
+                        <option value="7">공연ㅣ축제ㅣ박람회</option>
+                        <option value="8">통신사</option>
+                        <option value="9">뷰티ㅣ미용</option>
+                        <option value="10">분양ㅣ부동산</option>
+                        <option value="11">식당ㅣ음식점</option>
+                        <option value="12">카페ㅣ베이커리</option>
+                        <option value="13">농장ㅣ농원</option>
+                        <option value="14">자동차</option>
+                        <option value="15">기업ㅣ공장</option>
+                        <option value="16">병원ㅣ의료</option>
+                        <option value="17">패션ㅣ쇼핑몰</option>
+                        <option value="18">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <select class="form-control" id="sel2" name="sel2">
+                        <option value="None">품목을 선택해 주세요.</option>
+                        <option value="0">전단지/포스터</option>
+                        <option value="1">천족자/종이족자</option>
+                        <option value="2">현수막</option>
+                        <option value="3">배너</option>
+                        <option value="4">명함</option>
+                        <option value="5">상품권/쿠폰</option>
+                        <option value="6">카다로그/브로슈어</option>
+                        <option value="6">리플릿 3단접지 2단접지</option>
+                        <option value="7">양식지/계약서/영수증</option>
+                        <option value="8">스티커</option>
+                        <option value="9">봉투</option>
+                        <option value="9">이름표/명찰</option>
+                        <option value="10">에어간판</option>
+                        <option value="11">기타인쇄</option>
+                        <option value="12">운영비품</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-1">
+                    <button type="button" class="btn btn-info"><i class="fa fa-serch"> 검색 </i></button>
+                </div>
+
+            </div>
         </div>
     </div>
 </section>
@@ -127,6 +184,240 @@
         </div>
     </div>
 </section>
+<section class="text-center">
+        <div class="row">
+            <div class="col-12">
+                <img src="http://sosoxshop.com/web/upload/category/shop1_27_title_733337.jpg">
+            </div>
+        </div>
+</section>
+
+<section>
+
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-xl-8 mx-auto text-center mb-5">
+                <br>
+                <h3 class="">어떤 디자인을 찾고 계신가요?</h3>
+                <br>
+                <h5 class="lead text-muted">많은 분들의 선택을 받고 있는 디자인을 추천해 드립니다.</h5>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label active" style="padding: 20px; width: 100%;">
+                        전단지
+                        <input type="radio" name="size" value="value_0" required="" class="input-invisible">
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                        배너
+                        <input type="radio" name="size" value="value_1" required="" class="input-invisible">
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                        현수막
+                        <input type="radio" name="size" value="value_2" required="" class="input-invisible">
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                        명함
+                        <input type="radio" name="size" value="value_3" required="" class="input-invisible">
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                        스티커
+                        <input type="radio" name="size" value="value_4" required="" class="input-invisible">
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                        회원가입계약서
+                        <input type="radio" name="size" value="value_5"  required="" class="input-invisible">
+                    </button>
+                </div>
+            </div>
+
+    <div class="row pt-5" align="center">
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/d4771a5234d06e3ded30202c3ff1ab7e.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /product-->
+        <!-- product-->
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/125253cd0ee6943cb8526d3535324b87.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /product-->
+        <!-- product-->
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/9ee32cd4161da0c03104c368e5a44e92.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /product-->
+        <!-- product-->
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/7817335fc016436daa536f655ca55255.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/1fc3cfc7414a6c4ac7855d32147104c0.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /product-->
+        <!-- product-->
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/32a94e7b07af6471e7f91e260ba13bca.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /product-->
+        <!-- product-->
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/05456155bce04ff9dbe7b2c7d1471b4a.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /product-->
+        <!-- product-->
+        <div class="col-md-3">
+            <div class="product">
+                <div class="product-image border-0">
+                    <img src="http://sosoxshop.com/web/product/medium/201811/e6bf058c22187afab12e88075e3cf59b.jpg"
+                         alt="product" class="img-fluid">
+                    <div class="product-hover-overlay">
+                        <a href="detail.html" class="product-hover-overlay-link"></a>
+                        <div class="product-hover-overlay-buttons">
+                            <a href="detail.html"
+                               class="btn btn-danger btn-buy">
+                                <span class="btn-buy-label ml-2">주문</span>
+                            </a>
+                            <hr>
+                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+    </div>
+
+
+</section>
 
 <section class="py-5 bg-gray-100">
     <div class="container py-3">
@@ -134,7 +425,7 @@
             <div class="col-xl-8 mx-auto text-center mb-5">
                 <h3 class="">어떤 샘플을 찾고 계신가요~?</h3>
                 <br>
-                <p class="lead text-muted">업종별 다양한 샘플을 찾아서 쉽고 빠르게 제작해보세요</p>
+                <p class="lead text-muted">업종별 다양한 디자인샘플을 한눈에 보실 수 있습니다.</p>
             </div>
         </div>
         <section>
@@ -178,7 +469,7 @@
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 mb-10px px-5px">
                         <div class="card border-0 text-center text-dark">
-                            <img src="{% static 'design/img/landing/beauty.jpg'%}" alt="Card image" class="card-img">
+                            <img src="https://img.freepik.com/free-photo/combs-cosmetics-black_23-2147784009.jpg?size=626&ext=jpg" alt="Card image" class="card-img">
                             <a href="{% url 'design:product'  %}">
                             <div class="card-img-overlay d-flex align-items-center">
                                 <div class="w-100">

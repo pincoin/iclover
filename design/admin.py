@@ -42,9 +42,6 @@ class CartPriceProblemAdmin(admin.ModelAdmin):
 class ProductPriceAPIAdmin(admin.ModelAdmin):
     pass
 
-class ProductPriceInsideAPIAdmin(admin.ModelAdmin):
-    pass
-
 class CustomerOrderInfoAdmin(admin.ModelAdmin):
     pass
 
@@ -55,7 +52,6 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(models.ProductText, ProductTextAdmin)
 admin.site.register(models.ProductPriceAPI, ProductPriceAPIAdmin)
-admin.site.register(models.ProductPriceInsideAPI, ProductPriceInsideAPIAdmin)
 
 admin.site.register(models.CustomerOrderInfo, CustomerOrderInfoAdmin)
 admin.site.register(models.CustomerOrderProduct, CustomerOrderProductAdmin)

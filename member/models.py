@@ -493,6 +493,12 @@ class CustomerProfile(TimeStampedModel):
         null=True,
         blank=True,
     )
+    manager = models.CharField(
+        verbose_name=_('담당 직원'),
+        max_length=100,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = _('고객이 입력한 프로필')

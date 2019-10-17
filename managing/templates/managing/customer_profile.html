@@ -84,11 +84,13 @@
 
                             <td >
 
+                                {% if i.company %}
                                 <b class="text-custom" data-toggle="tooltip" data-placement="top" data-original-title="{{ i.code }}">{{ i.company }}</b><br>
+                                {% endif %}
                                 <small>({{i.user}})</small>
                             </td>
                             <td>
-                               {{ i.address }} {{i.address_detail}} {{i.address_option}}
+                                {% if i.address %}{{ i.address }} {{i.address_detail}} {{i.address_option}}{% endif %}
                                 {% if i.address2 %}<br>{{ i.address2 }} {{i.address_detail}} {{i.address_option}}{% endif %}
                                 <br> {{ i.tell }}
                             </td>
@@ -206,8 +208,6 @@
                console.log(error)
            });
    }
-
-
 
     $(document).ready(function () {
         $modal = $('.content-modal');

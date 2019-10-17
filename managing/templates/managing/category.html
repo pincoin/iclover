@@ -19,9 +19,11 @@
         <div class="col-sm-5">
             <ul class="sitemap">
                 <li><a class="text-uppercase text-warning"><b>업종 그룹</b>
+                      {% if '디자이너' not in user.first_name %}
                     <a href="{%url 'managing:category_create' kind=0 level=0 %}?title=업종 그룹" class="table-action-btn content-modal-btn" style="margin-left:0em;">
                         <i class="mdi mdi-plus text-success mdi-18px"></i>
                     </a>
+                    {% endif %}
                 </a>
 
                     {% for i in sector %}
@@ -41,9 +43,11 @@
                                 {% for z in i.children.all%}
                                 <li>
                                     <a class="text-success">{{z}}</a>
+                                      {% if '디자이너' not in user.first_name %}
                                     <a href="{% url 'managing:category_delete' kind=0 level=1 pk=z.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
                                         <i class="mdi mdi-delete-forever"></i>
                                     </a>
+                                    {% endif %}
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -59,26 +63,32 @@
             <ul class="sitemap">
                 <li>
                     <a class="text-uppercase text-warning"><b>품목 그룹</b>
+                          {% if '디자이너' not in user.first_name %}
                         <a href="{%url 'managing:category_create' kind=1 level=0 %}?title=품목 그룹" class="table-action-btn content-modal-btn"  style="margin-left:0em;">
                             <i class="mdi mdi-plus text-success mdi-18px"></i>
                         </a>
+                        {% endif %}
                     </a>
                     {% for i in object_list %}
                     <ul>
                         <li><a class="text-uppercase text-custom"><b>{{i}}</b>
+                              {% if '디자이너' not in user.first_name %}
                             <a  href="{%url 'managing:category_create' kind=1 level=1 %}?title={{i}}" class="table-action-btn content-modal-btn" style="margin-left:0em;">
                                 <i class="mdi mdi-plus text-success mdi-18px"></i>
                             </a>
                             <a href="{% url 'managing:category_delete' kind=1 level=0 pk=i.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
                                 <i class="mdi mdi-delete-forever text-danger mdi-18px"></i>
                             </a>
+                            {% endif %}
                         </a>
                             <ul>
                                 {% for z in i.children.all%}
                                 <li><a class="text-teal">{{z}}</a>
+                                      {% if '디자이너' not in user.first_name %}
                                     <a href="{% url 'managing:category_delete' kind=1 level=1 pk=z.id %}" class="table-action-btn delete_button" style="margin-left:0em;">
                                         <i class="mdi mdi-delete-forever"></i>
                                     </a>
+                                    {% endif %}
                                 </li>
                                 {% endfor %}
                             </ul>

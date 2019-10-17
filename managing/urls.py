@@ -23,6 +23,7 @@ urlpatterns = [
     path('customer/create/', views.CustomerCreateView.as_view(), name='customer_create'),
     path('customer/<int:pk>/update/', views.CustomerUpdateView.as_view(), name='customer_update'),
     path('order_view/', views.OrderView.as_view(), name='order_view'),
+    path('order_view/create/', views.OrderCreateAPIView.as_view(), name='order_view_create'),
 
 
     path('product/', views.ProductView.as_view(), name='product'),

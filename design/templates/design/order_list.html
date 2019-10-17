@@ -26,7 +26,7 @@
               <tbody>
                {% for i in object_list %}
                 <tr class="text-center">
-                  <th class="py-4 align-middle"><small>{{i.created|date:'Y.m.d D'}}</small></th>
+                  <th class="py-4 align-middle"><small>{{i.joo_date|date:'Y.m.d D'}}</small></th>
                   <td class="py-4 align-middle">{{i.product}}</td>
                   <td class="py-4 align-middle text-right"><small>￦</small> {{i.total|floatformat:'0'|intcomma}}</td>
                   <td class="py-4 align-middle"><a href="customer-order.html" class="btn btn-outline-dark btn-sm">View</a></td>
@@ -35,6 +35,49 @@
               </tbody>
             </table>
 	</div>
+      {% if is_paginated %}
+            <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 mt-3">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
+                        class="page-link">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="disabled">
+                        <a href="#" class="page-link">
+                            <span><strike>시작</strike></span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for page in page_range %}
+                    <li class="page-item {% if page == page_obj.number %}active{% endif %}">
+                        <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
+                        class="page-link">
+                            {{ page }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
+                        class="page-link">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                    {% else %}
+                      <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+                        <a href="#" class="page-link">
+                            <span><strike>끝</strike></span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
 </div>
 {% else %}
 <div class="text-center mb-7 mt-4">
