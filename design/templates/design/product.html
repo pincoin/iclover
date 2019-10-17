@@ -406,7 +406,6 @@
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default).then(callre());
                 delivery();
-                $.ajaxSetup({cache:true});
             });
 
     }
@@ -423,6 +422,7 @@
 
 
     $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
         var browse = navigator.userAgent.toLowerCase();
         if ((browse.indexOf('trident') !== -1) || (browse.indexOf("msie") !== -1)) {
             $.urlParam = function (name) {
@@ -439,6 +439,7 @@
             param_item = searchParams.get('item');
             param_sector = searchParams.get('sector');
         }
+        $.ajaxSetup({ cache: false });
 
         $size = $('#size');
         $paper = $('#paper');
