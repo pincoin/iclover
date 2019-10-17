@@ -116,16 +116,21 @@
                             <option value="8">8 건</option>
                             <option value="9">9 건</option>
                             <option value="10">10 건</option>
-
                         </select>
+                    </div>
+                    <div class="form-group align-content-center text-muted">
+                        <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600"></b></label>
+                        <span>예상 배송비 : </span>
                     </div>
                     <hr>
                     <div class="row">
 
                         <div class="col-sm-8 text-danger mb-3">
-                            <span>* 디자인 <b>작업비, 배송비는 미포함</b>된 금액입니다.</span>
+                            <span>* 디자인 <b>작업비는 미포함</b>된 금액입니다.</span>
                             <br><span>* 작업 비용은 요청 항목에 따라 변동 될 수 있습니다</span>
-                            <br><span>* 주문을 완료해주시면 확인 후 최종 견적을 안내 드리고 있습니다.</span>
+                            <br><span>* 예상 배송비는 고객님의 간편한 주문을 위해 제공되는 정보입니다.</span>
+                             <br><span>* <b>배송비</b>는 변경될 수 있습니다.</span>
+
                         </div>
                         <div class="col-sm-4 text-right mb-3">
                             <span>인쇄비 : <b class="text-danger " style="font-size:24px;">
@@ -194,8 +199,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a class="list-group-item d-flex justify-content-between align-items-center">
-                                    인쇄비 합계 : <b class="text-danger" id="total_price_in_cart" style="font-size: 18px;">0</b>원
+                                <a class="  justify-content-between">
+                                    <small>인쇄 : <b class="text-danger" id="price_in_cart" style="font-size: 14px;">0</b>원 </small><br>
+                                    <small>VAT : <b class="text-danger" id="tax_in_cart" style="font-size: 14px;">0</b>원 </small><br>
+                                    <small>배송 : <b class="text-danger" id="delivery_in_cart" style="font-size: 14px;">0</b>원 </small><br>
+                                    <small>합계 : <b class="text-danger" id="total_price_in_cart" style="font-size: 20px;">0</b>원 </small>
                                 </a>
                                 <a href="{% url 'design:product_sample'%}"
                                    class="list-group-item d-flex justify-content-between align-items-center"
@@ -397,7 +405,18 @@
                 paperFor(size_default, paper_default);
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default).then(callre());
+                delivery();
             });
+    }
+    function delivery(){
+        var size_default = $size.val();
+        var paper_default = $paper.val();
+        var side_default = $side.val();
+        var deal_default = $deal.val();
+        var amount = $('#amount').val();
+        console.log('배송비 조회');
+        console.log(size_default, paper_default,side_default,deal_default,amount,param_item);
+
     }
 
 
@@ -456,6 +475,7 @@
                 dealFor(size_default, paper_default, side_default, deal_default);
                 $amount.val('1');
                 callre();
+                delivery();
                 $side.slideDown();
                 $deal.slideDown();
                 break;
@@ -465,15 +485,18 @@
                 dealFor(size_default, paper_default, side_default, deal_default);
                 $amount.val('1');
                 callre();
+                delivery();
                 $deal.slideDown();
                 break;
             case "deal":
                 dealFor(size_default, paper_default, side_default, deal_default);
                 $amount.val('1');
                 callre();
+                delivery();
                 break;
              case "amount":
                 callre();
+                delivery();
                 break;
 
         }
@@ -491,7 +514,6 @@
         var $size_img = $('#size_img');
         var $paper_img = $('#paper_img');
         var amount = $('#amount').val();
-        console.log(amount);
         $.ajax({
         type:"POST",
         url:"get_price/",
@@ -547,13 +569,16 @@
     var $cart_body = $('#cart_body');
     function cartList(data){
         var new_json = JSON.parse(data['json_text']);
+        var deliver;
+        if(new_json.delivery){deliver=new_json.delivery}else{deliver='0'}
                 $cart_body.append(
                         '<div class="list-group-item flex-column justify-content-between align-items-center">'+
                         '<button type="button" class="close text-danger cart_delete_btn" data-dismiss="modal"'+
                         'aria-label="Close" name="'+data['id'] +'" onclick="cart_delete($(this));"><span aria-hidden="true">×</span></button>'+
                         '<span class="text-black-50" style="font-size:12px;">'+
                     new_json.title+'<br>'+' '+new_json.size_text+' '+new_json.side_text+' <br>'+new_json.paper_text+'<br>'+new_json.deal_text+' '+new_json.amount+'건'+
-                    '<br><b class="total_in_cart">'+comma(parseInt(parseInt(new_json.price)+parseInt(new_json.price*0.1)))+'</b>원 </span></div>'
+                    '<br><b class="price_cart">'+comma(parseInt(new_json.price))+'</b>원 </span>'+
+                    '<br><i class="fas fa-truck text-muted" style="font-size: 10px;">&nbsp</i><small class="delivery_cart text-muted">'+comma(parseInt(deliver))+' </small></div>'
                 );
     }
 
@@ -603,6 +628,7 @@
                     'deal_text':deal_text,
                     'amount':amount_text,
                     'price':price,
+                    'delivery':'8000',
                 };
             console.log(json_text);
             $.ajax({
@@ -636,14 +662,25 @@
      }
 
      function sum_total() {
-        var $total_in_cart = $('.total_in_cart');
+        var $price_cart = $('.price_cart');
          var temp = 0;
-         $total_in_cart.each(function () {
+         $price_cart.each(function () {
              var tdTxt = $(this).text().replace(",", "");
              temp += parseFloat(tdTxt);
 
          });
-         $('#total_price_in_cart').text(comma(temp));
+         var $delivery_cart = $('.delivery_cart');
+         var delivery = 0;
+         $delivery_cart.each(function () {
+             var tdTxt = $(this).text().replace(",", "");
+             delivery += parseFloat(tdTxt);
+
+         });
+         $('#price_in_cart').text(comma(temp));
+         var tax = parseFloat(temp/10);
+         $('#tax_in_cart').text(comma(tax));
+         $('#delivery_in_cart').text(comma(delivery));
+         $('#total_price_in_cart').text(comma(parseFloat(temp)+parseFloat(tax)+parseFloat(delivery)));
      }
 
      $.urlParam = function(name){

@@ -772,8 +772,8 @@ class CartProduct(TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _('json 텍스트')
-        verbose_name_plural = _('json 텍스트')
+        verbose_name = _('카트 json 텍스트')
+        verbose_name_plural = _('카트 json 텍스트')
 
     def __str__(self):
         return f'{self.user}'

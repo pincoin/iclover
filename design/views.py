@@ -302,7 +302,10 @@ class OrderListView(viewmixin.PageableMixin,ProfileMixin, generic.ListView):
                 count = 0
                 for x in data:
                     if count == 0:
-                        name = x.size
+                        if x.name:
+                            name = x.name
+                        else:
+                            name = ''
                         z.title = x.title
                     pri =  x.sell * x.amount
                     if z.tax_bool:
@@ -371,27 +374,33 @@ class AjaxPriceView(APIView):
             paper = str(request.data['paper'])
             side = str(request.data['side'])
             deal = str(request.data['deal'])
-            deal = deal.replace(',', '')
-            deal = re.findall("\d+", deal)[0]
+            try:
+                deal = deal.replace(',', '')
+                deal = re.findall("\d+", deal)[0]
+            except:
+                pass
             img_models = design_model.ProductImg.objects.all()
             size_img = img_models.filter(name = size)
             paper_img = img_models.filter(name = paper)
             data = design_model.ProductPriceAPI.objects.filter(size=size,paper=paper,side=side,deal=deal)
-            sell = [i.sell for i in data]
-            if sell:
-                price = sell
+            if data:
+                sell = [i.sell for i in data]
+                if sell:
+                    price = sell
+                else:
+                    price = 0
+                if size_img:
+                    size_img = [i.images.url for i in size_img]
+                if paper_img:
+                    paper_img = [i.images.url for i in paper_img]
+                back_dic = {
+                    'sell_price':price,
+                    'size_img':size_img,
+                    'paper_img':paper_img
+                }
+                return Response(back_dic)
             else:
-                price = 0
-            if size_img:
-                size_img = [i.images.url for i in size_img]
-            if paper_img:
-                paper_img = [i.images.url for i in paper_img]
-            back_dic = {
-                'sell_price':price,
-                'size_img':size_img,
-                'paper_img':paper_img
-            }
-            return Response(back_dic)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
