@@ -120,7 +120,7 @@
                     </div>
                     <div class="form-group align-content-center text-muted">
                         <label class="col-md-2 col-sm-3 p-0"><b class="text-gray-600"></b></label>
-                        <span>예상 배송비 : </span>
+                        <span>예상 배송비 : <i class="fas fa-truck text-muted" style="font-size: 10px;">&nbsp</i><span id="delivery_price"></span></span>
                     </div>
                     <hr>
                     <div class="row">
@@ -128,7 +128,7 @@
                         <div class="col-sm-8 text-danger mb-3">
                             <span>* 디자인 <b>작업비는 미포함</b>된 금액입니다.</span>
                             <br><span>* 작업 비용은 요청 항목에 따라 변동 될 수 있습니다</span>
-                            <br><span>* 예상 배송비는 고객님의 간편한 주문을 위해 제공되는 정보입니다.</span>
+                            <br><span>* 고객님의 간편한 주문을 위해 예상 배송비가 제공됩니다.</span>
                              <br><span>* <b>배송비</b>는 변경될 수 있습니다.</span>
 
                         </div>
@@ -138,7 +138,7 @@
                             </b></span><br>
                             <span>부가세:  <span id="sell_tax"  style="font-size:18px;">0</span> 원</span>
                             <br>
-                            <span>합계 금액:  <span id="sell_total" style="font-size:18px;">0</span> 원</span>
+                            <span>예상 합계:  <span id="sell_total" style="font-size:18px;">0</span> 원</span>
                         </div>
 
                     </div>
@@ -148,9 +148,9 @@
                         <div class="col-sm-3 text-danger">
                                {% if user.is_anonymous %}
                              <button type="button" class="btn btn-outline-secondary btn-block" disabled="disabled">
-                                 <i class="fas fa-lock"></i> 장바구니 담기</button>
+                                 <i class="fas fa-lock"></i> 주문서에 담기</button>
                             {% else %}
-                            <button type="button" class="btn btn-dark btn-block" id="add_cart">장바구니 담기</button>
+                            <button type="button" class="btn btn-dark btn-block" id="add_cart">주문서에 담기</button>
                             {% endif %}
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                 <div class="sidebar-block ">
                     <nav id="components-nav" style="top: 105px;"
                          class="nav nav-pills flex-column ml-1 p-3 mb-5 text-center bg-gray-300">
-                        <h4 class="sidebar">장바구니</h4>
+                        <h4 class="sidebar">주문서<br>※ 예상금액 ※</h4>
                         <p></p>
 
                         <div class="customer-sidebar card border-0">
@@ -203,7 +203,7 @@
                                     <small>인쇄 : <b class="text-danger" id="price_in_cart" style="font-size: 14px;">0</b>원 </small><br>
                                     <small>VAT : <b class="text-danger" id="tax_in_cart" style="font-size: 14px;">0</b>원 </small><br>
                                     <small>배송 : <b class="text-danger" id="delivery_in_cart" style="font-size: 14px;">0</b>원 </small><br>
-                                    <small>합계 : <b class="text-danger" id="total_price_in_cart" style="font-size: 20px;">0</b>원 </small>
+                                    <small>예상 인쇄비: <b class="text-danger" id="total_price_in_cart" style="font-size: 20px;">0</b>원 </small>
                                 </a>
                                 <a href="{% url 'design:product_sample'%}"
                                    class="list-group-item d-flex justify-content-between align-items-center"
@@ -388,6 +388,7 @@
     }
 
     function getJson(url, size) {
+            $.ajaxSetup({ cache: false });
             $.getJSON(url, function (data) {
                 global_data = data;
                 if (size) {
@@ -405,24 +406,12 @@
                 paperFor(size_default, paper_default);
                 sideFor(size_default, paper_default, side_default);
                 dealFor(size_default, paper_default, side_default, deal_default).then(callre());
-                delivery();
+
             });
 
     }
-    function delivery(){
-        var size_default = $size.val();
-        var paper_default = $paper.val();
-        var side_default = $side.val();
-        var deal_default = $deal.val();
-        var amount = $('#amount').val();
-        console.log('배송비 조회');
-        console.log(size_default, paper_default,side_default,deal_default,amount,param_item);
-
-    }
-
 
     $(document).ready(function () {
-        $.ajaxSetup({ cache: false });
         var browse = navigator.userAgent.toLowerCase();
         if ((browse.indexOf('trident') !== -1) || (browse.indexOf("msie") !== -1)) {
             $.urlParam = function (name) {
@@ -439,7 +428,6 @@
             param_item = searchParams.get('item');
             param_sector = searchParams.get('sector');
         }
-        $.ajaxSetup({ cache: false });
 
         $size = $('#size');
         $paper = $('#paper');
@@ -478,7 +466,6 @@
                 dealFor(size_default, paper_default, side_default, deal_default);
                 $amount.val('1');
                 callre();
-                delivery();
                 $side.slideDown();
                 $deal.slideDown();
                 break;
@@ -488,18 +475,15 @@
                 dealFor(size_default, paper_default, side_default, deal_default);
                 $amount.val('1');
                 callre();
-                delivery();
                 $deal.slideDown();
                 break;
             case "deal":
                 dealFor(size_default, paper_default, side_default, deal_default);
                 $amount.val('1');
                 callre();
-                delivery();
                 break;
              case "amount":
                 callre();
-                delivery();
                 break;
 
         }
@@ -517,6 +501,7 @@
         var $size_img = $('#size_img');
         var $paper_img = $('#paper_img');
         var amount = $('#amount').val();
+        var $delivery_price = $('#delivery_price');
         $.ajax({
         type:"POST",
         url:"get_price/",
@@ -525,17 +510,22 @@
             'paper' : paper_default,
             'side' : side_default,
             'deal' : deal_default,
+            'amount':amount
         },
         dataType : "json",
         success: function(data){
             var price = parseFloat(data.sell_price*amount);
             var tax = price/10;
             var total = (price/10) + price;
+            var delivery = data.delivery;
+            console.log(data.delivery);
             $sell_price.text(comma(price));
             $sell_tax.text(comma(tax));
             $sell_total.text(comma(total));
+            $delivery_price.text(comma(delivery));
             $size_img.attr('src',data.size_img);
             $paper_img.attr('src',data.paper_img);
+
         },
         error: function(xhr, status, error) {
 
@@ -572,17 +562,15 @@
     var $cart_body = $('#cart_body');
     function cartList(data){
         var new_json = JSON.parse(data['json_text']);
-        var deliver;
-        if(new_json.delivery){deliver=new_json.delivery}else{deliver='0'}
-                $cart_body.append(
-                        '<div class="list-group-item flex-column justify-content-between align-items-center">'+
-                        '<button type="button" class="close text-danger cart_delete_btn" data-dismiss="modal"'+
-                        'aria-label="Close" name="'+data['id'] +'" onclick="cart_delete($(this));"><span aria-hidden="true">×</span></button>'+
-                        '<span class="text-black-50" style="font-size:12px;">'+
-                    new_json.title+'<br>'+' '+new_json.size_text+' '+new_json.side_text+' <br>'+new_json.paper_text+'<br>'+new_json.deal_text+' '+new_json.amount+'건'+
-                    '<br><b class="price_cart">'+comma(parseInt(new_json.price))+'</b>원 </span>'+
-                    '<br><i class="fas fa-truck text-muted" style="font-size: 10px;">&nbsp</i><small class="delivery_cart text-muted">'+comma(parseInt(deliver))+' </small></div>'
-                );
+        $cart_body.append(
+            '<div class="list-group-item flex-column justify-content-between align-items-center">' +
+            '<button type="button" class="close text-danger cart_delete_btn" data-dismiss="modal"' +
+            'aria-label="Close" name="' + data['id'] + '" onclick="cart_delete($(this));"><span aria-hidden="true">×</span></button>' +
+            '<span class="text-black-50" style="font-size:12px;">' +
+            new_json.title + '<br>' + ' ' + new_json.size_text + ' ' + new_json.side_text + ' <br>' + new_json.paper_text + '<br>' + new_json.deal_text + ' ' + new_json.amount + '건' +
+            '<br><b class="price_cart">' + comma(parseInt(new_json.price)) + '</b>원 </span>' +
+            '<br><i class="fas fa-truck text-muted" style="font-size: 10px;">&nbsp</i><small class="delivery_cart text-muted">' + comma(parseInt(new_json.delivery)) + ' </small></div>'
+        );
     }
 
 
@@ -619,6 +607,7 @@
             var side_text = $("#side option:selected").text();
             var deal_text = $("#deal option:selected").text();
             var amount_text = $("#amount option:selected").val();
+            var delivery_text = uncomma($("#delivery_price").text());
             var json_text = {
                     'title':title,
                     'kind':kind,
@@ -632,9 +621,8 @@
                     'deal_text':deal_text,
                     'amount':amount_text,
                     'price':price,
-                    'delivery':'8000',
+                    'delivery':delivery_text,
                 };
-            console.log(json_text);
             $.ajax({
                 cache: false,
                 type: "POST",

@@ -1373,20 +1373,20 @@ class DepositView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin
 
     def get_context_data(self, **kwargs):
         context = super(DepositView, self).get_context_data(**kwargs)
-        obj_id_list = [i.id for i in context['object_list']]
-        data = managing_models.OrderWithDeposit.objects.select_related('deposit_with','order_info_with').prefetch_related('order_info_with__order_list').filter(deposit_with_id__in=obj_id_list)
-        data_id_list = [i.deposit_with.id for i in data]
-        for i in context['object_list']:
-            if i.id in data_id_list:
-                data_list = []
-                for z in data:
-                    total = 0
-                    if i.id == z.deposit_with.id:
-                        for o in z.order_info_with.order_list.all():
-                            total += o.total
-                        joo =[z.order_info_with.joo_date.strftime('%Y-%m-%d'), z.order_info_with.company, total]
-                        data_list.append(joo)
-                i.data_list = data_list
+        # obj_id_list = [i.id for i in context['object_list']]
+        # data = managing_models.OrderWithDeposit.objects.select_related('deposit_with','order_info_with').prefetch_related('order_info_with__order_list').filter(deposit_with_id__in=obj_id_list)
+        # data_id_list = [i.deposit_with.id for i in data]
+        # for i in context['object_list']:
+        #     if i.id in data_id_list:
+        #         data_list = []
+        #         for z in data:
+        #             total = 0
+        #             if i.id == z.deposit_with.id:
+        #                 for o in z.order_info_with.order_list.all():
+        #                     total += o.total
+        #                 joo =[z.order_info_with.joo_date.strftime('%Y-%m-%d'), z.order_info_with.company, total]
+        #                 data_list.append(joo)
+        #         i.data_list = data_list
         return context
 
 
@@ -1566,11 +1566,9 @@ class OrderWithImagesCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin,
         files = self.request.FILES.getlist('pro_image')
         self.success_url = self.request.META.get('HTTP_REFERER')
         order_id = self.kwargs['pk']
-        category = design_models.OrderInfo.objects.select_related('user__profile').get(id=order_id)
-        sectors = category.user.profile.sectors_category
+        category = design_models.CustomerOrderInfo.objects.select_related('user').get(id=order_id)
         for file in files:
-            img_model = design_models.OrderImg(order_info_id=order_id, images=file, name=file.name,employees=user,
-                                               sectors_category=sectors)
+            img_model = design_models.OrderImg(order_info_id=order_id, images=file, name=file.name,employees=user)
             img_model.save()
 
         return super(OrderWithImagesCreateView, self).form_valid(form)
@@ -1826,7 +1824,8 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
 
 
     def get_queryset(self):
-        queryset = super(OrderView, self).get_queryset().select_related('user').prefetch_related('customer_order_product','user__customer_memo').order_by('-joo_date','-num')
+        queryset = super(OrderView, self).get_queryset().select_related('user')\
+            .prefetch_related('customer_order_product','user__customer_memo','order_img').order_by('-joo_date','-num','-id')
         if 'state' in self.request.GET:
             state = self.request.GET['state']
             false_list = ['6','7']
@@ -1870,6 +1869,7 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
         context = super(OrderView, self).get_context_data(**kwargs)
 
         for data in context['object_list']:
+            data.img_bool = data.order_img.exists()
             order = data.customer_order_product.all()
             memos = data.user.customer_memo.all()
             name = ''

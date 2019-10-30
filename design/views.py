@@ -224,8 +224,6 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
         error_list = []
         for i in i:
             d = json.loads(i['json_text'])
-            d['deal'] = d['deal'].replace(',', '')
-            d['deal'] = re.findall("\d+", d['deal'])[0]
             model_model = price_model.filter(size=d['size'],paper=d['paper'],side=d['side'],deal=d['deal'])
             price = ''
             for i in model_model:
@@ -237,10 +235,10 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
                 error_list.append(d)
                 design_model.CartPriceProblem.objects.create(user=self.request.user,json_text=d)
         if error_list:
-            messages.error(self.request, '장바구니에 비정상적인 금액을 감지하였습니다. 관리자에게 문의주세요')
+            messages.error(self.request, '예상 주문금액에 이상이 감지되었습니다. 관리자에게 문의주세요')
             return redirect(self.success_url)
         if not success_list:
-            messages.error(self.request, '장바구니가 비어있습니다.')
+            messages.error(self.request, '주문서가 비어있습니다.')
             return redirect(self.success_url)
 
         # order_info
@@ -259,8 +257,13 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
         data_model = design_model.CustomerOrderInfo.objects.create(**dic)
         # order_product
         for data in success_list:
+            data['name'] = data['size'] + ' ' + data['paper'] + ' ' + data['deal']
             data['sell'] = float(data.pop('price'))/float(data['amount'])
-            print(data)
+            delivery = data.pop('delivery')
+            if delivery:
+                delivery_dic = {'title':'선불택배비','kind':'delivery','sell':delivery,'buy_price':delivery,
+                                'amount':1
+                                }
             data['customer_order_info'] = data_model
             design_model.CustomerOrderProduct.objects.create(**data)
         # clean_cart_product
@@ -366,41 +369,37 @@ class MyPageView(ProfileMixin, generic.FormView):
         data_model.save()
         return redirect(redirect_to)
 
-class AjaxPriceView(APIView):
+class AjaxPriceView(viewmixin.DeliveryMixin, APIView):
+
     def post(self, request, format=None):
         serializer = serializers.PaymentSerializer(data=request.data)
         if serializer.is_valid():
-            size= str(request.data['size'])
-            paper = str(request.data['paper'])
-            side = str(request.data['side'])
-            deal = str(request.data['deal'])
-            try:
-                deal = deal.replace(',', '')
-                deal = re.findall("\d+", deal)[0]
-            except:
-                pass
+            size= str(serializer.data['size'])
+            paper = str(serializer.data['paper'])
+            side = str(serializer.data['side'])
+            deal = str(serializer.data['deal'])
             img_models = design_model.ProductImg.objects.all()
             size_img = img_models.filter(name = size)
             paper_img = img_models.filter(name = paper)
             data = design_model.ProductPriceAPI.objects.filter(size=size,paper=paper,side=side,deal=deal)
-            if data:
-                sell = [i.sell for i in data]
-                if sell:
-                    price = sell
-                else:
-                    price = 0
-                if size_img:
-                    size_img = [i.images.url for i in size_img]
-                if paper_img:
-                    paper_img = [i.images.url for i in paper_img]
-                back_dic = {
-                    'sell_price':price,
-                    'size_img':size_img,
-                    'paper_img':paper_img
-                }
-                return Response(back_dic)
+            sell = [i.sell for i in data]
+            if sell:
+                price = sell
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                price = 0
+            if size_img:
+                size_img = [i.images.url for i in size_img]
+            if paper_img:
+                paper_img = [i.images.url for i in paper_img]
+
+            delivery = self.check(request, serializer)
+            back_dic = {
+                'sell_price':price,
+                'size_img':size_img,
+                'paper_img':paper_img,
+                'delivery': delivery
+            }
+            return Response(back_dic)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

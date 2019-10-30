@@ -33,6 +33,9 @@ class OrderMemoAdmin(admin.ModelAdmin):
 class ProductImgAdmin(admin.ModelAdmin):
     pass
 
+class DeliveryPriceAdmin(admin.ModelAdmin):
+    pass
+
 class CartProductAdmin(admin.ModelAdmin):
     pass
 
@@ -52,6 +55,7 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(models.ProductText, ProductTextAdmin)
 admin.site.register(models.ProductPriceAPI, ProductPriceAPIAdmin)
+admin.site.register(models.DeliveryPrice, DeliveryPriceAdmin)
 
 admin.site.register(models.CustomerOrderInfo, CustomerOrderInfoAdmin)
 admin.site.register(models.CustomerOrderProduct, CustomerOrderProductAdmin)

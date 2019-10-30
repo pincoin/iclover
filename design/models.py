@@ -587,7 +587,7 @@ class OrderList(TimeStampedModel):
 
 class OrderImg(TimeStampedModel, SoftDeletableModel):
     order_info = models.ForeignKey(
-        'design.OrderInfo',
+        'design.CustomerOrderInfo',
         verbose_name=_('주문 리스트'),
         related_name='order_img',
         null=True,
@@ -800,6 +800,71 @@ class CartPriceProblem(TimeStampedModel):
     def __str__(self):
         return f'{self.user}'
 
+class DeliveryPrice(TimeStampedModel):
+    kind = models.CharField(
+        verbose_name=_('품목 종류'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    size = models.CharField(
+        verbose_name=_('규격 size'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    paper = models.CharField(
+        verbose_name=_('용지 paper'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    side = models.CharField(
+        verbose_name=_('인쇄 side'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    deal = models.CharField(
+        verbose_name=_('수량 deal'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    supplier = models.CharField(
+        verbose_name=_('매입'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    memo = models.CharField(
+        verbose_name=_('메모 memo'),
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    sell = models.DecimalField(
+        verbose_name=_('sell'),
+        blank=True,
+        default=0,
+        decimal_places=4,
+        max_digits=11,
+    )
+    buy_price = models.DecimalField(
+        verbose_name=_('buy'),
+        blank=True,
+        default=0,
+        decimal_places=4,
+        max_digits=11,
+    )
+    class Meta:
+        verbose_name = _('고객 배송비')
+        verbose_name_plural = _('고객 배송비')
+
+    def __str__(self):
+        return f'{self.size} 배송비 : {self.sell}'
+
+
 class ProductPriceAPI(TimeStampedModel):
     kind = models.CharField(
         verbose_name=_('품목 종류'),
@@ -932,6 +997,7 @@ class CustomerOrderInfo(TimeStampedModel):
         verbose_name=_('주문일'),
         null=True,
         blank=True,
+        default=datetime.date.today
     )
     order_date = models.DateField(
         verbose_name=_('발주일'),

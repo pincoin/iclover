@@ -148,7 +148,7 @@ class Deposit(TimeStampedModel, SoftDeletableModel):
 
 class OrderWithDeposit(TimeStampedModel):
     order_info_with = models.ForeignKey(
-        'design.OrderInfo',
+        'design.CustomerOrderInfo',
         on_delete=models.SET_NULL,
         related_name='order_info_with',
         null=True,

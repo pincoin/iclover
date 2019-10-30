@@ -76,7 +76,7 @@
                     <!-- Language Dropdown-->
                     {% if user.is_staff %}
                     <!-- if  관리자 -->
-                    <a href="{% url 'managing:main'%}">
+                    <a href="{% url 'managing:main'%}" target="blank">
                          <span class="badge badge-primary">wemix & iclover staff</span>
                     </a>
 
@@ -100,6 +100,9 @@
                         {% else %}
                         <a href="{% url 'design:join'%}" class="text-dark">
                             <i class="fas fa-sign-in-alt" ></i> 회원가입
+                        </a>
+                        <a href="{% url 'design:my_page'%}" class="text-dark">
+                            <i class="fas fa-sign-in-alt" ></i> 로그인
                         </a>
                         {% endif %}
                     </div>
@@ -168,7 +171,7 @@
 	<path fill="#DEDFDF" d="M31.756,107.295c0,0,40.367,2.965,61.137-6.82c0,0-7.422-1.782-16.914-2.974
 		C66.484,96.31,31.756,107.295,31.756,107.295"/>
 </g>
-<text transform="matrix(1 0 0 1 210.6406 42.3936)" fill="#124626" font-family="'KoreanYNMYT-L'" font-size="8.7709">Design &amp; Distribution &amp; Inovation</text>
+<text transform="matrix(1 0 0 1 210.6406 42.3936)" fill="#124626"  font-size="8.7709">Design &amp; Distribution &amp; Inovation</text>
 </svg>
 
 

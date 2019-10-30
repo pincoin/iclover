@@ -31,6 +31,7 @@ class CustomerMemoAdmin(admin.ModelAdmin):
 
 
 
+
 admin.site.register(models.SpecialPrice, SpecialPriceAdmin)
 admin.site.register(models.Deposit, DepositAdmin)
 admin.site.register(models.OrderWithDeposit, OrderWithDepositAdmin)
