@@ -10,6 +10,7 @@
                 <h6>아이클로버는 고객님을 주목받게 하려는 구체적이고 현실적인 디자인을 위해 노력합니다.</h6>
                 <h3>쉽고 간편하게 가장 적합한 디자인을 선택하실 수 있습니다.</h3>
                 <h4>·</h4>
+                <h4>·</h4>
         </div>
         <div class="row">
             <div class="input-group">
@@ -75,110 +76,82 @@
             <div class="owl-stage-outer">
                 <div class="owl-stage"
                      style="transform: translate3d(-752px, 0px, 0px); transition: all 0.4s ease 0s; width: 1880px;">
-                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product' %}">
-                                    <img src="{% static 'design/img/svg/item6.svg' %}" alt="배너" class="img-fluid">
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" >
+                                <a href="{% url 'design:product' %}?item=flyer">
+                                    <img src="{% static 'design/img/svg/flyer.svg' %}" alt="전단지" class="img-fluid">
+                                    <p class="text-center text-dark">전단지</p>
+                                </a>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" >
+                                <a href="{% url 'design:product' %}?item=banner">
+                                    <img src="{% static 'design/img/svg/banner.svg' %}" alt="배너" class="img-fluid">
                                     <p class="text-center text-dark">배너</p>
                                 </a>
-                            </div>
                         </div>
                     </div>
-                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product'  %}">
-                                    <img src="{% static 'design/img/svg/item2.svg' %}" alt="현수막" class="img-fluid">
-                                    <p class="text-center text-dark">현수막</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center" >
                                 <a href="{% url 'design:product' %}">
-                                    <img src="{% static 'design/img/svg/item3.svg' %}" alt="명함" class="img-fluid">
+                                    <img src="{% static 'design/img/svg/wear.svg' %}" alt="운동복" class="img-fluid">
+                                    <p class="text-center text-dark">운동복</p>
+                                </a>
+                        </div>
+                    </div>
+
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center">
+                                <a href="{% url 'design:product'%}?item=envelope">
+                                    <img src="{% static 'design/img/svg/envelope.svg' %}" alt="봉투" class="img-fluid">
+                                    <p class="text-center text-dark">봉투</p>
+                                </a>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center">
+                            <div class="">
+                                <a href="{% url 'design:product' %}?item=card">
+                                    <img src="{% static 'design/img/svg/card.svg' %}" alt="명함" class="img-fluid">
                                     <p class="text-center text-dark">명함</p>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="owl-item" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product'%}">
-                                    <img src="{% static 'design/img/svg/item4.svg' %}" alt="양식지" class="img-fluid">
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center">
+                                <a href="{% url 'design:product'%}?item=ncr2">
+                                    <img src="{% static 'design/img/svg/bill.svg' %}" alt="양식지" class="img-fluid">
                                     <p class="text-center text-dark">양식지</p>
                                 </a>
-                            </div>
                         </div>
                     </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
+                     <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center">
                                 <a href="{% url 'design:product'  %}">
-                                    <img src="{% static 'design/img/svg/item5.svg' %}" alt="스티커" class="img-fluid">
+                                    <img src="{% static 'design/img/svg/roll.svg' %}" alt="현수막" class="img-fluid">
+                                    <p class="text-center text-dark">현수막</p>
+                                </a>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center">
+                                <a href="{% url 'design:product'%}?item=ticket">
+                                    <img src="{% static 'design/img/svg/ticket.svg' %}" alt="양식지" class="img-fluid">
+                                    <p class="text-center text-dark">상품권/티켓</p>
+                                </a>
+                        </div>
+                    </div>
+                    <div class="owl-item" style="min-height:20px; max-width: 168px; margin-right: 20px;">
+                        <div class="item d-flex align-items-center justify-content-center">
+                                <a href="{% url 'design:product'%}?item=sticker">
+                                    <img src="{% static 'design/img/svg/sticker.svg' %}" alt="양식지" class="img-fluid">
                                     <p class="text-center text-dark">스티커</p>
                                 </a>
-                            </div>
                         </div>
                     </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product' %}">
-                                    <img src="{% static 'design/img/svg/item7.svg' %}" alt="봉투" class="img-fluid">
-                                    <p class="text-center text-dark">봉투</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product'  %}">
-                                    <img src="{% static 'design/img/svg/item1.svg' %}" alt="전단지" class="img-fluid">
-                                    <p class="text-center text-dark">전단지</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product' %}">
-                                    <img src="{% static 'design/img/svg/item8.svg' %}" alt="쿠폰" class="img-fluid">
-                                    <p class="text-center text-dark">쿠폰</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product'  %}">
-                                    <img src="{% static 'design/img/svg/item9.svg' %}" alt="단체티" class="img-fluid">
-                                    <p class="text-center text-dark">단체티</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                            <div class="w-6rem">
-                                <a href="{% url 'design:product'  %}">
-                                    <img src="{% static 'design/img/svg/item10.svg' %}" alt="비품" class="img-fluid">
-                                    <p class="text-center text-dark">비품</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="owl-item active" style="width: 168px; margin-right: 20px;">
-                        <div class="item d-flex align-items-center justify-content-center" style="height: 21.6px;">
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -188,7 +161,7 @@
 <section class="text-center">
         <div class="row">
             <div class="col-12">
-                <img src="http://sosoxshop.com/web/upload/category/shop1_27_title_733337.jpg" class="img-fluid">
+                <img src="{{main_img}}" class="img-fluid">
             </div>
         </div>
 </section>
@@ -206,213 +179,71 @@
         </div>
         <div class="row">
                 <div class="col-md-2">
-                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label active" style="padding: 20px; width: 100%;">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label active"
+                            data-name="flyer" style="padding: 20px; width: 100%;">
                         전단지
                         <input type="radio" name="size" value="value_0" required="" class="input-invisible">
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label"
+                             data-name="banner" style="padding: 20px; width: 100%;">
                         배너
                         <input type="radio" name="size" value="value_1" required="" class="input-invisible">
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
-                        현수막
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label"
+                             data-name="ticket" style="padding: 20px; width: 100%;">
+                        상품권
                         <input type="radio" name="size" value="value_2" required="" class="input-invisible">
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label"
+                             data-name="card" style="padding: 20px; width: 100%;">
                         명함
                         <input type="radio" name="size" value="value_3" required="" class="input-invisible">
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
-                        스티커
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label"
+                             data-name="ncr" style="padding: 20px; width: 100%;">
+                        양식지/NCR
                         <input type="radio" name="size" value="value_4" required="" class="input-invisible">
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label" style="padding: 20px; width: 100%;">
-                        회원가입계약서
+                    <button for="size_0" class="btn btn-sm btn-outline-secondary detail-option-btn-label"
+                             data-name="etc" style="padding: 20px; width: 100%;">
+                        카달로그/브로셔
                         <input type="radio" name="size" value="value_5"  required="" class="input-invisible">
                     </button>
                 </div>
             </div>
 
     <div class="row pt-5" align="center">
+        {% for image in object_list %}
         <div class="col-md-3">
             <div class="product">
                 <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/d4771a5234d06e3ded30202c3ff1ab7e.jpg"
+                    <img src="{{image.banner_img.url}}"
                          alt="product" class="img-fluid">
                     <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
                         <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
+                            <a href="{% url 'design:product'%}?item=flyer"
+                               class="btn btn-danger btn-buy sample_cart" data-url="{{image.origin_url}}">
                                 <span class="btn-buy-label ml-2">주문</span>
                             </a>
                             <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
+                            <h3 class="h6 mb-1 text-center product_name">{{image.name}}</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /product-->
-        <!-- product-->
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/125253cd0ee6943cb8526d3535324b87.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /product-->
-        <!-- product-->
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/9ee32cd4161da0c03104c368e5a44e92.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /product-->
-        <!-- product-->
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/7817335fc016436daa536f655ca55255.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/1fc3cfc7414a6c4ac7855d32147104c0.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /product-->
-        <!-- product-->
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/32a94e7b07af6471e7f91e260ba13bca.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /product-->
-        <!-- product-->
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/05456155bce04ff9dbe7b2c7d1471b4a.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /product-->
-        <!-- product-->
-        <div class="col-md-3">
-            <div class="product">
-                <div class="product-image border-0">
-                    <img src="http://sosoxshop.com/web/product/medium/201811/e6bf058c22187afab12e88075e3cf59b.jpg"
-                         alt="product" class="img-fluid">
-                    <div class="product-hover-overlay">
-                        <a href="detail.html" class="product-hover-overlay-link"></a>
-                        <div class="product-hover-overlay-buttons">
-                            <a href="detail.html"
-                               class="btn btn-danger btn-buy">
-                                <span class="btn-buy-label ml-2">주문</span>
-                            </a>
-                            <hr>
-                            <h3 class="h6 mb-1 text-center">NJG 044055</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
+        {% endfor %}
     </div>
-
 
 
     </div>
@@ -607,5 +438,33 @@
     </div>
 </section>
 <!-- 새로운 section-3 -->
+<script>
+    $(document).ready(function () {
+        $('.sample_cart').click(function () {
+            var url = $(this).data('url');
+             $.cookie('sample_cart_url' , url, { path : '/' });
+        });
+    });
 
+        $('.detail-option-btn-label').click(function () {
+            var keyword = $(this).data('name');
+            var re_url = "{% url 'design:product' %}?item="+keyword;
+        $.ajax({
+        type:"GET",
+        url:"home_image/",
+        dataType : "json",
+        data:{'keyword':keyword},
+        success: function(data){
+           $('.product-image').each(function (e, item) {
+               $(this).find('img').attr('src','/media/'+data[e]['banner_img']);
+               $(this).find('a').attr('data-url',data[e]['origin_url']).attr('href',re_url);
+               $(this).find('.product_name').text(data[e]['name']);
+
+            });
+        }
+        });
+    });
+
+
+</script>
 {% endblock %}

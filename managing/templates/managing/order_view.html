@@ -52,50 +52,50 @@ alert-dismissible fade in" role="alert">
 <div class="card-box">
     <div class="row">
         <ul class="nav nav-tabs tabs-bordered">
-        <li {% if request.GET.state == '0' %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}?state=0" style="cursor:pointer">
+        <li {% if url_state == 0 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=0 %}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-home"></i></span>
                 <span class="hidden-xs"><b>견적/문의</b> </span>
             </a>
         </li>
-        <li {% if request.GET.state == "1" %}class="active"{% endif %}>
-           <a href="{% url 'managing:order_view'%}?state=1" style="cursor:pointer">
+        <li {% if url_state == 1 %}class="active"{% endif %}>
+           <a href="{% url 'managing:order_view' state=1%}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>입금/시안 대기</b></span>
             </a>
         </li>
-        <li {% if request.GET.state == "2" %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}?state=2" style="cursor:pointer">
+        <li {% if url_state == 2 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=2 %}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>시안 중</b></span>
             </a>
         </li>
-        <li {% if request.GET.state == "3" %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}?state=3" style="cursor:pointer">
+        <li {% if url_state == 3 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=3 %}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>제작 중</b></span>
             </a>
         </li>
-       <li {% if request.GET.state == "4" %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}?state=4" style="cursor:pointer">
+       <li {% if url_state == 4 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=4%}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>배송 중</b></span>
             </a>
         </li>
-        <li {% if not request.GET.state %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}" style="cursor:pointer">
+        <li {% if url_state == 5 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=5 %}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>전체</b></span>
             </a>
         </li>
-       <li {% if request.GET.state == "6" %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}?state=6" style="cursor:pointer">
+       <li {% if url_state == 6 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=6 %}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>취소/보류</b></span>
             </a>
         </li>
-        <li {% if request.GET.state == "8" %}class="active"{% endif %}>
-            <a href="{% url 'managing:order_view'%}?state=8" style="cursor:pointer">
+        <li {% if url_state == 8 %}class="active"{% endif %}>
+            <a href="{% url 'managing:order_view' state=8 %}" style="cursor:pointer">
                 <span class="visible-xs"><i class="fa fa-user"></i></span>
                 <span class="hidden-xs"><b>재인쇄</b></span>
             </a>
@@ -198,13 +198,17 @@ alert-dismissible fade in" role="alert">
                                         <p>
                                         <strong>{{data.total|floatformat:'0'|intcomma}}</strong>
 
-                                            {% if data.deposit_check == 0%}
+                                            {% if data.deposit_state %}
+                                            {% if data.deposit_price == 0 %}
                                              <i class="fa fa-check text-success"></i>
-                                             {% elif data.deposit_check == 987654 %}
+                                            {% else %}
                                              <i class="fa fa-chain text-success"></i>
+                                            {% endif %}
                                             {%else%}
-                                            {% if data.deposit_check%}
-                                            <i class="fa fa-chain-broken text-danger"></i>
+                                           {% if data.deposit_price %}
+                                             <i class="fa fa-chain-broken text-danger"></i>
+                                            <br>
+                                            <small class="text-danger">{{data.deposit_price|intcomma}}</small>
                                             {% endif %}
                                             {% endif %}
                                     </p></a>
@@ -229,9 +233,33 @@ alert-dismissible fade in" role="alert">
                             <br>
                             {% endif %}
                         </td>
-                        <td>
-                            <a href="{% url 'managing:order_view_create'%}?num= {{data.pk}}" class="table-action-btn h3 content-modal-btn">
-                                <i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                        <td class="text-center">
+                                <a href="{% url 'managing:order_view_create'%}?num={{data.pk}}" class="table-action-btn h3 content-modal-btn">
+                               {% if data.state == 0 %}
+                       <div class="badge badge-pill px-3" style="background-color: #FA8178; color: white">주문 확인중
+                      {% elif data.state == 1 %}
+                     <div class="badge badge-pill px-3" style="background-color: #FEFAAF; color: #FA8178;">
+                         <b>입금/시안 대기</b>
+                      {% elif data.state == 2 %}
+                     <div class="badge badge-pill px-3" style="background-color: #C89AFC; color: white">시안 중
+                       {% elif data.state == 3 %}
+                     <div class="badge badge-pill px-3" style="background-color: #46C753; color: white">제작 중
+                       {% elif data.state == 4 %}
+                     <div class="badge badge-pill px-3" style="background-color: #5792BC; color: white">배송 중
+                        {% elif data.state == 5 %}
+                     <div class="badge badge-pill px-3" style="background-color: #848383; color: white">완료
+                             {% elif data.state == 6 %}
+                     <div class="badge badge-pill px-3" style="background-color: #D44A48; color: #FCF993">취소
+                             {% elif data.state == 7 %}
+                     <div class="badge badge-pill px-3" style="background-color: #D44A48; color: #C9FC82">보류
+                             {% elif data.state == 8 %}
+                     <div class="badge badge-pill px-3" style="background-color: #D44A48; color: #C4D7FC">재인쇄
+                      {% endif %}
+
+
+                                <i class="mdi mdi-pencil-box-outline"></i></div>
+
+                                </a>
 
                         </td>
                     </tr>

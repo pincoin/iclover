@@ -50,34 +50,49 @@ class UserIsStaffMixin(UserPassesTestMixin):
 
 
 class DeliveryMixin(object):
+
     def check(self, request, serializer):
+        # count 반드시 return
         delivery = ''
-        item = request.META['HTTP_REFERER'].split('/?item=')[-1]
-        size = serializer.data['size']
-        paper = serializer.data['paper']
-        side = serializer.data['side']
-        deal = serializer.data['deal'].replace(',', '')
+        count = 1
+        price_d = ''
+        try:
+            size = serializer.data['size']
+            paper = serializer.data['paper']
+            side = serializer.data['side']
+            deal = serializer.data['deal'].replace(',', '')
+            amount = int(serializer.data['amount'])
+            item = request.META['HTTP_REFERER'].split('/?item=')[-1]
+        except:
+            size = serializer['size']
+            paper = serializer['paper']
+            side = serializer['side']
+            deal = serializer['deal'].replace(',', '')
+            amount = int(serializer['amount'])
+            item = serializer['kind']
         try:
             i = int(re.findall('\d+', deal)[-1])
         except:
             i = None
-        print('view_mixin',i)
-        amount = int(serializer.data['amount'])
+
         del_model = design_model.DeliveryPrice.objects.filter(kind=item)
         if 'flyer' in item:
+            count = i * amount
             if 'A' in size:
                 price_d = del_model.get(size__icontains='A').sell
-                delivery = price_d * i * amount
+                delivery = round(float(price_d)* i * amount * 1.1)
             elif 'B' in size:
                 price_d = del_model.get(size__icontains='B').sell
-                delivery = price_d * i * amount
+                delivery = round(float(price_d) * i * amount * 1.1)
         elif 'card' in item:
             price_d = del_model.get(kind='card').sell
             i = int(re.findall('\d+', deal)[-1])*amount
             if i <= 10500:
-                delivery = price_d
+                delivery = round(float(price_d)*1.1)
             elif i <= 26000:
-                delivery = price_d * 2
+                count = 2
+                delivery = round(float(price_d)*count*1.1)
             else:
-                delivery = price_d * 3
-        return delivery
+                count = 3
+                delivery = round(float(price_d)*count*1.1)
+        return delivery, count, price_d

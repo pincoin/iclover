@@ -36,7 +36,7 @@ class Category(TimeStampedModel, MPTTModel):
         verbose_name_plural = _('카테고리 품목')
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
 
 class SectorsCategory(TimeStampedModel, MPTTModel):
@@ -65,7 +65,7 @@ class SectorsCategory(TimeStampedModel, MPTTModel):
     objects = TreeManager()
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
 
 class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
@@ -109,7 +109,7 @@ class Option(TimeStampedModel, SoftDeletableModel, MPTTModel):
         verbose_name_plural = _('상품옵션 기타')
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
 class ProductText(TimeStampedModel, SoftDeletableModel):
     category = models.ForeignKey(
@@ -315,7 +315,7 @@ class ProductText(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('상품옵션_통합 str')
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
 class OrderInfo(TimeStampedModel, SoftDeletableModel):
     user = models.ForeignKey(
@@ -468,8 +468,7 @@ class OrderInfo(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('주문 1_정보')
 
     def __str__(self):
-        return '{} {} {}'.format(self.user, self.company, self.employees)
-
+        return f'{self.user} {self.company} {self.employees}'
 
 class OrderList(TimeStampedModel):
     order_info = models.ForeignKey(
@@ -576,7 +575,7 @@ class OrderList(TimeStampedModel):
         verbose_name_plural = _('주문 2_품목')
 
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.standard, self.memo, )
+        return f'{self.name} {self.standard} {self.memo}'
 
     @property
     def total(self):
@@ -664,7 +663,7 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
     def upload_to_order(instance, filename):
         now = datetime.datetime.now()
         nowDate = now.strftime('%Y%m')
-        return 'order/{}/{}/{}'.format(instance.order_info.user, nowDate, filename)
+        return f'order/{instance.order_info.user}/{nowDate}/{filename}'
 
     images = ProcessedImageField(
         verbose_name=_('sample_img'),
@@ -684,7 +683,7 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('주문 3_시안')
 
     def __str__(self):
-        return '{} {}'.format(self.name, self.state)
+        return f'{self.name} {self.state}'
 
 
 class OrderMemo(TimeStampedModel, SoftDeletableModel):
@@ -718,7 +717,58 @@ class OrderMemo(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('주문 4_시안 메모')
 
     def __str__(self):
-        return '{} {} {}'.format(self.order_img, self.check, self.memo, )
+        return f'{self.order_img} {self.check} {self.memo}'
+
+class MainImg(TimeStampedModel):
+    IMG_KIND = Choices(
+        (0, '메인 배너', _('메인 배너')),
+        (1, '중간 목업', _('중간 목업')),
+    )
+    state_at = models.IntegerField(
+        verbose_name=_('이미지 구분'),
+        choices=IMG_KIND,
+        null=True,
+        blank=True,
+    )
+    kind = models.CharField(
+        verbose_name=_('품목 종류'),
+        max_length=255,
+        blank=True,
+    )
+
+    name = models.CharField(
+        verbose_name=_('name of product'),
+        max_length=255,
+        blank=True,
+    )
+
+    origin_url = models.CharField(
+        verbose_name=_('샘플 원본 url'),
+        max_length=255,
+        blank=True,
+    )
+
+    active = models.BooleanField(
+        default=True
+    )
+
+    def upload_to_product(instance, filename):
+        now = datetime.datetime.now()
+        nowDate = now.strftime('%Y')
+        return f'product/{nowDate}/{filename}'
+
+    banner_img = models.ImageField(
+        verbose_name=_('banner_img'),
+        blank= True,
+        upload_to= upload_to_product,
+    )
+
+    class Meta:
+        verbose_name = _('메인 배너')
+        verbose_name_plural = _('메인 배너')
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class ProductImg(TimeStampedModel):
@@ -1134,7 +1184,18 @@ class CustomerOrderInfo(TimeStampedModel):
     )
 
     tax_bool = models.BooleanField(
+        verbose_name=_('부가세 정보'),
         default=True
+    )
+
+    deposit_state = models.BooleanField(
+        verbose_name=_('입금 컨펌'),
+        default=False
+    )
+    deposit_price = models.IntegerField(
+        verbose_name=_('차액'),
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -1291,6 +1352,7 @@ class CustomerOrderProduct(TimeStampedModel):
     class Meta:
         verbose_name = _('고객 주문 품목')
         verbose_name_plural = _('고객 주문 품목')
+        ordering = ['ordering']
 
     def __str__(self):
         return f'{self.size}'

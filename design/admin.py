@@ -30,8 +30,12 @@ class OrderImgAdmin(admin.ModelAdmin):
 class OrderMemoAdmin(admin.ModelAdmin):
     list_per_page = 10
 
-class ProductImgAdmin(admin.ModelAdmin):
+class MainImgAdmin(admin.ModelAdmin):
     pass
+
+class ProductImgAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'keyword']
+
 
 class DeliveryPriceAdmin(admin.ModelAdmin):
     pass
@@ -56,6 +60,8 @@ admin.site.register(models.SectorsCategory, SectorsCategoryAdmin)
 admin.site.register(models.ProductText, ProductTextAdmin)
 admin.site.register(models.ProductPriceAPI, ProductPriceAPIAdmin)
 admin.site.register(models.DeliveryPrice, DeliveryPriceAdmin)
+admin.site.register(models.ProductImg, ProductImgAdmin)
+admin.site.register(models.MainImg, MainImgAdmin)
 
 admin.site.register(models.CustomerOrderInfo, CustomerOrderInfoAdmin)
 admin.site.register(models.CustomerOrderProduct, CustomerOrderProductAdmin)
@@ -65,7 +71,7 @@ admin.site.register(models.OrderList, OrderListAdmin)
 admin.site.register(models.OrderImg, OrderImgAdmin)
 admin.site.register(models.OrderMemo, OrderMemoAdmin)
 
-admin.site.register(models.ProductImg, ProductImgAdmin)
+
 admin.site.register(models.CartProduct, CartProductAdmin)
 admin.site.register(models.CartPriceProblem, CartPriceProblemAdmin)
 

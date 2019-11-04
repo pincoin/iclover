@@ -5,6 +5,7 @@ app_name = 'design'
 urlpatterns = [
 
     path('', views.HomeView.as_view(), name='home'),
+    path('home_image/', views.HomeImageAPI.as_view(), name='home_image'),
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.logout, name='logout'),
     path('password_change/', views.change_password, name='change_password'),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('faq/', views.FaqView.as_view(), name='faq'),
     path('notice/', views.NewsView.as_view(), name='news'),
     path('order_list/', views.OrderListView.as_view(), name='order_list'),
+    path('order_list/detail/', views.CustomerOrderListView.as_view(), name='order_list_detail'),
     path('my_page/', views.MyPageView.as_view(), name='my_page'),
 
 ]

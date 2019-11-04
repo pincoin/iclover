@@ -7,7 +7,7 @@
     {% load addattr %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="아이클로버 관리자페이지">
+    <meta name="description" content="아이클로버 견적서">
     <meta name="author" content="Coderthemes">
 
     <link rel="shortcut icon" href="{% static 'managing/images/favicon.png' %}">
@@ -71,15 +71,19 @@
                                             <div>{{object.tell}}</div>
                                         {% endif %}
                                         {% if object.address%}
-                                            <div>{{object.address}}</div>
+                                            <div>
+                                                {{object.address}} {{object.address_detail}} {{object.address_option}}</div>
+                                        {% endif %}
+                                         {% if object.address2%}
+                                            <div>{{object.address2}} {{object.address_detail}} {{object.address_option}}</div>
                                         {% endif %}
                                         {% if object.phone%}
                                             <div>{{object.phone}}</div>
                                         {% endif %}
                                         <br>
-                                           {% if object.out_memo%}
+                                           {% if object.show_memo%}
                                                 <p class="text-custom m-b-10">
-                                                    {{object.out_memo}}
+                                                    {{object.show_memo}}
                                                 </p>
                                                 {% endif %}
 
@@ -91,9 +95,9 @@
                                             <span>391-06-00311</span><br>
                                             <span>iclover77@naver.com</span><br>
                                             <span>T 02-824-7177 . F 02-824-7277</span><br>
-                                              {% if object.employees%}
-                                            <p>진행: <strong>{{object.employees}}</strong></p>
-                                              {% endif %}
+<!--                                              {% if object.manager%}-->
+<!--                                            <p>진행: <strong>{{object.manager}}</strong></p>-->
+<!--                                              {% endif %}-->
                                         </div>
                                     </div>
                                 </div>
@@ -120,17 +124,17 @@
                                                     <th class="text-right">수량</th>
                                                     <th class="text-right">단가</th>
                                                     <th class="text-right">공급가</th>
-                                                    <th class="text-right">세액</th>
+                                                     {% if object.tax_bool %}<th class="text-right">세액</th>{% endif %}
                                                 </tr></thead>
                                                 <tbody>
-                                                 {% for data in object.order_list.all %}
+                                                 {% for data in object.customer_order_product.all %}
                                                     <tr>
                                                         <td>{{data.name}}</td>
-                                                        <td>{{data.standard}}</td>
-                                                        <td class="text-right">{{data.quantity|floatformat:'0'|intcomma}}</td>
-                                                        <td class="text-right">{{data.selling_price|floatformat:'0'|intcomma}}</td>
-                                                        <td class="text-right">{{data.selling_price|mul:data.quantity|floatformat:'0'|intcomma}}</td>
-                                                        <td class="text-right">{{data.selling_price_tax|mul:data.quantity|floatformat:'0'|intcomma}}</td>
+                                                        <td>{{data.size}}</td>
+                                                        <td class="text-right">{{data.amount|floatformat:'0'|intcomma}}</td>
+                                                        <td class="text-right">{{data.sell|floatformat:'0'|intcomma}}</td>
+                                                        <td class="text-right">{{data.sell|mul:data.amount|floatformat:'0'|intcomma}}</td>
+                                                         {% if object.tax_bool %}<td class="text-right">{{data.sell|mul:data.amount|div:10|floatformat:'0'|intcomma}}</td>{% endif %}
                                                     </tr>
                                                  {% endfor %}
                                                 </tbody>
@@ -156,7 +160,9 @@
                                             <td class="text-right p-l-r-10">
                                                 <br>
                                                 <p class="text-right" style="font-size: 16px;"><b>공급가 :</b> {{object.sub|intcomma}}</p>
+                                                {% if object.tax_bool %}
                                              <p class="text-right"  style="font-size: 16px;">VAT: {{object.tax|intcomma}}</p>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                         <tr>

@@ -41,7 +41,7 @@ class ProductTextSerializer(serializers.ModelSerializer):
 class OrderListSerializer(serializers.ModelSerializer):
     class Meta:
         model = design_models.CustomerOrderProduct
-        fields = ('id','size','paper','side','deal','amount','sell')
+        fields = ('id','name','amount','sell')
 
 class OrderInfoSerializer(serializers.ModelSerializer):
     order_list = OrderListSerializer(many=True,read_only=True)

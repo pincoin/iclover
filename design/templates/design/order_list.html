@@ -10,6 +10,42 @@
 {% if user.is_authenticated %}
 
 {% if object_list %}
+<!-- Modal-->
+<div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" class="modal fade"
+     style="display: none;" aria-hidden="true">
+    <div role="document" class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <button type="button" data-dismiss="modal" aria-label="Close" class="close modal-close">
+                <svg class="svg-icon w-100 h-100 svg-icon-light align-middle">
+                    <use xlink:href="#close-1"></use>
+                </svg>
+            </button>
+            <div class="modal-body text-center m-5">
+                <h2 id="exampleModalLabel" class="modal-title mb-4">- 주문서 -</h2>
+                <div class="cart pb-4">
+                    <div class="cart-wrapper">
+                        <div class="cart-header text-center">
+                            <div class="row">
+                                <div class="col-5">품목</div>
+                                <div class="col-2">수량</div>
+                                <div class="col-2">단가</div>
+                                <div class="col-3">공급가<small>(+VAT)</small></div>
+                            </div>
+                        </div>
+                        <div class="cart-body">
+                        </div>
+                        <div class="bg-gray-100"><small class="b-3">iclover & wemix</small></div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="pagesfolder" class="docs-item">
 
@@ -27,9 +63,32 @@
                {% for i in object_list %}
                 <tr class="text-center">
                   <th class="py-4 align-middle"><small>{{i.joo_date|date:'Y.m.d D'}}</small></th>
-                  <td class="py-4 align-middle">{{i.product}}</td>
+                  <td class="py-4 align-middle" >
+                      <span style="cursor: pointer" data-toggle="modal" data-target="#exampleModal"  class="invoice_id" data-value="{{i.uuid}}">{{i.product}} <i class="far fa-file-alt" ></i></span>
+
+                  </td>
                   <td class="py-4 align-middle text-right"><small>￦</small> {{i.total|floatformat:'0'|intcomma}}</td>
-                  <td class="py-4 align-middle"><a href="customer-order.html" class="btn btn-outline-dark btn-sm">View</a></td>
+                  <td class="py-4 align-middle">
+                  <small>
+                      {% if i.state == 0 %}
+                       <div class="badge badge-pill font-weight-normal px-3" style="background-color: #FA8178; color: white">주문 확인중</div>
+                      {% elif i.state == 1 %}
+                     <div class="badge badge-pill font-weight-normal px-3" style="background-color: #FEFAAF; color: #FA8178;">
+                         <b>입금/시안 대기</b></div>
+                      {% elif i.state == 2 %}
+                     <div class="badge badge-pill font-weight-normal px-3" style="background-color: #C89AFC; color: white">시안 중</div>
+                       {% elif i.state == 3 %}
+                     <div class="badge badge-pill font-weight-normal px-3" style="background-color: #46C753; color: white">제작 중</div>
+                       {% elif i.state == 4 %}
+                     <div class="badge badge-pill font-weight-normal px-3" style="background-color: #5792BC; color: white">배송 중</div>
+                        {% elif i.state == 5 %}
+                     <div class="badge badge-pill font-weight-normal px-3" style="background-color: #939393; color: white">완료</div>
+                      {% endif %}
+                  </small>
+                      <br>
+                          <a href="customer-order.html" class="btn btn-outline-dark btn-sm">디자인<i class="far fa-file-image"></i></a>
+                  </td>
+
                 </tr>
                   {% endfor %}
               </tbody>
@@ -79,6 +138,47 @@
             </nav>
             {% endif %}
 </div>
+
+<script>
+    function comma(str) {
+        var parts = str.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if(parts[0].length >2 ){ parts[0] = parts[0].replace(/(^0+)/, "");}
+        return parts.join(".");
+    }
+
+    $('.invoice_id').click(function () {
+        var url = "{% url 'design:order_list_detail'%}";
+        var pk = $(this).data('value');
+        var $cart_body = $('.cart-body');
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          data: {'invoice_id': pk},
+          contentType: 'application/json; charset=UTF-8',
+          success: function (data, status, xhr) {
+              $cart_body.html('');
+               $.each(data, function(index, val){
+                   if(val.nums===0){var nums = 1.1;}else{var nums = 1;}
+                   var sell_p= Math.round(val.sell*val.amount*nums);
+                   console.log(val.nums);
+                   $cart_body.append(
+           '<div class="cart-item"><div class="row d-flex align-items-center text-center"><div class="col-5">'+val.name+
+          '</div><div class="col-2">'+val.amount+'</div><div class="col-2">'+comma(Math.round(val.sell))+'</div><div class="col-3 text-center">' +
+                       comma(sell_p)+'</div></div></div>'
+                   );
+                   console.log(val);
+               });
+
+
+          }
+      });
+    })
+
+</script>
+
+
+
 {% else %}
 <div class="text-center mb-7 mt-4">
    <h1><i class="fas fa-broadcast-tower"></i></h1>

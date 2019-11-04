@@ -1,4 +1,5 @@
 import json
+import random
 import re
 import uuid as uuid_id
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout, update_session_auth_hash
@@ -115,12 +116,30 @@ class ProfileMixin(object):
 
 class HomeView(ProfileMixin, generic.ListView):
     template_name = 'design/home.html'
+    model = design_model.MainImg
     def get_queryset(self):
-        return
+        self.mod = design_model.MainImg.objects.filter(state_at=0)
+        queryset = super().get_queryset().filter(state_at=1, name__icontains='전단지').order_by('-id')
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
+        num = random.randrange(0, 3)
+        context['main_img'] = self.mod[num].banner_img.url
         return context
+
+class HomeImageAPI(APIView):
+    def get(self, request, format=None):
+        keyword = request.GET.get('keyword')
+        if keyword:
+            back_dic = design_model.MainImg.objects.filter(state_at=1, kind=keyword).order_by('-id').values('name','banner_img','origin_url')
+            print(back_dic)
+            if back_dic:
+                return Response(back_dic)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return  Response(status=status.HTTP_400_BAD_REQUEST)
 
 class ProductView(ProfileMixin, generic.FormView, generic.ListView):
     template_name = 'design/product.html'
@@ -190,7 +209,7 @@ class ProductSampleView(viewmixin.PageableMixin, ProfileMixin, generic.FormView,
         print('forms',form)
         return self
 
-class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
+class ProductConfirmView(viewmixin.DeliveryMixin, ProfileMixin, generic.FormView, generic.ListView):
     template_name = 'design/product_confirm.html'
     context_object_name = 'confirm_list'
     form_class = forms.OrderProfileForm
@@ -222,12 +241,20 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
         i = design_model.CartProduct.objects.values('json_text')
         success_list = []
         error_list = []
+        print(len(i))
         for i in i:
             d = json.loads(i['json_text'])
             model_model = price_model.filter(size=d['size'],paper=d['paper'],side=d['side'],deal=d['deal'])
-            price = ''
+            price = 0
+            if not model_model:
+                print('없음')
             for i in model_model:
                 price = i.sell
+                d['buy_price'] = float(i.buy_price)
+                if i.supplier:
+                    d['supplier'] = i.supplier
+                else:
+                    d['supplier'] = ''
             price2 = float(d['price'])/float(d['amount'])
             if price2 == price:
                 success_list.append(d)
@@ -257,20 +284,25 @@ class ProductConfirmView(ProfileMixin, generic.FormView, generic.ListView):
         data_model = design_model.CustomerOrderInfo.objects.create(**dic)
         # order_product
         for data in success_list:
+            data['customer_order_info'] = data_model
             data['name'] = data['size'] + ' ' + data['paper'] + ' ' + data['deal']
             data['sell'] = float(data.pop('price'))/float(data['amount'])
             delivery = data.pop('delivery')
-            if delivery:
-                delivery_dic = {'title':'선불택배비','kind':'delivery','sell':delivery,'buy_price':delivery,
-                                'amount':1
-                                }
-            data['customer_order_info'] = data_model
             design_model.CustomerOrderProduct.objects.create(**data)
+            # 매입가 추가해야함
+            if delivery:
+                delivery_p, count, origin_delivery = self.check(self.request, data)
+                delivery_dic = {'title': '선불택배비', 'kind': 'delivery', 'name': '선불택배비', 'sell': origin_delivery,
+                                'buy_price': origin_delivery,'amount': count, 'customer_order_info': data_model,
+                                'supplier':data['supplier'], 'size':'','paper':'','side':'','deal':''
+                                }
+                design_model.CustomerOrderProduct.objects.create(**delivery_dic)
+
         # clean_cart_product
         cart = design_model.CartProduct.objects.filter(user=self.request.user)
         cart.delete()
 
-        return redirect(self.success_url)
+        return redirect('design:order_list')
 
 
 class ProfileView(ProfileMixin,generic.TemplateView):
@@ -289,8 +321,11 @@ class OrderListView(viewmixin.PageableMixin,ProfileMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        num = [6, 7, 8]
+        print(self.request.user)
         if self.request.user.is_authenticated:
-            queryset = super().get_queryset().prefetch_related('customer_order_product').filter(user=self.request.user).order_by('-joo_date')
+            queryset = super().get_queryset().prefetch_related('customer_order_product')\
+                .filter(Q(user=self.request.user) & ~Q(state__in=num)).order_by('-joo_date','-id')
         else:
             queryset = ''
         return queryset
@@ -312,7 +347,7 @@ class OrderListView(viewmixin.PageableMixin,ProfileMixin, generic.ListView):
                         z.title = x.title
                     pri =  x.sell * x.amount
                     if z.tax_bool:
-                        total += pri + round(pri/10)
+                        total += round(pri + round(pri/10))
                     else:
                         total += pri
                     count += 1
@@ -392,7 +427,7 @@ class AjaxPriceView(viewmixin.DeliveryMixin, APIView):
             if paper_img:
                 paper_img = [i.images.url for i in paper_img]
 
-            delivery = self.check(request, serializer)
+            delivery,count,origin_delivery = self.check(request, serializer)
             back_dic = {
                 'sell_price':price,
                 'size_img':size_img,
@@ -468,3 +503,21 @@ class SampleListView(viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
         #     print(self.request.COOKIES)
 
         return context
+
+
+class CustomerOrderListView(APIView):
+    def get(self, request, format=None):
+        if 'invoice_id' in request.GET:
+            uuid = request.GET.get('invoice_id')
+            info = design_model.CustomerOrderInfo.objects.prefetch_related('customer_order_product').get(user=self.request.user,uuid= uuid)
+            back_dic = info.customer_order_product.all().values('name','amount','sell')
+            if info.tax_bool:
+                for i in back_dic:
+                    i['nums']= 0
+            if back_dic:
+                return Response(back_dic)
+            else:
+                return Response()
+
+
+

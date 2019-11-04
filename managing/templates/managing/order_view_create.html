@@ -112,10 +112,19 @@ input[type="number"]::-webkit-inner-spin-button {
 
  /*  ----------------------선언 함수 ------------------------      */
 
+     $('.delete-button').off().click(function() {
+         var result = confirm('정말 삭제하시겠습니까? \n삭제시 복구 되지않습니다.');
 
-     $(document).on("click",".delete-button",function() {
+         if(result){
+             console.log($(this).parent().parent().find('.json_id').val());
+             $(this).parent().parent().remove();
             SortableSpan();
             Total();
+            return false;
+         }else{
+            return false;
+         }
+
     });
       $(document).on("keyup",".sell_price",function() {
             var pre = uncomma($(this).val());
@@ -264,7 +273,7 @@ input[type="number"]::-webkit-inner-spin-button {
                     $list_order.text('지난 과거 데이터가 없습니다.');
                 }else{
                         $.each(data['results'], function(index, val){
-                            console.log(val);
+
                             var not_good = [6,7,8];
                             var state = val.state;
                             var color = '';
@@ -277,7 +286,7 @@ input[type="number"]::-webkit-inner-spin-button {
                             }
                             var val2_list = new(Array);
                             $.each(val.order_list, function(ind, val2){
-                                val2_list += val2.size+' '+val2.paper+' '+val2.side+' '+val2.deal+'<br>';
+                                val2_list += val2.name+'<br>';
                             });
                           var json_data =
                             '<div class="m-t-5 m-r-15 panel panel-border '+color+'">' +
@@ -518,7 +527,7 @@ input[type="number"]::-webkit-inner-spin-button {
                      '<td><input class="form-control json_supplier" type="text" name="text_data" value="'+supplier+'"></td>' +
                      '<td><input class="form-control json_memo" type="text" name="text_data" value="'+memo+'"></td>' +
                      '<td><input class="form-control json_etc" type="text" name="text_data" value=""></td>' +
-                     '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;" onclick="$(this).parent().parent().remove();return false;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
+                     '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
                      '</tr>'
                  ).ready(function () {
                         SortableSpan();
@@ -748,6 +757,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
                     {% if idx %}
                     {% for z in idx %}
+                    {{z.customer_order_product.size}}
                     {% for order in z.customer_order_product.all %}
                     <tr class="text_tr">
                         <td><span class="text_data json_ordering"></span></td>
@@ -799,8 +809,7 @@ input[type="number"]::-webkit-inner-spin-button {
                         <td><input class="form-control json_etc" type="text" name="text_data"
                                    value="{%if order.etc %}{{order.etc}}{% endif %}">
                         </td>
-                        <td><a href="" class="table-action-btn h3 delete-button" style="display: none;"
-                               onclick="$(this).parent().parent().remove();return false;">
+                        <td><a href="" class="table-action-btn h3 delete-button" style="display: none;">
                             <i class="mdi mdi-close-box-outline text-danger"></i></a>
                         </td>
                     </tr>

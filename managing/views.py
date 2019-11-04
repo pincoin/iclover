@@ -16,7 +16,7 @@ from django.contrib.auth.mixins import (UserPassesTestMixin,
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q, Max, Min, Avg, Sum
-from django.http import JsonResponse
+from django.http import JsonResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.views import generic
 from rest_framework import status, viewsets
@@ -1123,22 +1123,24 @@ class BillView(generic.DetailView):
     model = design_models.CustomerOrderInfo
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().prefetch_related('customer_order_product')
         return queryset
 
     def get_object(self, queryset=None):
         obj = super(BillView, self).get_object(queryset=queryset)
-        # all = obj.order_list.all()
-        # sub = 0
-        # tax = 0
-        # total = 0
-        # for i in all:
-        #     sub += round(i.selling_price)*i.quantity
-        #     tax += round(i.selling_price_tax)*i.quantity
-        #
-        # obj.sub = round(sub)
-        # obj.tax = round(tax)
-        # obj.total =  round(sub)+round(tax)
+        print(obj.tax_bool)
+        all = obj.customer_order_product.all()
+        sub = 0
+        tax = 0
+        total = 0
+        for i in all:
+            sub += round(i.sell)*i.amount
+            if obj.tax_bool:
+                tax += round(i.sell/10)*i.amount
+
+        obj.sub = round(sub)
+        obj.tax = round(tax)
+        obj.total =  round(sub)+round(tax)
         return obj
 
 
@@ -1459,21 +1461,22 @@ class OrderWithDepositCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin
         get_id = self.kwargs['pk']
         context = super(OrderWithDepositCreateView, self).get_context_data(**kwargs)
         context['deposit_list'] = managing_models.Deposit.objects.filter(state=False).order_by('-id')
-        data = design_models.OrderInfo.objects.filter(id=get_id).prefetch_related('order_list')
+        data = design_models.CustomerOrderInfo.objects.filter(id=get_id).prefetch_related('customer_order_product')
         order_id = ''
         for i in data:
+            print(i)
             order_id = i.id
             selling_price = []
             selling_price_tax = []
             context['company'] = i.company
-            context['deposit_check'] = i.deposit_check
-            for z in i.order_list.all():
-                selling_price.append(round(z.selling_price*z.quantity))
-                selling_price_tax.append(round(z.selling_price_tax * z.quantity))
-
-            context['selling_price'] = sum(selling_price)
-            context['selling_price_tax'] = sum(selling_price_tax)
-            context['total'] = sum(selling_price) + sum(selling_price_tax)
+        #     context['deposit_check'] = i.deposit_check
+            for z in i.customer_order_product.all():
+                selling_price.append(round(z.sell*z.amount))
+                selling_price_tax.append(round((z.sell/10) * z.amount))
+            if i.tax_bool:
+                context['total'] = sum(selling_price) + sum(selling_price_tax)
+            else:
+                context['total'] = sum(selling_price)
         context['order_deposit_list'] = managing_models.OrderWithDeposit.objects.filter(order_info_with_id = order_id).prefetch_related('deposit_with','order_info_with')
         return context
 
@@ -1522,17 +1525,17 @@ class OrderWithDepositCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin
                 updata_data.save()
             dele_list.delete()
 
-        data = design_models.OrderInfo.objects.filter(id=order_id)
+        data = design_models.CustomerOrderInfo.objects.filter(id=order_id)
         for i in data:
-            i.deposit = balance
+            i.deposit_price = balance
             if balance == '0':
-                i.deposit_check = 0
+                i.deposit_state = True
             elif balance != '':
                 i.deposit_check = balance
             if division == '987654':
-                i.deposit_check = 987654
+                i.deposit_state = True
             elif  division == '-1':
-                i.deposit_check = -1
+                i.deposit_state = False
             i.save()
 
 
@@ -1816,21 +1819,22 @@ class CustomerProfileView(APIView):
 class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.DataSearchFormMixin,
                     generic.ListView):
     template_name = 'managing/order_view.html'
-    paginate_by = 10
+    paginate_by = 20
     model = design_models.CustomerOrderInfo
     data_search_form = managing_forms.DataSearchForm
     # optional
     login_url = clovi_login_url
 
-
     def get_queryset(self):
         queryset = super(OrderView, self).get_queryset().select_related('user')\
             .prefetch_related('customer_order_product','user__customer_memo','order_img').order_by('-joo_date','-num','-id')
-        if 'state' in self.request.GET:
-            state = self.request.GET['state']
-            false_list = ['6','7']
+        if 'state' in self.kwargs:
+            state = self.kwargs['state']
+            false_list = [6,7]
             if state in false_list:
                 queryset = queryset.filter(state__in=false_list)
+            elif state == 5:
+                pass
             else:
                 queryset = queryset.filter(state=state)
         form = self.data_search_form(self.request.GET)
@@ -1849,17 +1853,17 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
                         end_date = list(map(int, term_date[1].split('-')))
                         start_date = datetime.date(start_date[0], start_date[1], start_date[2])
                         end_date = datetime.date(end_date[0], end_date[1], end_date[2])
-                        queryset = queryset.filter(created__range=[start_date, end_date])
+                        queryset = queryset.filter(joo_date__range=[start_date, end_date])
                     elif match:
                         single_date = match.group()
                         q.remove(single_date)
                         single_date = list(map(int, single_date.split('-')))
                         start_date = datetime.date(single_date[0], single_date[1], single_date[2])
-                        queryset = queryset.filter(created=start_date)
+                        queryset = queryset.filter(joo_date=start_date)
                     for i in q:
                         queryset = queryset.filter(
                             Q(company__icontains=i) | Q(user__username__icontains=i)
-                            | Q(user__customer_memo__keyword__icontains=i)
+                            | Q(user__customer_memo__keyword__icontains=i) | Q(manager__icontains=i)
                         )
                 except:
                     pass
@@ -1867,7 +1871,7 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(OrderView, self).get_context_data(**kwargs)
-
+        context['url_state'] = self.kwargs['state']
         for data in context['object_list']:
             data.img_bool = data.order_img.exists()
             order = data.customer_order_product.all()
@@ -1901,8 +1905,6 @@ class OrderView(viewmixin.UserIsStaffMixin, viewmixin.PageableMixin, viewmixin.D
                     data.memo_manager = z.manager
         return context
 
-
-
 class OrderCreateAPIView(APIView):
     permission_classes = (IsAdminUser,)
     renderer_classes = [TemplateHTMLRenderer]
@@ -1916,7 +1918,7 @@ class OrderCreateAPIView(APIView):
             idx = num['num']
             q_list = design_models.CustomerOrderInfo.objects.select_related('user').prefetch_related('customer_order_product').filter(id=idx)
             for i in q_list:
-                if i.customer_order_product:
+                if i.customer_order_product.exists():
                     que = i.customer_order_product.all()
                     for z in que:
                         z.total_price = round(z.sell*z.amount)
@@ -1980,7 +1982,6 @@ class OrderCreateAPIView(APIView):
                     if product_id:
                         this_model = models.objects.filter(id=product_id)
                         if this_model:
-                            print(product_list)
                             this_model.update(**product_list)
                     else:
                         models.objects.create(**product_list)
@@ -1990,3 +1991,9 @@ class OrderCreateAPIView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, format=None):
+        if request:
+            print(request.data)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

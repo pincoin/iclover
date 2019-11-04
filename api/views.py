@@ -91,7 +91,7 @@ class OrderInfoViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         keyword = request.GET.get('keyword')
-        queryset = self.filter_queryset(self.get_queryset().prefetch_related('customer_order_product').filter(user_id=keyword)).order_by('-joo_date')
+        queryset = self.filter_queryset(self.get_queryset().prefetch_related('customer_order_product').filter(user_id=keyword)).order_by('-joo_date','-id')
         page = self.paginate_queryset(queryset)
         for i in page:
             i.order_list = i.customer_order_product.all()

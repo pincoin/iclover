@@ -72,10 +72,8 @@ class Product(TimeStampedModel):
         blank=True,
     )
 
-
-
     def upload_to_product(instance, filename):
-        return 'product/{}/{}'.format(instance.purchase, filename)
+        return f'product/{instance.purchase}/{filename}'
     product_img = models.ImageField(
         verbose_name=_('product_img'),
         blank= True,
@@ -87,7 +85,7 @@ class Product(TimeStampedModel):
         verbose_name_plural = _('품목')
 
     def __str__(self):
-        return '{} {} {}'.format(self.purchase, self.name, self.state)
+        return f'{self.purchase} {self.name} {self.state}'
 
 class Deposit(TimeStampedModel, SoftDeletableModel):
     date = models.DateTimeField(
@@ -144,7 +142,7 @@ class Deposit(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('입금내역')
 
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.amount, self.memo)
+        return f'{self.name} {self.amount} {self.memo}'
 
 class OrderWithDeposit(TimeStampedModel):
     order_info_with = models.ForeignKey(
@@ -172,7 +170,7 @@ class OrderWithDeposit(TimeStampedModel):
         verbose_name_plural = _('입금 연결')
 
     def __str__(self):
-        return '{} {}'.format(self.order_info_with, self.deposit_with)
+        return f'{self.order_info_with} {self.deposit_with}'
 
 class SpecialPrice(TimeStampedModel):
     product = models.ForeignKey(
@@ -201,7 +199,7 @@ class SpecialPrice(TimeStampedModel):
         verbose_name_plural = _('특별가격')
 
     def __str__(self):
-        return '{} {} {}'.format(self.product, self.customer, self.new_price)
+        return f'{self.product} {self.customer} {self.new_price}'
 
 class Discount(TimeStampedModel):
     product = models.ForeignKey(
@@ -230,7 +228,7 @@ class Discount(TimeStampedModel):
         verbose_name_plural = _('할인율')
 
     def __str__(self):
-        return '{} {} {} {}'.format(self.product, self.discount1, self.discount2, self.discount3)
+        return f'{self.product} {self.discount1} {self.discount2} {self.discount3}'
 
 class Employees(TimeStampedModel, SoftDeletableModel):
     GROUP_EM = Choices(
@@ -349,7 +347,7 @@ class Ask(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('요청사항')
 
     def __str__(self):
-        return '{} to {} state:{} {}'.format(self.ask_from, self.ask_to, self.ask_part, self.ask_what)
+        return f'{self.ask_from} to {self.ask_to} state:{self.ask_part} {self.ask_what}'
 
 class Sample(TimeStampedModel, SoftDeletableModel):
     category = models.ForeignKey(
@@ -412,7 +410,7 @@ class Sample(TimeStampedModel, SoftDeletableModel):
     def upload_to_sample(instance, filename):
         now = datetime.now()
         nowDate = now.strftime('%Y')
-        return 'sample/{}/{}/{}'.format(instance.category,nowDate, filename)
+        return f'sample/{instance.category}/{nowDate}/{filename}'
 
     images = ProcessedImageField(
         verbose_name=_('sample_img'),
@@ -429,7 +427,7 @@ class Sample(TimeStampedModel, SoftDeletableModel):
         verbose_name_plural = _('샘플')
 
     def __str__(self):
-        return '{} {} {}'.format(self.name, self.employees, self.keyword)
+        return f'{self.name} {self.employees} {self.keyword}'
 
 class Memo(TimeStampedModel, SoftDeletableModel):
     order = models.ForeignKey(
