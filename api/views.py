@@ -102,7 +102,6 @@ class OrderInfoViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-
 class CustomerProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
     queryset = member_models.CustomerProfile.objects.all()

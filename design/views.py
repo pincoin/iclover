@@ -124,8 +124,11 @@ class HomeView(ProfileMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        num = random.randrange(0, 3)
-        context['main_img'] = self.mod[num].banner_img.url
+        try:
+            num = random.randrange(0, 3)
+            context['main_img'] = self.mod[num].banner_img.url
+        except:
+            pass
         return context
 
 class HomeImageAPI(APIView):
@@ -247,7 +250,7 @@ class ProductConfirmView(viewmixin.DeliveryMixin, ProfileMixin, generic.FormView
             model_model = price_model.filter(size=d['size'],paper=d['paper'],side=d['side'],deal=d['deal'])
             price = 0
             if not model_model:
-                print('없음')
+                error_list.append(d)
             for i in model_model:
                 price = i.sell
                 d['buy_price'] = float(i.buy_price)
@@ -262,7 +265,7 @@ class ProductConfirmView(viewmixin.DeliveryMixin, ProfileMixin, generic.FormView
                 error_list.append(d)
                 design_model.CartPriceProblem.objects.create(user=self.request.user,json_text=d)
         if error_list:
-            messages.error(self.request, '예상 주문금액에 이상이 감지되었습니다. 관리자에게 문의주세요')
+            messages.error(self.request, '예상 금액에 이상이 감지되었습니다. 관리자에게 문의주세요')
             return redirect(self.success_url)
         if not success_list:
             messages.error(self.request, '주문서가 비어있습니다.')
@@ -441,6 +444,7 @@ class AjaxPriceView(viewmixin.DeliveryMixin, APIView):
 
 class CartProductView(APIView):
     def get(self, request, format=None):
+        print(request)
         back_dic = design_model.CartProduct.objects.filter(user=self.request.user).values('id','json_text')
         if back_dic:
             return Response(back_dic)

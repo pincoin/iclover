@@ -12,7 +12,7 @@
     <!-- Price Slider Stylesheets -->
     <link rel="stylesheet" href="{% static 'design/vendor/nouislider/nouislider.css' %}">
     <!-- Google fonts - Playfair Display-->
-    <link rel="stylesheet" href="{% static 'design/fonts/hkgrotesk/stylesheet.css' %}">
+<!--    <link rel="stylesheet" href="{% static 'design/fonts/hkgrotesk/stylesheet.css' %}">-->
     <!-- owl carousel-->
 
     <link rel="stylesheet" href="{% static 'design/vendor/owl.carousel/css/owl.carousel.css' %}">
@@ -81,17 +81,20 @@
                     </a>
 
                     {% endif%}
-                    <div class="dropdown border-right px-3">
-                        <a id="langsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                           class="dropdown-toggle topbar-link">
-                            고객센터
-                        </a>
-                        <div aria-labelledby="langsDropdown" class="dropdown-menu dropdown-menu-right">
-                            <a href="{% url 'design:news' %}" class="dropdown-item text-sm" >공지사항</a>
-                            <a href="{% url 'design:faq' %}" class="dropdown-item text-sm">자주묻는 질문</a>
-                            <a href="#" class="dropdown-item text-sm">제품 한눈에 보기</a>
-                        </div>
-                    </div>
+                    <a href="{% url 'design:order_list'%}">
+                        <span class="badge badge-danger">시안/내역</span>
+                    </a>
+<!--                    <div class="dropdown border-right px-3">-->
+<!--                        <a id="langsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->
+<!--                           class="dropdown-toggle topbar-link">-->
+<!--                            고객센터-->
+<!--                        </a>-->
+<!--                        <div aria-labelledby="langsDropdown" class="dropdown-menu dropdown-menu-right">-->
+<!--                            <a href="{% url 'design:news' %}" class="dropdown-item text-sm" >공지사항</a>-->
+<!--                            <a href="{% url 'design:faq' %}" class="dropdown-item text-sm">자주묻는 질문</a>-->
+<!--                            <a href="#" class="dropdown-item text-sm">제품 한눈에 보기</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="dropdown pl-3 ml-0">
                         {% if user.is_authenticated %}
                         <a href="{%url 'design:logout'%}" class="text-dark" >
@@ -101,6 +104,7 @@
                         <a href="{% url 'design:join'%}" class="text-dark">
                             <i class="fas fa-sign-in-alt" ></i> 회원가입
                         </a>
+                        |
                         <a href="{% url 'design:my_page'%}" class="text-dark">
                             <i class="fas fa-sign-in-alt" ></i> 로그인
                         </a>

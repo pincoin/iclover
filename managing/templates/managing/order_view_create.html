@@ -111,17 +111,20 @@ input[type="number"]::-webkit-inner-spin-button {
     }
 
  /*  ----------------------선언 함수 ------------------------      */
-
-     $('.delete-button').off().click(function() {
-         var result = confirm('정말 삭제하시겠습니까? \n삭제시 복구 되지않습니다.');
-
+    var delete_num = new Array();
+     $('.delete-button').off().click(function(event) {
+         event.preventDefault();
+         var result = confirm('정말 삭제하시겠습니까?');
          if(result){
-             console.log($(this).parent().parent().find('.json_id').val());
+             var idx = $(this).parent().parent().find('.json_id').val();
+             delete_num.push(idx);
              $(this).parent().parent().remove();
-            SortableSpan();
-            Total();
+             SortableSpan();
+             Total();
             return false;
          }else{
+             SortableSpan();
+             Total();
             return false;
          }
 
@@ -133,10 +136,7 @@ input[type="number"]::-webkit-inner-spin-button {
             Total();
     });
 
-
-    $("#sub-btn").click(function(e) {
-        var check = $('#id_user_id').val();
-        if(check){
+      function saveFunction(){
          var json_dic = {};
         var json_list = new Array();
         $(".text_tr").each(function (index, item) {
@@ -157,7 +157,15 @@ input[type="number"]::-webkit-inner-spin-button {
         });
         json_list = json_list.join('#,,#');
         var x = json_list.toString();
-        $('#id_json_data').val(x)
+        $('#id_json_data').val(x);
+        $('#delete_num').val(delete_num);
+        console.log(delete_num);
+      }
+
+    $("#sub-btn").click(function(e) {
+         var check = $('#id_user_id').val();
+        if(check){
+        saveFunction();
         }else{
             event.preventDefault();
             alert('구매자가 선택되지 않았습니다. 구매자를 선택해주세요');
@@ -527,7 +535,7 @@ input[type="number"]::-webkit-inner-spin-button {
                      '<td><input class="form-control json_supplier" type="text" name="text_data" value="'+supplier+'"></td>' +
                      '<td><input class="form-control json_memo" type="text" name="text_data" value="'+memo+'"></td>' +
                      '<td><input class="form-control json_etc" type="text" name="text_data" value=""></td>' +
-                     '<td><a href="" class="table-action-btn h3 delete-button" style="display: none;"><i class="mdi mdi-close-box-outline text-danger"></i></a></td>'+
+                     '<td><a href="" class="table-action-btn h3 delete-button" onclick="$(this).parent().parent().remove(); return false;" style="display: none;"><i class="mdi mdi-close-box-outline text-warning"></i></a></td>'+
                      '</tr>'
                  ).ready(function () {
                         SortableSpan();
@@ -624,7 +632,7 @@ input[type="number"]::-webkit-inner-spin-button {
                             </select>
                         </div>
                         <div class="col-lg-5">
-                              <span class="help-block text-danger">고객 노출 메모 : </span>
+                              <span class="help-block text-danger">※주의※ <small>고객님이 보는 메모 : </small></span>
                             <input type="text" class="form-control" name="show_memo" id="id_show_memo" style="border-color: #f2989f">
                         </div>
                     </div>
@@ -754,12 +762,13 @@ input[type="number"]::-webkit-inner-spin-button {
                     </tr>
                     </thead>
                     <tbody id="sortable">
-
+                    <input class="form-control delete_num" type="hidden"  name="delete_num" id="delete_num" value="">
                     {% if idx %}
                     {% for z in idx %}
                     {{z.customer_order_product.size}}
                     {% for order in z.customer_order_product.all %}
                     <tr class="text_tr">
+
                         <td><span class="text_data json_ordering"></span></td>
                         <input class="form-control json_id" type="hidden"  name="text_data" value="{{order.id }}">
                          <input class="form-control json_size" type="hidden" name="text_data" value="{{order.size }}">
@@ -768,6 +777,7 @@ input[type="number"]::-webkit-inner-spin-button {
                         <input class="form-control json_deal" type="hidden"  name="text_data" value="{{order.deal }}">
                         <input class="form-control json_kind" type="hidden"  name="text_data" value="{{order.kind }}">
                         <input class="form-control json_title" type="hidden" name="text_data" value="{{order.title }}">
+
                         <td>
                             <input class="form-control json_name" type="text" name="text_data"
                                    value="{%if order.name %}{{order.name}}{% endif %}">
@@ -809,7 +819,7 @@ input[type="number"]::-webkit-inner-spin-button {
                         <td><input class="form-control json_etc" type="text" name="text_data"
                                    value="{%if order.etc %}{{order.etc}}{% endif %}">
                         </td>
-                        <td><a href="" class="table-action-btn h3 delete-button" style="display: none;">
+                        <td><a href="" class="table-action-btn h3 delete-button" onclick="return false;" style="display: none;">
                             <i class="mdi mdi-close-box-outline text-danger"></i></a>
                         </td>
                     </tr>

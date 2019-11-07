@@ -217,26 +217,53 @@
                     {% endfor %}
                     {% endif %}
 
-                    <div class="my-5 d-flex justify-content-between flex-column flex-lg-row">
-                        <span>
-<!--                        <label class="customcheck text-muted">전체 선택-->
-<!--                            <input type="checkbox" id="check_all">-->
-<!--                            <span class="checkmark"></span>-->
-<!--                        </label>-->
-                        </span>
-                        {% if user.is_authenticated %}
-                        <button id='next_button' class="btn btn-dark" disabled="disabled">모두 동의 하였으며 주문 내역대로 진행하기<i class="fa fa-chevron-right"></i></button>
-                        {% else %}
-                        <button class="btn btn-dark" disabled="disabled">로그인 후 이용하실 수 있습니다.<i class="fa fa-chevron-right"></i></button>
-                        {% endif %}
-                    </div>
-
-
-
                </div>
             </div>
         </div>
         <div class="col-lg-2">
+             <div style="top: 80px; " class="position-sticky mb-2">
+                <div class="sidebar-block ">
+                    <nav id="components-nav" style="top: 105px;"
+                         class="nav nav-pills flex-column ml-1 p-3 mb-5 text-center bg-gray-300">
+                        <h4 class="sidebar"><br>※ 예상 주문서 ※</h4>
+                        <p></p>
+
+                        <div class="customer-sidebar card border-0">
+                              {% if user.is_anonymous %}
+                            <i class="fas fa-lock m-30px" style="font-size: 48px;"></i>
+                            <p><b>로그인시</b> <br>기능이 활성화 됩니다.</p>
+                            <div class="p-2 d-block d-md-block d-lg-none">
+                                 {% include 'design/login_form_.html'%}
+                            </div>
+
+                            {% else %}
+                            <nav class="list-group customer-nav" >
+                                <div id="cart_body" class="text-center">
+                                    <div class="cart_empty_message" style="">
+                                        <div class="col-md-auto pr-0 mb-3 p-5">
+                                            <p>장바구니가<br>비어 있습니다.</p>
+                                        </div>
+                                    </div>
+                                    <div class="loading-option" style="display: none">
+                                        <div class="col-md-auto pr-0 mb-3 p-5">
+                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom text-secondary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                                        {% if user.is_authenticated %}
+                        <button id='next_button' class="btn btn-danger" disabled="disabled" style="background-color: #E45A5A; color: #fff;">주문하기</button>
+                        {% else %}
+                        <button class="btn btn-danger" disabled="disabled" style="background-color: #E45A5A; color: #fff;">로그인 후 이용하실 수 있습니다.<i class="fa fa-chevron-right"></i></button>
+                        {% endif %}
+                            </nav>
+                            {% endif %}
+
+                        </div>
+                         <span class="sample_cart_url"></span>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -247,11 +274,9 @@
 <script>
 
     $(document).ready(function () {
-        var $all_box = $('#check_all');
         var $confirm_info_form = $('#confirm_info_form');
         $("input:checkbox[name='customcheck']").click(function () {
             var bool = $(this).is(":checked");
-            $all_box.prop( 'checked', false);
             var $this_parents = $(this).parent();
             if (bool) {
                 $this_parents.css('color', '#02cf32');
@@ -263,23 +288,7 @@
             var $next_button = $('#next_button');
             if (all_box === checked_box) {
                 $next_button.prop("disabled", false);
-                $all_box.prop( 'checked', true);
             } else {
-                $next_button.prop("disabled", true);
-            }
-        });
-        $all_box.click( function() {
-            var bool = $(this).is(":checked");
-            var $check_box =  $("input:checkbox[name='customcheck']");
-            var $next_button = $('#next_button');
-
-            if(bool){
-                $check_box.prop( 'checked', true);
-                $check_box.parent().css('color', '#02cf32');
-                $next_button.prop("disabled", false);
-            }else{
-                $check_box.prop( 'checked', false);
-                $check_box.parent().css('color', '#FF6F61');
                 $next_button.prop("disabled", true);
             }
         });
@@ -295,5 +304,10 @@
         });
     });
 </script>
+
+<script src="{% static 'design/js/comma.js' %}"></script>
+ {% if user.is_authenticated %}
+<script src="{% static 'design/js/cart.js' %}"></script>
+{% endif %}
 
 {% endblock %}

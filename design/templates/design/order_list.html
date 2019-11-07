@@ -20,7 +20,7 @@
                     <use xlink:href="#close-1"></use>
                 </svg>
             </button>
-            <div class="modal-body text-center m-5">
+            <div class="modal-body text-center">
                 <h2 id="exampleModalLabel" class="modal-title mb-4">- 주문서 -</h2>
                 <div class="cart pb-4">
                     <div class="cart-wrapper">
@@ -61,11 +61,18 @@
               </thead>
               <tbody>
                {% for i in object_list %}
+
                 <tr class="text-center">
-                  <th class="py-4 align-middle"><small>{{i.joo_date|date:'Y.m.d D'}}</small></th>
+                  <td class="py-4 align-middle"><small>{{i.joo_date|date:'Y.m.d D'}}</small></td>
                   <td class="py-4 align-middle" >
                       <span style="cursor: pointer" data-toggle="modal" data-target="#exampleModal"  class="invoice_id" data-value="{{i.uuid}}">{{i.product}} <i class="far fa-file-alt" ></i></span>
-
+                                {% if i.state == 1%}
+                      <br>
+                      <small style="color: #0092FF; background-color: #ffffcc">
+                          <b>신한은행 110-457-857437 윤영주(위믹스) / {{i.total|floatformat:'0'|intcomma}}원</b>
+                      </small>
+                  </td>
+               {% endif %}
                   </td>
                   <td class="py-4 align-middle text-right"><small>￦</small> {{i.total|floatformat:'0'|intcomma}}</td>
                   <td class="py-4 align-middle">
@@ -86,10 +93,10 @@
                       {% endif %}
                   </small>
                       <br>
-                          <a href="customer-order.html" class="btn btn-outline-dark btn-sm">디자인<i class="far fa-file-image"></i></a>
+                          <a href="" class="btn btn-outline-dark btn-sm">이미지</a>
                   </td>
-
                 </tr>
+
                   {% endfor %}
               </tbody>
             </table>
@@ -151,13 +158,14 @@
         var url = "{% url 'design:order_list_detail'%}";
         var pk = $(this).data('value');
         var $cart_body = $('.cart-body');
+        $cart_body.html('');
         $.ajax({
           url: url,
           dataType: 'json',
           data: {'invoice_id': pk},
           contentType: 'application/json; charset=UTF-8',
           success: function (data, status, xhr) {
-              $cart_body.html('');
+
                $.each(data, function(index, val){
                    if(val.nums===0){var nums = 1.1;}else{var nums = 1;}
                    var sell_p= Math.round(val.sell*val.amount*nums);

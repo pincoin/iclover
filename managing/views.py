@@ -1937,13 +1937,17 @@ class OrderCreateAPIView(APIView):
         num = request.GET
         post_list = request.POST
         lis = [i for i in post_list] # 필드 알아내기
-        remove_list = ['csrfmiddlewaretoken','json_data','text_data']
+        remove_list = ['csrfmiddlewaretoken','json_data','text_data','delete_num']
         for z in remove_list:
             if z in lis:
                 lis.remove(z)
-
         if serializer.is_valid():
             data = serializer.data
+            order_product_models = design_models.CustomerOrderProduct
+            if 'delete_num' in data:
+                delete_num = data.pop('delete_num')
+                delete_list = delete_num.split(',')
+                order_product_models.objects.filter(id__in=delete_list).delete()
             json_data = None
             json_list = None
             info_id = None
@@ -1972,7 +1976,7 @@ class OrderCreateAPIView(APIView):
 
             if json_data and json_list:
                 count = 1
-                models = design_models.CustomerOrderProduct
+
                 for z in json_list:
                     product_list = json.loads(z)
                     product_id = product_list['id']
@@ -1980,20 +1984,13 @@ class OrderCreateAPIView(APIView):
                     product_list['customer_order_info_id'] = info_id
                     product_list['ordering'] = count
                     if product_id:
-                        this_model = models.objects.filter(id=product_id)
+                        this_model = order_product_models.objects.filter(id=product_id)
                         if this_model:
                             this_model.update(**product_list)
                     else:
-                        models.objects.create(**product_list)
+                        order_product_models.objects.create(**product_list)
                     count += 1
             return redirect(urls)
             # return Response({"data":"끝"},status=status.HTTP_202_ACCEPTED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, format=None):
-        if request:
-            print(request.data)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)

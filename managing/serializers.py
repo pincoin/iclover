@@ -33,3 +33,4 @@ class CustomerProfileSerializer(serializers.Serializer):
     order_date = serializers.CharField(required=False)
     joo_date = serializers.CharField(required=False)
     tax_bool = serializers.BooleanField(required=False)
+    delete_num = serializers.CharField(required=False)
