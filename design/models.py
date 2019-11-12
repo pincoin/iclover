@@ -807,6 +807,11 @@ class ProductImg(TimeStampedModel):
         return f'{self.name}'
 
 class CartProduct(TimeStampedModel):
+    uuid = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

@@ -60,6 +60,11 @@
                 </tr>
               </thead>
               <tbody>
+              {% if messages %}
+              {% for message in messages %}
+              <div role="alert" class="alert alert-success text-center">{{message}}!</div>
+              {% endfor %}
+              {% endif %}
                {% for i in object_list %}
 
                 <tr class="text-center">

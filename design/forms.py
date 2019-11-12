@@ -47,8 +47,20 @@ class CustomerProfileForm(forms.ModelForm):
 class ProductForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
+        self.fields['file'].required = False
+        self.fields['text'].required = False
 
-    sector =  forms.ModelChoiceField(queryset=design_model.SectorsCategory.objects.all())
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'pis','onchange':'readURL(this);','style':'display: none;'}))
+    text = forms.CharField(widget=forms.Textarea(attrs={'style':'display: none;'}))
+
+    def clean_file(self):
+        content = self.cleaned_data['file']
+        if content:
+            content_name = content.name.split('.')[-1]
+            invalid_list = ['css','js','c','cpp','py','php','exe','bat','reg','vbs','swf','jar','html']
+            if content_name in invalid_list:
+                raise forms.ValidationError(f'.{content_name} 파일은 업로드 하실 수 없습니다')
+        return content
 
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):

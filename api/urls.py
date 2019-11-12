@@ -4,15 +4,15 @@ from django.conf import settings
 
 from . import views
 
-app_name = 'api'
+app_name = 'rowapi'
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-router.register(r'profile', views.ProfileViewSet)
+# router.register(r'groups', views.GroupViewSet)
+# router.register(r'profile', views.ProfileViewSet)
 router.register(r'customer_profile', views.CustomerProfileViewSet)
 router.register(r'product_view', views.ProductViewSet)
-router.register(r'product', views.ProductTextViewSet)
+# router.register(r'product', views.ProductTextViewSet)
 router.register(r'order_info', views.OrderInfoViewSet)
 # router.register(r'user_profile', views,ProfileViewSet)
 

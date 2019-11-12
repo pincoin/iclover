@@ -4,13 +4,15 @@
 {% block styles %}
 <style>
     .gal {
-        -webkit-column-count: 3; /* Chrome, Safari, Opera */
-        -moz-column-count: 3; /* Firefox */
-        column-count: 3;
+        -webkit-column-count: 2; /* Chrome, Safari, Opera */
+        -moz-column-count: 2; /* Firefox */
+        column-count: 2;
     }
 
     .gal img {
-        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 6px;
     }
 
     @media (max-width: 500px) {
@@ -35,7 +37,7 @@
                     <div class="row m-1">
                         <div class="col-md-12">
                             <div class="row">
-                                <button type="button" class="btn btn-info col-md-6" ><i class="fas fa-lock" ></i>파일로 접수</button>
+                                <button type="button" class="btn btn-secondary col-md-6" >샘플</button>
                                 <button type="button" class="btn btn-secondary col-md-6">지난시안</button>
                             </div>
                         </div>
@@ -80,69 +82,20 @@
                                 </div>
                             </div>
                         </div>
-                        {% for i in sample_list %}
-                        <div class="col-6" align="center">
-                            <div class="product">
-                                <div class="left">
-                                    <div class="item_wrapper poster_front" id="{{i.id }}">
-                                        <a class="front">
-                                            <img src="{{ i.images.url }}"
-                                                 alt="product" class="img-fluid item_wrapper"
-                                                 style="max-height: 200px;">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /product-->
-                        {% endfor %}
 
+
+                        <div class="gal col-12" align="center">
+
+                        </div>
                     </div>
                          <!-- bootstrap style을 적용한다. -->
-            {% if is_paginated %}
-            <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 mt-3">
-                <ul class="pagination">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a href="?page={{ page_obj.previous_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
-                        class="page-link">
-                            <span>이전</span>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="disabled">
-                        <a href="#" class="page-link">
-                            <span><strike>시작</strike></span>
-                        </a>
-                    </li>
-                    {% endif %}
+                    <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 mt-3">
+                        <ul class="pagination">
 
-                    {% for page in page_range %}
-                    <li class="page-item {% if page == page_obj.number %}active{% endif %}">
-                        <a href="?page={{ page }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
-                        class="page-link">
-                            {{ page }}</a>
-                    </li>
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <li>
-                        <a href="?page={{ page_obj.next_page_number }}{% if data_search_form.q.value %}&q={{ data_search_form.q.value }}{% endif %}"
-                        class="page-link">
-                            <span>다음</span>
-                        </a>
-                    </li>
-                    {% else %}
-                      <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
-                        <a href="#" class="page-link">
-                            <span><strike>끝</strike></span>
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
+                        </ul>
+                    </nav>
                 </div>
+
                 <div class="col-lg-8">
                         <div class="row d-none d-xl-block text-center" style="margin: 10px">
                             <div class="row">
@@ -168,156 +121,135 @@
                      <div class="col-xl-12">
                           {% if user.is_authenticated %}
                          {% for z in cart_button_list %}
-                         <button type="button" onclick="changeCategory('img_{{z.0}}')" class="btn btn-outline-dark btn-sm list_button">{{z.1}}</button>
+                         <button type="button" class="btn {% if z.num == 0 %}btn-dark{% else %}btn-outline-dark{% endif %} btn-sm list_button letter-spacing-1"
+                         data-name="{{z.name}}" data-num="{{z.num}}" data-side="{{z.side}}" data-kind="{{z.kind}}" data-idx="{{z.idx}}">{{z.name}}</button>
                          {% endfor %}
                          {% else %}
-                          <button type="button" class="btn btn-outline-dark btn-sm list_button">테스트 버튼 1</button>
-                         <button type="button" class="btn btn-outline-dark btn-sm list_button">테스트 버튼 2</button>
+                          <button type="button" class="btn btn-dark btn-sm list_button letter-spacing-1"
+                          data-name="테스트 버튼 1" data-num="1" data-side="2" data-kind="flyer" data-idx="test123456789">테스트 버튼 1</button>
+                         <button type="button" class="btn btn-outline-dark btn-sm list_button letter-spacing-1"
+                         data-name="테스트 버튼 2" data-num="2" data-side="1" data-kind="card" data-idx="test23456789">테스트 버튼 2</button>
                          {% endif %}
                     </div>
                      <br>
-                      <div class="col-xl-12 mb-5 text-center">
+                      <div class="col-xl-12 mb-5 text-center" style="color: #5a5e62;">
                           <div class="mb-5">
                               <div class="customer-sidebar card border-0">
                                   <nav class="list-group customer-nav">
-                                      <br>
-                                         <h5>Julie Svestkova</h5>
-                                      <br>
-                                      <a class="list-group-item d-flex justify-content-between align-items-center">
-                                          <span  class="form-inline">
-                                            <div class="form-group pr-2">
-                                            <div class="custom-control custom-radio">
-                                                <input id="radio1" name="radio" type="radio" class="custom-control-input">
-                                                <label for="radio1" class="custom-control-label">최대한 시안대로 해주세요</label>
-                                              </div>
-                                            </div>
-                                              <div class="form-group pr-2">
-                                             <div class="custom-control custom-radio">
-                                                <input id="radio2" name="radio" type="radio" class="custom-control-input">
-                                                <label for="radio2" class="custom-control-label">시안의 느낌을 살려주세요</label>
-                                              </div>
-                                            </div>
-                                          </span>
-                                      </a>
+                                         <h5 class="item_name p-3"></h5>
+                                      {%if messages%}
+                                      {% for message in messages %}
+                                      <div role="alert" class="alert alert-success"> {{ message }}</div>
+                                      {% endfor %}
+                                      {% endif %}
+                                        <span class="text-danger">{{form.file.errors.as_text }}</span>
                                       <a class="list-group-item d-flex justify-content-between align-items-center">
                                         <span  class="form-inline">
                                             <div class="form-group pr-2">
                                             <div class="custom-control custom-radio">
-                                                <input id="radio3" name="radio2" type="radio" class="custom-control-input">
+                                                <input id="radio3" name="radio2" type="radio" data-val="ai" class="custom-control-input input_data_class">
                                                 <label for="radio3" class="custom-control-label">일러스트 주문</label>
                                               </div>
                                             </div>
                                             <div class="form-group pr-2">
                                              <div class="custom-control custom-radio">
-                                                <input id="radio4" name="radio2" type="radio" class="custom-control-input">
-                                                <label for="radio4" class="custom-control-label">샘플 선택(+손그림)</label>
+                                                <input id="radio4" name="radio2" type="radio" data-val="sample" class="custom-control-input input_data_class">
+                                                <label for="radio4" class="custom-control-label">샘플,지난시안</label>
                                               </div>
                                             </div>
                                            <div class="form-group pr-2">
                                              <div class="custom-control custom-radio">
-                                                <input id="radio5" name="radio2" type="radio" class="custom-control-input">
-                                                <label for="radio5" class="custom-control-label">디자인 요청</label>
+                                                <input id="radio5" name="radio2" type="radio" data-val="file" class="custom-control-input input_data_class">
+                                                <label for="radio5" class="custom-control-label">손그림,파일 (+참조 샘플)</label>
+                                              </div>
+                                            </div>
+                                                <div class="form-group pr-2">
+                                             <div class="custom-control custom-radio">
+                                                <input id="radio6" name="radio2" type="radio" data-val="design" class="custom-control-input input_data_class">
+                                                <label for="radio6" class="custom-control-label">디자인 기획</label>
                                               </div>
                                             </div>
                                           </span>
-                                          <p>+5,000 ~ +10,000</p>
+                                          <p>+<span id="way">0~0</span></p>
                                       </a>
+
+                                    <div id="file_form" style="display: none;">
+                                      <a class="list-group-item d-flex justify-content-between align-items-center" >
+                                        <button class="btn btn-outline-success btn-sm pr-3" id="file_btn">파일 업로드</button>
+                                             <span id="file_name"></span>
+                                                <img  id="blah"  src="" class="img-fluid pt-3" style="max-width: 100px; max-height: 100px;">
+                                          <form id="form_content" method="post" enctype="multipart/form-data" autocomplete="off">
+                                              {{form.file}}
+                                              {{form.text}}
+                                              {% csrf_token%}
+                                          </form>
+                                      </a>
+                                         </div>
+
                                         <a class="list-group-item d-flex justify-content-between align-items-center">
                                          <span  class="form-inline">
                                          <div class="form-group pr-4">
                                           <div class="custom-control custom-checkbox">
-                                            <input id="custom-check-5" type="checkbox" class="custom-control-input">
-                                            <label for="custom-check-5" class="custom-control-label">신규약도</label>
+                                            <input id="custom-check-5" type="checkbox" data-val="map" name="check2"  class="custom-control-input input_data_class">
+                                            <label for="custom-check-5" class="custom-control-label">신규 약도</label>
                                           </div>
                                         </div>
                                         <div class="form-group pr-4">
                                           <div class="custom-control custom-checkbox">
-                                            <input id="custom-check-6" type="checkbox" class="custom-control-input">
-                                            <label for="custom-check-6" class="custom-control-label">표/그래프</label>
+                                            <input id="custom-check-6" type="checkbox" data-val="table" name="check2" class="custom-control-input input_data_class">
+                                            <label for="custom-check-6" class="custom-control-label">신규 표/그래프</label>
                                           </div>
                                         </div>
                                          <div class="form-group pr-4">
                                           <div class="custom-control custom-checkbox">
-                                            <input id="custom-check-8" type="checkbox" class="custom-control-input">
+                                            <input id="custom-check-8" type="checkbox" data-val="1day" name="check2" class="custom-control-input input_data_class">
                                             <label for="custom-check-8" class="custom-control-label">디자인 in 24시간<small> (1p)</small></label>
                                           </div>
                                         </div>
                                           </span>
-                                             <p>+5,000 ~ +10,000</p>
+                                             <p>+<span class="add_min">0</span> ~ <span class="add_max">0</span></p>
+                                      </a>
+                                      <a class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span  class="form-inline">
+                                            <div class="form-group pr-2">
+                                            <div class="custom-control custom-radio radio_front">
+                                                <input id="front" name="radio_side" type="radio" class="custom-control-input" value="front">
+                                                <label for="front" class="custom-control-label">앞면<i class="far fa-file-image pl-1"></i></label>
+                                              </div>
+                                            </div>
+                                            <div class="form-group pr-2">
+                                             <div class="custom-control custom-radio radio_back" style="display: none;">
+                                                <input id="back" name="radio_side" type="radio" class="custom-control-input" value="back">
+                                                <label for="back" class="custom-control-label">뒷면<i class="far fa-file pl-1" ></i></label>
+                                              </div>
+                                            </div>
+                                        </span>
+                                          <span><small>(1면 기준)</small></span>
                                       </a>
                                       <div class="customer-profile pt-3 pb-3 pl-2 pr-2">
+                                           <div class="text-muted p-1"><b id="sample_name"></b></div>
                                           <a id="select_image" class="d-inline-block" style="position: relative;">
-                                              <img src="/media/sample/%EB%AC%B8%EC%96%B4%EB%B0%9C/2019/1-2.PNG"
-                                              class="img-fluid" style="max-height: 500px;">
-                                                <span class="text-center btn_checker s3" align="center" >
-                                        </span>
+                                              <img id="fix_image"
+                                                   src="{% static 'design/img/banner/empty_img.jpg'%}"
+                                                   class="img-fluid w-100" style="max-height: 500px;">
                                           </a>
-
-
-
-                                          <style>
-                                              .btn_checker {
-                                                  width: 20px;
-                                                  height: 20px;
-                                                  left: 0;
-                                                  top: 0;
-                                              }
-                                              .s3 {
-                                                position: absolute;
-                                                background-color: #F44336;
-                                                color: #ffffff;
-                                                border-radius: 50px;
-                                                }
-                                              .s3:hover {
-                                               box-shadow:
-                                                0px 0px 15px rgba(255,255,255,0.9);
-                                              }
-                                          </style>
-                                          <script>
-                                              var $select_image = $('#select_image');
-                                              $select_image.click(function (e) {
-                                                    var $offset = $(this).offset();
-                                                    var doc_w = $offset.left; //기준의 좌표
-                                                    var doc_h= $offset.top;
-                                                    var cl_w = e.pageX; //마우스의 좌표
-                                                    var cl_h = e.pageY;
-                                                    <!--            var offs = $(this).offset(),-->
-                                                  var p    = {x:$offset.left, y:$offset.top};
-                                                  var mPos = {x:e.pageX, y:e.pageY};
-                                                  var x    = mPos.x - p.x; //마우스 좌표에서 기준좌표를 뺀 수치
-                                                  var y    = mPos.y - p.y;
-                                                  var img_w =$select_image.width();
-                                                  var img_h =$select_image.height();
-                                                     $('.btn_checker').css('left',x-10).css('top', y-10);
-                                                     console.log(x/img_w,y/img_h);
-                                              });
-                                          </script>
+                                          <span class="text-center btn_checker s3" align="center">
+                                        </span>
                                       </div>
                                       <a class="list-group-item d-flex justify-content-between align-items-center bg-hover-white">
                                           <span style="width: 100%;" class="text-left">
                                              <small class="text-muted">* 내용을 정리해서 적어주세요~</small>
-                                            <textarea class="form-control border-gray-300" rows="5"></textarea>
+                                            <textarea id="input_textarea" class="form-control border-gray-300" rows="5" autocomplete="off"></textarea>
+                                              <small style="color: #E56262;">
+                                              <b>* 저장을 안 하신 경우 데이터가 초기화 됩니다.<br></b>
+                                              <span>* 주문 후 수정은 3회까지 가능합니다. (추가 비용은 별도입니다)<br></span>
+                                              <span>* 주문 후 시안,샘플 변경시 추가 작업비용이 추가 될 수 있으니 충분히 확인하신 후 주문 부탁드립니다~!</span>
+                                          </small>
                                           </span>
                                       </a>
-                                      <a class="list-group-item d-flex justify-content-between align-items-center"><span>
-                                      <svg class="svg-icon svg-icon-heavy mr-2">
-                                        <use xlink:href="#exit-1"> </use>
-                                      </svg>Log out
-                                      </span>
-                                      </a>
                                   </nav>
+                                 <button id="content_btn" type="button" class="btn btn-warning">저장</button>
                               </div>
-                          </div>
-                          <div class="focus_wrapper">
-                         </div>
-                          <div class="p-2">
-                              <p class="text-danger">
-                                  <br><small>* 다른 시안 선택 or 미 주문시 디자인 정보는 초기화 됩니다.</small>
-                                  <br><small>* 수정은 3회까지 가능합니다. (디자인 변경은 별도)</small>
-                                  <br><small>* 주문 완료 후, 작업 중 시안 변경시 추가 작업비용이 발생될 수 있습니다<br>충분한 검토 부탁드립니다~!</small>
-                              </p>  <br>
-                               <button type="button" class="btn btn-warning">< 다른 샘플 시안 선택</button>
-                               <a  href="{% url 'design:product_confirm'%}"><button type="button" class="btn btn-dark"> 해당 내용으로 주문 진행 > </button></a>
                           </div>
                     </div>
                 </div>
@@ -345,7 +277,7 @@
                                 <div id="cart_body" class="text-center">
                                     <div class="cart_empty_message" style="">
                                         <div class="col-md-auto pr-0 mb-3 p-5">
-                                            <p>장바구니가<br>비어 있습니다.</p>
+                                            <p>주문서가<br>비어 있습니다.</p>
                                         </div>
                                     </div>
                                     <div class="loading-option" style="display: none">
@@ -354,7 +286,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                     <a href="{% url 'design:product_confirm'%}" class="btn btn-danger" style="background-color: #E45A5A; color: #fff;">주소입력</a>
                             </nav>
                             {% endif %}
@@ -371,477 +302,225 @@
  {% if user.is_authenticated %}
 <script src="{% static 'design/js/cart.js' %}"></script>
 {% endif %}
-<!--<style>-->
-<!--    /* page-loading */-->
-<!--#page-loading {-->
-<!--    width: 100%;-->
-<!--    height: 100%;-->
-<!--    top: 0px;-->
-<!--    left: 0px;-->
-<!--    position: fixed;-->
-<!--    display: table;-->
-<!--    background-color: #fff;-->
-<!--    z-index: 9999;-->
-<!--    text-align: center;-->
-<!--}-->
-
-<!--#page-loading i{-->
-<!--    vertical-align: middle;-->
-<!--    text-align: center;-->
-<!--    display: table-cell;-->
-<!--    font-size: 60px;-->
-<!--}-->
-
-<!--</style>-->
-<!--<script>-->
-<!--   /*-->
-<!--Global Variables-->
-<!--*/-->
-
-<!--var target_item_id;-->
-<!--var target_item_class = "memo";-->
-
-<!--// 화살표를 이용한 변경을 위한 변수-->
-<!--var categories = ['poster_front', 'poster_back', 'name_card', 'envelope'];-->
-<!--var current_category;-->
-
-<!--// 마커에 사용될 컬러코드. 동적으로 내용을 추가하면 됨.-->
-<!--var marker_colors = ['#22ffff', '#ff22ff', '#ffff22'];-->
-<!--var marker_cnt = 0;-->
-
-<!--var current_marker_coord_x;-->
-<!--var current_marker_coord_y;-->
-
-<!--// 실제 마커 데이터가 저장되는 곳.-->
-<!--// 저장된 마커는 이 변수에 로드해야함.-->
-<!--var marker_data = {};-->
-<!--var temp_marker;-->
-
-<!--// 동적 상태 저장을 위한 변수들-->
-<!--var on_marker = false;-->
-<!--var show_cursor = true;-->
-
-<!--var editing = false;-->
-<!--var text_area_on = false;-->
-
-<!--var isMobile = false;-->
-
-<!--$(document).ready(function(){-->
-
-<!--    // 모바일 브라우져 확인을 위한 코드-->
-<!--    if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)-->
-<!--        || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) {-->
-<!--        isMobile = true;-->
-<!--    }-->
-
-<!--    // 이미지 선택-->
-<!--    $(".item_wrapper").click(function(){-->
-<!--        target_item_id = $(this).attr("id");-->
-
-<!--        var target_image = $(this).children("a.front");-->
-<!--        focusImage(target_image);-->
-<!--    });-->
-
-<!--    // 이미지 선택 해제-->
-<!--    $('.focus_wrapper').on('click', 'button', function(){-->
-<!--        defocusImage();-->
-<!--    });-->
-
-<!--    // 이미지 위에서 마우스를 움직일때 커서 생성 및 움직임 관리-->
-<!--    $('.focus_wrapper').mousemove(function(e){-->
-<!--        if (marker_cnt < marker_colors.length && show_cursor && editing === true) {-->
-<!--            $(".cursor").show();-->
-
-<!--            // 이 부분은 임시 좌표이므로 좌표값을 %로 관리할 필요없음-->
-<!--            var offs = $(this).offset(),-->
-<!--                p    = {x:offs.left, y:offs.top},-->
-<!--                mPos = {x:e.pageX, y:e.pageY},-->
-<!--                x    = mPos.x - p.x - 10,-->
-<!--                y    = mPos.y - p.y - 10;-->
-
-<!--                // 커서가 이미지에서 벗어날 경우-->
-<!--                // 10은 커서의 크기와 관련된 값-->
-<!--                if (x<0) {x=0;}-->
-<!--                if (y<0) {y=0;}-->
-<!--                if (x>$(this).width()-10) {x=$(this).width()-10}-->
-<!--                if (y>$(this).height()-10) {y=$(this).height()-10}-->
-
-<!--            $('.cursor', this).css({left:x, top:y, backgroundPosition: -x+'px '+-y+'px'});-->
-<!--        }-->
-<!--    });-->
-
-<!--    // 이미지 포커스 영역을 벗어날 경우-->
-<!--    // 편집모드를 종료하고 커서를 없앰 (제플린)-->
-<!--    $('.right').mouseleave(function(e){-->
-<!--        toggleEdit(false);-->
-<!--        $(".cursor").hide();-->
-<!--        closeText(false);-->
-<!--    });-->
-
-<!--    $(".focus_wrapper").on("mouseleave","img",function() {-->
-<!--        $(".cursor").hide();-->
-<!--    })-->
-
-<!--    // 커서가 마커 위를 지날때 처리-->
-<!--    $(".focus_wrapper").on("mouseenter",".marker",function() {-->
-<!--        on_marker = true;-->
-<!--    })-->
-
-<!--    $(".focus_wrapper").on("mouseleave",".marker",function() {-->
-<!--        on_marker = false;-->
-<!--    })-->
-
-<!--    // 이미지를 클릭하였을 경우 마커 생성-->
-<!--    $('.focus_wrapper').click(function(e){-->
-<!--        e.stopPropagation();-->
-<!--        $(".cursor").hide();-->
-<!--        // 마커의 수가 최대치가 아니고, 다른 마커 위를 누른 것이 아니고, 편집기능이 켜져있고, 마커 텍스트 입력창이 켜져있지 않을때-->
-<!--        if (marker_cnt < marker_colors.length && on_marker === false && editing === true && text_area_on === false) {-->
-<!--            // 현재 클릭 위치 계산-->
-<!--            var offs = $(this).offset(),-->
-<!--                p    = {x:offs.left, y:offs.top},-->
-<!--                mPos = {x:e.pageX, y:e.pageY},-->
-<!--                x    = mPos.x - p.x - 10,-->
-<!--                y    = mPos.y - p.y - 10;-->
-
-<!--            // 다른 마커를 침범하지 않는지 체크-->
-<!--            var markers = marker_data[target_item_id][target_item_class]["markers"];-->
-<!--            var threshold = 20; // 20px 이내까지 허용-->
-
-<!--            // 마커 루프를 돌며 겹치는 마커가 있는지 확인-->
-<!--            var status = true;-->
-<!--            for(var i=0;i<markers.length;i++) {-->
-<!--                var _m = markers[i];-->
-
-<!--                if (_m !== undefined) {-->
-<!--                    var _x = _m["x"]*$(".focus_wrapper").width();-->
-<!--                    var _y = _m["y"]*$(".focus_wrapper").height();-->
-
-<!--                    if (Math.abs(_x - x) <= threshold && Math.abs(_y - y) <= threshold) {-->
-<!--                        status = false;-->
-<!--                    }-->
-<!--                }-->
-<!--            }-->
-
-<!--            if (status) {-->
-<!--                // 마커 DOM 생성-->
-<!--                var new_marker = $('<div class="marker"></div>');-->
-<!--                new_marker.css({left:x, top:y, backgroundPosition: -x+'px '+-y+'px', borderColor: marker_colors[marker_cnt]});-->
-
-<!--                current_marker_coord_x = x/$(this).width();-->
-<!--                current_marker_coord_y = y/$(this).height();-->
-
-<!--                $(this).append(new_marker);-->
-<!--                temp_marker = new_marker;-->
-
-<!--                // 마커 텍스트 입력창 초기화 및 보이기-->
-<!--                $("#canvas_text").val("");-->
-<!--                $(".text_area_wrapper").show();-->
-<!--                $(".text_area_wrapper").css({borderColor:marker_colors[marker_cnt]});-->
-
-<!--                // 텍스트 입력창 위치를 마커로부터 일정 크기만큼 떨어지게 생성하기 위한 부분-->
-<!--                // 모바일, 데스크탑 각각 달라짐-->
-<!--                var _diff = $(".focus_wrapper").offset().top - $(".right").offset().top;-->
-<!--                if (y > $(".focus_wrapper").height() - 200) {-->
-<!--                    if (isMobile) {-->
-<!--                        _diff -= 150;-->
-<!--                    } else {-->
-<!--                        _diff -= 200;-->
-<!--                    }-->
-
-<!--                }-->
-
-<!--                // 텍스트 입력창 위치 변경-->
-<!--                if (isMobile) {-->
-<!--                    $(".text_area_wrapper").css({top:_diff+y+30});-->
-<!--                } else {-->
-<!--                    $(".text_area_wrapper").css({top:_diff+y+30,left:x});-->
-<!--                }-->
-
-<!--                // 텍스트 입력창 켜짐-->
-<!--                text_area_on = true;-->
-
-<!--                // 커서 컬러 변경 및 숨기기.-->
-<!--                $(".cursor").css({borderColor:marker_colors[marker_cnt+1]});-->
-
-<!--                show_cursor = false;-->
-
-<!--                // 마커를 생성하였으므로 편집모드 종료; 텍스트 입력은 가능-->
-<!--                toggleEdit(false);-->
-<!--            }-->
-
-
-<!--        } else if (text_area_on === true) {-->
-<!--            // 텍스트 입력모드이나, 그 외 이미지 영역을 클릭하였을 경우 텍스트 입력창을 닫음-->
-<!--            closeText(false);-->
-<!--        } else if (marker_cnt >= marker_colors.length && on_marker === false && editing === true) {-->
-<!--            // 편집모드가 켜져있으나, 마커 최대 갯수에 도달하였을 경우-->
-<!--            alert("마커를 더 추가할 수 없습니다.")-->
-<!--        }-->
-
-<!--    });-->
-
-<!--    // 마커를 클릭하였을때 이벤트-->
-<!--    $(".focus_wrapper").on("click",".marker",function(e) {-->
-<!--        if (text_area_on === true) {-->
-<!--            closeText(false);-->
-<!--        }-->
-
-<!--        // 마커 근처에 커서가 멈춰있는 현상 해결-->
-<!--        $(".cursor").hide();-->
-
-<!--        if (editing === false) {-->
-<!--            // jquery CSS는 컬러값을 rgb로 리턴하므로 rgb2hex 함수를 사용하여 hex로 변환-->
-<!--            // 컬러의 Index 정보를 이용하여 저장된 marker_data에서 정보를 로드-->
-<!--            var _idx = marker_colors.indexOf(rgb2hex($(this).css("borderColor")));-->
-<!--            var marker = marker_data[target_item_id][target_item_class]["markers"][_idx];-->
-
-<!--            // 마커 텍스트 입력창을 활성화-->
-<!--            text_area_on = true;-->
-<!--            temp_marker = $(this); // 지금 포커스 중인 마커를 의미-->
-
-<!--            $(".text_area_wrapper").show();-->
-<!--            $("#canvas_text").val(marker["text"]);-->
-<!--            $(".text_area_wrapper").css({borderColor:marker_colors[_idx]});-->
-
-<!--            // 마커 텍스트 입력창 위치 변경-->
-<!--            var _diff = $(".focus_wrapper").offset().top - $(".right").offset().top;-->
-<!--            if (marker.y > $(".focus_wrapper").height() - 200) {-->
-<!--                if (isMobile) {-->
-<!--                    _diff -= 150;-->
-<!--                } else {-->
-<!--                    _diff -= 200;-->
-<!--                }-->
-<!--            }-->
-<!--            if (isMobile) {-->
-<!--                $(".text_area_wrapper").css({top:_diff+marker.y+30});-->
-<!--            } else {-->
-<!--                $(".text_area_wrapper").css({top:_diff+marker.y+30,left:marker.x});-->
-<!--            }-->
-
-<!--            text_area_on = true;-->
-<!--        }-->
-
-<!--        e.stopPropagation();-->
-<!--    })-->
-
-
-
-<!--});-->
-
-<!--// 포스터 앞,뒤 등 변경 시 이미지 묶음 처리-->
-<!--function changeCategory(cls) {-->
-<!--    if (isMobile) {-->
-<!--        $(".left").show();-->
-<!--    }-->
-
-<!--    // 화살표 이동을 위한 변수 저장-->
-<!--    current_category = cls;-->
-
-<!--    // 마커 텍스트 입력창을 닫고-->
-<!--    closeText(false);-->
-
-<!--    // 변수 초기화-->
-<!--    target_item_id = undefined;-->
-<!--    $(".item_wrapper").removeClass("active");-->
-
-<!--    // 현재 카테고리에 해당하는 이미지만 표시-->
-<!--    $(".canvas_container > .left > .item_wrapper").hide();-->
-<!--    $(".canvas_container > .left > ."+cls).show();-->
-
-<!--    // 우측 이미지 영역 초기화-->
-<!--    $(".focus_wrapper").html("");-->
-<!--}-->
-
-<!--// 화살표 이동-->
-<!--function changeCategoryWithArrow(direction) {-->
-<!--    // 최초 로드시에는 화살표 작동하지 않음.-->
-<!--    if (current_category) {-->
-<!--        var idx = categories.indexOf(current_category);-->
-<!--        if (direction) {-->
-<!--            // 왼쪽-->
-<!--            if (idx > 0) {-->
-<!--                changeCategory(categories[idx-1]);-->
-<!--            }-->
-<!--        } else {-->
-<!--            // 오른쪽-->
-<!--            if (idx < categories.length - 1) {-->
-<!--                changeCategory(categories[idx+1]);-->
-<!--            }-->
-<!--        }-->
-
-
-<!--    }-->
-<!--}-->
-
-<!--// 편집 모드 on,off-->
-<!--function toggleEdit(b) {-->
-<!--    if (marker_cnt <= marker_colors.length) {-->
-<!--        editing = b;-->
-<!--        $(".edit_buttons > button").prop("disabled", b);-->
-<!--    } else {-->
-<!--        alert("마커를 더 추가할 수 없습니다.")-->
-<!--    }-->
-<!--}-->
-
-<!--// 마커 텍스트 입력 후 데이터 저장-->
-<!--function saveData() {-->
-<!--    var text = $("#canvas_text").val();-->
-<!--    if (text && text.length > 0) {-->
-<!--        var markers = marker_data[target_item_id][target_item_class]["markers"];-->
-
-<!--        markers[marker_cnt] = {-->
-<!--            "color":marker_colors[marker_cnt],-->
-<!--            "text":text,-->
-<!--            "x":current_marker_coord_x, // focus_wrapper에 상대적인 값-->
-<!--            "y":current_marker_coord_y  // focus_wrapper에 상대적인 값-->
-<!--        }-->
-
-<!--        marker_data[target_item_id][target_item_class]["markers"] = markers;-->
-<!--        marker_cnt = findMarkerCnt(markers);-->
-
-<!--        // 마커 텍스트 입력창 초기화 및 숨기기-->
-<!--        $("#canvas_text").val("");-->
-<!--        $(".text_area_wrapper").hide();-->
-<!--        show_cursor = true;-->
-
-<!--        // 변수 초기화-->
-<!--        text_area_on = false;-->
-<!--        temp_marker = undefined;-->
-<!--    }-->
-
-<!--}-->
-
-<!--// 마커 텍스트 입력창 닫기/삭제-->
-<!--function closeText(delete_flag) {-->
-<!--    // 값 초기화-->
-<!--    $("#canvas_text").val("");-->
-<!--    $(".text_area_wrapper").hide();-->
-
-<!--    editing = false;-->
-<!--    toggleEdit(false);-->
-<!--    if (temp_marker && target_item_id) {-->
-
-<!--        var _idx = marker_colors.indexOf(rgb2hex(temp_marker.css("borderColor")));-->
-<!--        var _marker = marker_data[target_item_id][target_item_class]["markers"][_idx];-->
-
-<!--        // 데이터 삭제-->
-<!--        if (delete_flag || _marker === undefined) {-->
-<!--            marker_data[target_item_id][target_item_class]["markers"][_idx] = undefined;-->
-
-<!--            temp_marker.remove();-->
-<!--            // 현재 마커 번호(새 마커 생성에 사용) 가져오기-->
-<!--            marker_cnt = findMarkerCnt(marker_data[target_item_id][target_item_class]["markers"])-->
-<!--        }-->
-
-<!--        // 변수 초기화-->
-<!--        temp_marker = undefined;-->
-<!--        show_cursor = true;-->
-
-<!--        $(".cursor").css({borderColor:marker_colors[marker_cnt]});-->
-
-<!--        text_area_on = false;-->
-<!--    }-->
-<!--}-->
-
-<!--// 마커 카운트 찾기-->
-<!--// 컬러코드 순으로 마커 변수를 검사하여 가장 빠른 빈 마커 index를 리턴-->
-<!--function findMarkerCnt(markers) {-->
-<!--    for(var i=0;i<markers.length;i++){-->
-<!--        var _m = markers[i];-->
-<!--        if (_m === undefined) {return i}-->
-<!--    }-->
-<!--    return markers.length-->
-<!--}-->
-
-<!--// 이미지 클릭시 이미지 확대-->
-<!--function focusImage(target_image) {-->
-<!--    // 모바일일 경우 이미지 선택영역 가리기-->
-<!--    if (isMobile) {-->
-<!--        $(".left").hide();-->
-<!--    }-->
-
-<!--    // 선택한 이미지 흐릿하게 만들기-->
-<!--    $(".item_wrapper").addClass("active");-->
-
-<!--    // Deep copy-->
-<!--    var $t = target_image.clone();-->
-<!--    $t.children().removeAttr('style');-->
-
-<!--    // 커서 초기화-->
-<!--    $(".focus_wrapper").html('<div class="cursor"></div>');-->
-<!--    $(".focus_wrapper").append($t);-->
-<!--    $(".focus_wrapper").show();-->
-<!--    $(".cursor").hide();-->
-
-<!--    if (target_item_id in marker_data && target_item_class in marker_data[target_item_id]) {-->
-<!--        // 이미 데이터가 있을 경우-->
-<!--        loadMarkers()-->
-<!--    } else if (marker_data[target_item_id] !== undefined && target_item_class in marker_data[target_item_id]) {-->
-<!--        loadMarkers()-->
-<!--    } else {-->
-<!--        // 데이터가 없을 경우 변수 생성-->
-<!--        if (target_item_id in marker_data === false) {-->
-<!--            marker_data[target_item_id] = {}-->
-<!--        }-->
-<!--        marker_data[target_item_id][target_item_class] = {-->
-<!--            "markers":[]-->
-<!--        };-->
-<!--        marker_cnt = findMarkerCnt(marker_data[target_item_id][target_item_class]["markers"])-->
-<!--    }-->
-
-<!--}-->
-
-<!--function defocusImage() {-->
-<!--    $(".item_wrapper").show();-->
-<!--    $(".focus_wrapper").hide();-->
-
-<!--    target_item_id = undefined;-->
-<!--    marker_cnt = 0;-->
-
-<!--    $("#canvas_text").val("");-->
-<!--    $(".text_area_wrapper").hide();-->
-<!--}-->
-
-<!--// 해당 이미지의 마커 정보를 로드-->
-<!--function loadMarkers() {-->
-<!--    // 어느 마커인지는 전역변수를 사용-->
-<!--    var markers = marker_data[target_item_id][target_item_class]["markers"];-->
-
-<!--    // 마커 루프를 돌며 유효한 마커가 있는지 확인-->
-<!--    // 적합한 마커 색상을 커서에 입힘-->
-<!--    var _mc_found = false-->
-<!--    for(var i=0;i<markers.length;i++) {-->
-<!--        var _m = markers[i];-->
-
-<!--        if (_m !== undefined) {-->
-<!--            var x = _m["x"]*$(".focus_wrapper").width();-->
-<!--            var y = _m["y"]*$(".focus_wrapper").height();-->
-
-<!--            var new_marker = $('<div class="marker"></div>');-->
-<!--            new_marker.css({left:x, top:y, backgroundPosition: -x+'px '+-y+'px', borderColor: marker_colors[i]});-->
-
-<!--            $(".focus_wrapper").append(new_marker);-->
-<!--        } else if (_mc_found === false) {-->
-<!--            marker_cnt = i;-->
-<!--            $(".cursor").css({borderColor:marker_colors[marker_cnt]});-->
-<!--            _mc_found = true;-->
-<!--        }-->
-
-<!--    }-->
-
-<!--    marker_cnt = markers.length;-->
-<!--    $(".cursor").css({borderColor:marker_colors[marker_cnt]});-->
-<!--}-->
-
-<!--// RGB 값을 Hex 컬러코드로 변환하는 코드-->
-<!--function rgb2hex(orig){-->
-<!--    var rgb = orig.replace(/\s/g,'').match(/^rgba?\((\d+),(\d+),(\d+)/i);-->
-<!--    return (rgb && rgb.length === 4) ? "#" +-->
-<!--     ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +-->
-<!--     ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +-->
-<!--     ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : orig;-->
-<!--}-->
-
-<!--</script>-->
+
+<script>
+    function getJson(url) {
+        $.getJSON(url, function (data) {
+            $pagination.html('');
+            $gal.html('');
+            var results = data.results;
+            var pages_s = data.num_page;
+            $.each(results, function (e, val) {
+                var img = '<div><img src="/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
+                    ' style="max-height: 600px;" data-name="'+val.name+'"><small>'+val.name+'</small></div>';
+                $gal.append(img);
+            });
+            $.each(pages_s, function (e, val) {
+                var col = '';
+                console.log(val[1], data.current_page);
+                if (val[1] === data.current_page) {
+                    col = 'active';
+                }
+                var num_url =
+                    '<li class="page-item ' + col + '">' +
+                    '<a href="' + val[0] + '" class="page-link page_call" onclick="return false;">' + val[1] + '</a>' + '</li>';
+                $pagination.append(num_url);
+            })
+        });
+    }
+
+    var $pagination = $('.pagination');
+    var $gal = $('.gal');
+    $('#image_call').click(function () {
+        var url = "{% url 'design:sample_api' %}";
+        getJson(url);
+    });
+
+    $(document).on('click', '.page_call', function () {
+        var url = $(this).attr('href');
+        getJson(url);
+    });
+
+    $(document).on('click', '.item_wrapper', function () {
+        var src = $(this).attr('src');
+        var name = $(this).data('name');
+        img_change(src, name);
+        img_fix(src, name);
+    });
+
+    function img_change(src, name) {
+         var $select_image = $('#select_image');
+         var $sample_name = $('#sample_name');
+        $select_image.html('');
+         $sample_name.text('');
+        var html = '<img id="fix_image" src="'+src+'" class="img-fluid w-100" style="max-height: 600px;">';
+        $select_image.html(html);
+        $sample_name.text(name);
+    }
+
+    function img_fix(src, name) {
+        var radio_side = $('input:radio[name="radio_side"]:checked').val();
+        data[global_idx][radio_side]['img'] = src;
+        data[global_idx][radio_side]['name'] = name;
+    }
+
+    var $radio_side = $('input:radio[name="radio_side"]');
+    var $input_textarea = $('#input_textarea');
+    $radio_side.click(function () {
+        var this_side = $(this).val();
+        img_change(data[global_idx][this_side]['img'],data[global_idx][this_side]['name']);
+        $input_textarea.val(data[global_idx][this_side]['text']);
+    });
+
+
+    $input_textarea.change(function () {
+        var radio_side = $('input:radio[name="radio_side"]:checked').val();
+        var content  =  $(this).val();
+        data[global_idx][radio_side]['text']= content;
+        console.log(data);
+    })
+
+
+
+</script>
+<script>
+    var $list_button = $('.list_button');
+    $list_button.click(function () {
+        $list_button.removeClass('btn-dark').addClass('btn-outline-dark');
+        $(this).removeClass('btn-outline-dark').addClass('btn-dark');
+        var side = $(this).data('side');
+        var idx = $(this).data('idx');
+        var name = $(this).data('name');
+        clickNameHide(idx, side, name);
+        global_idx = idx;
+    });
+
+    var $input_data_class = $('.input_data_class');
+    var add_p = {
+        'map': {'min': 5000, 'max': 10000},
+        'table': {'min': 5000, 'max': 10000},
+        '1day': {'min': 30000, 'max': 60000}
+    };
+    var way = {
+        'ai': '0 ~ 0',
+        'sample': '0 ~ 20,000',
+        'file': '10,000 ~ 30,000',
+        'design': '30,000 ~ 80,000'
+    };
+    $input_data_class.change(function () {
+        var radio_val = $('input:radio[name="radio2"]:checked').data('val');
+        var check_val = $('input:checkbox[name="check2"]:checked');
+        var $way = $('#way');
+        var t = way[radio_val];
+        var added = {'min': 0, 'max': 0};
+        var add_list = new Array();
+        check_val.each(function () {
+            var key = $(this).data('val');
+            added.min += add_p[key].min;
+            added.max += add_p[key].max;
+            add_list.push(key);
+        });
+        var $file_form = $('#file_form');
+        $('.add_min').text(comma(added.min));
+        $('.add_max').text(comma(added.max));
+        if (radio_val === 'file') {
+            $file_form.show();
+        } else {
+            $file_form.hide();
+            $('input:file').val('');
+            $('#file_name').text('');
+            $('#blah').attr('src', '');
+        }
+        $way.text(t);
+        data[global_idx]['add'] = add_list;
+        data[global_idx]['way'] = radio_val;
+    });
+
+    function clickNameHide(idx, count, name) {
+        var empty_img = "{% static 'design/img/banner/empty_img.jpg'%}";
+        $('.item_name').text(name);
+        var $radio_back = $('.radio_back');
+        if (count === 2) {
+            $radio_back.show();
+        } else {
+            $radio_back.hide();
+            $('input:radio[name="radio_side"][value="front"]').prop("checked", true);
+        }
+        var data_keys = Object.keys(data);
+        if (data_keys.indexOf(idx) !== -1) {
+            // 있는 경우
+        } else {
+            if (count === 2) {
+                data[idx] = {'front': {'img':empty_img}, 'back': {'img':empty_img}};
+            } else {
+                data[idx] = {'front': {'img':empty_img}};
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        var url = "{% url 'design:sample_api' %}";
+        getJson(url);
+        data = {};
+        global_idx = '';
+        var $list_button = $('.list_button');
+        if ($list_button.length > 0) {
+            $('input:radio[name="radio_side"][value="front"]').prop("checked", true);
+            var $button0 = $list_button.data();
+            var btn0_name = $button0.name;
+            var btn0_side = $button0.side;
+            var btn0_idx = $button0.idx;
+            global_idx = btn0_idx;
+            clickNameHide(btn0_idx, btn0_side, btn0_name);
+            // 데이터 받아오기
+        }
+    });
+
+    $('#file_btn').bind("click", function () {
+        $('#id_file').click();
+    });
+
+    function readURL(input) {
+        var file = input.files[0];
+        var mb = (file.size / 1024) / 1024;
+        var name = file.name;
+        var format = name.split('.');
+        var block_list = ['js', 'py', 'c', 'cpp', 'css', 'html', 'php', 'sql', 'exe'];
+        format = format[format.length - 1].toLowerCase();
+        if (block_list.indexOf(format) !== -1) {
+            alert(format + " 파일은 업로드가 불가합니다.");
+        } else {
+            if (mb <= 10) {
+                if (input.files && file) {
+                    var reader = new FileReader();
+                    if (file.type.indexOf('image') !== -1) {
+                        reader.onload = function (e) {
+                            $('#blah')
+                                .attr('src', e.target.result);
+                        };
+                    } else {
+                        $('#blah').attr('src', '');
+                    }
+                    $('#file_name').text(name);
+                    reader.readAsDataURL(input.files[0]);
+                }
+            } else {
+                alert('업로드는 최대 10 MB 이하만 가능합니다.\n' +
+                    '업로드 하신 파일은 약 ' + Math.ceil(mb) + 'MB 입니다.' +
+                    '\n대용량 파일은 iclover77@naver.com으로 보내주시기 바랍니다.');
+            }
+        }
+    }
+
+</script>
+<script>
+    var $content_btn = $('#content_btn');
+    $content_btn.click(function () {
+        data[global_idx]['key'] = global_idx;
+        $('#id_text').val( JSON.stringify(data[global_idx]));
+        $("#form_content").submit();
+    });
+</script>
+
+
 {% endblock %}

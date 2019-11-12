@@ -1,4 +1,5 @@
 import json
+import math
 import random
 import re
 import uuid as uuid_id
@@ -14,6 +15,8 @@ from mptt.querysets import TreeQuerySet
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import status
+from rest_framework.pagination import LimitOffsetPagination
+
 from design import serializers
 from . import models as design_model
 from member import models as member_model
@@ -81,40 +84,7 @@ def change_password(request):
         return redirect('design:login')
 
 
-# class PageableMixin(object):
-#     logger = logging.getLogger(__name__)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(PageableMixin, self).get_context_data(**kwargs)
-#
-#         start_index = int((context['page_obj'].number - 1) / self.block_size) * self.block_size
-#         end_index = min(start_index + self.block_size, len(context['paginator'].page_range))
-#
-#         context['page_range'] = context['paginator'].page_range[start_index:end_index]
-#         return context
-#
-#     def get_paginate_by(self, queryset):
-#         return self.chunk_size
-
-class ProfileMixin(object):
-    def get_context_data(self, **kwargs):
-        context = super(ProfileMixin, self).get_context_data(**kwargs)
-        user_id = self.request.user.id
-        if user_id:
-            user = member_model.Profile.objects.select_related('user').filter(user=user_id)
-            for i in user:
-                context['user'] = i.user
-                if i.company:
-                    context['company'] = i.company
-                else:
-                    context['company'] = i.user
-                context['staff'] = i.user.is_staff
-            session = self.request.session
-            context['session'] = session
-        return context
-
-
-class HomeView(ProfileMixin, generic.ListView):
+class HomeView(generic.ListView):
     template_name = 'design/home.html'
     model = design_model.MainImg
     def get_queryset(self):
@@ -136,7 +106,6 @@ class HomeImageAPI(APIView):
         keyword = request.GET.get('keyword')
         if keyword:
             back_dic = design_model.MainImg.objects.filter(state_at=1, kind=keyword).order_by('-id').values('name','banner_img','origin_url')
-            print(back_dic)
             if back_dic:
                 return Response(back_dic)
             else:
@@ -144,7 +113,7 @@ class HomeImageAPI(APIView):
         else:
             return  Response(status=status.HTTP_400_BAD_REQUEST)
 
-class ProductView(ProfileMixin, generic.FormView, generic.ListView):
+class ProductView(generic.FormView, generic.ListView):
     template_name = 'design/product.html'
     context_object_name = 'sample_list'
     form_class = forms.ProductForm
@@ -169,15 +138,13 @@ class ProductView(ProfileMixin, generic.FormView, generic.ListView):
         return self
 
 
-class ProductSampleView(viewmixin.PageableMixin, ProfileMixin, generic.FormView, generic.ListView):
+class ProductSampleView(generic.FormView):
     template_name = 'design/product_sample.html'
     context_object_name = 'sample_list'
     paginate_by = 5
     form_class = forms.ProductForm
 
     def get_queryset(self):
-        product_category = self.request.GET.get('item')
-        sector_category = self.request.GET.get('sector')
         return managing_model.Sample.objects.select_related( 'sectors_category__parent').order_by( '-created').filter(state=True)
 
     def get_context_data(self, **kwargs):
@@ -191,28 +158,88 @@ class ProductSampleView(viewmixin.PageableMixin, ProfileMixin, generic.FormView,
             num = 0
             for i in cart:
                 text = json.loads(i.json_text)
-                name = text['title']+" "+ text['size']
-                if '단면' in text['side']:
-                    front = name + " 앞"
-                    data = [num, front]
-                    cart_button_list.append(data)
-                elif '양면' in text['side']:
-                    front = name + " 앞"
-                    back = name + " 뒤"
-                    data = [num, front]
-                    cart_button_list.append(data)
-                    num += 1
-                    data = [num, back]
-                    cart_button_list.append(data)
+                name = text['title']+" "+ text['size']+" "+ text['paper']+" "+ text['side']
+                if '양면' in text['side']:
+                    side= 2
+                else:
+                    side=1
+                kind = text['kind']
+                idx = i.uuid
+                data = {'name':name,'side':side ,'kind':kind,'num':num, 'idx':idx}
+                cart_button_list.append(data)
                 num += 1
             context['cart_button_list'] = cart_button_list
         return context
 
     def form_valid(self, form):
-        print('forms',form)
-        return self
+        print('view forms')
+        print(form.cleaned_data, form.clean_file())
+        self.success_url = self.request.META.get('HTTP_REFERER')
+        messages.success(self.request, f'성공적으로 저장되었습니다')
+        return redirect(self.success_url)
 
-class ProductConfirmView(viewmixin.DeliveryMixin, ProfileMixin, generic.FormView, generic.ListView):
+
+class SampleAPIView(APIView, LimitOffsetPagination):
+    default_limit = 8
+    max_show_page = 5
+    def get(self, request, format=None):
+        confirm = False
+        offset = 0
+        if 'offset' in request.GET:
+            offset = request.GET['offset']
+        if 'limit' in request.GET:
+            if request.GET['limit'] == str(self.default_limit): #값 변경 체크
+                confirm = True
+        elif not 'limit' in request.GET:
+            confirm = True
+        if confirm:
+            queryset = managing_model.Sample.objects.select_related('category','sectors_category')
+            queryset_in = queryset.filter(category=15).values('category','sectors_category','images','name')
+            queryset_out = queryset.filter(~Q(category=15)).values('category','sectors_category','images','name')
+            queryset = list(queryset_in) + list(queryset_out)
+            page = self.paginate_queryset(queryset, request, view=self)
+            queryset =self.get_paginated_response(page).data
+            max_page_count = math.ceil(queryset.pop('count')/self.default_limit)
+            current_count = math.ceil((int(offset) / self.default_limit)+1)
+            num_page = []
+            # 페이지네이션 만들기
+            if max_page_count > self.max_show_page:
+                if current_count < 4:
+                    for i in range(0, self.max_show_page):
+                        url = request.path + '?limit=' + str(self.default_limit) + '&' + 'offset=' + str(
+                            self.default_limit * i)
+                        lis = [url, i+1]
+                        num_page.append(lis)
+                elif current_count+3 > max_page_count:
+                    for i in range(max_page_count-self.max_show_page, max_page_count):
+                        url = request.path + '?limit=' + str(self.default_limit) + '&' + 'offset=' + str(
+                            self.default_limit * i)
+                        lis = [url, i+1]
+                        num_page.append(lis)
+                else:
+                    for i in range(current_count-2, current_count+3):
+                        url = request.path + '?limit=' + str(self.default_limit) + '&' + 'offset=' + str(
+                            self.default_limit * (i-1))
+                        lis = [url, i]
+                        num_page.append(lis)
+            elif max_page_count <= self.max_show_page:
+                for i in range(0,max_page_count):
+                    url = request.path+'?limit='+str(self.default_limit)+'&'+'offset='+str(self.default_limit*i)
+                    num = i+1
+                    lis = [url,num]
+                    num_page.append(lis)
+
+            queryset['pages'] = math.trunc(max_page_count)
+            queryset['num_page'] = num_page
+            queryset['current_page'] = current_count
+            if queryset:
+                return Response(queryset)
+            else:
+                return Response()
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class ProductConfirmView(viewmixin.DeliveryMixin, generic.FormView, generic.ListView):
     template_name = 'design/product_confirm.html'
     context_object_name = 'confirm_list'
     form_class = forms.OrderProfileForm
@@ -241,23 +268,22 @@ class ProductConfirmView(viewmixin.DeliveryMixin, ProfileMixin, generic.FormView
         form.save(commit=False)
         # 금액 검수
         price_model = design_model.ProductPriceAPI.objects.all()
-        i = design_model.CartProduct.objects.values('json_text')
+        i = design_model.CartProduct.objects.filter(user=self.request.user).values('json_text')
         success_list = []
         error_list = []
-        print(len(i))
+        empty_list = []
         for i in i:
             d = json.loads(i['json_text'])
             model_model = price_model.filter(size=d['size'],paper=d['paper'],side=d['side'],deal=d['deal'])
             price = 0
+            d['supplier'] = ''
             if not model_model:
-                error_list.append(d)
+                empty_list.append(d)
             for i in model_model:
                 price = i.sell
                 d['buy_price'] = float(i.buy_price)
                 if i.supplier:
                     d['supplier'] = i.supplier
-                else:
-                    d['supplier'] = ''
             price2 = float(d['price'])/float(d['amount'])
             if price2 == price:
                 success_list.append(d)
@@ -304,20 +330,20 @@ class ProductConfirmView(viewmixin.DeliveryMixin, ProfileMixin, generic.FormView
         # clean_cart_product
         cart = design_model.CartProduct.objects.filter(user=self.request.user)
         cart.delete()
-
+        messages.success(self.request, '성공적으로 주문이 되었습니다')
         return redirect('design:order_list')
 
 
-class ProfileView(ProfileMixin,generic.TemplateView):
+class ProfileView(generic.TemplateView):
     template_name = 'design/profile.html'
 
-class FaqView(ProfileMixin,generic.TemplateView):
+class FaqView(generic.TemplateView):
     template_name = 'design/faq.html'
 
-class NewsView(ProfileMixin,generic.TemplateView):
+class NewsView(generic.TemplateView):
     template_name = 'design/news.html'
 
-class OrderListView(viewmixin.PageableMixin,ProfileMixin, generic.ListView):
+class OrderListView(viewmixin.PageableMixin, generic.ListView):
     template_name = 'design/order_list.html'
     model = design_model.CustomerOrderInfo
     context_object_name = 'order_list'
@@ -363,7 +389,7 @@ class OrderListView(viewmixin.PageableMixin,ProfileMixin, generic.ListView):
                     z.product = name +' 외 '+ str(count-1)+' 건'
         return context
 
-class JoinView(ProfileMixin, generic.FormView):
+class JoinView(generic.FormView):
     template_name = 'design/join.html'
     form_class = forms.CreateUserForm
     success_url = "/design/join/"
@@ -378,7 +404,7 @@ class JoinView(ProfileMixin, generic.FormView):
         response = super(JoinView, self).form_valid(form)
         return response
 
-class MyPageView(ProfileMixin, generic.FormView):
+class MyPageView(generic.FormView):
     template_name = 'design/my_page.html'
     context_object_name = 'my_list'
     form_class = forms.CustomerProfileForm
@@ -444,8 +470,7 @@ class AjaxPriceView(viewmixin.DeliveryMixin, APIView):
 
 class CartProductView(APIView):
     def get(self, request, format=None):
-        print(request)
-        back_dic = design_model.CartProduct.objects.filter(user=self.request.user).values('id','json_text')
+        back_dic = design_model.CartProduct.objects.filter(user=self.request.user).values('uuid','json_text')
         if back_dic:
             return Response(back_dic)
         else:
@@ -457,7 +482,7 @@ class CartProductView(APIView):
             text = str(json.dumps(serializer.data, ensure_ascii=False))
             new = design_model.CartProduct.objects.create(user=self.request.user, json_text=text)
             new_dic ={
-                'id':new.id,
+                'id':new.uuid,
                 'json_text':text
             }
             return Response(new_dic)
@@ -467,7 +492,7 @@ class CartProductView(APIView):
     def delete(self, request, format=None):
         if request.data['num']:
             data_id = request.data['num']
-            query = design_model.CartProduct.objects.get(id=data_id, user=request.user)
+            query = design_model.CartProduct.objects.get(uuid=data_id, user=request.user)
             if query:
                 query.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)

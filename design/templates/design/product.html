@@ -177,19 +177,14 @@
                             </div>
 
                                   <br>
-                              <a href="{% url 'design:product_sample'%}"
-                                   class="list-group-item d-flex justify-content-between align-items-center"
-                                   style="background-color: #E45A5A; color: #fff;">
-                                  <span>디자인 선택 둘러보기</span>
-                              </a>
-
+                                <a href="{% url 'design:product_sample'%}" class="btn btn-danger" style="background-color: #E45A5A; color: #fff;">다음 단계 둘러보기</a>
 
                             {% else %}
                             <nav class="list-group customer-nav" >
                                 <div id="cart_body" class="text-center">
                                     <div class="cart_empty_message" style="">
                                         <div class="col-md-auto pr-0 mb-3 p-5">
-                                            <p>장바구니가<br>비어 있습니다.</p>
+                                            <p>주문서가<br>비어 있습니다.</p>
                                         </div>
                                     </div>
                                     <div class="loading-option" style="display: none">

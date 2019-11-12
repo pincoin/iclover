@@ -10,7 +10,7 @@
         $id_company.keyup(delay(function (e) {
             var search_val = $id_company.val();
             $.ajax({
-                url: '/api/profile.json',
+                url: '/rowapi/profile.json',
                 dataType: 'json',
                 data: {'keyword': search_val},
                 contentType: 'application/json; charset=UTF-8',
@@ -93,7 +93,7 @@
             if (search_val != '') {
                     $.ajax({
                         type: "GET",
-                        url: '/api/product.json',
+                        url: '/rowapi/product.json',
                         dataType: 'json',
                         data : {'idx' :custromer['id'],
                                 'keyword': search_val,

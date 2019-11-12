@@ -186,7 +186,7 @@
     function call_load(){
         var url = $load_btn.attr('href');
         if(!url){
-            url ='/api/order_info.json';
+            url ='/rowapi/order_info.json';
             $list_order.text('');
         }else{
             url = url;

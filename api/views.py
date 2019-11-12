@@ -164,3 +164,4 @@ class ProductViewSet(viewsets.ModelViewSet):
         #             if i['id'] in has_list:
         #                 i['sell_price'] = has_dic.get(product=i['id'])['new_price']
         return Response(serializer.data)
+

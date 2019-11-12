@@ -17,6 +17,7 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('join/', views.JoinView.as_view(), name='join'),
     path('sample/', views.SampleListView.as_view(), name='sample'),
+    path('sample_api/', views.SampleAPIView.as_view(), name='sample_api'),
     path('faq/', views.FaqView.as_view(), name='faq'),
     path('notice/', views.NewsView.as_view(), name='news'),
     path('order_list/', views.OrderListView.as_view(), name='order_list'),

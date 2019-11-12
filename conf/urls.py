@@ -10,7 +10,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('design/', include('design.urls')),
     path('clovi/', include('managing.urls')),
-    path('api/', include('api.urls', namespace='api')),
+    path('rowapi/', include('api.urls', namespace='rowapi')),
 ]
 
 if settings.DEBUG:
