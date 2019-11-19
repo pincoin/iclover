@@ -43,6 +43,9 @@ class DeliveryPriceAdmin(admin.ModelAdmin):
 class CartProductAdmin(admin.ModelAdmin):
     pass
 
+class CartDesignAdmin(admin.ModelAdmin):
+    pass
+
 class CartPriceProblemAdmin(admin.ModelAdmin):
     pass
 
@@ -73,5 +76,6 @@ admin.site.register(models.OrderMemo, OrderMemoAdmin)
 
 
 admin.site.register(models.CartProduct, CartProductAdmin)
+admin.site.register(models.CartDesign, CartDesignAdmin)
 admin.site.register(models.CartPriceProblem, CartPriceProblemAdmin)
 

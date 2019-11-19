@@ -230,7 +230,7 @@
                     <div class="product-hover-overlay">
                         <div class="product-hover-overlay-buttons">
                             <a href="{% url 'design:product'%}?item=flyer"
-                               class="btn btn-danger btn-buy sample_cart" data-url="{{image.origin_url}}">
+                               class="btn btn-danger btn-buy sample_cart" data-name="{{image.name}}" data-url="{{image.origin_url}}">
                                 <span class="btn-buy-label ml-2">주문</span>
                             </a>
                             <hr>
@@ -440,7 +440,9 @@
     $(document).ready(function () {
         $('.sample_cart').click(function () {
             var url = $(this).data('url');
+            var name = $(this).data('name');
              $.cookie('sample_cart_url' , url, { path : '/' });
+             $.cookie('sample_cart_name' , name, { path : '/' });
         });
     });
 

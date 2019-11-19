@@ -132,7 +132,7 @@
                       <img src="/media/{{i.images}}" alt="White Tee" class="img-fluid shadow-sm m-b-15" style="max-height: 450px;">
                       <div class="card-body text-center shadow">
                               <a class="btn btn-outline-dark sample_cart"
-                                 role="button" data-url="/media/{{i.images}}" href="{% url 'design:product'%}?item=card" >
+                                 role="button" data-url="/media/{{i.images}}" data-name="{{i.name}}" href="{% url 'design:product'%}?item=card" >
 
 
                            <i class="fas fa-shopping-cart" ></i>
@@ -217,7 +217,9 @@
     $(document).ready(function () {
         $('.sample_cart').click(function () {
             var url = $(this).data('url');
+            var name = $(this).data('name');
              $.cookie('sample_cart_url' , url, { path : '/' });
+             $.cookie('sample_cart_name' , name, { path : '/' });
         })
     });
 

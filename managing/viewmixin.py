@@ -53,7 +53,7 @@ class DeliveryMixin(object):
 
     def check(self, request, serializer):
         # count 반드시 return
-        delivery = ''
+        delivery = 0
         count = 1
         price_d = ''
         try:

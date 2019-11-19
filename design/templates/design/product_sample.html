@@ -13,14 +13,34 @@
         max-width: 100%;
         height: auto;
         padding: 6px;
+        cursor: pointer;
     }
 
     @media (max-width: 500px) {
         .gal {
-            -webkit-column-count: 1; /* Chrome, Safari, Opera */
-            -moz-column-count: 1; /* Firefox */
-            column-count: 1;
+            -webkit-column-count: 2; /* Chrome, Safari, Opera */
+            -moz-column-count: 2; /* Firefox */
+            column-count: 2;
         }
+    }
+
+    .item {
+        position: relative;
+        padding-top: 10px;
+        display: inline-block;
+    }
+
+    .notify-badge {
+        opacity: 0.9;
+        position: absolute;
+        left: 5px;
+        top: 15px;
+        text-align: center;
+        color: white;
+        text-shadow: 0px 0px 1px black, 0px 1px 1px grey, 1px 1px 1px black;
+        padding: 5px 5px;
+        font-size: 9px;
+        font-weight: bold;
     }
 </style>
 {% endblock %}
@@ -35,59 +55,46 @@
             <div class="row m-0">
                 <div class="card col-lg-4 mb-4 p-0">
                     <div class="row m-1">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <button type="button" class="btn btn-secondary col-md-6" >샘플</button>
-                                <button type="button" class="btn btn-secondary col-md-6">지난시안</button>
-                            </div>
-                        </div>
-                        <div class="col-12 mt-3 mb-3">
-                            <input type="search" placeholder="Search" aria-label="Search"
-                                   class="form-control mr-sm-2">
+<!--                        <div class="col-md-12">-->
+<!--                            <div class="row">-->
+<!--                                <button type="button" class="btn btn-secondary col-md-6" >샘플</button>-->
+<!--                                <button type="button" class="btn btn-secondary col-md-6">지난시안</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-12 mt-3 mb-3">-->
+<!--                            <input type="search" placeholder="Search" aria-label="Search"-->
+<!--                                   class="form-control mr-sm-2">-->
+
+<!--                        </div>-->
+<!--                        <div class="col-12 mt-3 mb-3">-->
+<!--                            <button class="btn btn-link" style="background-color: red"></button>-->
+<!--                            <button class="btn btn-link" style="background-color: orange"></button>-->
+<!--                            <button class="btn btn-link" style="background-color: yellow"></button>-->
+<!--                            <button class="btn btn-link" style="background-color: forestgreen"></button>-->
+<!--                            <button class="btn btn-link" style="background-color: steelblue"></button>-->
+<!--                            <button class="btn btn-link" style="background-color: mediumpurple"></button>-->
+<!--                            <button class="btn btn-link border-dark" style="background-color: white"></button>-->
+<!--                            <button class="btn btn-link" style="background-color: black"></button>-->
+
+<!--                        </div>-->
+<!--                        <div class="col-12">-->
+<!--                            <div class="form-group align-content-center">-->
+<!--                                <select class="custom-select col-12">-->
+<!--                                    {% for i in form.sector %}-->
+<!--                                    {% if i %}-->
+<!--                                    {{i}}-->
+<!--                                    {% endif %}-->
+<!--                                    {% endfor %}-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="gal col" align="center">
 
                         </div>
-                        <div class="col-12 mt-3 mb-3">
-                            <button class="btn btn-link" style="background-color: red"></button>
-                            <button class="btn btn-link" style="background-color: orange"></button>
-                            <button class="btn btn-link" style="background-color: yellow"></button>
-                            <button class="btn btn-link" style="background-color: forestgreen"></button>
-                            <button class="btn btn-link" style="background-color: steelblue"></button>
-                            <button class="btn btn-link" style="background-color: mediumpurple"></button>
-                            <button class="btn btn-link border-dark" style="background-color: white"></button>
-                            <button class="btn btn-link" style="background-color: black"></button>
 
-                        </div>
-                        <div class="col-12 mt-3 mb-3">
-                            <div class="form-group align-content-center">
-                                <select class="custom-select col-12">
-                                    {% for i in form.sector %}
-                                    {% if i %}
-                                    {{i}}
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <!-- product-->
-                        <div class="col-12" align="center">
-                            <div class="product">
-                                <div class="left">
-                                    <div class="item_wrapper poster_front">
-                                        <a class="front">
-<!--                                            <img src="https://picsum.photos/400/400/?blur"-->
-<!--                                                 alt="product" class="img-fluid item_wrapper"-->
-<!--                                                 style="max-height: 200px;">-->
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="gal col-12" align="center">
-
-                        </div>
                     </div>
+
                          <!-- bootstrap style을 적용한다. -->
                     <nav aria-label="page navigation" class="d-flex justify-content-center mb-5 mt-3">
                         <ul class="pagination">
@@ -100,7 +107,7 @@
                         <div class="row d-none d-xl-block text-center" style="margin: 10px">
                             <div class="row">
                                 <div class="col-md-4 card border-success bg-light text-success p-3 my-card ">
-                                    <span class="fas fa-shopping-cart" aria-hidden="true"> 1. 품목 선택</span></div>
+                                    <a class="text-success fas fa-shopping-cart choice_product" href="{% url 'design:product'%}?item=card" aria-hidden="true"> 1. 품목 선택</a></div>
                                 <div class="col-md-4 card border-success bg-light text-success p-3 my-card">
                                     <span class="far fa-images" aria-hidden="true"> 2. 디자인 선택</span>
                                 </div>
@@ -132,14 +139,19 @@
                          {% endif %}
                     </div>
                      <br>
-                      <div class="col-xl-12 mb-5 text-center" style="color: #5a5e62;">
+                      <div class="col-xl-12 mb-5 text-center" style="color: #5a5e62;" id="form_div">
                           <div class="mb-5">
                               <div class="customer-sidebar card border-0">
                                   <nav class="list-group customer-nav">
                                          <h5 class="item_name p-3"></h5>
                                       {%if messages%}
                                       {% for message in messages %}
-                                      <div role="alert" class="alert alert-success"> {{ message }}</div>
+                                      {% if message.tags == 'success' %}
+                                      <div role="alert" id="messages" class="alert alert-success"> {{ message }}</div>
+                                      {% elif message.tags == 'error'%}
+                                      <div role="alert" id="messages" class="alert alert-danger"> {{ message }}</div>
+                                      {% endif %}
+
                                       {% endfor %}
                                       {% endif %}
                                         <span class="text-danger">{{form.file.errors.as_text }}</span>
@@ -173,43 +185,27 @@
                                           <p>+<span id="way">0~0</span></p>
                                       </a>
 
-                                    <div id="file_form" style="display: none;">
+                                    <div class="file_form" style="display: none;">
                                       <a class="list-group-item d-flex justify-content-between align-items-center" >
                                         <button class="btn btn-outline-success btn-sm pr-3" id="file_btn">파일 업로드</button>
                                              <span id="file_name"></span>
                                                 <img  id="blah"  src="" class="img-fluid pt-3" style="max-width: 100px; max-height: 100px;">
+                                          <b id="file_name2"></b>
+
                                           <form id="form_content" method="post" enctype="multipart/form-data" autocomplete="off">
                                               {{form.file}}
                                               {{form.text}}
                                               {% csrf_token%}
                                           </form>
                                       </a>
+                                         <small class="text-danger">
+                                             * 파일을 선택하시고 하단에 <b>"저장하기"</b>를 눌러주세요.<br>
+                                             * 파일이 여러개인경우 압축파일로 보내주세요 (최대 10MB)
+
+                                         </small>
                                          </div>
 
-                                        <a class="list-group-item d-flex justify-content-between align-items-center">
-                                         <span  class="form-inline">
-                                         <div class="form-group pr-4">
-                                          <div class="custom-control custom-checkbox">
-                                            <input id="custom-check-5" type="checkbox" data-val="map" name="check2"  class="custom-control-input input_data_class">
-                                            <label for="custom-check-5" class="custom-control-label">신규 약도</label>
-                                          </div>
-                                        </div>
-                                        <div class="form-group pr-4">
-                                          <div class="custom-control custom-checkbox">
-                                            <input id="custom-check-6" type="checkbox" data-val="table" name="check2" class="custom-control-input input_data_class">
-                                            <label for="custom-check-6" class="custom-control-label">신규 표/그래프</label>
-                                          </div>
-                                        </div>
-                                         <div class="form-group pr-4">
-                                          <div class="custom-control custom-checkbox">
-                                            <input id="custom-check-8" type="checkbox" data-val="1day" name="check2" class="custom-control-input input_data_class">
-                                            <label for="custom-check-8" class="custom-control-label">디자인 in 24시간<small> (1p)</small></label>
-                                          </div>
-                                        </div>
-                                          </span>
-                                             <p>+<span class="add_min">0</span> ~ <span class="add_max">0</span></p>
-                                      </a>
-                                      <a class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a class="list-group-item d-flex justify-content-between align-items-center" >
                                         <span  class="form-inline">
                                             <div class="form-group pr-2">
                                             <div class="custom-control custom-radio radio_front">
@@ -226,6 +222,36 @@
                                         </span>
                                           <span><small>(1면 기준)</small></span>
                                       </a>
+                                        <a class="list-group-item d-flex justify-content-between align-items-center">
+                                         <span  class="form-inline">
+                                         <div class="form-group pr-4">
+                                          <div class="custom-control custom-checkbox">
+                                            <input id="custom-check-5" type="checkbox" data-val="map" name="check2"  class="custom-control-input input_data_class">
+                                            <label for="custom-check-5" class="custom-control-label">신규 약도</label>
+                                          </div>
+                                        </div>
+                                        <div class="form-group pr-4">
+                                          <div class="custom-control custom-checkbox">
+                                            <input id="custom-check-6" type="checkbox" data-val="table" name="check2" class="custom-control-input input_data_class">
+                                            <label for="custom-check-6" class="custom-control-label">신규 표</label>
+                                          </div>
+                                        </div>
+                                         <div class="form-group pr-4">
+                                          <div class="custom-control custom-checkbox">
+                                            <input id="custom-check-7" type="checkbox" data-val="background" name="check2" class="custom-control-input input_data_class">
+                                            <label for="custom-check-7" class="custom-control-label">인물 배경지우기(건)</label>
+                                         </div>
+                                        </div>
+                                         <div class="form-group pr-4">
+                                          <div class="custom-control custom-checkbox">
+                                            <input id="custom-check-8" type="checkbox" data-val="1day" name="check2" class="custom-control-input input_data_class">
+                                            <label for="custom-check-8" class="custom-control-label">디자인 in 24시간<small> (1p)</small></label>
+                                          </div>
+                                        </div>
+                                          </span>
+                                             <p>+<span class="add_min">0</span> ~ <span class="add_max">0</span></p>
+                                      </a>
+
                                       <div class="customer-profile pt-3 pb-3 pl-2 pr-2">
                                            <div class="text-muted p-1"><b id="sample_name"></b></div>
                                           <a id="select_image" class="d-inline-block" style="position: relative;">
@@ -241,14 +267,16 @@
                                              <small class="text-muted">* 내용을 정리해서 적어주세요~</small>
                                             <textarea id="input_textarea" class="form-control border-gray-300" rows="5" autocomplete="off"></textarea>
                                               <small style="color: #E56262;">
-                                              <b>* 저장을 안 하신 경우 데이터가 초기화 됩니다.<br></b>
+                                              <b>* 저장을 안 하신 후 페이지를 이동하시거나 새로고침시 데이터가 초기화 됩니다.<br></b>
                                               <span>* 주문 후 수정은 3회까지 가능합니다. (추가 비용은 별도입니다)<br></span>
                                               <span>* 주문 후 시안,샘플 변경시 추가 작업비용이 추가 될 수 있으니 충분히 확인하신 후 주문 부탁드립니다~!</span>
                                           </small>
                                           </span>
                                       </a>
                                   </nav>
-                                 <button id="content_btn" type="button" class="btn btn-warning">저장</button>
+                                 <button id="content_btn" type="button" class="btn btn-warning">
+                                     {% if user.is_anonymous %}저장하기(로그인 필요){%else %}저장하기{% endif %}
+                                 </button>
                               </div>
                           </div>
                     </div>
@@ -311,13 +339,14 @@
             var results = data.results;
             var pages_s = data.num_page;
             $.each(results, function (e, val) {
-                var img = '<div><img src="/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
-                    ' style="max-height: 600px;" data-name="'+val.name+'"><small>'+val.name+'</small></div>';
+                // var img = '<div><img src="/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
+                //     ' style="max-height: 600px;" data-name="'+val.name+'"><small>'+val.name+'</small></div>';
+                 var img = '<div class="item" style="max-width: 100%;"><img src="/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
+                    ' style="max-height: 600px;" data-name="'+val.name+'"><span class="notify-badge">'+val.name+'</span></div>';
                 $gal.append(img);
             });
             $.each(pages_s, function (e, val) {
                 var col = '';
-                console.log(val[1], data.current_page);
                 if (val[1] === data.current_page) {
                     col = 'active';
                 }
@@ -351,11 +380,19 @@
     function img_change(src, name) {
          var $select_image = $('#select_image');
          var $sample_name = $('#sample_name');
+         var $form_div = $("#form_div");
         $select_image.html('');
          $sample_name.text('');
         var html = '<img id="fix_image" src="'+src+'" class="img-fluid w-100" style="max-height: 600px;">';
         $select_image.html(html);
         $sample_name.text(name);
+
+        var windowWidth = $(window).width();
+        if (windowWidth < 768) {
+            var offset = $form_div.offset();
+            $('html, body').animate({scrollTop: offset.top}, 600);
+        }
+
     }
 
     function img_fix(src, name) {
@@ -364,41 +401,100 @@
         data[global_idx][radio_side]['name'] = name;
     }
 
-    var $radio_side = $('input:radio[name="radio_side"]');
+
+    function check2_fix(this_side) {
+        var $check2 = $("input:checkbox[name='check2']");
+        $check2.prop('checked', false);
+        var check_list = data[global_idx][this_side]['add'];
+        if (check_list) {
+            $.each(check_list, function (e, data) {
+                var name = "input:checkbox[data-val='" + data + "']";
+                $(name).prop('checked', true);
+            });
+        }}
+
+
+
     var $input_textarea = $('#input_textarea');
+    var $radio_side = $('input:radio[name="radio_side"]');
+
+    function textarea_fix(this_side) {
+        $input_textarea.val(data[global_idx][this_side]['text']);
+    }
+
     $radio_side.click(function () {
         var this_side = $(this).val();
+        check2_fix(this_side);
         img_change(data[global_idx][this_side]['img'],data[global_idx][this_side]['name']);
-        $input_textarea.val(data[global_idx][this_side]['text']);
+        textarea_fix(this_side);
     });
 
 
     $input_textarea.change(function () {
         var radio_side = $('input:radio[name="radio_side"]:checked').val();
-        var content  =  $(this).val();
-        data[global_idx][radio_side]['text']= content;
-        console.log(data);
-    })
+        data[global_idx][radio_side]['text']= $(this).val();
+    });
 
-
+    var $messages = $('#messages').length;
+    if($messages){
+        setTimeout(function() {
+          $('#messages').hide(400);
+        }, 3000);
+    }
 
 </script>
 <script>
-    var $list_button = $('.list_button');
-    $list_button.click(function () {
+     var $list_button = $('.list_button');
+    function list_fix($this) {
+
         $list_button.removeClass('btn-dark').addClass('btn-outline-dark');
-        $(this).removeClass('btn-outline-dark').addClass('btn-dark');
-        var side = $(this).data('side');
-        var idx = $(this).data('idx');
-        var name = $(this).data('name');
-        clickNameHide(idx, side, name);
+        $this.removeClass('btn-outline-dark').addClass('btn-dark');
+        var side = $this.data('side');
+        var idx = $this.data('idx');
+        var name = $this.data('name');
         global_idx = idx;
+        clickNameHide(idx, side, name).then(function () {
+              check2_fix('front');
+              img_change(data[global_idx]['front']['img'], data[global_idx]['front']['name']);
+              textarea_fix('front');
+        });
+
+        way_fix();
+        var $radio_side = $('input:radio[id="front"]');
+        $radio_side.prop('checked',true);
+
+    }
+    function way_fix() {
+        var $radio2 = $("input:radio[name='radio2']");
+        var $file_form = $('.file_form');
+         $radio2.prop('checked',false);
+         var way = data[global_idx]['way'];
+         if (way === 'file' || way === 'ai') {
+             $file_form.show();
+         }else{
+             $file_form.hide();
+         }
+         if(way){
+                 var names = "input:radio[data-val='" + way + "']";
+                 $(names).prop('checked', true);
+         }
+    }
+    
+    
+
+    $list_button.click(function () {
+        var $file = $('#id_file').val();
+        if($file){
+            var con = confirm('저장되지 않은 파일이 있습니다.\n품목 이동시 저장되지 않은 파일은 삭제됩니다.\n저장하시려면 취소 버튼을 눌러주세요');
+            if(con){list_fix($(this));$('input:file').val('');$('#file_name').text('');$('#blah').attr('src', '');}
+        }else{list_fix($(this));}
     });
 
     var $input_data_class = $('.input_data_class');
     var add_p = {
         'map': {'min': 5000, 'max': 10000},
         'table': {'min': 5000, 'max': 10000},
+        'background': {'min': 5000, 'max': 10000},
         '1day': {'min': 30000, 'max': 60000}
     };
     var way = {
@@ -407,8 +503,11 @@
         'file': '10,000 ~ 30,000',
         'design': '30,000 ~ 80,000'
     };
+
+
     $input_data_class.change(function () {
         var radio_val = $('input:radio[name="radio2"]:checked').data('val');
+        var radio_side = $('input:radio[name="radio_side"]:checked').val();
         var check_val = $('input:checkbox[name="check2"]:checked');
         var $way = $('#way');
         var t = way[radio_val];
@@ -420,10 +519,10 @@
             added.max += add_p[key].max;
             add_list.push(key);
         });
-        var $file_form = $('#file_form');
+        var $file_form = $('.file_form');
         $('.add_min').text(comma(added.min));
         $('.add_max').text(comma(added.max));
-        if (radio_val === 'file') {
+        if (radio_val === 'file' || radio_val === 'ai') {
             $file_form.show();
         } else {
             $file_form.hide();
@@ -432,12 +531,24 @@
             $('#blah').attr('src', '');
         }
         $way.text(t);
-        data[global_idx]['add'] = add_list;
+        data[global_idx][radio_side]['add'] = add_list;
         data[global_idx]['way'] = radio_val;
     });
 
+    function cookieCall(c_url, c_name) {
+            var $sample_name = $('#sample_name');
+            var $fix_image = $('#fix_image');
+            $fix_image.attr('src',c_url);
+            $sample_name.text(c_name);
+             $.removeCookie('sample_cart_url', { path: '/' });
+        $.removeCookie('sample_cart_name', { path: '/' });
+
+    }
+
     function clickNameHide(idx, count, name) {
+        return new Promise(function (resolve, reject) {
         var empty_img = "{% static 'design/img/banner/empty_img.jpg'%}";
+
         $('.item_name').text(name);
         var $radio_back = $('.radio_back');
         if (count === 2) {
@@ -446,22 +557,42 @@
             $radio_back.hide();
             $('input:radio[name="radio_side"][value="front"]').prop("checked", true);
         }
+
         var data_keys = Object.keys(data);
+         var c_url = $.cookie('sample_cart_url');
         if (data_keys.indexOf(idx) !== -1) {
-            // 있는 경우
+            check2_fix('front');
+            img_change(data[global_idx]['front']['img'], data[global_idx]['front']['name']);
+            textarea_fix('front');
+            way_fix();
+            var $file_name2 = $('#file_name2');
+            if(Object.keys(data[global_idx]).indexOf('file_name') !==-1){$file_name2.text('기존 파일 : '+data[global_idx]['file_name']);
+            }else{$file_name2.text('');}
         } else {
+            var c_name = $.cookie('sample_cart_name');
+            if (c_url) {cart_img = c_url; cart_name = c_name; } else {  cart_img = empty_img; cart_name='';}
             if (count === 2) {
-                data[idx] = {'front': {'img':empty_img}, 'back': {'img':empty_img}};
+                data[idx] = {'front': {'img':cart_img,'name':cart_name, 'add': ''}, 'back': {'img':empty_img, 'add': ''}};
             } else {
-                data[idx] = {'front': {'img':empty_img}};
+                data[idx] = {'front': {'img':cart_img,'name':cart_name,'add': ''}};
             }
+            cookieCall(c_url, c_name);
         }
+
+        resolve();
+        });
     }
 
     $(document).ready(function () {
         var url = "{% url 'design:sample_api' %}";
         getJson(url);
         data = {};
+        var $id_text = $('#id_text');
+        var if_in = $id_text.val();
+        if (if_in){
+            data = JSON.parse($id_text.val());
+        }
+        $id_text.val('');
         global_idx = '';
         var $list_button = $('.list_button');
         if ($list_button.length > 0) {
@@ -485,7 +616,11 @@
         var mb = (file.size / 1024) / 1024;
         var name = file.name;
         var format = name.split('.');
-        var block_list = ['js', 'py', 'c', 'cpp', 'css', 'html', 'php', 'sql', 'exe'];
+        var block_list = [
+            'js', 'py', 'c', 'cpp', 'css', 'html', 'php', 'sql', 'exe','asp', 'aspx', 'phtml', 'php', 'php3',
+            'php4', 'php5', 'inc', 'jsp', 'jspx', 'jsw', 'jsv', 'jspf', 'pl', 'pm', 'cgi', 'lib', 'cfm',
+            'cfml', 'cfc', 'dbm', 'htm'
+        ];
         format = format[format.length - 1].toLowerCase();
         if (block_list.indexOf(format) !== -1) {
             alert(format + " 파일은 업로드가 불가합니다.");
@@ -513,14 +648,20 @@
     }
 
 </script>
+{% if user.is_authenticated %}
 <script>
     var $content_btn = $('#content_btn');
     $content_btn.click(function () {
-        data[global_idx]['key'] = global_idx;
-        $('#id_text').val( JSON.stringify(data[global_idx]));
+
+        $content_btn.attr('disabled',true);
+        setTimeout(function () {
+            $content_btn.attr('disabled',false);
+        }, 3000);
+        data['now_idx'] = global_idx;
+        $('#id_text').val( JSON.stringify(data));
         $("#form_content").submit();
     });
 </script>
-
+{% endif %}
 
 {% endblock %}

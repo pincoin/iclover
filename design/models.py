@@ -610,19 +610,20 @@ class OrderImg(TimeStampedModel, SoftDeletableModel):
         db_index=True,
         on_delete=models.SET_NULL,
     )
-    # 업로드하는 시안과 추가 업로드하는 시안이 수정된 시안이라고 연결해주는 숫자
+
     employees = models.CharField(
         verbose_name=_('업로더'),
         max_length=255,
         null=True,
         blank=True,
     )
-
+    # 업로드하는 시안과 추가 업로드하는 시안이 수정된 시안이라고 연결해주는 숫자
     order_img_num = models.IntegerField(
         verbose_name=_('이미지 넘버링'),
         null=True,
         blank=True,
     )
+
     plush_date = models.DateTimeField(
         verbose_name=_('등록일'),
         auto_now_add=True,
@@ -821,7 +822,7 @@ class CartProduct(TimeStampedModel):
     )
     json_text = models.CharField(
         verbose_name=_('json data'),
-        max_length=255,
+        max_length=10000,
         blank=True,
         null=True
     )
@@ -833,6 +834,70 @@ class CartProduct(TimeStampedModel):
     def __str__(self):
         return f'{self.user}'
 
+class CartDesign(TimeStampedModel):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name=_('고객'),
+        blank=True,
+        null=True,
+    )
+
+    order_info = models.ForeignKey(
+        'design.CustomerOrderInfo',
+        verbose_name=_('주문 리스트'),
+        related_name='cart_design',
+        null=True,
+        blank=True,
+        db_index=True,
+        on_delete=models.SET_NULL,
+    )
+
+    uuid = models.CharField(
+        verbose_name=_('카드 uuid'),
+        max_length=255,
+        blank=True,
+    )
+
+    text = models.CharField(
+        verbose_name=_('텍스트 json'),
+        max_length=10000,
+        blank=True,
+    )
+    file_name = models.CharField(
+        verbose_name=_('파일 이름'),
+        max_length=255,
+        blank=True,
+    )
+    def upload_to_upload_img(instance, filename):
+        now = datetime.datetime.now()
+        nowDate = now.strftime('%Y%m')
+        return f'order/{instance.user}/upload_img/{nowDate}/{filename}'
+
+    upload_img = ProcessedImageField(
+        verbose_name=_('upload_img'),
+        processors=[ResizeToFit(1000, 1000)],
+        blank=True,
+        upload_to=upload_to_upload_img,
+    )
+
+    def upload_to_upload_file(instance, filename):
+        now = datetime.datetime.now()
+        nowDate = now.strftime('%Y%m')
+        return f'order/{instance.user}/upload_file/{nowDate}/{filename}'
+    upload_file =models.FileField(
+        verbose_name=_('upload_file'),
+        blank=True,
+        upload_to=upload_to_upload_file,
+    )
+
+    class Meta:
+        verbose_name = _('카트 업로드 데이터')
+        verbose_name_plural = _('카트 업로드 데이터')
+
+    def __str__(self):
+        return f'{self.uuid}'
+
 class CartPriceProblem(TimeStampedModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -843,7 +908,7 @@ class CartPriceProblem(TimeStampedModel):
     )
     json_text = models.CharField(
         verbose_name=_('json data'),
-        max_length=255,
+        max_length=10000,
         blank=True,
         null=True
     )

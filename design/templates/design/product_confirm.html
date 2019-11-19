@@ -294,8 +294,11 @@
 
         $('#next_button').click( function() {
             var bool = $('#id_address').val();
+            $(this).attr('disabled',true);
+            setTimeout(function(){$(this).attr('disabled',false);}, 3000);
             if (bool){
                 $('#confirm_info_form').submit();
+                $.removeCookie('sample_cart_url', { path: '/' });
             }else{
                 alert('주소를 입력해주세요');
             }

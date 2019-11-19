@@ -19,14 +19,12 @@ var $cart_body = $('#cart_body');
         var $add_cart = $('#add_cart');
 
         $.ajax({
-        cache: false,
         type:"GET",
         url:"/design/cart/",
         dataType : "json",
         success: function(data){
             $.each(data, function (index, item) {
                 cartList(item);
-                sum_total();
                 $cart_empty_message.hide();
                 $loading_option.show();
             });
@@ -63,14 +61,12 @@ var $cart_body = $('#cart_body');
                     'delivery':delivery_text,
                 };
             $.ajax({
-                cache: false,
                 type: "POST",
                 url: "/design/cart/",
                 dataType: "json",
                 data: json_text,
                 success: function (data) {
                     cartList(data);
-                    sum_total();
                 }
             });
         });
@@ -87,35 +83,9 @@ var $cart_body = $('#cart_body');
                 data: {'num':num},
                 success: function (data) {
                     obj.parent().remove();
-                    sum_total();
                 }
             });
          }
-     }
-
-     function sum_total() {
-        var $price_cart = $('.price_cart');
-        var cart_len = $price_cart.length;
-        if (cart_len == 0){
-            $cart_empty_message.show();
-        }else{
-                var temp = 0;
-         $price_cart.each(function () {
-             var tdTxt = $(this).text().replace(/,/gi, "");
-             temp += parseFloat(tdTxt);
-         });
-         var $delivery_cart = $('.delivery_cart');
-         var delivery = 0;
-         $delivery_cart.each(function () {
-             var tdTxt = $(this).text().replace(/,/gi, "");
-             delivery += parseFloat(tdTxt);
-         });
-         $('#price_in_cart').text(comma(temp));
-         var tax = parseFloat(temp/10);
-         $('#tax_in_cart').text(comma(tax));
-         $('#delivery_in_cart').text(comma(delivery));
-         $('#total_price_in_cart').text(comma(parseFloat(temp)+parseFloat(tax)+parseFloat(delivery)));
-        }
      }
 
      $.urlParam = function(name){

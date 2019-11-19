@@ -144,9 +144,6 @@ class ProductSampleView(generic.FormView):
     paginate_by = 5
     form_class = forms.ProductForm
 
-    def get_queryset(self):
-        return managing_model.Sample.objects.select_related( 'sectors_category__parent').order_by( '-created').filter(state=True)
-
     def get_context_data(self, **kwargs):
         context = super(ProductSampleView, self).get_context_data(**kwargs)
         product_category = self.request.GET.get('item')
@@ -169,12 +166,59 @@ class ProductSampleView(generic.FormView):
                 cart_button_list.append(data)
                 num += 1
             context['cart_button_list'] = cart_button_list
+            car_design = design_model.CartDesign.objects.select_related('user','order_info').filter(user=self.request.user,order_info=None)
+            text = ''
+            cart_len = len(car_design)
+            for z in car_design:
+                in_text = z.text
+                if not z.file_name == "" and '"ai"' in in_text or '"file"' in in_text:
+                    in_text = z.text[:-1]+',"file_name":"'+z.file_name+'"}'
+                if cart_len > 1:
+                    comma = ','
+                else:
+                    comma = ''
+                text += str('"'+z.uuid+'":'+in_text+comma)
+                cart_len -= 1
+            text = '{'+text +'}'
+            form = super(ProductSampleView, self).get_form(self.form_class)
+            form.fields['text'].initial = text
+            context['form'] = form
         return context
 
     def form_valid(self, form):
-        print('view forms')
-        print(form.cleaned_data, form.clean_file())
         self.success_url = self.request.META.get('HTTP_REFERER')
+        models = design_model.CartDesign.objects.select_related('user')
+        json_text = json.loads(form.cleaned_data['text'])
+        now_idx = None
+        if 'now_idx' in json_text:
+            now_idx = json_text.pop('now_idx')
+        else:
+            messages.error(self.request, f'전송 받은 데이터에 오류가 확인되어 저장되지 않았습니다.')
+            return redirect(self.success_url)
+        for i in json_text:
+            content = models.get_or_create(uuid=i)
+
+            '''# get_context_data 초기값과 연계되어있음 *변경시 주의 # '''
+            if 'file_name' in json_text[i]:
+                del json_text[i]['file_name']
+            if 'way' in json_text[i]:
+                title = json_text[i]['way']
+                if not "file" in title or not "ai" in title:
+                    content[0].file_name = ''
+            content[0].text = json.dumps(json_text[i])
+            content[0].user = self.request.user
+            if form.cleaned_data['file'] and i == now_idx:
+                content[0].file_name = form.cleaned_data['file'].name
+                if 'image' in form.cleaned_data['file'].content_type:
+                    content[0].upload_img=form.cleaned_data['file']
+                    if content[0].upload_file:
+                        content[0].upload_file.delete()
+                else:
+                    content[0].upload_file=form.cleaned_data['file']
+                    if content[0].upload_img:
+                        content[0].upload_img.delete()
+            content[0].save()
+
         messages.success(self.request, f'성공적으로 저장되었습니다')
         return redirect(self.success_url)
 
@@ -482,7 +526,7 @@ class CartProductView(APIView):
             text = str(json.dumps(serializer.data, ensure_ascii=False))
             new = design_model.CartProduct.objects.create(user=self.request.user, json_text=text)
             new_dic ={
-                'id':new.uuid,
+                'uuid':new.uuid,
                 'json_text':text
             }
             return Response(new_dic)
@@ -495,6 +539,8 @@ class CartProductView(APIView):
             query = design_model.CartProduct.objects.get(uuid=data_id, user=request.user)
             if query:
                 query.delete()
+                cart_design = design_model.CartDesign.objects.filter(uuid=data_id, user=request.user)
+                cart_design.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
