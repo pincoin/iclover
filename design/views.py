@@ -513,7 +513,7 @@ class AjaxPriceView(viewmixin.DeliveryMixin, APIView):
 
 class CartProductView(APIView):
     def get(self, request, format=None):
-        back_dic = {};
+        back_dic = {}
         back_dic = design_model.CartProduct.objects.filter(user=self.request.user).values('uuid','json_text')
         if back_dic:
             return Response(back_dic)
