@@ -68,3 +68,9 @@ class ProductSerializer(serializers.ModelSerializer):
         model= design_models.ProductPriceAPI
         fields = ('id','kind', 'title', 'size', 'paper', 'side','deal','option1','option2','supplier','memo','buy_price',
                   'size_text', 'paper_text', 'side_text', 'deal_text', 'option1_text', 'option2_text','sell')
+
+class CartDesignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= design_models.CartDesign
+        fields = '__all__'
+

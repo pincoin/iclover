@@ -130,6 +130,7 @@ class ProductView(generic.FormView, generic.ListView):
 
         if product_category in product_json_dic:
             context['item'] = product_json_dic[product_category]
+            context['kind'] = product_category
 
         return context
 
@@ -201,10 +202,6 @@ class ProductSampleView(generic.FormView):
             '''# get_context_data 초기값과 연계되어있음 *변경시 주의 # '''
             if 'file_name' in json_text[i]:
                 del json_text[i]['file_name']
-            if 'way' in json_text[i]:
-                title = json_text[i]['way']
-                if not "file" in title or not "ai" in title:
-                    content[0].file_name = ''
             content[0].text = json.dumps(json_text[i])
             content[0].user = self.request.user
             if form.cleaned_data['file'] and i == now_idx:
@@ -358,7 +355,7 @@ class ProductConfirmView(viewmixin.DeliveryMixin, generic.FormView, generic.List
         # order_product
         for data in success_list:
             data['customer_order_info'] = data_model
-            data['name'] = data['size'] + ' ' + data['paper'] + ' ' + data['deal']
+            data['name'] = data['title'] + ' ' +data['size'] + ' ' + data['paper'] + ' ' + data['deal']
             data['sell'] = float(data.pop('price'))/float(data['amount'])
             delivery = data.pop('delivery')
             design_model.CustomerOrderProduct.objects.create(**data)
@@ -370,6 +367,8 @@ class ProductConfirmView(viewmixin.DeliveryMixin, generic.FormView, generic.List
                                 'supplier':data['supplier'], 'size':'','paper':'','side':'','deal':''
                                 }
                 design_model.CustomerOrderProduct.objects.create(**delivery_dic)
+        cart_design = design_model.CartDesign.objects.filter(user=self.request.user ,order_info=None)
+        cart_design.update(order_info=data_model)
 
         # clean_cart_product
         cart = design_model.CartProduct.objects.filter(user=self.request.user)
@@ -514,6 +513,7 @@ class AjaxPriceView(viewmixin.DeliveryMixin, APIView):
 
 class CartProductView(APIView):
     def get(self, request, format=None):
+        back_dic = {};
         back_dic = design_model.CartProduct.objects.filter(user=self.request.user).values('uuid','json_text')
         if back_dic:
             return Response(back_dic)
@@ -523,6 +523,7 @@ class CartProductView(APIView):
     def post(self, request, format=None):
         serializer = serializers.CartProductSerializer(data=request.data)
         if serializer.is_valid():
+            print(serializer.data)
             text = str(json.dumps(serializer.data, ensure_ascii=False))
             new = design_model.CartProduct.objects.create(user=self.request.user, json_text=text)
             new_dic ={

@@ -186,12 +186,16 @@
                     <div class="container p-b-10">
                         <h4 class="m-30px" id="box_title" style="color: #FF6F61;"><i class="fas fa-exclamation-circle"></i>
                             이용방법을 모두 확인하시면 주문 버튼이 활성화 됩니다.</h4>
-                        <label class="customcheck">시안 확정 후 진행된 인쇄물의 오탈자는 재인쇄&환불이 불가하오니 꼼꼼히 확인
+                        <label class="customcheck">제작 된 인쇄물의 오탈자로 인한 재인쇄&환불이 불가하오니 꼼꼼히 확인
                             부탁드립니다.
                             <input type="checkbox" name="customcheck">
                             <span class="checkmark"></span>
                         </label>
-                        <label class="customcheck" >주문 이후 취소 하시는 경우 작업 상황에 따라 비용이 발생될 수 있습니다.
+                        <label class="customcheck">이미지가 아닌 원본파일의 경우 별도 계약과 구매가 필요합니다.
+                            <input type="checkbox" name="customcheck">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="customcheck" >시안 중 취소 하시는 경우 작업비용이 발생됩니다.
                             <input type="checkbox" name="customcheck">
                             <span class="checkmark"></span>
                         </label>
@@ -199,13 +203,8 @@
                             <input type="checkbox" name="customcheck">
                             <span class="checkmark"></span>
                         </label>
-                        <label class="customcheck">이미지가 아닌 원본 소스 구매를 원하시는 경우 별도 계약이 필요합니다.
-                            <input type="checkbox" name="customcheck">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="customcheck" >불량＆배송 지연&재인쇄 등의 사정으로 아쉽게도 안내 드린 날보다 기간이 늘어날 수
-                            있습니다.<br>
-                            기한을 보장해 드리기 어려운점 양해 말씀드리며 사용일보다 여유있는 주문을 부탁드립니다.
+                        <label class="customcheck" >불량＆배송지연&재인쇄 등의 사정으로 아쉽게도 안내 드린 날보다 기간이 늘어날 수
+                            있습니다. 기한을 보장해 드리기 어려운점 양해 말씀드리며 사용일보다 여유있는 주문을 부탁드립니다.
                             <input type="checkbox" name="customcheck">
                             <span class="checkmark"></span>
                         </label>
@@ -273,7 +272,6 @@
 <script>
 
     $(document).ready(function () {
-        var $confirm_info_form = $('#confirm_info_form');
         $("input:checkbox[name='customcheck']").click(function () {
             var bool = $(this).is(":checked");
             var $this_parents = $(this).parent();
@@ -298,7 +296,7 @@
             setTimeout(function(){$(this).attr('disabled',false);}, 3000);
             if (bool){
                 $('#confirm_info_form').submit();
-                $.removeCookie('sample_cart_url', { path: '/' });
+
             }else{
                 alert('주소를 입력해주세요');
             }

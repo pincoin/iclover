@@ -55,7 +55,7 @@ class DeliveryMixin(object):
         # count 반드시 return
         delivery = 0
         count = 1
-        price_d = ''
+        price_d = 0
         try:
             size = serializer.data['size']
             paper = serializer.data['paper']

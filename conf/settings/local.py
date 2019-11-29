@@ -7,15 +7,36 @@ SECRET_KEY = Secret.SECRET_KEY
 ALLOWED_HOSTS = Secret.ALLOWED_HOSTS
 DATABASES = Secret.DATABASES
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/assets/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets/')
-STATICFILES_DIRS = [
-]
 
-# Media files (Uploaded files)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+if DEBUG:
+    # Static files (CSS, JavaScript, Images)
+    STATIC_URL = '/assets/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'assets/')
+    STATICFILES_DIRS = [
+    ]
+    # Media files (Uploaded files)
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+else:
+    # AWS Setting
+    AWS_REGION = Secret.AWS_REGION
+    AWS_STORAGE_BUCKET_NAME = Secret.AWS_STORAGE_BUCKET_NAME
+    AWS_ACCESS_KEY_ID = Secret.AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY = Secret.AWS_SECRET_ACCESS_KEY
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_HOST = f's3.{AWS_REGION}.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_DEFAULT_ACL = None
+    # Static Setting
+    STATIC_URL = '/assets/'
+    # Media Setting
+    MEDIA_URL = '/media/'
+
+    DEFAULT_FILE_STORAGE = 'conf.settings.storage.MediaStorage'
+    STATICFILES_STORAGE = 'conf.settings.storage.StaticStorage'
+
+    MEDIAFILES_LOCATION = 'media'
+    STATICFILES_LOCATION = 'assets'
 
 REST_FRAMEWORK_TOKEN = 'e8b0ddbbe7152d35771a20c6669d1c2016175580'
 
@@ -28,6 +49,7 @@ INSTALLED_APPS += [
     'api',
     'imagekit',
     'mathfilters',
+    'storages',
 ]
 
 

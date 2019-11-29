@@ -24,4 +24,5 @@ class CartProductSerializer(serializers.Serializer):
     deal_text = serializers.CharField()
     amount = serializers.IntegerField()
     price = serializers.CharField()
+    memo = serializers.CharField(required=False)
     delivery = serializers.CharField()

@@ -38,6 +38,8 @@ var $cart_body = $('#cart_body');
             $cart_empty_message.hide();
             var price = uncomma($('#sell_price').text());
             var title =  $.trim($('#title_name').text());
+            var $memo =  $('#memo');
+            var memo = $memo.val();
             var kind =  $.urlParam('item');
             var size_text = $("#size option:selected").text();
             var paper_text = $("#paper option:selected").text();
@@ -59,6 +61,7 @@ var $cart_body = $('#cart_body');
                     'amount':amount_text,
                     'price':price,
                     'delivery':delivery_text,
+                    'memo':memo
                 };
             $.ajax({
                 type: "POST",
@@ -66,6 +69,7 @@ var $cart_body = $('#cart_body');
                 dataType: "json",
                 data: json_text,
                 success: function (data) {
+                    $memo.val('');
                     cartList(data);
                 }
             });
@@ -83,6 +87,8 @@ var $cart_body = $('#cart_body');
                 data: {'num':num},
                 success: function (data) {
                     obj.parent().remove();
+                    var $cart_delete_len = $('.cart_delete_btn').length;
+                    if($cart_delete_len === 0){$cart_empty_message.show();}
                 }
             });
          }

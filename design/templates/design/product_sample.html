@@ -239,7 +239,7 @@
                                          <div class="form-group pr-4">
                                           <div class="custom-control custom-checkbox">
                                             <input id="custom-check-7" type="checkbox" data-val="background" name="check2" class="custom-control-input input_data_class">
-                                            <label for="custom-check-7" class="custom-control-label">인물 배경지우기(건)</label>
+                                            <label for="custom-check-7" class="custom-control-label">인물 배경지우기(건별)</label>
                                          </div>
                                         </div>
                                          <div class="form-group pr-4">
@@ -314,7 +314,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <a href="{% url 'design:product_confirm'%}" class="btn btn-danger" style="background-color: #E45A5A; color: #fff;">주소입력</a>
+                                    <a href="{% url 'design:product_confirm'%}" id="next_address" class="btn btn-danger" style="background-color: #E45A5A; color: #fff;">주소입력</a>
+                                    <small id="save_is" class="text-center text-danger p-3" style="display: none;">* 저장되지 않은 <br>내용이 존재합니다.</small>
                             </nav>
                             {% endif %}
 
@@ -427,8 +428,8 @@
         check2_fix(this_side);
         img_change(data[global_idx][this_side]['img'],data[global_idx][this_side]['name']);
         textarea_fix(this_side);
+        resetOption();
     });
-
 
     $input_textarea.change(function () {
         var radio_side = $('input:radio[name="radio_side"]:checked').val();
@@ -446,23 +447,22 @@
 <script>
      var $list_button = $('.list_button');
     function list_fix($this) {
-
         $list_button.removeClass('btn-dark').addClass('btn-outline-dark');
         $this.removeClass('btn-outline-dark').addClass('btn-dark');
         var side = $this.data('side');
         var idx = $this.data('idx');
         var name = $this.data('name');
+         var $radio_side = $('input:radio[id="front"]');
+        $radio_side.prop('checked',true);
         global_idx = idx;
         clickNameHide(idx, side, name).then(function () {
               check2_fix('front');
               img_change(data[global_idx]['front']['img'], data[global_idx]['front']['name']);
               textarea_fix('front');
+              resetOption();
         });
-
+        data[global_idx]['name'] = name;
         way_fix();
-        var $radio_side = $('input:radio[id="front"]');
-        $radio_side.prop('checked',true);
-
     }
     function way_fix() {
         var $radio2 = $("input:radio[name='radio2']");
@@ -479,13 +479,11 @@
                  $(names).prop('checked', true);
          }
     }
-    
-    
 
     $list_button.click(function () {
         var $file = $('#id_file').val();
         if($file){
-            var con = confirm('저장되지 않은 파일이 있습니다.\n품목 이동시 저장되지 않은 파일은 삭제됩니다.\n저장하시려면 취소 버튼을 눌러주세요');
+            var con = confirm('저장되지 않은 파일이 있습니다.\n품목 이동시 저장되지 않은 파일은 삭제됩니다.\n"취소" 버튼을 누르시고 저장해주세요');
             if(con){list_fix($(this));$('input:file').val('');$('#file_name').text('');$('#blah').attr('src', '');}
         }else{list_fix($(this));}
     });
@@ -504,13 +502,13 @@
         'design': '30,000 ~ 80,000'
     };
 
-
-    $input_data_class.change(function () {
-        var radio_val = $('input:radio[name="radio2"]:checked').data('val');
+    function resetOption(){
+         var radio_val = $('input:radio[name="radio2"]:checked').data('val');
         var radio_side = $('input:radio[name="radio_side"]:checked').val();
         var check_val = $('input:checkbox[name="check2"]:checked');
         var $way = $('#way');
         var t = way[radio_val];
+         if(!radio_val){t = '0 ~ 0';}
         var added = {'min': 0, 'max': 0};
         var add_list = new Array();
         check_val.each(function () {
@@ -519,9 +517,20 @@
             added.max += add_p[key].max;
             add_list.push(key);
         });
-        var $file_form = $('.file_form');
+
         $('.add_min').text(comma(added.min));
         $('.add_max').text(comma(added.max));
+        $way.text(t);
+        return [radio_val,add_list, radio_side]
+    }
+
+    $input_data_class.change(function () {
+        $('#save_is').show();
+        var re_data  = resetOption();
+        var radio_val = re_data[0];
+        var add_list = re_data[1];
+        var radio_side = re_data[2];
+        var $file_form = $('.file_form');
         if (radio_val === 'file' || radio_val === 'ai') {
             $file_form.show();
         } else {
@@ -530,7 +539,7 @@
             $('#file_name').text('');
             $('#blah').attr('src', '');
         }
-        $way.text(t);
+
         data[global_idx][radio_side]['add'] = add_list;
         data[global_idx]['way'] = radio_val;
     });
@@ -540,8 +549,8 @@
             var $fix_image = $('#fix_image');
             $fix_image.attr('src',c_url);
             $sample_name.text(c_name);
-             $.removeCookie('sample_cart_url', { path: '/' });
-        $.removeCookie('sample_cart_name', { path: '/' });
+            $.removeCookie('sample_cart_url', { path: '/' });
+            $.removeCookie('sample_cart_name', { path: '/' });
 
     }
 
@@ -565,6 +574,7 @@
             img_change(data[global_idx]['front']['img'], data[global_idx]['front']['name']);
             textarea_fix('front');
             way_fix();
+            resetOption();
             var $file_name2 = $('#file_name2');
             if(Object.keys(data[global_idx]).indexOf('file_name') !==-1){$file_name2.text('기존 파일 : '+data[global_idx]['file_name']);
             }else{$file_name2.text('');}
@@ -603,6 +613,7 @@
             var btn0_idx = $button0.idx;
             global_idx = btn0_idx;
             clickNameHide(btn0_idx, btn0_side, btn0_name);
+            data[global_idx]['name']=$list_button.data('name');
             // 데이터 받아오기
         }
     });
@@ -651,16 +662,24 @@
 {% if user.is_authenticated %}
 <script>
     var $content_btn = $('#content_btn');
+    var list_button  = $('.list_button ').length;
     $content_btn.click(function () {
-
-        $content_btn.attr('disabled',true);
+        if(list_button){
+            $content_btn.attr('disabled',true);
         setTimeout(function () {
             $content_btn.attr('disabled',false);
         }, 3000);
         data['now_idx'] = global_idx;
         $('#id_text').val( JSON.stringify(data));
         $("#form_content").submit();
+        $.removeCookie('sample_cart_url', { path: '/' });
+        $.removeCookie('sample_cart_name', { path: '/' });
+        }else{
+            alert('품목이 존재하지 않습니다');
+        }
     });
+
+
 </script>
 {% endif %}
 

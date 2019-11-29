@@ -1926,7 +1926,7 @@ class OrderCreateAPIView(APIView):
                             z.total_tax = round((z.sell*z.amount)/10)
                         else:
                             z.total_tax = 0
-            return Response({'employees': employees, 'today': today,'idx':q_list}, status=status.HTTP_202_ACCEPTED)
+            return Response({'employees': employees, 'today': today,'idx':q_list,'num':idx}, status=status.HTTP_202_ACCEPTED)
         else:
 
             return Response({'employees':employees,'today':today}, status=status.HTTP_202_ACCEPTED)

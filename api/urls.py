@@ -13,12 +13,11 @@ router.register(r'users', views.UserViewSet)
 router.register(r'customer_profile', views.CustomerProfileViewSet)
 router.register(r'product_view', views.ProductViewSet)
 # router.register(r'product', views.ProductTextViewSet)
-router.register(r'order_info', views.OrderInfoViewSet)
+router.register(r'order_info', views.OrderInfoViewSet, base_name='order_info')
+router.register(r'cart_design', views.CartDesignViewSet, base_name='cart_design')
 # router.register(r'user_profile', views,ProfileViewSet)
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = router.urls
 # if settings.DEBUG:
 #     urlpatterns += [
 #         path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
