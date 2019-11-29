@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = True
+DEBUG = False
 
 # SECURITY WARNING: Keep them secret!
 SECRET_KEY = Secret.SECRET_KEY

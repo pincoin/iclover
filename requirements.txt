@@ -9,5 +9,8 @@ pilkit
 django-imagekit
 Selenium
 django-mathfilters==0.4.0
+<<<<<<< Updated upstream
 django-storages
 boto3
+=======
+>>>>>>> Stashed changes
