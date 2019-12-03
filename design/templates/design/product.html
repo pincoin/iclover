@@ -424,8 +424,7 @@
         $side = $('#side');
         $deal = $('#deal');
         $amount = $('#amount');
-        var json_url = "{% static 'design/json/v-0-0-0/'%}";
-        url = json_url + param_item + '.json';
+        url = "{% static 'design/json/v-0-0-0/'%}" + param_item + '.json';
         var size_default = null;
         getJson(url, size_default);
 

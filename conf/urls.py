@@ -9,6 +9,7 @@ urlpatterns = [
     path('minsmine/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('design/', include('design.urls')),
+    path('', include('design.urls')),
     path('clovi/', include('managing.urls')),
     path('rowapi/', include('api.urls', namespace='rowapi')),
 ]

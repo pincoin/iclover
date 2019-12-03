@@ -1074,7 +1074,6 @@ class OrdersUpdateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin, generic.
                         )
                         num = pk_list[0]
                         pk_list.remove(num)
-                        print(update_count ,pk_list_len, product_list_len)
                         if update_count == product_list_len-1:
                             del_data =design_models.OrderList.objects.filter(id__in=pk_list)
                             del_data.delete()
@@ -1128,7 +1127,6 @@ class BillView(generic.DetailView):
 
     def get_object(self, queryset=None):
         obj = super(BillView, self).get_object(queryset=queryset)
-        print(obj.tax_bool)
         all = obj.customer_order_product.all()
         sub = 0
         tax = 0
@@ -1441,7 +1439,6 @@ class DepositUpdateView(viewmixin.UserIsStaffMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(DepositUpdateView, self).get_context_data(**kwargs)
-        print(context)
         return context
 
 
@@ -1481,7 +1478,6 @@ class OrderWithDepositCreateView(viewmixin.UserIsStaffMixin, SuccessMessageMixin
         return context
 
     def form_valid(self, form):
-        print(form.cleaned_data)
         self.success_url = self.request.META.get('HTTP_REFERER')
         order_id = self.kwargs['pk']
         balance = form.cleaned_data['balance']
@@ -1703,7 +1699,6 @@ class PaymentListView(APIView):
             phone= request.data['phone']
             tell = request.data['tell']
             message = request.data['message']
-            print(f'{phone} {tell} {message}')
             save = True
 
             if save:

@@ -394,7 +394,6 @@ class OrderListView(viewmixin.PageableMixin, generic.ListView):
 
     def get_queryset(self):
         num = [6, 7, 8]
-        print(self.request.user)
         if self.request.user.is_authenticated:
             queryset = super().get_queryset().prefetch_related('customer_order_product')\
                 .filter(Q(user=self.request.user) & ~Q(state__in=num)).order_by('-joo_date','-id')
@@ -523,7 +522,6 @@ class CartProductView(APIView):
     def post(self, request, format=None):
         serializer = serializers.CartProductSerializer(data=request.data)
         if serializer.is_valid():
-            print(serializer.data)
             text = str(json.dumps(serializer.data, ensure_ascii=False))
             new = design_model.CartProduct.objects.create(user=self.request.user, json_text=text)
             new_dic ={

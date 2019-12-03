@@ -76,23 +76,24 @@ class DeliveryMixin(object):
             i = None
 
         del_model = design_model.DeliveryPrice.objects.filter(kind=item)
-        if 'flyer' in item:
-            count = i * amount
-            if 'A' in size:
-                price_d = del_model.get(size__icontains='A').sell
-                delivery = round(float(price_d)* i * amount * 1.1)
-            elif 'B' in size:
-                price_d = del_model.get(size__icontains='B').sell
-                delivery = round(float(price_d) * i * amount * 1.1)
-        elif 'card' in item:
-            price_d = del_model.get(kind='card').sell
-            i = int(re.findall('\d+', deal)[-1])*amount
-            if i <= 10500:
-                delivery = round(float(price_d)*1.1)
-            elif i <= 26000:
-                count = 2
-                delivery = round(float(price_d)*count*1.1)
-            else:
-                count = 3
-                delivery = round(float(price_d)*count*1.1)
+        if del_model:
+            if 'flyer' in item:
+                count = i * amount
+                if 'A' in size:
+                    price_d = del_model.get(size__icontains='A').sell
+                    delivery = round(float(price_d)* i * amount * 1.1)
+                elif 'B' in size:
+                    price_d = del_model.get(size__icontains='B').sell
+                    delivery = round(float(price_d) * i * amount * 1.1)
+            elif 'card' in item:
+                price_d = del_model.get(kind='card').sell
+                i = int(re.findall('\d+', deal)[-1])*amount
+                if i <= 10500:
+                    delivery = round(float(price_d)*1.1)
+                elif i <= 26000:
+                    count = 2
+                    delivery = round(float(price_d)*count*1.1)
+                else:
+                    count = 3
+                    delivery = round(float(price_d)*count*1.1)
         return delivery, count, price_d
