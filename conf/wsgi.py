@@ -3,10 +3,10 @@ from conf.settings.secret import Secret
 
 from django.core.wsgi import get_wsgi_application
 
-module = None
+module_name = 'conf.settings'
 if not Secret:
-    module = '.local'
+    module_name = module_name+'.local'
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'conf.settings'+module)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', module_name)
 
 application = get_wsgi_application()
