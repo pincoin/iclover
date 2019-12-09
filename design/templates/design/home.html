@@ -456,7 +456,7 @@
         data:{'keyword':keyword},
         success: function(data){
            $('.product-image').each(function (e, item) {
-               $(this).find('img').attr('src','/media/'+data[e]['banner_img']);
+               $(this).find('img').attr('src','https://wemix-dev-s3.s3.amazonaws.com/media/'+data[e]['banner_img']);
                $(this).find('a').attr('data-url',data[e]['origin_url']).attr('href',re_url);
                $(this).find('.product_name').text(data[e]['name']);
 
