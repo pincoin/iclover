@@ -89,13 +89,13 @@ class HomeView(generic.ListView):
     model = design_model.MainImg
     def get_queryset(self):
         self.mod = design_model.MainImg.objects.filter(state_at=0)
-        queryset = super().get_queryset().filter(state_at=1, name__icontains='전단지').order_by('-id')
+        queryset = super().get_queryset().filter(state_at=1, kind__icontains='flyer').order_by('-id')
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         try:
-            num = random.randrange(0, 3)
+            num = random.randrange(0, self.mod.count())
             context['main_img'] = self.mod[num].banner_img.url
         except:
             pass
