@@ -447,6 +447,7 @@
     });
 
         $('.detail-option-btn-label').click(function () {
+            $('.detail-option-btn-label').removeClass('active');
             var keyword = $(this).data('name');
             var re_url = "{% url 'design:product' %}?item="+keyword;
         $.ajax({

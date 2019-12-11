@@ -62,9 +62,9 @@
                             <td>
                                  <a href="{% url 'managing:sample_update' i.pk %}">
                                      {% if i.state %}
-                                    <img src="/media/{{ i.images}}" width="130px;"/>
+                                    <img src="{{ i.images.url }}" width="130px;"/>
                                      {% else %}
-                                     <img src="/media/{{ i.images}}" width="130px;" style="opacity: 0.7"/>
+                                     <img src="{{ i.images.url }}" width="130px;" style="opacity: 0.7"/>
                                      {% endif %}
                                  </a>
 

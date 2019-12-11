@@ -342,7 +342,7 @@
             $.each(results, function (e, val) {
                 // var img = '<div><img src="/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
                 //     ' style="max-height: 600px;" data-name="'+val.name+'"><small>'+val.name+'</small></div>';
-                 var img = '<div class="item" style="max-width: 100%;"><img src="/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
+                 var img = '<div class="item" style="max-width: 100%;"><img src="https://wemix-dev-s3.s3.ap-northeast-2.amazonaws.com/media/' + val.images + '" alt="샘플 이미지" class="img-fluid item_wrapper"' +
                     ' style="max-height: 600px;" data-name="'+val.name+'"><span class="notify-badge">'+val.name+'</span></div>';
                 $gal.append(img);
             });
