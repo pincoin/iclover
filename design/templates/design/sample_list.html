@@ -129,10 +129,10 @@
                {% for i in sample_list %}
               <div class="product card border-0">
                   <div class="">
-                      <img src="/media/{{i.images}}" alt="White Tee" class="img-fluid shadow-sm m-b-15" style="max-height: 450px;">
+                      <img src="{{i.images.url}}" alt="White Tee" class="img-fluid shadow-sm m-b-15" style="max-height: 450px;">
                       <div class="card-body text-center shadow">
                               <a class="btn btn-outline-dark sample_cart"
-                                 role="button" data-url="/media/{{i.images}}" data-name="{{i.name}}" href="{% url 'design:product'%}?item=card" >
+                                 role="button" data-url="{{i.images.url }}" data-name="{{i.name}}" href="{% url 'design:product'%}?item=card" >
 
 
                            <i class="fas fa-shopping-cart" ></i>

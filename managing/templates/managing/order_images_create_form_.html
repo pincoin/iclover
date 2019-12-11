@@ -45,8 +45,8 @@
     <div class="row card-box">
     {% for i in img_list %}
           <div class="col-lg-2" align="center">
-    <a href="/media/{{i.images}}" target="_blank">
-      <img src="/media/{{i.images}}"class="img-responsive img-rounded" height="250px;">
+    <a href="{{i.images.url}}" target="_blank">
+      <img src="{{i.images.url}}"class="img-responsive img-rounded" height="250px;">
     </a>
               <small class="text-muted">uploaded by {{i.employees}}님</small>
                {% if '디자이너' not in user.first_name %}
