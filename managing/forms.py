@@ -577,7 +577,13 @@ class SpecialPriceForm(forms.Form):
     )
 
 class UploadSampleForm(forms.ModelForm):
-    images = forms.ImageField(widget=forms.FileInput(attrs={'multiple': True}), required=True)
+    def __init__(self, *args, **kwargs):
+        super(UploadSampleForm, self).__init__(*args, **kwargs)
+        self.fields['category'].widget.attrs['class'] = 'form-control m-3'
+        self.fields['sectors_category'].widget.attrs['class'] = 'form-control'
+        self.fields['aspect'].widget.attrs['class'] = 'form-control'
+
+    images = forms.ImageField(widget=forms.FileInput(attrs={'multiple': True, 'class':'form-control'}), required=True)
     class Meta:
         model = managing_models.Sample
-        fields = ['category','sectors_category','aspect','images']
+        fields = ['aspect','category','sectors_category','images']
