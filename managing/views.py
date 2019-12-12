@@ -1989,3 +1989,30 @@ class OrderCreateAPIView(APIView):
             # return Response({"data":"끝"},status=status.HTTP_202_ACCEPTED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UploadSampleView(generic.FormView):
+    template_name = 'managing/upload_sample.html'
+    form_class = managing_forms.UploadSampleForm
+    model = managing_models.Sample
+    success_url = "/clovi/upload_sample"
+    def form_valid(self, form):
+        # print(form.cleaned_data['category'],form.cleaned_data['sectors_category'])
+        file = self.request.FILES.getlist('images')
+        for i in file:
+            try:
+                i.name = ''.join(i.name.split('.')[:-1])
+            except:
+                pass
+            self.model.objects.create(images=i , name=i.name, category=form.cleaned_data['category'], sectors_category=form.cleaned_data['sectors_category'])
+        # # print(form.cleaned_data['category'],form.cleaned_data['sectors_category'])
+        return super(UploadSampleView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print('오휴')
+        return self
+
+    def get_context_data(self, **kwargs):
+        context = super(UploadSampleView, self).get_context_data(**kwargs)
+        return context

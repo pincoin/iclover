@@ -25,6 +25,8 @@ urlpatterns = [
     path('order_view/<int:state>/', views.OrderView.as_view(), name='order_view'),
     path('order_view/create/', views.OrderCreateAPIView.as_view(), name='order_view_create'),
 
+    path('upload_sample/', views.UploadSampleView.as_view(), name='upload_sample'),
+
 
     path('product/', views.ProductView.as_view(), name='product'),
     path('product/create/', views.ProdcutCreateView.as_view(), name='product_create'),

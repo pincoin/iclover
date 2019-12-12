@@ -1,6 +1,7 @@
 import re
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils.safestring import mark_safe
 from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import Thumbnail, ResizeToFit
 from django.conf import settings
@@ -407,6 +408,16 @@ class Sample(TimeStampedModel, SoftDeletableModel):
         blank=True,
     )
 
+    ASPECT_CHO = Choices(
+        (0, '가로', _('가로')),
+        (1, '세로', _('세로')),
+    )
+    aspect = models.IntegerField(
+        verbose_name=_('가로 / 세로'),
+        default=0,
+        choices=ASPECT_CHO,
+    )
+
     def upload_to_sample(instance, filename):
         now = datetime.now()
         nowDate = now.strftime('%Y')
@@ -421,6 +432,11 @@ class Sample(TimeStampedModel, SoftDeletableModel):
 
     def save(self, request=False, *args, **kwargs):
         super(Sample, self).save(*args, **kwargs)
+
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.images.url}" style="max-height: 200px; max-width: 200px;"/>')
+
+    image_tag.short_description = 'Image'
 
     class Meta:
         verbose_name = _('샘플')

@@ -5,13 +5,13 @@
 {% block content%}
 
 <div class="container m-t-50 m-b-30" style="width:800px;">
-    <h2 align="center"><b>샘플 관리</b>
-        {% if group_name != '디자이너'%}
-        <a href="{% url 'managing:sample_create' %}">
+    {% if group_name != '디자이너'%}
+    <a href="{% url 'managing:sample_create' %}">
+        <h2 align="center"><b>샘플 관리</b>
             <i class="ti-plus text-success"></i>
-        </a>
-        {% endif %}
-    </h2>
+        </h2>
+    </a>
+    {% endif %}
     <br/><br/>
     <div align="center">
         <form role="form" method="GET" autocomplete="off" class="has-sample">

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>폼</title>
+</head>
+<body>
+<div>
+
+
+<form enctype="multipart/form-data" method="post"> {% csrf_token%}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="저장"/>
+
+</form>
+
+</div>
+</body>
+</html>

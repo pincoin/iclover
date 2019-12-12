@@ -575,3 +575,9 @@ class SpecialPriceForm(forms.Form):
         ),
         help_text='새로운 가격 :'
     )
+
+class UploadSampleForm(forms.ModelForm):
+    images = forms.ImageField(widget=forms.FileInput(attrs={'multiple': True}), required=True)
+    class Meta:
+        model = managing_models.Sample
+        fields = ['category','sectors_category','aspect','images']
