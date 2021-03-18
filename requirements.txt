@@ -4,7 +4,7 @@ django-mptt==0.9.1
 django-allauth==0.38.0
 djangorestframework==3.9.1
 django-debug-toolbar==1.11
-Pillow==5.4.1
+Pillow==8.1.1
 pilkit
 django-imagekit
 Selenium
